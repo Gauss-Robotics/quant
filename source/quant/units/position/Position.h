@@ -61,11 +61,6 @@ namespace quant::units::position
 
 
     protected:
-        friend class Translation;
-        friend class Rotation;
-        friend class Transform;
-
-        friend class FrameTransform;
 
         friend Position operator*(const Difference<Orientation>& rotation,
                                   const Position& position);

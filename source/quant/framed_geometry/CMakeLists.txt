@@ -1,9 +1,7 @@
 add_library(framed_geometry SHARED
     ../framed_geometry.h
 
-    FrameID.h
-    FrameMixin.h
-    FramedMixin.h
+    common.h
 )
 
 set_target_properties(framed_geometry
