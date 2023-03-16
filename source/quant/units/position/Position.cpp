@@ -1,9 +1,9 @@
 #include "Position.h"
 
-#include <simox/core/units/position/Orientation.h>
+#include <quant/units/position/Orientation.h>
 
 
-namespace simox::core::units::position
+namespace quant::units::position
 {
 
     /*Translation
@@ -19,16 +19,16 @@ namespace simox::core::units::position
         return LinearVelocity(representation_ / rhs.toSecondsDouble());
     }*/
 
-} // namespace simox::core::units::position
+} // namespace quant::units::position
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     std::ostream&
     position::operator<<(std::ostream& out, const Position& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("Position", "mm");
         return out;
     }
 
@@ -48,4 +48,4 @@ namespace simox::core::units
             .deltaToOrigin();
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

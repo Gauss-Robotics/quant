@@ -10,14 +10,19 @@
 #include <quant/geometry/common.h>
 
 
-namespace simox::core::geometry
+namespace quant::geometry
 {
 
     template <typename VectorType>
     class Magnitude : public ScalarQuantity<Magnitude<VectorType>>
     {
-    protected:
+    public:
         using geometry::ScalarQuantity<Magnitude<VectorType>>::ScalarQuantity;
+
+        Magnitude(double value) : geometry::ScalarQuantity<Magnitude<VectorType>>::ScalarQuantity(value)
+        {
+            ;  // TODO: Why is this required?!
+        }
     };
 
 
@@ -97,25 +102,30 @@ namespace simox::core::geometry
         // Convert.
 
         std::string
-        toString(const std::string& unit = "") const
+        toString(const std::string& quantityName = "", const std::string& unit = "") const
         {
-            const std::string className = simox::meta::get_type_name(typeid(T));
-
             const Vector v = toVector();
             std::stringstream out;
-            out << "<" << className << " " << io::toString(v, unit) << ">";
+            out << "<";
+
+            if (quantityName.size() > 0)
+            {
+                out << quantityName << " ";
+            }
+
+            out << io::toString(v, unit) << ">";
             return out.str();
         }
 
         // Transform.
 
-        template <typename _T, typename _DifferenceType>
-        friend _T operator+(const Difference<_T>& lhs,
-                            const VectorQuantity<_T, _DifferenceType>& rhs);
+        template <typename T_, typename DifferenceType_>
+        friend T_ operator+(const Difference<T_>& lhs,
+                            const VectorQuantity<T_, DifferenceType_>& rhs);
 
-        template <typename _T, typename _DifferenceType>
-        friend _DifferenceType operator-(const VectorQuantity<_T, _DifferenceType>& lhs,
-                                         const VectorQuantity<_T, _DifferenceType>& rhs);
+        template <typename T_, typename DifferenceType_>
+        friend DifferenceType_ operator-(const VectorQuantity<T_, DifferenceType_>& lhs,
+                                         const VectorQuantity<T_, DifferenceType_>& rhs);
 
         // Compare.
 
@@ -141,10 +151,10 @@ namespace simox::core::geometry
         Eigen::Vector3d representation_;
     };
 
-} // namespace simox::core::geometry
+} // namespace quant::geometry
 
 
-namespace simox::core
+namespace quant
 {
 
     template <typename T, typename DifferenceType>
@@ -162,4 +172,4 @@ namespace simox::core
         return DifferenceType(T(lhs.representation_ - rhs.representation_));
     }
 
-} // namespace simox::core
+} // namespace quant

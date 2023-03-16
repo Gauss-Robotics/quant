@@ -1,20 +1,20 @@
 #include "Orientation.h"
 
 
-namespace simox::core::units::position
+namespace quant::units::position
 {
 
-} // namespace simox::core::units::position
+} // namespace quant::units::position
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     std::ostream&
     position::operator<<(std::ostream& out, const Orientation& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("Orientation", "rad");
         return out;
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

@@ -4,7 +4,7 @@
 #include <string>
 
 
-namespace simox::core::position
+namespace quant::position
 {
 
     class FrameMismatch : public std::runtime_error
@@ -16,4 +16,4 @@ namespace simox::core::position
         }
     };
 
-} // namespace simox::core::position
+} // namespace quant::position

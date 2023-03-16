@@ -1,9 +1,9 @@
 #pragma once
 
-#include <SimoxUtility/meta/enum/EnumNames.hpp>
+#include <quantUtility/meta/enum/EnumNames.hpp>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     /**
@@ -22,13 +22,13 @@ namespace simox::core::time
     };
 
 
-    extern const simox::meta::EnumNames<ClockType> ClockTypeNames;
+    extern const quant::meta::EnumNames<ClockType> ClockTypeNames;
 
-} // namespace simox::core::time
+} // namespace quant::time
 
 
-namespace simox
+namespace quant
 {
     using core::time::ClockType;
     using core::time::ClockTypeNames;
-} // namespace simox
+} // namespace quant

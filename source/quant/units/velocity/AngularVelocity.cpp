@@ -1,20 +1,20 @@
 #include "AngularVelocity.h"
 
 
-namespace simox::core::units::velocity
+namespace quant::units::velocity
 {
 
-} // namespace simox::core::units::velocity
+} // namespace quant::units::velocity
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     std::ostream&
     velocity::operator<<(std::ostream& out, const AngularVelocity& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("AngularVelocity", "rad/s");
         return out;
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

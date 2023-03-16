@@ -1,20 +1,20 @@
 #include "AngularJerk.h"
 
 
-namespace simox::core::units::jerk
+namespace quant::units::jerk
 {
 
-} // namespace simox::core::units::jerk
+} // namespace quant::units::jerk
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     std::ostream&
     jerk::operator<<(std::ostream& out, const AngularJerk& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("AngularJerk", "rad/s³");
         return out;
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

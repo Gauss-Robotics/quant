@@ -3,10 +3,10 @@
 
 #include <functional>
 
-#include <simox/core/clock/StopWatch.h>
+#include <quant/core/clock/StopWatch.h>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     /**
@@ -47,4 +47,4 @@ namespace simox::core::time
         std::function<void(const Duration&)> callback_;
     };
 
-} // namespace simox::core::time
+} // namespace quant::time

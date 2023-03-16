@@ -1,12 +1,12 @@
 #pragma once
 
 
-#include <simox/core/clock/ClockType.h>
-#include <simox/core/clock/DateTime.h>
-#include <simox/core/units/time/Duration.h>
+#include <quant/core/clock/ClockType.h>
+#include <quant/core/clock/DateTime.h>
+#include <quant/core/units/time/Duration.h>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     /**
@@ -62,11 +62,11 @@ namespace simox::core::time
 
     const static Clock DefaultClock = Clock(ClockType::Virtual);
 
-} // namespace simox::core::time
+} // namespace quant::time
 
 
-namespace simox
+namespace quant
 {
     using core::time::Clock;
     using core::time::DefaultClock;
-} // namespace simox
+} // namespace quant

@@ -3,11 +3,11 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/length/Position.h>
-#include <simox/core/length/frame/FramedMixin.h>
+#include <quant/core/length/Position.h>
+#include <quant/core/length/frame/FramedMixin.h>
 
 
-namespace simox::core::position
+namespace quant::position
 {
 
     class FramedPosition : public Position, public FramedMixin
@@ -31,10 +31,10 @@ namespace simox::core::position
         }
     };
 
-} // namespace simox::core::position
+} // namespace quant::position
 
 
-namespace simox
+namespace quant
 {
     using core::position::FramedPosition;
-} // namespace simox
+} // namespace quant

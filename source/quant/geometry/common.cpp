@@ -2,20 +2,20 @@
 
 
 std::ostream&
-simox::operator<<(std::ostream& os, const Vector& v)
+quant::operator<<(std::ostream& os, const Vector& v)
 {
     return os << io::toString(v);
 }
 
 
 std::ostream&
-simox::operator<<(std::ostream& os, const AxisAngle& aa)
+quant::operator<<(std::ostream& os, const AxisAngle& aa)
 {
     return os << io::toString(aa);
 }
 
 
-namespace simox
+namespace quant
 {
 
     std::string
@@ -44,4 +44,4 @@ namespace simox
         return ss.str();
     }
 
-} // namespace simox
+} // namespace quant

@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace simox::core::time
+namespace quant::time
 {
     enum class ClockType;
     class Clock;
@@ -11,9 +11,9 @@ namespace simox::core::time
     class Metronome;
     class ScopedStopWatch;
     class StopWatch;
-} // namespace simox::core::time
+} // namespace quant::time
 
-namespace simox
+namespace quant
 {
     using core::time::Clock;
     using core::time::ClockType;
@@ -21,4 +21,4 @@ namespace simox
     using core::time::Frequency;
     using core::time::Metronome;
     using core::time::TimePoint;
-} // namespace simox
+} // namespace quant

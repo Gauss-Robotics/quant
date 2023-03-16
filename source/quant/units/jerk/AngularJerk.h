@@ -5,10 +5,10 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/QuaternionQuantity.h>
+#include <quant/geometry/QuaternionQuantity.h>
 
 
-namespace simox::core::units::jerk
+namespace quant::units::jerk
 {
 
     class AngularJerk : public geometry::QuaternionQuantity<AngularJerk>
@@ -21,10 +21,10 @@ namespace simox::core::units::jerk
 
     std::ostream& operator<<(std::ostream& out, const AngularJerk& rhs);
 
-} // namespace simox::core::units::jerk
+} // namespace quant::units::jerk
 
 
-namespace simox
+namespace quant
 {
-    using core::units::jerk::AngularJerk;
-} // namespace simox
+    using units::jerk::AngularJerk;
+} // namespace quant

@@ -1,20 +1,20 @@
 #include "Force.h"
 
 
-namespace simox::core::units::force
+namespace quant::units::force
 {
 
-} // namespace simox::core::units::force
+} // namespace quant::units::force
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     std::ostream&
     force::operator<<(std::ostream& out, const Force& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("Force", "N");
         return out;
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

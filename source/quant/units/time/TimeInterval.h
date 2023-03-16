@@ -6,7 +6,7 @@
 #include <string>
 
 
-namespace simox::core::units::time
+namespace quant::units::time
 {
 
     /**
@@ -29,10 +29,10 @@ namespace simox::core::units::time
 
     std::ostream& operator<<(std::ostream& out, const TimeInterval& rhs);
 
-} // namespace simox::core::units::time
+} // namespace quant::units::time
 
 
-namespace simox
+namespace quant
 {
-    using core::units::time::TimeInterval;
-} // namespace simox
+    using units::time::TimeInterval;
+} // namespace quant

@@ -7,7 +7,7 @@
 #include <Eigen/Geometry>
 
 
-namespace simox::core::geometry
+namespace quant::geometry
 {
 
     template <typename T>
@@ -60,4 +60,4 @@ namespace simox::core::geometry
         Eigen::Isometry3d representation_;
     };
 
-} // namespace simox::core::geometry::representation
+} // namespace quant::geometry::representation

@@ -3,7 +3,7 @@
 #include <exception>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     StopWatch::StopWatch(ClockType clockType) :
@@ -54,4 +54,4 @@ namespace simox::core::time
         return startingTime_;
     }
 
-} // namespace simox::core::time
+} // namespace quant::time

@@ -4,7 +4,7 @@
 #include <string>
 
 
-namespace simox::core::position::frame
+namespace quant::position::frame
 {
 
     struct FrameID
@@ -31,12 +31,12 @@ namespace simox::core::position::frame
         }
     };
 
-} // namespace simox::core::position::frame
+} // namespace quant::position::frame
 
 
-namespace simox
+namespace quant
 {
-    using core::position::frame::FrameID;
+    using position::frame::FrameID;
 
     static const FrameID GlobalFrameID{.agent = "", .frame = "GlobalFrame"};
-} // namespace simox
+} // namespace quant

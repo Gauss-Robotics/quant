@@ -6,7 +6,7 @@
 #include <quant/units/time/detail/UnitConversions.h>
 
 
-namespace simox::core::units::time
+namespace quant::units::time
 {
 
     class Duration :
@@ -143,12 +143,12 @@ namespace simox::core::units::time
 
     std::ostream& operator<<(std::ostream& out, const Duration& rhs);
 
-} // namespace simox::core::units::time
+} // namespace quant::units::time
 
 
-namespace simox
+namespace quant
 {
 
-    using core::units::time::Duration;
+    using units::time::Duration;
 
 }

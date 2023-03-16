@@ -3,11 +3,11 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/IsometryQuantity.h>
-#include <simox/core/units/position/forward_declarations.h>
+#include <quant/geometry/IsometryQuantity.h>
+#include <quant/units/position/forward_declarations.h>
 
 
-namespace simox::core::units::position
+namespace quant::units::position
 {
 
     class Pose : public geometry::IsometryQuantity<Pose>
@@ -20,10 +20,10 @@ namespace simox::core::units::position
         friend class Transform;
     };
 
-} // namespace simox::core::units::position
+} // namespace quant::units::position
 
 
-namespace simox
+namespace quant
 {
-    using core::units::position::Pose;
-} // namespace simox
+    using units::position::Pose;
+} // namespace quant

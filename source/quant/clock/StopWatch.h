@@ -3,13 +3,13 @@
 
 #include <functional>
 
-#include <simox/core/clock/Clock.h>
-#include <simox/core/clock/ClockType.h>
-#include <simox/core/clock/DateTime.h>
-#include <simox/core/units/time/Duration.h>
+#include <quant/core/clock/Clock.h>
+#include <quant/core/clock/ClockType.h>
+#include <quant/core/clock/DateTime.h>
+#include <quant/core/units/time/Duration.h>
 
 
-namespace simox::core::time
+namespace quant::time
 {
     /**
      * @brief Measures the passed time between the construction or calling `reset()` and `stop()`.
@@ -101,4 +101,4 @@ namespace simox::core::time
         DateTime lastLapTime_;
     };
 
-} // namespace simox::core::time
+} // namespace quant::time

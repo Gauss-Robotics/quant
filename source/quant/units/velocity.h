@@ -1,6 +1,6 @@
 #pragma once
 
 
-#include <simox/core/units/velocity/AngularVelocity.h>
-#include <simox/core/units/velocity/LinearVelocity.h>
-#include <simox/core/units/velocity/Twist.h>
+#include <quant/units/velocity/AngularVelocity.h>
+#include <quant/units/velocity/LinearVelocity.h>
+#include <quant/units/velocity/Twist.h>

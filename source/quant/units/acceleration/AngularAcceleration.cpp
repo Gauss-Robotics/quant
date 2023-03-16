@@ -1,20 +1,20 @@
 #include "AngularAcceleration.h"
 
 
-namespace simox::core::units::acceleration
+namespace quant::units::acceleration
 {
 
-} // namespace simox::core::units::acceleration
+} // namespace quant::units::acceleration
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     std::ostream&
     acceleration::operator<<(std::ostream& out, const AngularAcceleration& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("AngularAcceleration", "rad/s²");
         return out;
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

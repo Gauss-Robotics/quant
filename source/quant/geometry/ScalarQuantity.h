@@ -7,7 +7,7 @@
 #include <quant/geometry/common.h>
 
 
-namespace simox::core::geometry
+namespace quant::geometry
 {
 
     template <typename T, typename DifferenceType, typename ScalarType>
@@ -51,21 +51,33 @@ namespace simox::core::geometry
         }
 
         std::string
-        toString() const
+        toString(const std::string& quantityName = "", const std::string& unit = "") const
         {
-            const std::string className = "TODO";
-
             std::stringstream out;
-            out << "<" << className << " value=" << representation_ << ">";
+            out << "<";
+
+            if (quantityName.size() > 0)
+            {
+                out << quantityName << " ";
+            }
+
+            out << "value=" << representation_;
+
+            if (unit.size() > 0)
+            {
+                out << unit;
+            }
+
+            out << ">";
             return out.str();
         }
 
         // Transform.
 
-        template <typename _T, typename _DifferenceType, typename _ScalarType>
-        friend _DifferenceType
-        geometry::operator-(const ScalarQuantity<_T, _DifferenceType, _ScalarType>& lhs,
-                            const ScalarQuantity<_T, _DifferenceType, _ScalarType>& rhs);
+        template <typename T_, typename DifferenceType_, typename ScalarType_>
+        friend DifferenceType_
+        geometry::operator-(const ScalarQuantity<T_, DifferenceType_, ScalarType_>& lhs,
+                            const ScalarQuantity<T_, DifferenceType_, ScalarType_>& rhs);
 
         // Compare.
 
@@ -100,10 +112,10 @@ namespace simox::core::geometry
     template <typename T, typename DifferenceType>
     using ScalarIntegerQuantity = ScalarQuantity<T, DifferenceType, std::int64_t>;
 
-} // namespace simox::core::geometry
+} // namespace quant::geometry
 
 
-namespace simox::core
+namespace quant
 {
 
     template <typename T, typename DifferenceType, typename ScalarType>
@@ -114,4 +126,4 @@ namespace simox::core
         return DifferenceType(T(lhs.representation_ - rhs.representation_));
     }
 
-} // namespace simox::core
+} // namespace quant

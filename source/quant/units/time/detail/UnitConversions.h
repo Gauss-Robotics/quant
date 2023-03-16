@@ -6,7 +6,7 @@
 #include <string>
 
 
-namespace simox::core::units::time::detail
+namespace quant::units::time::detail
 {
 
     constexpr double intRoundingOffset = 0.5;
@@ -410,11 +410,11 @@ namespace simox::core::units::time::detail
             }
 
             std::string postformat(buf);
-            postformat = simox::alg::replace_all(postformat, "%msec", std::to_string(msec));
-            postformat =
-                simox::alg::replace_all(postformat, "%usec", std::to_string(usecRemainder));
+            //postformat = quant::alg::replace_all(postformat, "%msec", std::to_string(msec));
+            //postformat =
+            //    quant::alg::replace_all(postformat, "%usec", std::to_string(usecRemainder));
             return postformat;
         }
     };
 
-} // namespace simox::core::units::time::detail
+} // namespace quant::units::time::detail

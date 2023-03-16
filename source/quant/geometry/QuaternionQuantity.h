@@ -6,12 +6,10 @@
 
 #include <Eigen/Geometry>
 
-#include <SimoxUtility/meta/type_name.h>
-
-#include <simox/core/geometry/common.h>
+#include <quant/geometry/common.h>
 
 
-namespace simox::core::geometry
+namespace quant::geometry
 {
 
     template <typename T>
@@ -151,24 +149,29 @@ namespace simox::core::geometry
         }
 
         std::string
-        toString() const
+        toString(const std::string& quantityName, const std::string& unit) const
         {
-            const std::string className = simox::meta::get_type_name(typeid(T));
+            std::string prefix = "";
+
+            if (quantityName.size() > 0)
+            {
+                prefix = quantityName + " ";
+            }
 
             const AxisAngle aa = toAngleAxis();
             std::stringstream out;
-            out << "<" << className << " " << io::toString(aa) << ">";
+            out << "<" << prefix << io::toString(aa, unit) << ">";
             return out.str();
         }
 
         // Transform.
 
-        template <typename _T>
-        friend _T geometry::operator+(const Difference<_T>& lhs, const QuaternionQuantity<_T>& rhs);
+        template <typename T_>
+        friend T_ geometry::operator+(const Difference<T_>& lhs, const QuaternionQuantity<T_>& rhs);
 
-        template <typename _T>
-        friend Difference<_T> geometry::operator-(const QuaternionQuantity<_T>& lhs,
-                                             const QuaternionQuantity<_T>& rhs);
+        template <typename T_>
+        friend Difference<T_> geometry::operator-(const QuaternionQuantity<T_>& lhs,
+                                             const QuaternionQuantity<T_>& rhs);
 
         // Compare.
 
@@ -198,10 +201,10 @@ namespace simox::core::geometry
         Eigen::Quaterniond representation_;
     };
 
-} // namespace simox::core::geometry
+} // namespace quant::geometry
 
 
-namespace simox::core
+namespace quant
 {
 
     template <typename T>
@@ -219,4 +222,4 @@ namespace simox::core
         return T(); //Delta<T>(T(lhs.representation_ - rhs.representation_));
     }
 
-} // namespace simox::core
+} // namespace quant

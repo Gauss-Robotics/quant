@@ -5,11 +5,11 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/QuaternionQuantity.h>
-#include <simox/core/units/position/forward_declarations.h>
+#include <quant/geometry/QuaternionQuantity.h>
+#include <quant/units/position/forward_declarations.h>
 
 
-namespace simox::core::units::position
+namespace quant::units::position
 {
 
     class Orientation : public geometry::QuaternionQuantity<Orientation>
@@ -43,10 +43,10 @@ namespace simox::core::units::position
 
     std::ostream& operator<<(std::ostream& out, const Orientation& rhs);
 
-} // namespace simox::core::units::position
+} // namespace quant::units::position
 
 
-namespace simox
+namespace quant
 {
-    using core::units::position::Orientation;
-} // namespace simox
+    using units::position::Orientation;
+} // namespace quant

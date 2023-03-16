@@ -1,13 +1,13 @@
 #include "LinearVelocity.h"
 
 
-namespace simox::core::units::velocity
+namespace quant::units::velocity
 {
 
-} // namespace simox::core::units::velocity
+} // namespace quant::units::velocity
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     velocity::LinearVelocity
@@ -22,9 +22,8 @@ namespace simox::core::units
     std::ostream&
     velocity::operator<<(std::ostream& out, const LinearVelocity& rhs)
     {
-        const std::string unit = "mm/s";
-        out << rhs.toString(unit);
+        out << rhs.toString("LinearVelocity", "mm/s");
         return out;
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

@@ -5,10 +5,10 @@
 #include <ostream>
 #include <string>
 
-#include <simox/core/geometry/VectorQuantity.h>
+#include <quant/geometry/VectorQuantity.h>
 
 
-namespace simox::core::units::speed
+namespace quant::units::speed
 {
 
     constexpr double m2mm = 1'000;
@@ -47,10 +47,10 @@ namespace simox::core::units::speed
 
     std::ostream& operator<<(std::ostream& out, const Speed& rhs);
 
-} // namespace simox::core::units::speed
+} // namespace quant::units::speed
 
 
-namespace simox
+namespace quant
 {
-    using core::units::speed::Speed;
-} // namespace simox
+    using units::speed::Speed;
+} // namespace quant

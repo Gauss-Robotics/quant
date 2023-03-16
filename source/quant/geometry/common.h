@@ -7,7 +7,7 @@
 #include <Eigen/Geometry>
 
 
-namespace simox
+namespace quant
 {
 
     /**
@@ -179,63 +179,63 @@ namespace simox
         }
 
     public:
-        template <typename _Linear, typename _Angular, typename _Derived>
-        friend _Derived simox::operator+(const Difference<_Linear>& op,
-                                         const Spatial<_Linear, _Angular, _Derived>& rhs);
+        template <typename Linear_, typename Angular_, typename Derived_>
+        friend Derived_ quant::operator+(const Difference<Linear_>& op,
+                                         const Spatial<Linear_, Angular_, Derived_>& rhs);
 
-        template <typename _Linear, typename _Angular, typename _Derived>
-        friend _Derived simox::operator-(const _Linear& op,
-                                         const Spatial<_Linear, _Angular, _Derived>& rhs);
+        template <typename Linear_, typename Angular_, typename Derived_>
+        friend Derived_ quant::operator-(const Linear_& op,
+                                         const Spatial<Linear_, Angular_, Derived_>& rhs);
 
-        template <typename _Linear, typename _Angular, typename _Derived>
-        friend _Derived operator+(const Difference<_Angular>& op,
-                                  const Spatial<_Linear, _Angular, _Derived>& rhs);
+        template <typename Linear_, typename Angular_, typename Derived_>
+        friend Derived_ operator+(const Difference<Angular_>& op,
+                                  const Spatial<Linear_, Angular_, Derived_>& rhs);
 
-        template <typename _Linear, typename _Angular, typename _Derived>
-        friend _Derived operator-(const _Angular& op,
-                                  const Spatial<_Linear, _Angular, _Derived>& rhs);
+        template <typename Linear_, typename Angular_, typename Derived_>
+        friend Derived_ operator-(const Angular_& op,
+                                  const Spatial<Linear_, Angular_, Derived_>& rhs);
 
     protected:
         Linear linear_;
         Angular angular_;
     };
 
-} // namespace simox
+} // namespace quant
 
 
 template <typename Linear, typename Angular, typename Derived>
 Derived
-simox::operator+(const Difference<Linear>& op, const Spatial<Linear, Angular, Derived>& rhs)
+quant::operator+(const Difference<Linear>& op, const Spatial<Linear, Angular, Derived>& rhs)
 {
     return Derived(op + rhs.linear_, rhs.angular_);
 }
 
 template <typename Linear, typename Angular, typename Derived>
 Derived
-simox::operator-(const Linear& op, const Spatial<Linear, Angular, Derived>& rhs)
+quant::operator-(const Linear& op, const Spatial<Linear, Angular, Derived>& rhs)
 {
     return Derived(rhs.linear_ - op, rhs.angular_);
 }
 
 template <typename Linear, typename Angular, typename Derived>
 Derived
-simox::operator+(const Difference<Angular>& op, const Spatial<Linear, Angular, Derived>& rhs)
+quant::operator+(const Difference<Angular>& op, const Spatial<Linear, Angular, Derived>& rhs)
 {
     return Derived(rhs.linear_, op + rhs.angular_);
 }
 
 template <typename Linear, typename Angular, typename Derived>
 Derived
-simox::operator-(const Angular& op, const Spatial<Linear, Angular, Derived>& rhs)
+quant::operator-(const Angular& op, const Spatial<Linear, Angular, Derived>& rhs)
 {
     return Derived(rhs.linear_, rhs.angular_ - op);
 }
 
 
-namespace simox::io
+namespace quant::io
 {
 
     std::string toString(const Vector& v, const std::string& unit = "");
     std::string toString(const AxisAngle& aa, const std::string& unit = "");
 
-} // namespace simox::io
+} // namespace quant::io

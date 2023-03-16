@@ -3,7 +3,7 @@
 #include <sstream>
 
 
-namespace simox::core::units::time
+namespace quant::units::time
 {
 
     TimePoint
@@ -75,12 +75,17 @@ namespace simox::core::units::time
         return representation_ > rhs.representation_;
     }
 
+} // namespace quant::units::time
+
+
+namespace quant::units
+{
 
     std::ostream&
-    operator<<(std::ostream& out, const TimePoint& rhs)
+    time::operator<<(std::ostream& out, const TimePoint& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("TimePoint", "s");
         return out;
     }
 
-} // namespace simox::core::units::time
+}

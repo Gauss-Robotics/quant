@@ -5,10 +5,10 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/QuaternionQuantity.h>
+#include <quant/geometry/QuaternionQuantity.h>
 
 
-namespace simox::core::units::velocity
+namespace quant::units::velocity
 {
 
     class AngularVelocity : public geometry::QuaternionQuantity<AngularVelocity>
@@ -43,10 +43,10 @@ namespace simox::core::units::velocity
 
     std::ostream& operator<<(std::ostream& out, const AngularVelocity& rhs);
 
-} // namespace simox::core::units::velocity
+} // namespace quant::units::velocity
 
 
-namespace simox
+namespace quant
 {
-    using core::units::velocity::AngularVelocity;
-} // namespace simox
+    using units::velocity::AngularVelocity;
+} // namespace quant

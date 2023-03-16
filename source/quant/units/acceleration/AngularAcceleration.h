@@ -5,10 +5,10 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/QuaternionQuantity.h>
+#include <quant/geometry/QuaternionQuantity.h>
 
 
-namespace simox::core::units::acceleration
+namespace quant::units::acceleration
 {
 
     class AngularAcceleration : public geometry::QuaternionQuantity<AngularAcceleration>
@@ -21,10 +21,10 @@ namespace simox::core::units::acceleration
 
     std::ostream& operator<<(std::ostream& out, const AngularAcceleration& rhs);
 
-} // namespace simox::core::units::acceleration
+} // namespace quant::units::acceleration
 
 
-namespace simox
+namespace quant
 {
-    using core::units::acceleration::AngularAcceleration;
-} // namespace simox
+    using units::acceleration::AngularAcceleration;
+} // namespace quant

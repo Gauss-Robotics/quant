@@ -5,11 +5,11 @@
 #include <ostream>
 #include <string>
 
-#include <simox/core/clock/ClockType.h>
-#include <simox/core/units/time/Duration.h>
+#include <quant/core/clock/ClockType.h>
+#include <quant/core/units/time/Duration.h>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     /**
@@ -106,10 +106,10 @@ namespace simox::core::time
 
     std::ostream& operator<<(std::ostream& out, const DateTime& rhs);
 
-} // namespace simox::core::time
+} // namespace quant::time
 
 
-namespace simox
+namespace quant
 {
     using core::time::DateTime;
-} // namespace simox
+} // namespace quant

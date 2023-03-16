@@ -1,13 +1,13 @@
 #pragma once
 
 
-#include <simox/core/clock/Clock.h>
-#include <simox/core/clock/DateTime.h>
-#include <simox/core/units/time/Duration.h>
-#include <simox/core/units/time/Frequency.h>
+#include <quant/core/clock/Clock.h>
+#include <quant/core/clock/DateTime.h>
+#include <quant/core/units/time/Duration.h>
+#include <quant/core/units/time/Frequency.h>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     /**
@@ -82,10 +82,10 @@ namespace simox::core::time
         const Duration targetPeriod_;
     };
 
-} // namespace simox::core::time
+} // namespace quant::time
 
 
-namespace simox
+namespace quant
 {
     using core::time::Metronome;
 }

@@ -5,15 +5,14 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/VectorQuantity.h>
-#include <simox/core/geometry/common.h> // for Delta
-#include <simox/core/units/position/Displacement.h>
-#include <simox/core/units/position/Position.h>
-#include <simox/core/units/speed.h>
-#include <simox/core/units/time/Duration.h>
+#include <quant/geometry/VectorQuantity.h>
+#include <quant/units/position/Displacement.h>
+#include <quant/units/position/Position.h>
+#include <quant/units/speed.h>
+#include <quant/units/time/Duration.h>
 
 
-namespace simox::core::units::velocity
+namespace quant::units::velocity
 {
 
     class LinearVelocity : public geometry::VectorQuantity<LinearVelocity>
@@ -51,18 +50,18 @@ namespace simox::core::units::velocity
 
     std::ostream& operator<<(std::ostream& out, const LinearVelocity& rhs);
 
-} // namespace simox::core::units::velocity
+} // namespace quant::units::velocity
 
 
-namespace simox::core::units::position
+namespace quant::units::position
 {
 
     velocity::LinearVelocity operator/(const Displacement& dx, const Duration& dt);
 
-} // namespace simox::core::units::position
+} // namespace quant::units::position
 
 
-namespace simox
+namespace quant
 {
-    using core::units::velocity::LinearVelocity;
-} // namespace simox
+    using units::velocity::LinearVelocity;
+} // namespace quant

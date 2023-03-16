@@ -5,10 +5,10 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/VectorQuantity.h>
+#include <quant/geometry/VectorQuantity.h>
 
 
-namespace simox::core::units::acceleration
+namespace quant::units::acceleration
 {
 
     class LinearAcceleration : public geometry::VectorQuantity<LinearAcceleration>
@@ -21,10 +21,10 @@ namespace simox::core::units::acceleration
 
     std::ostream& operator<<(std::ostream& out, const LinearAcceleration& rhs);
 
-} // namespace simox::core::units::acceleration
+} // namespace quant::units::acceleration
 
 
-namespace simox
+namespace quant
 {
-    using core::units::acceleration::LinearAcceleration;
-} // namespace simox
+    using units::acceleration::LinearAcceleration;
+} // namespace quant

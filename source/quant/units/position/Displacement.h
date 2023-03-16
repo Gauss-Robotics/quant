@@ -1,12 +1,12 @@
 #pragma once
 
 
-#include <simox/core/geometry/common.h>
-#include <simox/core/units/distance/Distance.h>
-#include <simox/core/units/position/Position.h>
+#include <quant/geometry/common.h>
+#include <quant/units/distance/Distance.h>
+#include <quant/units/position/Position.h>
 
 
-namespace simox::core::units::position
+namespace quant::units::position
 {
 
     class Displacement : public Difference<Position>
@@ -30,12 +30,12 @@ namespace simox::core::units::position
         }
     };
 
-} // namespace simox::core::units::position
+} // namespace quant::units::position
 
 
-namespace simox
+namespace quant
 {
 
-    using core::units::position::Displacement;
+    using units::position::Displacement;
 
 }

@@ -1,20 +1,20 @@
 #include "LinearJerk.h"
 
 
-namespace simox::core::units::jerk
+namespace quant::units::jerk
 {
 
-} // namespace simox::core::units::jerk
+} // namespace quant::units::jerk
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     std::ostream&
     jerk::operator<<(std::ostream& out, const LinearJerk& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("LinearJerk", "mm/s³");
         return out;
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

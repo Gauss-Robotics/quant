@@ -5,10 +5,10 @@
 #include <ostream>
 #include <string>
 
-#include <simox/core/units/time/Duration.h>
+#include <quant/units/time/Duration.h>
 
 
-namespace simox::core::units::time
+namespace quant::units::time
 {
 
     /**
@@ -97,10 +97,10 @@ namespace simox::core::units::time
 
     std::ostream& operator<<(std::ostream& out, const Frequency& rhs);
 
-} // namespace simox::core::units::time
+} // namespace quant::units::time
 
 
-namespace simox
+namespace quant
 {
-    using core::units::time::Frequency;
-} // namespace simox
+    using units::time::Frequency;
+} // namespace quant

@@ -5,10 +5,10 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/VectorQuantity.h>
+#include <quant/geometry/VectorQuantity.h>
 
 
-namespace simox::core::units::jerk
+namespace quant::units::jerk
 {
 
     class LinearJerk : public geometry::VectorQuantity<LinearJerk>
@@ -21,10 +21,10 @@ namespace simox::core::units::jerk
 
     std::ostream& operator<<(std::ostream& out, const LinearJerk& rhs);
 
-} // namespace simox::core::units::jerk
+} // namespace quant::units::jerk
 
 
-namespace simox
+namespace quant
 {
-    using core::units::jerk::LinearJerk;
-} // namespace simox
+    using units::jerk::LinearJerk;
+} // namespace quant

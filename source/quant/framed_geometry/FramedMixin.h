@@ -3,10 +3,10 @@
 
 #include <string>
 
-#include <simox/core/length/frame/FrameID.h>
+#include <quant/framed_geometry/FrameID.h>
 
 
-namespace simox::core::position::frame
+namespace quant::position::frame
 {
 
     struct FramedMixin
@@ -21,4 +21,4 @@ namespace simox::core::position::frame
         }
     };
 
-} // namespace simox::core::position::frame
+} // namespace quant::position::frame

@@ -1,12 +1,12 @@
 #pragma once
 
 
-#include <simox/core/geometry/common.h>
-#include <simox/core/units/velocity/AngularVelocity.h>
-#include <simox/core/units/velocity/LinearVelocity.h>
+#include <quant/geometry/common.h>
+#include <quant/units/velocity/AngularVelocity.h>
+#include <quant/units/velocity/LinearVelocity.h>
 
 
-namespace simox::core::units::velocity
+namespace quant::units::velocity
 {
 
     /**
@@ -19,10 +19,10 @@ namespace simox::core::units::velocity
         using Spatial<LinearVelocity, AngularVelocity, Twist>::Spatial;
     };
 
-} // namespace simox::core::units::velocity
+} // namespace quant::units::velocity
 
 
-namespace simox
+namespace quant
 {
-    using core::units::velocity::Twist;
+    using units::velocity::Twist;
 }

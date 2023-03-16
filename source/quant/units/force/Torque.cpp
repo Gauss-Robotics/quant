@@ -1,20 +1,20 @@
 #include "Torque.h"
 
 
-namespace simox::core::units::force
+namespace quant::units::force
 {
 
-} // namespace simox::core::units::force
+} // namespace quant::units::force
 
 
-namespace simox::core::units
+namespace quant::units
 {
 
     std::ostream&
     force::operator<<(std::ostream& out, const Torque& rhs)
     {
-        out << rhs.toString();
+        out << rhs.toString("Torque", "Nm");
         return out;
     }
 
-} // namespace simox::core::units
+} // namespace quant::units

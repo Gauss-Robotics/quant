@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     Clock::Clock(ClockType clockType) : clockType_{clockType}
@@ -77,4 +77,4 @@ namespace simox::core::time
         return difference;
     }
 
-} // namespace simox::core::time
+} // namespace quant::time

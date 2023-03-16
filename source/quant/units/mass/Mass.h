@@ -5,10 +5,10 @@
 #include <ostream>
 #include <string>
 
-#include <simox/core/time/Duration.h>
+#include <quant/core/time/Duration.h>
 
 
-namespace simox::core::units::mass
+namespace quant::units::mass
 {
 
     class Mass
@@ -38,10 +38,10 @@ namespace simox::core::units::mass
 
     std::ostream& operator<<(std::ostream& out, const Mass& rhs);
 
-} // namespace simox::core::units::mass
+} // namespace quant::units::mass
 
 
-namespace simox
+namespace quant
 {
     using core::units::mass::Mass;
-} // namespace simox
+} // namespace quant

@@ -1,10 +1,10 @@
 #include "FrameTransform.h"
 
-#include <simox/core/length/FramedPosition.h>
-#include <simox/core/length/exceptions.h>
+#include <quant/core/length/FramedPosition.h>
+#include <quant/core/length/exceptions.h>
 
 
-namespace simox::core::length
+namespace quant::length
 {
 
     FrameTransform::FrameTransform(const Transform& tf, const FrameMixin& m) :
@@ -66,4 +66,4 @@ namespace simox::core::length
         return "Transform " + FrameMixin::strTemplate();
     }
 
-} // namespace simox::core::length
+} // namespace quant::length

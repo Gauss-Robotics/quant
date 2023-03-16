@@ -1,7 +1,7 @@
 #include "Duration.h"
 
 
-namespace simox::core::units::time
+namespace quant::units::time
 {
 
     bool
@@ -199,4 +199,4 @@ namespace simox::core::units::time
         return out;
     }
 
-} // namespace simox::core::units::time
+} // namespace quant::units::time

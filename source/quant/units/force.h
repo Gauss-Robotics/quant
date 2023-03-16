@@ -1,6 +1,6 @@
 #pragma once
 
 
-#include <simox/core/units/force/Force.h>
-#include <simox/core/units/force/Torque.h>
-#include <simox/core/units/force/Wrench.h>
+#include <quant/units/force/Force.h>
+#include <quant/units/force/Torque.h>
+#include <quant/units/force/Wrench.h>

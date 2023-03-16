@@ -3,12 +3,12 @@
 #include <iomanip>
 #include <sstream>
 
-#include <SimoxUtility/algorithm/string/string_tools.h>
+#include <quantUtility/algorithm/string/string_tools.h>
 
-#include <simox/core/clock/Clock.h>
+#include <quant/core/clock/Clock.h>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     const Duration DateTime::invalidTimeSinceEpoch_ =
@@ -221,4 +221,4 @@ namespace simox::core::time
         return out;
     }
 
-} // namespace simox::core::time
+} // namespace quant::time

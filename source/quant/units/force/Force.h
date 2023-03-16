@@ -5,10 +5,10 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/VectorQuantity.h>
+#include <quant/geometry/VectorQuantity.h>
 
 
-namespace simox::core::units::force
+namespace quant::units::force
 {
 
     class Force : public geometry::VectorQuantity<Force>
@@ -33,10 +33,10 @@ namespace simox::core::units::force
 
     std::ostream& operator<<(std::ostream& out, const Force& rhs);
 
-} // namespace simox::core::units::force
+} // namespace quant::units::force
 
 
-namespace simox
+namespace quant
 {
-    using core::units::force::Force;
-} // namespace simox
+    using units::force::Force;
+} // namespace quant

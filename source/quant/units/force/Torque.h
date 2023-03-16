@@ -5,10 +5,10 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/QuaternionQuantity.h>
+#include <quant/geometry/QuaternionQuantity.h>
 
 
-namespace simox::core::units::force
+namespace quant::units::force
 {
 
     class Torque : public geometry::QuaternionQuantity<Torque>
@@ -33,10 +33,10 @@ namespace simox::core::units::force
 
     std::ostream& operator<<(std::ostream& out, const Torque& rhs);
 
-} // namespace simox::core::units::force
+} // namespace quant::units::force
 
 
-namespace simox
+namespace quant
 {
-    using core::units::force::Torque;
-} // namespace simox
+    using units::force::Torque;
+} // namespace quant

@@ -4,7 +4,7 @@
 #include <utility>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     ScopedStopWatch::ScopedStopWatch(std::function<void(const Duration&)> callback,
@@ -20,4 +20,4 @@ namespace simox::core::time
         callback_(lap().sinceStart);
     }
 
-} // namespace simox::core::time
+} // namespace quant::time

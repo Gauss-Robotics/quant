@@ -5,12 +5,12 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/geometry/VectorQuantity.h>
-#include <simox/core/units/position/forward_declarations.h>
-#include <simox/core/units/time/Duration.h>
+#include <quant/geometry/VectorQuantity.h>
+#include <quant/units/position/forward_declarations.h>
+#include <quant/units/time/Duration.h>
 
 
-namespace simox::core::units::position
+namespace quant::units::position
 {
 
     class Displacement;
@@ -85,10 +85,10 @@ namespace simox::core::units::position
                                    const Difference<Position>& translation);
 
 
-} // namespace simox::core::units::position
+} // namespace quant::units::position
 
 
-namespace simox
+namespace quant
 {
-    using core::units::position::Position;
-} // namespace simox
+    using units::position::Position;
+} // namespace quant

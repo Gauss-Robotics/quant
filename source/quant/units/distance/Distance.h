@@ -5,10 +5,10 @@
 #include <ostream>
 #include <string>
 
-#include <simox/core/geometry/ScalarQuantity.h>
+#include <quant/geometry/ScalarQuantity.h>
 
 
-namespace simox::core::units::distance
+namespace quant::units::distance
 {
 
     constexpr double m2mm = 1'000;
@@ -47,10 +47,10 @@ namespace simox::core::units::distance
 
     std::ostream& operator<<(std::ostream& out, const Distance& rhs);
 
-} // namespace simox::core::units::distance
+} // namespace quant::units::distance
 
 
-namespace simox
+namespace quant
 {
-    using core::units::distance::Distance;
-} // namespace simox
+    using units::distance::Distance;
+} // namespace quant

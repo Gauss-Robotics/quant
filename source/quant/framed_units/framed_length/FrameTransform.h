@@ -3,11 +3,11 @@
 
 #include <Eigen/Geometry>
 
-#include <simox/core/length/Transform.h>
-#include <simox/core/length/frame/FrameMixin.h>
+#include <quant/core/length/Transform.h>
+#include <quant/core/length/frame/FrameMixin.h>
 
 
-namespace simox::core::position
+namespace quant::position
 {
 
     class FramedPosition;
@@ -36,10 +36,10 @@ namespace simox::core::position
         FramedPosition operator*(const FramedPosition& rhs) const;
     };
 
-} // namespace simox::core::position
+} // namespace quant::position
 
 
-namespace simox
+namespace quant
 {
     using core::position::FrameTransform;
-} // namespace simox
+} // namespace quant

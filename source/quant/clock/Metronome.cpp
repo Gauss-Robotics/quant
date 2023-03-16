@@ -1,9 +1,9 @@
 #include "Metronome.h"
 
-#include <simox/core/clock/Clock.h>
+#include <quant/core/clock/Clock.h>
 
 
-namespace simox::core::time
+namespace quant::time
 {
 
     Metronome::Metronome(const Frequency& targetFrequency, ClockType clockType) :
@@ -42,4 +42,4 @@ namespace simox::core::time
         nextCheckpoint_ = clock_.now() + targetPeriod_;
     }
 
-} // namespace simox::core::time
+} // namespace quant::time

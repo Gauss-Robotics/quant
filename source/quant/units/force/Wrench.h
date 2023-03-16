@@ -1,12 +1,12 @@
 #pragma once
 
 
-#include <simox/core/geometry/common.h>
-#include <simox/core/units/force/Force.h>
-#include <simox/core/units/force/Torque.h>
+#include <quant/geometry/common.h>
+#include <quant/units/force/Force.h>
+#include <quant/units/force/Torque.h>
 
 
-namespace simox::core::units::force
+namespace quant::units::force
 {
 
     /**
@@ -19,10 +19,10 @@ namespace simox::core::units::force
         using Spatial<Force, Torque, Wrench>::Spatial;
     };
 
-} // namespace simox::core::units::force
+} // namespace quant::units::force
 
 
-namespace simox
+namespace quant
 {
-    using core::units::force::Wrench;
+    using units::force::Wrench;
 }

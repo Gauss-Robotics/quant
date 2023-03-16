@@ -1,20 +1,20 @@
 #pragma once
 
 
-namespace simox::core::units::position
+namespace quant::units::position
 {
 
     class Position;
     class Orientation;
     class Pose;
 
-} // namespace simox::core::units::position
+} // namespace quant::units::position
 
-namespace simox
+namespace quant
 {
 
-    using core::units::position::Orientation;
-    using core::units::position::Pose;
-    using core::units::position::Position;
+    using units::position::Orientation;
+    using units::position::Pose;
+    using units::position::Position;
 
-} // namespace simox
+} // namespace quant

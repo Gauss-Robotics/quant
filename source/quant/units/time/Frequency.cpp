@@ -4,10 +4,10 @@
 #include <limits>
 #include <sstream>
 
-#include <SimoxUtility/algorithm/string/string_tools.h>
+#include <quantUtility/algorithm/string/string_tools.h>
 
 
-namespace simox::core::units::time
+namespace quant::units::time
 {
 
     Frequency::Frequency(const Duration& cycleDuration) : cycleDuration_{cycleDuration}
@@ -278,4 +278,4 @@ namespace simox::core::units::time
         return out;
     }
 
-} // namespace simox::core::units::time
+} // namespace quant::units::time
