@@ -38,7 +38,7 @@ TEST_CASE("testing framed_geometry")
     }
 
     Framed<Position> p1{fid};
-    Difference<Framed<Position>> d1 = p1 - p1;
+    Difference<Position> d1 = p1 - p1;
 
     SUBCASE("testing framed custom type")
     {
