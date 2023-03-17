@@ -15,24 +15,23 @@ using namespace quant;
 
 TEST_CASE("testing framed_geometry")
 {
-    const FrameID fid{.agent = "ARMAR-6", .frame = "RobotRoot"};
+    const FrameID fid{.frame = "ARMAR-6::RobotRoot"};
 
     SUBCASE("testing FrameID")
     {
-        CHECK(fid.agent == "ARMAR-6");
-        CHECK(fid.frame == "RobotRoot");
+        CHECK(fid.frame == "ARMAR-6::RobotRoot");
 
         CHECK(fid.toString() == "ARMAR-6::RobotRoot");
 
-        const FrameID fid2{.agent = "ARMAR-6", .frame = "RobotRoot"};
+        const FrameID fid2{.frame = "ARMAR-6::RobotRoot"};
 
         CHECK(fid == fid2);
 
-        const FrameID fid3{.agent = "ARMAR-6", .frame = "DepthCamera"};
+        const FrameID fid3{.frame = "ARMAR-6::DepthCamera"};
 
         CHECK(fid != fid3);
 
-        const FrameID fid4{.agent = "ARMAR-7", .frame = "RobotRoot"};
+        const FrameID fid4{.frame = "ARMAR-7::RobotRoot"};
 
         CHECK(fid != fid4);
     }

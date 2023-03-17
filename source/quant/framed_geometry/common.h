@@ -9,29 +9,24 @@ namespace quant::framed_geometry
 
     struct FrameID
     {
-        std::string agent = "";
         std::string frame;
 
         std::string
         toString() const
         {
-            return agent + "::" + frame;
+            return frame;
         }
 
         bool
         operator==(const FrameID& rhs) const
         {
-            // It is more efficient to test for the frame names first, since it is less likely for
-            // the user to erroneously compare frames of two different robots.
-            return frame == rhs.frame and agent == rhs.agent;
+            return frame == rhs.frame;
         }
 
         bool
         operator!=(const FrameID& rhs) const
         {
-            // It is more efficient to test for the frame names first, since it is less likely for
-            // the user to erroneously compare frames of two different robots.
-            return frame != rhs.frame or agent != rhs.agent;
+            return frame != rhs.frame;
         }
     };
 
@@ -77,9 +72,6 @@ namespace quant::framed_geometry
     };
 
 
-    /**
-     * @brief The FrameMixin struct
-     */
     template <typename T>
     class Frame
     {
@@ -113,11 +105,11 @@ namespace quant
 
     template <typename T, typename DifferenceType>
     framed_geometry::Frame<DifferenceType>
-    framed_geometry::operator-(const framed_geometry::Framed<T>& lhs,
-                               const framed_geometry::Framed<T>& rhs)
+    framed_geometry::operator-(const Framed<T>& lhs,
+                               const Framed<T>& rhs)
     {
 
-        return framed_geometry::Frame();
+        return Frame<DifferenceType>();
     }
 
 } // namespace quant
