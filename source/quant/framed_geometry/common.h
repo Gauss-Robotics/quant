@@ -2,19 +2,23 @@
 
 
 #include <string>
+#include <sstream>
 
 
 namespace quant::framed_geometry
 {
 
+    template <typename IDType = std::string>
     struct FrameID
     {
-        std::string frame;
+        IDType frame;
 
         std::string
         toString() const
         {
-            return frame;
+            std::stringstream out;
+            out << frame;
+            return out.str();
         }
 
         bool
@@ -39,16 +43,17 @@ namespace quant::framed_geometry
     class Frame;
 
 
-    template <typename T, typename DifferenceType>
-    Frame<DifferenceType> operator-(const Framed<T>& lhs,
-                                    const Framed<T>& rhs);
+    template <typename T>
+    Frame<typename T::QuantityDifferenceType> operator-(
+        const Framed<T>& lhs,
+        const Framed<T>& rhs);
 
 
     template <typename T>
     class Framed : public T
     {
     public:
-        Framed(const FrameID& baseFrame) :
+        Framed(const FrameID<>& baseFrame) :
             baseFrame_{baseFrame},
             T()
         {
@@ -56,9 +61,10 @@ namespace quant::framed_geometry
         }
 
 
-        template <typename T_, typename DifferenceType_>
-        friend Frame<DifferenceType_> operator-(const Framed<T_>& lhs,
-                                                const Framed<T_>& rhs);
+        template <typename T_>
+        friend Frame<typename T_::QuantityDifferenceType> operator-(
+            const Framed<T_>& lhs,
+            const Framed<T_>& rhs);
 
 
     protected:
@@ -68,7 +74,7 @@ namespace quant::framed_geometry
             return "in base frame '" + baseFrame_.toString() + "'";
         }
 
-        const FrameID baseFrame_;
+        const FrameID<> baseFrame_;
     };
 
 
@@ -76,11 +82,11 @@ namespace quant::framed_geometry
     class Frame
     {
     public:
-        const FrameID frame_;
-        const FrameID baseFrame_;
+        const FrameID<> frame_;
+        const FrameID<> baseFrame_;
 
-        Frame(const FrameID& frame,
-              const FrameID& baseFrame) :
+        Frame(const FrameID<>& frame,
+              const FrameID<>& baseFrame) :
             frame_{frame},
             baseFrame_{baseFrame},
             T()
@@ -103,13 +109,14 @@ namespace quant::framed_geometry
 namespace quant
 {
 
-    template <typename T, typename DifferenceType>
-    framed_geometry::Frame<DifferenceType>
-    framed_geometry::operator-(const Framed<T>& lhs,
-                               const Framed<T>& rhs)
+    template <typename T>
+    framed_geometry::Frame<typename T::QuantityDifferenceType>
+    framed_geometry::operator-(
+    const Framed<T>& lhs,
+    const Framed<T>& rhs)
     {
 
-        return Frame<DifferenceType>();
+        return Frame<typename T::QuantityDifferenceType>(FrameID<>(), FrameID<>());
     }
 
 } // namespace quant
@@ -120,5 +127,6 @@ namespace quant
 
     using framed_geometry::FrameID;
     using framed_geometry::Framed;
+    using framed_geometry::Frame;
 
 }

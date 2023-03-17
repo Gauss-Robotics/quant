@@ -147,6 +147,9 @@ namespace quant::geometry
             return representation_.isApprox(rhs.representation_, precision);
         }
 
+        using QuantityType = T;
+        using QuantityDifferenceType = DifferenceType;
+
     protected:
         Eigen::Vector3d representation_;
     };

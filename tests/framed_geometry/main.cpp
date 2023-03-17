@@ -15,7 +15,7 @@ using namespace quant;
 
 TEST_CASE("testing framed_geometry")
 {
-    const FrameID fid{.frame = "ARMAR-6::RobotRoot"};
+    const FrameID<> fid{.frame = "ARMAR-6::RobotRoot"};
 
     SUBCASE("testing FrameID")
     {
@@ -23,21 +23,21 @@ TEST_CASE("testing framed_geometry")
 
         CHECK(fid.toString() == "ARMAR-6::RobotRoot");
 
-        const FrameID fid2{.frame = "ARMAR-6::RobotRoot"};
+        const FrameID<> fid2{.frame = "ARMAR-6::RobotRoot"};
 
         CHECK(fid == fid2);
 
-        const FrameID fid3{.frame = "ARMAR-6::DepthCamera"};
+        const FrameID<> fid3{.frame = "ARMAR-6::DepthCamera"};
 
         CHECK(fid != fid3);
 
-        const FrameID fid4{.frame = "ARMAR-7::RobotRoot"};
+        const FrameID<> fid4{.frame = "ARMAR-7::RobotRoot"};
 
         CHECK(fid != fid4);
     }
 
     Framed<Position> p1{fid};
-    Difference<Position> d1 = p1 - p1;
+    Frame<Displacement> d1 = p1 - p1;
 
     SUBCASE("testing framed custom type")
     {
