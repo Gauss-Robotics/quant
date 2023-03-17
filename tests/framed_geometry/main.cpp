@@ -37,10 +37,12 @@ TEST_CASE("testing framed_geometry")
     }
 
     Framed<Position> p1{fid};
-    Frame<Displacement> d1 = p1 - p1;
+    Framed<Position> p2{fid};
+
+    Frame<Displacement> d1 = p2 - p1;
 
     SUBCASE("testing framed custom type")
     {
-
+        CHECK(d1.baseFrame_.toString() == "ARMAR-6::RobotRoot");
     }
 }

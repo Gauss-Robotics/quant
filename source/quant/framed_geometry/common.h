@@ -79,14 +79,16 @@ namespace quant::framed_geometry
 
 
     template <typename T>
-    class Frame
+    class Frame : public T
     {
     public:
         const FrameID<> frame_;
         const FrameID<> baseFrame_;
 
-        Frame(const FrameID<>& frame,
-              const FrameID<>& baseFrame) :
+        Frame(
+                const FrameID<>& frame,
+                const FrameID<>& baseFrame
+        ) :
             frame_{frame},
             baseFrame_{baseFrame},
             T()
@@ -115,8 +117,9 @@ namespace quant
     const Framed<T>& lhs,
     const Framed<T>& rhs)
     {
-
-        return Frame<typename T::QuantityDifferenceType>(FrameID<>(), FrameID<>());
+        FrameID<> baseFrame;
+        FrameID<> frame;
+        return Frame<typename T::QuantityDifferenceType>(frame, baseFrame);
     }
 
 } // namespace quant
