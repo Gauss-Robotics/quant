@@ -1,20 +1,18 @@
 #pragma once
 
 
-#include <ostream>
-
-#include <Eigen/Geometry>
-
 #include <quant/geometry/VectorQuantity.h>
 #include <quant/units/position_fwd.h>
 #include <quant/units/time/Duration.h>
 
+#include <Eigen/Geometry>
+
+#include <ostream>
 
 namespace quant::units::position
 {
 
     class LinearDisplacement;
-
 
     class Position : public geometry::VectorQuantity<Position, LinearDisplacement>
     {
@@ -61,29 +59,26 @@ namespace quant::units::position
 
 
     protected:
-
-        friend Position operator*(const Difference<Orientation>& rotation,
-                                  const Position& position);
-        friend Difference<Position> operator*(const Difference<Orientation>& rotation,
-                                              const Difference<Position>& translation);
+        friend Position operator*(Difference<Orientation> const& rotation,
+                                  Position const& position);
+        friend Difference<Position> operator*(Difference<Orientation> const& rotation,
+                                              Difference<Position> const& translation);
     };
 
-
-    std::ostream& operator<<(std::ostream& out, const Position& rhs);
+    std::ostream& operator<<(std::ostream& out, Position const& rhs);
 
 
     /// Rotate a position.
-    Position operator*(const Difference<Orientation>& rotation, const Position& position);
+    Position operator*(Difference<Orientation> const& rotation, Position const& position);
 
     /// Rotate a translation.
-    Difference<Position> operator*(const Difference<Orientation>& rotation,
-                                   const Difference<Position>& translation);
+    Difference<Position> operator*(Difference<Orientation> const& rotation,
+                                   Difference<Position> const& translation);
 
 
-} // namespace quant::units::position
-
+}  // namespace quant::units::position
 
 namespace quant
 {
     using units::position::Position;
-} // namespace quant
+}  // namespace quant

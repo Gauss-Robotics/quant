@@ -5,7 +5,6 @@
 #include <quant/units/distance/Distance.h>
 #include <quant/units/position/Position.h>
 
-
 namespace quant::units::position
 {
 
@@ -18,7 +17,7 @@ namespace quant::units::position
             ;
         }
 
-        explicit LinearDisplacement(const Position& t) : Difference<Position>(t)
+        explicit LinearDisplacement(Position const& t) : Difference<Position>(t)
         {
             ;
         }
@@ -30,8 +29,7 @@ namespace quant::units::position
         }
     };
 
-} // namespace quant::units::position
-
+}  // namespace quant::units::position
 
 namespace quant
 {

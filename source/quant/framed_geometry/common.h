@@ -2,63 +2,20 @@
 
 
 #include <array>
+#include <cassert>
 #include <cstdio>
 #include <ostream>
 #include <string_view>
 
-
 namespace quant::framed_geometry
 {
 
-    constexpr std::uint32_t MAX_FRAME_SIZE = 128;
+    constexpr std::uint32_t frameDataMaxStringSize = 128;
 
-
-    /**
-     * @brief An object of this class uniquely identifies a frame.
-     */
-    struct FrameID
+    struct Frame
     {
-
-        FrameID(std::string_view frameName)
-        {
-            // snprintf guarantees null-termination (not the case for frameName.copy()).
-            std::snprintf(frameData_.data(), frameData_.size(), "%s", frameName.data());
-            name = frameData_.data();
-        }
-
-        bool
-        operator==(std::string_view rhs) const
-        {
-            return name == rhs;
-        }
-
-        bool
-        operator==(const FrameID& rhs) const
-        {
-            return name == rhs.name;
-        }
-
-        bool
-        operator!=(std::string_view rhs) const
-        {
-            return name != rhs;
-        }
-
-        bool
-        operator!=(const FrameID& rhs) const
-        {
-            return name != rhs.name;
-        }
-
-    private:
-        /**
-         * @brief This member holds the actual data of the frame name, which is just referenced
-         * by frame.
-         */
-        std::array<char, MAX_FRAME_SIZE> frameData_;
-
-    public:
         std::string_view name;
+        std::string_view baseFrame;
     };
 
 
@@ -67,109 +24,69 @@ namespace quant::framed_geometry
 
 
     template <typename T>
-    class Frame;
-
-
-    template <typename T>
-    Frame<typename T::QuantityDifferenceType> operator-(
-        const Framed<T>& lhs,
-        const Framed<T>& rhs);
-
+    Framed<typename T::QuantityDifferenceType> operator-(Framed<T> const& lhs,
+                                                         Framed<T> const& rhs);
 
     /**
      * @brief Wrapper to associate a quantity with a base frame.
      */
     template <typename T>
-    class Framed : public T
+    class Framed
     {
     public:
-        Framed(const FrameID& baseFrame) :
-            baseFrame{baseFrame},
-            T()
+        Framed(Frame const& frameData)
         {
-            ;
-        }
+            // snprintf guarantees null-termination (not the case for frameName.copy()).
+            std::snprintf(nameData_.data(), nameData_.size(), "%s", frameData.name.data());
+            name = frameData.name.data();
 
+            std::snprintf(
+                baseFrameData_.data(), baseFrameData_.size(), "%s", frameData.baseFrame.data());
+            baseFrame = baseFrameData_.data();
+        }
 
         template <typename T_>
-        friend Frame<typename T_::QuantityDifferenceType> operator-(
-            const Framed<T_>& lhs,
-            const Framed<T_>& rhs);
+        friend Framed<typename T_::QuantityDifferenceType> operator-(Framed<T_> const& lhs,
+                                                                     Framed<T_> const& rhs);
 
-        const FrameID baseFrame;
+        std::string_view name;
+        std::string_view baseFrame;
 
-    protected:
-        std::string
-        strTemplate() const
-        {
-            return "in base frame '" + std::string(baseFrame.name) + "'";
-        }
+    private:
+        /**
+         * @brief This member holds the actual data of `name`.
+         */
+        std::array<char, frameDataMaxStringSize> nameData_;
 
+        /**
+         * @brief This member holds the actual data of `baseFrame`.
+         */
+        std::array<char, frameDataMaxStringSize> baseFrameData_;
+
+        T framedObject_;
     };
 
-
-    /**
-     * @brief Wrapper to associate an operation to a frame with a base frame.
-     */
-    template <typename T>
-    class Frame : public T
-    {
-    public:
-        const FrameID frame;
-        const FrameID baseFrame;
-
-        Frame(
-                const FrameID& frame,
-                const FrameID& baseFrame
-        ) :
-            frame{frame},
-            baseFrame{baseFrame},
-            T()
-        {
-            ;
-        }
-
-    protected:
-        std::string
-        strTemplate() const
-        {
-            return "of frame '" + std::string(frame.name) + "' with respect to base frame '" +
-                   std::string(baseFrame.name) + "'";
-        }
-    };
-
-
-    std::ostream& operator<<(std::ostream& out, const FrameID& rhs)
-    {
-        out << "<FrameID frame=" << rhs.name << ">";
-        return out;
-    }
-
-} // namespace quant::position::frame
-
+}  // namespace quant::framed_geometry
 
 namespace quant
 {
 
     template <typename T>
-    framed_geometry::Frame<typename T::QuantityDifferenceType>
-    framed_geometry::operator-(
-    const Framed<T>& lhs,
-    const Framed<T>& rhs)
+    framed_geometry::Framed<typename T::QuantityDifferenceType>
+    framed_geometry::operator-(Framed<T> const& lhs, Framed<T> const& rhs)
     {
-        FrameID baseFrame{""};
-        FrameID frame{""};
-        return Frame<typename T::QuantityDifferenceType>(frame, baseFrame);
+        // TODO(dreher): Exceptions and no-excpt alternative.
+        assert(lhs.baseFrame == rhs.baseFrame);
+        return Framed<typename T::QuantityDifferenceType>(
+            {.name = lhs.name, .baseFrame = rhs.name});
     }
 
-} // namespace quant
-
+}  // namespace quant
 
 namespace quant
 {
 
-    using framed_geometry::FrameID;
-    using framed_geometry::Framed;
     using framed_geometry::Frame;
+    using framed_geometry::Framed;
 
-}
+}  // namespace quant

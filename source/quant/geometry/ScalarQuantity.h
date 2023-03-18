@@ -1,11 +1,10 @@
 #pragma once
 
 
-#include <sstream>
-#include <typeinfo>
-
 #include <quant/geometry/common.h>
 
+#include <sstream>
+#include <typeinfo>
 
 namespace quant::geometry
 {
@@ -15,9 +14,8 @@ namespace quant::geometry
 
 
     template <typename T, typename DifferenceType, typename ScalarType>
-    DifferenceType operator-(const ScalarQuantity<T, DifferenceType, ScalarType>& lhs,
-                             const ScalarQuantity<T, DifferenceType, ScalarType>& rhs);
-
+    DifferenceType operator-(ScalarQuantity<T, DifferenceType, ScalarType> const& lhs,
+                             ScalarQuantity<T, DifferenceType, ScalarType> const& rhs);
 
     template <typename T, typename DifferenceType = Difference<T>, typename ScalarType = double>
     class ScalarQuantity
@@ -51,19 +49,19 @@ namespace quant::geometry
         }
 
         std::string
-        toString(const std::string& quantityName = "", const std::string& unit = "") const
+        toString(std::string const& quantityName = "", std::string const& unit = "") const
         {
             std::stringstream out;
             out << "<";
 
-            if (quantityName.size() > 0)
+            if (not quantityName.empty())
             {
                 out << quantityName << " ";
             }
 
             out << "value=" << representation_;
 
-            if (unit.size() > 0)
+            if (not unit.empty())
             {
                 out << unit;
             }
@@ -76,8 +74,8 @@ namespace quant::geometry
 
         template <typename T_, typename DifferenceType_, typename ScalarType_>
         friend DifferenceType_
-        geometry::operator-(const ScalarQuantity<T_, DifferenceType_, ScalarType_>& lhs,
-                            const ScalarQuantity<T_, DifferenceType_, ScalarType_>& rhs);
+        geometry::operator-(ScalarQuantity<T_, DifferenceType_, ScalarType_> const& lhs,
+                            ScalarQuantity<T_, DifferenceType_, ScalarType_> const& rhs);
 
         // Compare.
 
@@ -108,22 +106,20 @@ namespace quant::geometry
         ScalarType representation_;
     };
 
-
     template <typename T, typename DifferenceType>
     using ScalarIntegerQuantity = ScalarQuantity<T, DifferenceType, std::int64_t>;
 
-} // namespace quant::geometry
-
+}  // namespace quant::geometry
 
 namespace quant
 {
 
     template <typename T, typename DifferenceType, typename ScalarType>
     DifferenceType
-    geometry::operator-(const ScalarQuantity<T, DifferenceType, ScalarType>& lhs,
-                        const ScalarQuantity<T, DifferenceType, ScalarType>& rhs)
+    geometry::operator-(ScalarQuantity<T, DifferenceType, ScalarType> const& lhs,
+                        ScalarQuantity<T, DifferenceType, ScalarType> const& rhs)
     {
         return DifferenceType(T(lhs.representation_ - rhs.representation_));
     }
 
-} // namespace quant
+}  // namespace quant

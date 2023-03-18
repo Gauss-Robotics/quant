@@ -5,7 +5,6 @@
 #include <quant/units/force/Force.h>
 #include <quant/units/force/Torque.h>
 
-
 namespace quant::units::force
 {
 
@@ -19,10 +18,11 @@ namespace quant::units::force
         using Spatial<Force, Torque, Wrench>::Spatial;
     };
 
-} // namespace quant::units::force
-
+}  // namespace quant::units::force
 
 namespace quant
 {
+
     using units::force::Wrench;
+
 }

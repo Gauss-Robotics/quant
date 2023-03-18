@@ -1,13 +1,12 @@
 #pragma once
 
 
-#include <ostream>
-
-#include <Eigen/Geometry>
-
 #include <quant/geometry/QuaternionQuantity.h>
 #include <quant/units/position_fwd.h>
 
+#include <Eigen/Geometry>
+
+#include <ostream>
 
 namespace quant::units::position
 {
@@ -20,7 +19,7 @@ namespace quant::units::position
         using geometry::QuaternionQuantity<Orientation>::QuaternionQuantity;
 
         static Orientation
-        Radians(const AxisAngle& aa)
+        Radians(AxisAngle const& aa)
         {
             return {aa};
         }
@@ -35,18 +34,17 @@ namespace quant::units::position
 
 
     protected:
-        friend Position operator*(const Difference<Orientation>& rotation, const Position& position);
-        friend Difference<Position> operator*(const Difference<Orientation>& rotation,
-                                         const Difference<Position>& translation);
+        friend Position operator*(Difference<Orientation> const& rotation,
+                                  Position const& position);
+        friend Difference<Position> operator*(Difference<Orientation> const& rotation,
+                                              Difference<Position> const& translation);
     };
 
+    std::ostream& operator<<(std::ostream& out, Orientation const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const Orientation& rhs);
-
-} // namespace quant::units::position
-
+}  // namespace quant::units::position
 
 namespace quant
 {
     using units::position::Orientation;
-} // namespace quant
+}  // namespace quant

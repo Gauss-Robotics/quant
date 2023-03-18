@@ -1,63 +1,61 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 
-#include <iostream>
+#include <quant/framed_geometry.h>
+#include <quant/units.h>
 
 #include <doctest/doctest.h>
 
-#include <quant/framed_geometry.h>
-#include <quant/units.h>
+#include <iostream>
 
 
 using namespace quant;
 
-
-const double Precision = 1e-6;
-
-
 TEST_CASE("testing basic constructions")
 {
-    const FrameID fid{"ARMAR-6::RobotRoot"};
+    Framed<void*> const f1{{.name = "TCP", .baseFrame = "ARMAR-6::RobotRoot"}};
 
-    SUBCASE("testing FrameID")
+    CHECK(f1.name == "TCP");
+    CHECK(f1.baseFrame == "ARMAR-6::RobotRoot");
+
+    Framed<void*> const f2{{.name = "CoM", .baseFrame = "ARMAR-6::RobotRoot"}};
+
+    CHECK(f2.name == "CoM");
+    CHECK(f2.baseFrame == "ARMAR-6::RobotRoot");
+}
+
+TEST_CASE("testing basic framed differences")
+{
+    SUBCASE("testing framed difference with Position")
     {
-        CHECK(fid.name == "ARMAR-6::RobotRoot");
+        Position const pos = Position::Origin();  // Example data type, could be anything.
 
-        const FrameID fid2{"ARMAR-6::RobotRoot"};
+        Framed<Position> const tcp{{.name = "TCP", .baseFrame = "ARMAR-6::RobotRoot"}};
+        Framed<Position> const com{{.name = "CoM", .baseFrame = "ARMAR-6::RobotRoot"}};
 
-        CHECK(fid == fid2);
+        Framed<LinearDisplacement> const ld = tcp - com;
 
-        const FrameID fid3{"ARMAR-6::DepthCamera"};
-
-        CHECK(fid != fid3);
-
-        const FrameID fid4{"ARMAR-7::RobotRoot"};
-
-        CHECK(fid != fid4);
+        CHECK(ld.name == "TCP");
+        CHECK(ld.baseFrame == "CoM");
     }
 
-    SUBCASE("testing with a Position")
+    SUBCASE("testing framed difference with Orientation")
     {
-        const Framed<Position> p1{fid};
-        const Framed<Position> p2{fid};
+        Framed<Orientation> const tcp{{.name = "TCP", .baseFrame = "ARMAR-6::RobotRoot"}};
+        Framed<Orientation> const com{{.name = "CoM", .baseFrame = "ARMAR-6::RobotRoot"}};
 
-        const Frame<LinearDisplacement> d1 = p2 - p1;
+        // Framed<AngularDisplacement> const ad = tcp - com;
 
-        CHECK(d1.baseFrame == "ARMAR-6::RobotRoot");
+        // CHECK(ad.baseFrame == "ARMAR-6::RobotRoot");
     }
 
-    SUBCASE("testing with a Pose")
+    SUBCASE("testing framed difference with Pose")
     {
-        const Framed<Pose> p1{fid};
-        const Framed<Pose> p2{fid};
-        const Framed<Pose> p3{FrameID{"ARMAR-7::RobotRoot"}};
+        Framed<Pose> const tcp{{.name = "TCP", .baseFrame = "ARMAR-6::RobotRoot"}};
+        Framed<Pose> const com{{.name = "CoM", .baseFrame = "ARMAR-6::RobotRoot"}};
 
-        const Frame<SpatialDisplacement> d1 = p2 - p1;
+        // Framed<SpatialDisplacement> const sd = tcp - com;
 
-        CHECK(d1.baseFrame == "ARMAR-6::RobotRoot");
-
-
+        // CHECK(sd.baseFrame == "ARMAR-6::RobotRoot");
     }
-
-
 }

@@ -67,11 +67,16 @@ add_library(units SHARED
     force/Torque.cpp
     force/Wrench.h
     force/Wrench.cpp
+
+    temperature.h
+    temperature_fwd.h
+    temperature/Temperature.h
 )
 
 set_target_properties(units
     PROPERTIES
         LINKER_LANGUAGE CXX
+        CXX_STANDARD 17
         INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/source"
 )
 

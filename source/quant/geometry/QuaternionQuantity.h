@@ -1,13 +1,12 @@
 #pragma once
 
 
-#include <ostream>
-#include <typeinfo>
+#include <quant/geometry/common.h>
 
 #include <Eigen/Geometry>
 
-#include <quant/geometry/common.h>
-
+#include <ostream>
+#include <typeinfo>
 
 namespace quant::geometry
 {
@@ -17,12 +16,11 @@ namespace quant::geometry
 
 
     template <typename T>
-    T operator+(const Difference<T>& lhs, const QuaternionQuantity<T>& rhs);
+    T operator+(Difference<T> const& lhs, QuaternionQuantity<T> const& rhs);
 
 
     template <typename T>
-    Difference<T> operator-(const QuaternionQuantity<T>& lhs, const QuaternionQuantity<T>& rhs);
-
+    Difference<T> operator-(QuaternionQuantity<T> const& lhs, QuaternionQuantity<T> const& rhs);
 
     template <typename T>
     class QuaternionQuantity
@@ -36,7 +34,7 @@ namespace quant::geometry
          * @param pitch
          * @param yaw
          */
-        QuaternionQuantity(const float roll, const float pitch, const float yaw) :
+        QuaternionQuantity(float const roll, float const pitch, float const yaw) :
             QuaternionQuantity(static_cast<double>(roll),
                                static_cast<double>(pitch),
                                static_cast<double>(yaw))
@@ -50,7 +48,7 @@ namespace quant::geometry
          * @param pitch
          * @param yaw
          */
-        QuaternionQuantity(const double roll, const double pitch, const double yaw) :
+        QuaternionQuantity(double const roll, double const pitch, double const yaw) :
             representation_(Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitX()) *
                             Eigen::AngleAxisd(pitch, Eigen::Vector3d::UnitY()) *
                             Eigen::AngleAxisd(yaw, Eigen::Vector3d::UnitZ()))
@@ -58,7 +56,7 @@ namespace quant::geometry
             ;
         }
 
-        QuaternionQuantity(const AxisAngle& aa) : QuaternionQuantity(aa.toEigen())
+        QuaternionQuantity(AxisAngle const& aa) : QuaternionQuantity(aa.toEigen())
         {
             ;
         }
@@ -67,7 +65,7 @@ namespace quant::geometry
          * @brief Construct quaternion from Euler angles.
          * @param p
          */
-        QuaternionQuantity(const Eigen::Vector3f& p) : QuaternionQuantity(p.cast<double>().eval())
+        QuaternionQuantity(Eigen::Vector3f const& p) : QuaternionQuantity(p.cast<double>().eval())
         {
             ;
         }
@@ -76,7 +74,7 @@ namespace quant::geometry
          * @brief Construct quaternion from Euler angles.
          * @param p
          */
-        QuaternionQuantity(const Eigen::Vector3d& p) : QuaternionQuantity(p.x(), p.y(), p.z())
+        QuaternionQuantity(Eigen::Vector3d const& p) : QuaternionQuantity(p.x(), p.y(), p.z())
         {
             ;
         }
@@ -85,7 +83,7 @@ namespace quant::geometry
          * @brief Construct quaternion from rotation matrix.
          * @param r
          */
-        QuaternionQuantity(const Eigen::Matrix3f& r) : representation_(r.cast<double>().eval())
+        QuaternionQuantity(Eigen::Matrix3f const& r) : representation_(r.cast<double>().eval())
         {
             ;
         }
@@ -94,7 +92,7 @@ namespace quant::geometry
          * @brief Construct quaternion from rotation matrix.
          * @param r
          */
-        QuaternionQuantity(const Eigen::Matrix3d& r) : representation_(r)
+        QuaternionQuantity(Eigen::Matrix3d const& r) : representation_(r)
         {
             ;
         }
@@ -103,7 +101,7 @@ namespace quant::geometry
          * @brief Construct quaternion from angle axis.
          * @param r
          */
-        QuaternionQuantity(const Eigen::AngleAxisd& r) : representation_(r)
+        QuaternionQuantity(Eigen::AngleAxisd const& r) : representation_(r)
         {
             ;
         }
@@ -112,7 +110,7 @@ namespace quant::geometry
          * @brief Construct quaternion from Eigen quaternion.
          * @param r
          */
-        QuaternionQuantity(const Eigen::Quaterniond& r) : representation_(r)
+        QuaternionQuantity(Eigen::Quaterniond const& r) : representation_(r)
         {
             ;
         }
@@ -149,11 +147,11 @@ namespace quant::geometry
         }
 
         std::string
-        toString(const std::string& quantityName, const std::string& unit) const
+        toString(std::string const& quantityName, std::string const& unit) const
         {
             std::string prefix = "";
 
-            if (quantityName.size() > 0)
+            if (not quantityName.empty())
             {
                 prefix = quantityName + " ";
             }
@@ -167,18 +165,18 @@ namespace quant::geometry
         // Transform.
 
         template <typename T_>
-        friend T_ geometry::operator+(const Difference<T_>& lhs, const QuaternionQuantity<T_>& rhs);
+        friend T_ geometry::operator+(Difference<T_> const& lhs, QuaternionQuantity<T_> const& rhs);
 
         template <typename T_>
-        friend Difference<T_> geometry::operator-(const QuaternionQuantity<T_>& lhs,
-                                             const QuaternionQuantity<T_>& rhs);
+        friend Difference<T_> geometry::operator-(QuaternionQuantity<T_> const& lhs,
+                                                  QuaternionQuantity<T_> const& rhs);
 
         // Compare.
 
         bool
         operator==(const T& rhs) const
         {
-            // TODO: Eigen >= 3.4
+            // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
             return representation_.coeffs() == rhs.representation_.coeffs();
         }
@@ -186,13 +184,13 @@ namespace quant::geometry
         bool
         operator!=(const T& rhs) const
         {
-            // TODO: Eigen >= 3.4
+            // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
             return not((*this) == rhs);
         }
 
         bool
-        isApprox(const T& rhs, const double precision) const
+        isApprox(const T& rhs, double const precision) const
         {
             return representation_.isApprox(rhs.representation_, precision);
         }
@@ -201,25 +199,24 @@ namespace quant::geometry
         Eigen::Quaterniond representation_;
     };
 
-} // namespace quant::geometry
-
+}  // namespace quant::geometry
 
 namespace quant
 {
 
     template <typename T>
     T
-    geometry::operator+(const Difference<T>& lhs, const QuaternionQuantity<T>& rhs)
+    geometry::operator+(Difference<T> const& lhs, QuaternionQuantity<T> const& rhs)
     {
         return T(lhs.pointFromOrigin().representation_ * rhs.representation_);
     }
 
     template <typename T>
     Difference<T>
-    geometry::operator-(const QuaternionQuantity<T>& lhs, const QuaternionQuantity<T>& rhs)
+    geometry::operator-(QuaternionQuantity<T> const& lhs, QuaternionQuantity<T> const& rhs)
     {
-        // TODO: Figure out return T(representation_ - rhs.representation_);
-        return T(); //Delta<T>(T(lhs.representation_ - rhs.representation_));
+        // TODO(dreher): Figure out return T(representation_ - rhs.representation_);
+        return T();  // Delta<T>(T(lhs.representation_ - rhs.representation_));
     }
 
-} // namespace quant
+}  // namespace quant

@@ -1,14 +1,13 @@
 #pragma once
 
 
-#include <ostream>
-#include <typeinfo>
-
-#include <Eigen/Geometry>
-
 #include <quant/geometry/ScalarQuantity.h>
 #include <quant/geometry/common.h>
 
+#include <Eigen/Geometry>
+
+#include <ostream>
+#include <typeinfo>
 
 namespace quant::geometry
 {
@@ -19,7 +18,8 @@ namespace quant::geometry
     public:
         using geometry::ScalarQuantity<Magnitude<VectorType>>::ScalarQuantity;
 
-        Magnitude(double value) : geometry::ScalarQuantity<Magnitude<VectorType>>::ScalarQuantity(value)
+        Magnitude(double value) :
+            geometry::ScalarQuantity<Magnitude<VectorType>>::ScalarQuantity(value)
         {
             ;  // TODO: Why is this required?!
         }
@@ -31,13 +31,12 @@ namespace quant::geometry
 
 
     template <typename T, typename DifferenceType>
-    T operator+(const Difference<T>& lhs, const VectorQuantity<T, DifferenceType>& rhs);
+    T operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs);
 
 
     template <typename T, typename DifferenceType>
-    DifferenceType operator-(const VectorQuantity<T, DifferenceType>& lhs,
-                             const VectorQuantity<T, DifferenceType>& rhs);
-
+    DifferenceType operator-(VectorQuantity<T, DifferenceType> const& lhs,
+                             VectorQuantity<T, DifferenceType> const& rhs);
 
     template <typename T, typename DifferenceType = Difference<T>>
     class VectorQuantity
@@ -50,12 +49,12 @@ namespace quant::geometry
             ;
         }
 
-        VectorQuantity(const Vector& xyz) : representation_(xyz.x, xyz.y, xyz.z)
+        VectorQuantity(Vector const& xyz) : representation_(xyz.x, xyz.y, xyz.z)
         {
             ;
         }
 
-        VectorQuantity(const Eigen::Vector3d& vector) : representation_(vector)
+        VectorQuantity(Eigen::Vector3d const& vector) : representation_(vector)
         {
             ;
         }
@@ -82,7 +81,7 @@ namespace quant::geometry
             ;
         }
 
-        VectorQuantity(const Difference<T>& deltaP) : VectorQuantity(deltaP.pointFromOrigin())
+        VectorQuantity(Difference<T> const& deltaP) : VectorQuantity(deltaP.pointFromOrigin())
         {
             ;
         }
@@ -102,13 +101,13 @@ namespace quant::geometry
         // Convert.
 
         std::string
-        toString(const std::string& quantityName = "", const std::string& unit = "") const
+        toString(std::string const& quantityName = "", std::string const& unit = "") const
         {
             const Vector v = toVector();
             std::stringstream out;
             out << "<";
 
-            if (quantityName.size() > 0)
+            if (not quantityName.empty())
             {
                 out << quantityName << " ";
             }
@@ -120,12 +119,12 @@ namespace quant::geometry
         // Transform.
 
         template <typename T_, typename DifferenceType_>
-        friend T_ operator+(const Difference<T_>& lhs,
-                            const VectorQuantity<T_, DifferenceType_>& rhs);
+        friend T_ operator+(Difference<T_> const& lhs,
+                            VectorQuantity<T_, DifferenceType_> const& rhs);
 
         template <typename T_, typename DifferenceType_>
-        friend DifferenceType_ operator-(const VectorQuantity<T_, DifferenceType_>& lhs,
-                                         const VectorQuantity<T_, DifferenceType_>& rhs);
+        friend DifferenceType_ operator-(VectorQuantity<T_, DifferenceType_> const& lhs,
+                                         VectorQuantity<T_, DifferenceType_> const& rhs);
 
         // Compare.
 
@@ -154,25 +153,24 @@ namespace quant::geometry
         Eigen::Vector3d representation_;
     };
 
-} // namespace quant::geometry
-
+}  // namespace quant::geometry
 
 namespace quant
 {
 
     template <typename T, typename DifferenceType>
     T
-    geometry::operator+(const Difference<T>& lhs, const VectorQuantity<T, DifferenceType>& rhs)
+    geometry::operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs)
     {
         return T(lhs.pointFromOrigin().representation_ + rhs.representation_);
     }
 
     template <typename T, typename DifferenceType>
     DifferenceType
-    geometry::operator-(const VectorQuantity<T, DifferenceType>& lhs,
-                        const VectorQuantity<T, DifferenceType>& rhs)
+    geometry::operator-(VectorQuantity<T, DifferenceType> const& lhs,
+                        VectorQuantity<T, DifferenceType> const& rhs)
     {
         return DifferenceType(T(lhs.representation_ - rhs.representation_));
     }
 
-} // namespace quant
+}  // namespace quant

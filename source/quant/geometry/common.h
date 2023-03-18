@@ -1,11 +1,10 @@
 #pragma once
 
 
-#include <string>
-
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
+#include <string>
 
 namespace quant
 {
@@ -38,7 +37,7 @@ namespace quant
         }
 
         static Vector
-        FromEigen(const Eigen::Vector3d& eigen)
+        FromEigen(Eigen::Vector3d const& eigen)
         {
             return {.x = eigen.x(), .y = eigen.y(), .z = eigen.z()};
         }
@@ -50,9 +49,7 @@ namespace quant
         }
     };
 
-
-    std::ostream& operator<<(std::ostream& os, const Vector& v);
-
+    std::ostream& operator<<(std::ostream& os, Vector const& v);
 
     /**
      * @brief Angle around axis convenience struct for named parameter semantics.
@@ -81,7 +78,7 @@ namespace quant
         }
 
         static AxisAngle
-        FromEigen(const Eigen::AngleAxisd& eigen)
+        FromEigen(Eigen::AngleAxisd const& eigen)
         {
             return {.angle = eigen.angle(), .axis = Vector::FromEigen(eigen.axis())};
         }
@@ -93,9 +90,7 @@ namespace quant
         }
     };
 
-
-    std::ostream& operator<<(std::ostream& os, const AxisAngle& aa);
-
+    std::ostream& operator<<(std::ostream& os, AxisAngle const& aa);
 
     template <typename T>
     class Difference
@@ -115,17 +110,18 @@ namespace quant
         pointFromOrigin() const
         {
             // point.deltaToOrigin() = delta = point - origin
-            // delta.pointFromOrigin()    = point = delta + origin
+            // delta.pointFromOrigin() = point = delta + origin
             return differenceObject_;
         }
 
         bool
-        operator==(const Difference<T>& rhs) const
+        operator==(Difference<T> const& rhs) const
         {
             return this->differenceObject_ == rhs.differenceObject_;
         }
+
         bool
-        operator!=(const Difference<T>& rhs) const
+        operator!=(Difference<T> const& rhs) const
         {
             return this->differenceObject_ != rhs.differenceObject_;
         }
@@ -139,17 +135,16 @@ namespace quant
     class Spatial;
 
     template <typename Linear, typename Angular, typename Derived>
-    Derived operator+(const Difference<Linear>& op, const Spatial<Linear, Angular, Derived>& rhs);
+    Derived operator+(Difference<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
-    Derived operator-(const Linear& op, const Spatial<Linear, Angular, Derived>& rhs);
+    Derived operator-(Linear const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
-    Derived operator+(const Difference<Angular>& op, const Spatial<Linear, Angular, Derived>& rhs);
+    Derived operator+(Difference<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
-    Derived operator-(const Angular& op, const Spatial<Linear, Angular, Derived>& rhs);
-
+    Derived operator-(Angular const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
     class Spatial
@@ -180,62 +175,60 @@ namespace quant
 
     public:
         template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_ quant::operator+(const Difference<Linear_>& op,
-                                         const Spatial<Linear_, Angular_, Derived_>& rhs);
+        friend Derived_ quant::operator+(Difference<Linear_> const& op,
+                                         Spatial<Linear_, Angular_, Derived_> const& rhs);
 
         template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_ quant::operator-(const Linear_& op,
-                                         const Spatial<Linear_, Angular_, Derived_>& rhs);
+        friend Derived_ quant::operator-(Linear_ const& op,
+                                         Spatial<Linear_, Angular_, Derived_> const& rhs);
 
         template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_ operator+(const Difference<Angular_>& op,
-                                  const Spatial<Linear_, Angular_, Derived_>& rhs);
+        friend Derived_ operator+(Difference<Angular_> const& op,
+                                  Spatial<Linear_, Angular_, Derived_> const& rhs);
 
         template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_ operator-(const Angular_& op,
-                                  const Spatial<Linear_, Angular_, Derived_>& rhs);
+        friend Derived_ operator-(Angular_ const& op,
+                                  Spatial<Linear_, Angular_, Derived_> const& rhs);
 
     protected:
         Linear linear_;
         Angular angular_;
     };
 
-} // namespace quant
-
+}  // namespace quant
 
 template <typename Linear, typename Angular, typename Derived>
 Derived
-quant::operator+(const Difference<Linear>& op, const Spatial<Linear, Angular, Derived>& rhs)
+quant::operator+(Difference<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs)
 {
     return Derived(op + rhs.linear_, rhs.angular_);
 }
 
 template <typename Linear, typename Angular, typename Derived>
 Derived
-quant::operator-(const Linear& op, const Spatial<Linear, Angular, Derived>& rhs)
+quant::operator-(Linear const& op, Spatial<Linear, Angular, Derived> const& rhs)
 {
     return Derived(rhs.linear_ - op, rhs.angular_);
 }
 
 template <typename Linear, typename Angular, typename Derived>
 Derived
-quant::operator+(const Difference<Angular>& op, const Spatial<Linear, Angular, Derived>& rhs)
+quant::operator+(Difference<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs)
 {
     return Derived(rhs.linear_, op + rhs.angular_);
 }
 
 template <typename Linear, typename Angular, typename Derived>
 Derived
-quant::operator-(const Angular& op, const Spatial<Linear, Angular, Derived>& rhs)
+quant::operator-(Angular const& op, Spatial<Linear, Angular, Derived> const& rhs)
 {
     return Derived(rhs.linear_, rhs.angular_ - op);
 }
 
-
 namespace quant::io
 {
 
-    std::string toString(const Vector& v, const std::string& unit = "");
-    std::string toString(const AxisAngle& aa, const std::string& unit = "");
+    std::string toString(Vector const& v, std::string const& unit = "");
+    std::string toString(AxisAngle const& aa, std::string const& unit = "");
 
-} // namespace quant::io
+}  // namespace quant::io

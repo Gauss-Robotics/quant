@@ -1,12 +1,11 @@
 #pragma once
 
 
-#include <ostream>
+#include <quant/geometry/VectorQuantity.h>
 
 #include <Eigen/Geometry>
 
-#include <quant/geometry/VectorQuantity.h>
-
+#include <ostream>
 
 namespace quant::units::force
 {
@@ -30,13 +29,13 @@ namespace quant::units::force
         }
     };
 
+    std::ostream& operator<<(std::ostream& out, Force const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const Force& rhs);
-
-} // namespace quant::units::force
-
+}  // namespace quant::units::force
 
 namespace quant
 {
+
     using units::force::Force;
-} // namespace quant
+
+}  // namespace quant

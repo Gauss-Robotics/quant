@@ -1,11 +1,10 @@
 #pragma once
 
 
-#include <ostream>
-#include <typeinfo>
-
 #include <Eigen/Geometry>
 
+#include <ostream>
+#include <typeinfo>
 
 namespace quant::geometry
 {
@@ -35,24 +34,24 @@ namespace quant::geometry
         }
 
         bool
-        isApprox(const T& rhs, const double precision) const
+        isApprox(const T& rhs, double const precision) const
         {
             return representation_.isApprox(rhs._representation, precision);
         }
 
     protected:
-        IsometryQuantity(const Eigen::Isometry3d& tf) : representation_(tf)
+        IsometryQuantity(Eigen::Isometry3d const& tf) : representation_(tf)
         {
             ;
         }
 
-        IsometryQuantity(const Eigen::Ref<const Eigen::Matrix4f>& tf) :
+        IsometryQuantity(Eigen::Ref<const Eigen::Matrix4f> const& tf) :
             representation_(tf.cast<double>())
         {
             ;
         }
 
-        IsometryQuantity(const Eigen::Ref<const Eigen::Matrix4d>& tf) : representation_(tf)
+        IsometryQuantity(Eigen::Ref<const Eigen::Matrix4d> const& tf) : representation_(tf)
         {
             ;
         }
@@ -60,4 +59,4 @@ namespace quant::geometry
         Eigen::Isometry3d representation_;
     };
 
-} // namespace quant::geometry::representation
+}  // namespace quant::geometry
