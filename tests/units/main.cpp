@@ -1,5 +1,6 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
+
 #include <iostream>
 
 #include <doctest/doctest.h>
@@ -13,9 +14,10 @@
 #include <quant/units/force.h>
 
 
-const double Precision = 1e-6;
-
 using namespace quant;
+
+
+const double Precision = 1e-6;
 
 
 TEST_CASE("testing time")
@@ -214,7 +216,7 @@ TEST_CASE("testing velocity")
         CHECK(t3.angular().isApprox(vel2, Precision));
     }
 
-    SUBCASE("DisplacementAndDurationOpTest")
+    SUBCASE("testing complex unit conversions")
     {
         using namespace quant;
 
@@ -227,7 +229,7 @@ TEST_CASE("testing velocity")
         const TimePoint t2 = TimePoint::Seconds(17);
 
         // Calculate differences.
-        const Displacement dx = x2 - x1;
+        const LinearDisplacement dx = x2 - x1;
         const Duration dt = t2 - t1;
 
         // Calculate linear velocity.

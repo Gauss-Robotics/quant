@@ -9,16 +9,16 @@
 namespace quant::units::position
 {
 
-    class Displacement : public Difference<Position>
+    class LinearDisplacement : public Difference<Position>
     {
 
     public:
-        Displacement() : Difference<Position>()
+        LinearDisplacement() : Difference<Position>()
         {
             ;
         }
 
-        explicit Displacement(const Position& t) : Difference<Position>(t)
+        explicit LinearDisplacement(const Position& t) : Difference<Position>(t)
         {
             ;
         }
@@ -36,6 +36,6 @@ namespace quant::units::position
 namespace quant
 {
 
-    using units::position::Displacement;
+    using units::position::LinearDisplacement;
 
 }

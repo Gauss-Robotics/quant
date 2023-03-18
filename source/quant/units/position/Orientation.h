@@ -6,7 +6,7 @@
 #include <Eigen/Geometry>
 
 #include <quant/geometry/QuaternionQuantity.h>
-#include <quant/units/position/forward_declarations.h>
+#include <quant/units/position_fwd.h>
 
 
 namespace quant::units::position

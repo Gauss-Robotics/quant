@@ -23,7 +23,10 @@ target_link_libraries(units_test
 add_executable(framed_geometry_test
     framed_geometry/main.cpp
 )
-
+set_target_properties(framed_geometry_test
+    PROPERTIES
+        CXX_STANDARD 17
+)
 target_link_libraries(framed_geometry_test
     PRIVATE
         doctest::doctest

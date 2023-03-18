@@ -6,24 +6,24 @@
 #include <Eigen/Geometry>
 
 #include <quant/geometry/VectorQuantity.h>
-#include <quant/units/position/forward_declarations.h>
+#include <quant/units/position_fwd.h>
 #include <quant/units/time/Duration.h>
 
 
 namespace quant::units::position
 {
 
-    class Displacement;
+    class LinearDisplacement;
 
 
-    class Position : public geometry::VectorQuantity<Position, Displacement>
+    class Position : public geometry::VectorQuantity<Position, LinearDisplacement>
     {
-        friend Displacement;
+        friend LinearDisplacement;
 
     public:
         // Construct.
 
-        using geometry::VectorQuantity<Position, Displacement>::VectorQuantity;
+        using geometry::VectorQuantity<Position, LinearDisplacement>::VectorQuantity;
 
         static Position
         MilliMeters(double x, double y, double z)

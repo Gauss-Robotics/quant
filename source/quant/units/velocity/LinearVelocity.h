@@ -6,7 +6,7 @@
 #include <Eigen/Geometry>
 
 #include <quant/geometry/VectorQuantity.h>
-#include <quant/units/position/Displacement.h>
+#include <quant/units/position/LinearDisplacement.h>
 #include <quant/units/position/Position.h>
 #include <quant/units/speed.h>
 #include <quant/units/time/Duration.h>
@@ -56,7 +56,7 @@ namespace quant::units::velocity
 namespace quant::units::position
 {
 
-    velocity::LinearVelocity operator/(const Displacement& dx, const Duration& dt);
+    velocity::LinearVelocity operator/(const LinearDisplacement& dx, const Duration& dt);
 
 } // namespace quant::units::position
 
