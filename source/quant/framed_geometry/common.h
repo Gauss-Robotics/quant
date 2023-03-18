@@ -38,7 +38,7 @@ namespace quant::framed_geometry
         {
             // snprintf guarantees null-termination (not the case for frameName.copy()).
             std::snprintf(nameData_.data(), nameData_.size(), "%s", frameData.name.data());
-            name = frameData.name.data();
+            name = nameData_.data();
 
             std::snprintf(
                 baseFrameData_.data(), baseFrameData_.size(), "%s", frameData.baseFrame.data());
