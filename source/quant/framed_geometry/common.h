@@ -45,6 +45,12 @@ namespace quant::framed_geometry
             baseFrame = baseFrameData_.data();
         }
 
+        Framed<T>
+        enframe(T const& objectToFrame, std::string_view name) const
+        {
+            return Framed<T>({.name = name, .baseFrame = this->name});
+        }
+
         template <typename T_>
         friend Framed<typename T_::QuantityDifferenceType> operator-(Framed<T_> const& lhs,
                                                                      Framed<T_> const& rhs);
