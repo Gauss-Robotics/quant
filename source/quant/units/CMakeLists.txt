@@ -81,7 +81,8 @@ set_target_properties(units
 )
 
 target_link_libraries(units
-    PRIVATE
-        Eigen3::Eigen
-        geometry
+    PUBLIC
+        quant::geometry
 )
+
+add_library(quant::units ALIAS units)

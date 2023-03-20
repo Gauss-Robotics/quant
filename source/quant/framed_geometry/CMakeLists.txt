@@ -12,6 +12,8 @@ set_target_properties(framed_geometry
 )
 
 target_link_libraries(framed_geometry
-    PRIVATE
-        Eigen3::Eigen
+    PUBLIC
+        quant::geometry
 )
+
+add_library(quant::framed_geometry ALIAS framed_geometry)

@@ -6,10 +6,9 @@ set_target_properties(geometry_test
         CXX_STANDARD 17
 )
 target_link_libraries(geometry_test
-    PRIVATE
+    PUBLIC
         doctest::doctest
-        Eigen3::Eigen
-        geometry
+        quant::geometry
 )
 
 add_executable(units_test
@@ -20,10 +19,9 @@ set_target_properties(units_test
         CXX_STANDARD 17
 )
 target_link_libraries(units_test
-    PRIVATE
+    PUBLIC
         doctest::doctest
-        Eigen3::Eigen
-        units
+        quant::units
 )
 
 add_executable(framed_geometry_test
@@ -34,8 +32,7 @@ set_target_properties(framed_geometry_test
         CXX_STANDARD 17
 )
 target_link_libraries(framed_geometry_test
-    PRIVATE
+    PUBLIC
         doctest::doctest
-        Eigen3::Eigen
-        framed_geometry
+        quant::framed_geometry
 )

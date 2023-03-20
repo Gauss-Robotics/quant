@@ -18,6 +18,8 @@ set_target_properties(geometry
 )
 
 target_link_libraries(geometry
-    PRIVATE
+    PUBLIC
         Eigen3::Eigen
 )
+
+add_library(quant::geometry ALIAS geometry)

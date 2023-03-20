@@ -1,13 +1,13 @@
 #pragma once
 
 
-#include <quant/geometry/ScalarQuantity.h>
-#include <quant/geometry/common.h>
+#include <ostream>
+#include <typeinfo>
 
 #include <Eigen/Geometry>
 
-#include <ostream>
-#include <typeinfo>
+#include <quant/geometry/ScalarQuantity.h>
+#include <quant/geometry/common.h>
 
 namespace quant::geometry
 {
@@ -21,13 +21,17 @@ namespace quant::geometry
         Magnitude(double value) :
             geometry::ScalarQuantity<Magnitude<VectorType>>::ScalarQuantity(value)
         {
-            ;  // TODO: Why is this required?!
+            ; // TODO: Why is this required?!
         }
     };
 
 
     template <typename T, typename DifferenceType>
     class VectorQuantity;
+
+
+    template <typename T, typename DifferenceType>
+    T operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs);
 
 
     template <typename T, typename DifferenceType>
@@ -115,6 +119,10 @@ namespace quant::geometry
         // Transform.
 
         template <typename T_, typename DifferenceType_>
+        friend T_ operator+(Difference<T_> const& lhs,
+                            VectorQuantity<T_, DifferenceType_> const& rhs);
+
+        template <typename T_, typename DifferenceType_>
         friend DifferenceType_ operator-(VectorQuantity<T_, DifferenceType_> const& lhs,
                                          VectorQuantity<T_, DifferenceType_> const& rhs);
 
@@ -145,10 +153,17 @@ namespace quant::geometry
         Eigen::Vector3d representation_;
     };
 
-}  // namespace quant::geometry
+} // namespace quant::geometry
 
 namespace quant
 {
+
+    template <typename T, typename DifferenceType>
+    T
+    geometry::operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs)
+    {
+        return T(lhs.pointFromOrigin().representation_ + rhs.representation_);
+    }
 
     template <typename T, typename DifferenceType>
     DifferenceType
@@ -158,4 +173,4 @@ namespace quant
         return DifferenceType(T(lhs.representation_ - rhs.representation_));
     }
 
-}  // namespace quant
+} // namespace quant

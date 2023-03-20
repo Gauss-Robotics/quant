@@ -1,18 +1,22 @@
 #pragma once
 
 
-#include <quant/geometry/common.h>
+#include <ostream>
+#include <typeinfo>
 
 #include <Eigen/Geometry>
 
-#include <ostream>
-#include <typeinfo>
+#include <quant/geometry/common.h>
 
 namespace quant::geometry
 {
 
     template <typename T, typename DifferenceType>
     class QuaternionQuantity;
+
+
+    template <typename T, typename DifferenceType>
+    T operator+(Difference<T> const& lhs, QuaternionQuantity<T, DifferenceType> const& rhs);
 
 
     template <typename T, typename DifferenceType>
@@ -162,6 +166,11 @@ namespace quant::geometry
         // Transform.
 
         template <typename T_, typename DifferenceType_>
+        friend T_ geometry::operator+(Difference<T_> const& lhs,
+                                      QuaternionQuantity<T_, DifferenceType_> const& rhs);
+
+
+        template <typename T_, typename DifferenceType_>
         friend Difference<T_>
         geometry::operator-(QuaternionQuantity<T_, DifferenceType_> const& lhs,
                             QuaternionQuantity<T_, DifferenceType_> const& rhs);
@@ -197,17 +206,24 @@ namespace quant::geometry
         Eigen::Quaterniond representation_;
     };
 
-}  // namespace quant::geometry
+} // namespace quant::geometry
 
 namespace quant
 {
+
+    template <typename T, typename DifferenceType>
+    T
+    geometry::operator+(Difference<T> const& lhs, QuaternionQuantity<T, DifferenceType> const& rhs)
+    {
+        return T(lhs.pointFromOrigin().representation_ * rhs.representation_);
+    }
 
     template <typename T>
     Difference<T>
     geometry::operator-(QuaternionQuantity<T> const& lhs, QuaternionQuantity<T> const& rhs)
     {
         // TODO(dreher): Figure out return T(representation_ - rhs.representation_);
-        return T();  // Delta<T>(T(lhs.representation_ - rhs.representation_));
+        return T(); // Delta<T>(T(lhs.representation_ - rhs.representation_));
     }
 
-}  // namespace quant
+} // namespace quant

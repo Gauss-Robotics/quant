@@ -10,11 +10,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 add_subdirectory(source)
 add_subdirectory(tests)
+add_subdirectory(examples)
 
 export(
     TARGETS
         geometry
         units
+        framed_geometry
+        framed_units
     NAMESPACE
         quant::
     FILE
@@ -25,6 +28,8 @@ install(
     TARGETS
         geometry
         units
+        framed_geometry
+        framed_units
     EXPORT
         quant_export_set
     DESTINATION
