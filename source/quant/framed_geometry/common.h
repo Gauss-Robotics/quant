@@ -28,14 +28,16 @@ namespace quant::framed_geometry
                                                          Framed<T> const& rhs);
 
     /**
-     * @brief Wrapper to associate a quantity with a base frame.
+     * @brief Wrapper to associate a named geometric object with a base frame.
      */
     template <typename T>
     class Framed
     {
     public:
-        Framed(Frame const& frameData)
+        Framed(T const& objectToFrame, Frame const& frameData) : framedObject_{objectToFrame}
         {
+            // TODO(dreher): Ensure that names are not too long.
+
             // snprintf guarantees null-termination (not the case for frameName.copy()).
             std::snprintf(nameData_.data(), nameData_.size(), "%s", frameData.name.data());
             name = nameData_.data();
@@ -48,7 +50,7 @@ namespace quant::framed_geometry
         Framed<T>
         enframe(T const& objectToFrame, std::string_view name) const
         {
-            return Framed<T>({.name = name, .baseFrame = this->name});
+            return Framed<T>(objectToFrame, {.name = name, .baseFrame = this->name});
         }
 
         template <typename T_>
@@ -84,7 +86,7 @@ namespace quant
         // TODO(dreher): Exceptions and no-excpt alternative.
         assert(lhs.baseFrame == rhs.baseFrame);
         return Framed<typename T::QuantityDifferenceType>(
-            {.name = lhs.name, .baseFrame = rhs.name});
+            lhs.framedObject_ - rhs.framedObject_, {.name = lhs.name, .baseFrame = rhs.name});
     }
 
 }  // namespace quant

@@ -1,4 +1,5 @@
 build
+.cache
 CMakeLists.txt.user*
 .clang-format
 .clang-tidy

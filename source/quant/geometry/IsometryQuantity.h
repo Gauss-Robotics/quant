@@ -19,22 +19,28 @@ namespace quant::geometry
             ;
         }
 
+        static T
+        Origin()
+        {
+            return T{Eigen::Isometry3d::Identity()};
+        }
+
         // Compare.
 
         bool
-        operator==(const T& rhs) const
+        operator==(T const& rhs) const
         {
             return representation_ == rhs._representation;
         }
 
         bool
-        operator!=(const T& rhs) const
+        operator!=(T const& rhs) const
         {
             return representation_ != rhs._representation;
         }
 
         bool
-        isApprox(const T& rhs, double const precision) const
+        isApprox(T const& rhs, double const precision) const
         {
             return representation_.isApprox(rhs._representation, precision);
         }

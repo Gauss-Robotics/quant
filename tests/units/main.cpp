@@ -1,24 +1,20 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 
-#include <iostream>
+#include <quant/units.h>
 
 #include <doctest/doctest.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
-#include <quant/units/time.h>
-#include <quant/units/position.h>
-#include <quant/units/velocity.h>
-#include <quant/units/force.h>
+#include <iostream>
 
 
 using namespace quant;
 
 
-const double Precision = 1e-6;
-
+double const Precision = 1e-6;
 
 TEST_CASE("testing time")
 {
@@ -106,7 +102,6 @@ TEST_CASE("testing time")
     }
 }
 
-
 TEST_CASE("testing position")
 {
     SUBCASE("testing trivial constructions")
@@ -129,7 +124,7 @@ TEST_CASE("testing position")
 
     SUBCASE("testing operators")
     {
-        const Difference<Position> disturbance =
+        Difference<Position> const disturbance =
             Position::MilliMeters({.x = 1e-14, .z = 1e-15}).deltaToOrigin();
         const Position ca_p = disturbance + p1;
 
@@ -139,7 +134,7 @@ TEST_CASE("testing position")
 
     SUBCASE("testing difference")
     {
-        const Position tl = p1 - p2; // TODO: Should this work?
+        const Position tl = p1 - p2;  // TODO(dreher): Should this work?
         CHECK(tl.toMilliMeters().toEigen() == Eigen::Vector3d(100, 100, 300));
     }
 
@@ -153,20 +148,22 @@ TEST_CASE("testing position")
 
     SUBCASE("testing different operations")
     {
-        const Difference<Orientation> rot = Orientation::Radians(AxisAngle::AroundY(M_PI)).deltaToOrigin();
-        //const Rotation r = Rotation::Roll(0) * Rotation::Pitch(M_PI) * Rotation::Yaw(0);
-        // [0, 100, 200]
+        Difference<Orientation> const rot =
+            Orientation::Radians(AxisAngle::AroundY(M_PI)).deltaToOrigin();
+        // const Rotation r = Rotation::Roll(0) * Rotation::Pitch(M_PI) * Rotation::Yaw(0);
+        //  [0, 100, 200]
         const Position pos1 = Position::MilliMeters({.y = 100, .z = 200});
         const Position rotPos = rot * pos1;
         CHECK(rotPos.toMilliMeters().x == doctest::Approx(0));
         CHECK(rotPos.toMilliMeters().y == doctest::Approx(100));
         CHECK(rotPos.toMilliMeters().z == doctest::Approx(-200));
 
-        const Difference<Position> trans = Position::MilliMeters({.x = 5, .z = 100}).deltaToOrigin();
+        Difference<Position> const trans =
+            Position::MilliMeters({.x = 5, .z = 100}).deltaToOrigin();
         const Position transPos = trans + pos1;
         CHECK(transPos == Position::MilliMeters({.x = 5, .y = 100, .z = 300}));
 
-        const Difference<Position> rotTrans = rot * trans;
+        Difference<Position> const rotTrans = rot * trans;
         CHECK(rotTrans.pointFromOrigin().toMilliMeters().x == doctest::Approx(-5));
         CHECK(rotTrans.pointFromOrigin().toMilliMeters().y == doctest::Approx(0));
         CHECK(rotTrans.pointFromOrigin().toMilliMeters().z == doctest::Approx(-100));
@@ -180,14 +177,13 @@ TEST_CASE("testing position")
         static const FrameID armar6FrameId = {.agent = "Armar6", .frame = "root"};
 
         const FrameTransform robotRoot_T_global(tf,
-                                                {.frame = armar6FrameId, .baseFrame = GlobalFrameID});
-        const FrameTransform global_T_robotRoot = robotRoot_T_global.inverse();
+                                                {.frame = armar6FrameId, .baseFrame =
+        GlobalFrameID}); const FrameTransform global_T_robotRoot = robotRoot_T_global.inverse();
         const FramedPosition robotRoot_Pt_tcp(Position(1, 2, 3), armar6FrameId);
 
         const FramedPosition global_Pt_tcp = global_T_robotRoot * robotRoot_Pt_tcp;*/
     }
 }
-
 
 TEST_CASE("testing velocity")
 {
@@ -196,7 +192,8 @@ TEST_CASE("testing velocity")
         using namespace quant;
 
         const Eigen::AngleAxisd radPerSec(M_PI / 2, Eigen::Vector3d(1, 0, 1).normalized());
-        const AngularVelocity av = AngularVelocity::RadiansPerSecond(AxisAngle::FromEigen(radPerSec));
+        const AngularVelocity av =
+            AngularVelocity::RadiansPerSecond(AxisAngle::FromEigen(radPerSec));
         const Eigen::AngleAxisd radPerSecReconstructed = av.toAngleAxis().toEigen();
 
         CHECK(radPerSecReconstructed.isApprox(radPerSec, Precision));
@@ -221,38 +218,38 @@ TEST_CASE("testing velocity")
         using namespace quant;
 
         // First measurement.
-        const Position x1 = Position::MilliMeters({.z = 100});
-        const TimePoint t1 = TimePoint::Seconds(15);
+        Position const x1 = Position::MilliMeters({.z = 100});
+        TimePoint const t1 = TimePoint::Seconds(15);
 
         // Second measurement.
-        const Position x2 = Position::MilliMeters({.x = 100, .y = 100, .z = 200});
-        const TimePoint t2 = TimePoint::Seconds(17);
+        Position const x2 = Position::MilliMeters({.x = 100, .y = 100, .z = 200});
+        TimePoint const t2 = TimePoint::Seconds(17);
 
         // Calculate differences.
-        const LinearDisplacement dx = x2 - x1;
-        const Duration dt = t2 - t1;
+        LinearDisplacement const dx = x2 - x1;
+        Duration const dt = t2 - t1;
 
         // Calculate linear velocity.
-        const LinearVelocity vel = dx / dt;
+        LinearVelocity const vel = dx / dt;
 
         // Calculate distance and speed.
-        const Distance dist = dx.toDistance();
-        const Speed speed = vel.toSpeed();
+        Distance const dist = dx.toDistance();
+        Speed const speed = vel.toSpeed();
 
         // Check distance.
-        const double distTarget = 173.20508075688772;
+        double const distTarget = 173.20508075688772;
         std::cout << "Distance actual: " << dist.toMilliMeters() << "." << std::endl;
         std::cout << "Distance target: " << distTarget << "." << std::endl;
         CHECK(dist.toMilliMeters() == doctest::Approx(distTarget));
 
         // Check speed.
-        const double speedTarget = distTarget / 2;
+        double const speedTarget = distTarget / 2;
         std::cout << "Speed actual: " << speed.toMilliMetersPerSecond() << "." << std::endl;
         std::cout << "Speed target: " << speedTarget << "." << std::endl;
         CHECK(speed.toMilliMetersPerSecond() == doctest::Approx(speedTarget));
 
         // Check velocity.
-        const LinearVelocity velTarget =
+        LinearVelocity const velTarget =
             LinearVelocity::MilliMetersPerSecond({.x = 50, .y = 50, .z = 50});
         std::cout << "Velocity actual: " << vel << "." << std::endl;
         std::cout << "Velocity target: " << velTarget << "." << std::endl;
@@ -260,20 +257,19 @@ TEST_CASE("testing velocity")
     }
 }
 
-
 TEST_CASE("testing force")
 {
     SUBCASE("CompoundTypesTest2")
     {
-        const Force f = Force::Newton(Vector({.y = 100}));
-        const Difference<Force> df = f.deltaToOrigin();
-        const Wrench w1 = Wrench::Zero();
-        const Wrench w2 = df + w1;
+        Force const f = Force::Newton(Vector({.y = 100}));
+        Difference<Force> const df = f.deltaToOrigin();
+        Wrench const w1 = Wrench::Zero();
+        Wrench const w2 = df + w1;
         CHECK(w2.linear() == f);
 
-        const Torque t = Torque::NewtonMeters(AxisAngle::AroundY(1));
-        const Difference<Torque> dt = t.deltaToOrigin();
-        const Wrench w3 = dt + w1;
+        Torque const t = Torque::NewtonMeters(AxisAngle::AroundY(1));
+        Difference<Torque> const dt = t.deltaToOrigin();
+        Wrench const w3 = dt + w1;
 
         std::cout << "Torque actual: " << w3.angular() << "." << std::endl;
         std::cout << "Torque target: " << t << "." << std::endl;
@@ -281,3 +277,103 @@ TEST_CASE("testing force")
     }
 }
 
+TEST_CASE("testing temperature")
+{
+    SUBCASE("testing canonical zero constructions")
+    {
+        Temperature const zeroDefault;
+
+        CHECK(zeroDefault.toDegreeCelsius() == 0);
+
+        Temperature const zeroDegreeCelsius = Temperature::DegreeCelcius(0);
+
+        CHECK(zeroDegreeCelsius.toDegreeCelsius() == 0);
+
+        Temperature const zeroDegreeCelsiusFromKelvin = Temperature::Kelvin(273.15);
+
+        CHECK(zeroDegreeCelsiusFromKelvin.toDegreeCelsius() == 0);
+
+        Temperature const zeroDegreeCelsiusFromDegreeFahrenheit = Temperature::DegreeFahrenheit(32);
+
+        CHECK(zeroDegreeCelsiusFromDegreeFahrenheit.toDegreeCelsius() == doctest::Approx(0));
+
+        Temperature const zeroDegreeCelsiusFromDegreeRankine = Temperature::DegreeRankine(491.67);
+
+        CHECK(zeroDegreeCelsiusFromDegreeRankine.toDegreeCelsius() == doctest::Approx(0));
+    }
+
+    SUBCASE("testing unit-specific zero constructions")
+    {
+        Temperature const zeroDegreeCelsius = Temperature::DegreeCelcius(0);
+
+        CHECK(zeroDegreeCelsius.toDegreeCelsius() == 0);
+
+        Temperature const zeroKelvin = Temperature::Kelvin(0);
+
+        CHECK(zeroKelvin.toDegreeCelsius() == -273.15);
+
+        Temperature const zeroDegreeFahrenheit = Temperature::DegreeFahrenheit(0);
+
+        CHECK(zeroDegreeFahrenheit.toDegreeCelsius() == doctest::Approx(-17.7778));
+
+        Temperature const zeroDegreeRankine = Temperature::DegreeRankine(0);
+
+        CHECK(zeroDegreeRankine.toDegreeCelsius() == doctest::Approx(-273.15));
+    }
+
+    SUBCASE("testing conversions of fix points")
+    {
+        // Data for these unit tests taken from the comparison table from the German wikipedia:
+        // https://de.wikipedia.org/wiki/Grad_Fahrenheit
+
+        Temperature const waterBoilingPoint = Temperature::DegreeCelcius(100);
+
+        CHECK(waterBoilingPoint.toDegreeCelsius() == 100);
+        CHECK(waterBoilingPoint.toKelvin() == 373.15);
+        CHECK(waterBoilingPoint.toDegreeFahrenheit() == 212);
+        CHECK(waterBoilingPoint.toDegreeRankine() == doctest::Approx(671.67));
+
+        // According to Fahrenheit.
+        Temperature const bodyTemperatureHuman = Temperature::DegreeFahrenheit(96);
+
+        CHECK(bodyTemperatureHuman.toDegreeCelsius() == doctest::Approx(35.5556));
+        CHECK(bodyTemperatureHuman.toDegreeFahrenheit() == doctest::Approx(96));
+        CHECK(bodyTemperatureHuman.toKelvin() == doctest::Approx(308.705));
+        CHECK(bodyTemperatureHuman.toDegreeRankine() == doctest::Approx(555.67));
+
+        Temperature const waterTriplePoint = Temperature::Kelvin(273.16);
+
+        CHECK(waterTriplePoint.toDegreeCelsius() == doctest::Approx(0.01));
+        CHECK(waterTriplePoint.toKelvin() == doctest::Approx(273.16));
+        CHECK(waterTriplePoint.toDegreeFahrenheit() == doctest::Approx(32.018));
+        CHECK(waterTriplePoint.toDegreeRankine() == doctest::Approx(491.688));
+
+        Temperature const waterFreezingPointC = Temperature::DegreeCelcius(0);
+
+        CHECK(waterFreezingPointC.toDegreeCelsius() == doctest::Approx(0));
+        CHECK(waterFreezingPointC.toKelvin() == doctest::Approx(273.15));
+        CHECK(waterFreezingPointC.toDegreeFahrenheit() == doctest::Approx(32));
+        CHECK(waterFreezingPointC.toDegreeRankine() == doctest::Approx(491.67));
+
+        Temperature const waterFreezingPointF = Temperature::DegreeFahrenheit(32);
+
+        CHECK(waterFreezingPointF.toDegreeCelsius() == doctest::Approx(0));
+        CHECK(waterFreezingPointF.toKelvin() == doctest::Approx(273.15));
+        CHECK(waterFreezingPointF.toDegreeFahrenheit() == doctest::Approx(32));
+        CHECK(waterFreezingPointF.toDegreeRankine() == doctest::Approx(491.67));
+
+        Temperature const nh4clIceWaterMix = Temperature::DegreeFahrenheit(0);
+
+        CHECK(nh4clIceWaterMix.toDegreeCelsius() == doctest::Approx(-17.7778));
+        CHECK(nh4clIceWaterMix.toKelvin() == doctest::Approx(255.372));
+        CHECK(nh4clIceWaterMix.toDegreeFahrenheit() == doctest::Approx(0));
+        CHECK(nh4clIceWaterMix.toDegreeRankine() == doctest::Approx(459.67));
+
+        Temperature const absoluteZero = Temperature::Kelvin(0);
+
+        CHECK(absoluteZero.toDegreeCelsius() == doctest::Approx(-273.15));
+        CHECK(absoluteZero.toKelvin() == doctest::Approx(0));
+        CHECK(absoluteZero.toDegreeFahrenheit() == doctest::Approx(-459.67));
+        CHECK(absoluteZero.toDegreeRankine() == doctest::Approx(0));
+    }
+}

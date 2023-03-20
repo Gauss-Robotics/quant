@@ -31,10 +31,6 @@ namespace quant::geometry
 
 
     template <typename T, typename DifferenceType>
-    T operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs);
-
-
-    template <typename T, typename DifferenceType>
     DifferenceType operator-(VectorQuantity<T, DifferenceType> const& lhs,
                              VectorQuantity<T, DifferenceType> const& rhs);
 
@@ -95,7 +91,7 @@ namespace quant::geometry
         Difference<T>
         deltaToOrigin() const
         {
-            return Difference<T>(static_cast<const T&>(*this));
+            return Difference<T>(static_cast<T const&>(*this));
         }
 
         // Convert.
@@ -119,29 +115,25 @@ namespace quant::geometry
         // Transform.
 
         template <typename T_, typename DifferenceType_>
-        friend T_ operator+(Difference<T_> const& lhs,
-                            VectorQuantity<T_, DifferenceType_> const& rhs);
-
-        template <typename T_, typename DifferenceType_>
         friend DifferenceType_ operator-(VectorQuantity<T_, DifferenceType_> const& lhs,
                                          VectorQuantity<T_, DifferenceType_> const& rhs);
 
         // Compare.
 
         bool
-        operator==(const T& rhs) const
+        operator==(T const& rhs) const
         {
             return representation_ == rhs.representation_;
         }
 
         bool
-        operator!=(const T& rhs) const
+        operator!=(T const& rhs) const
         {
             return representation_ != rhs.representation_;
         }
 
         bool
-        isApprox(const T& rhs, double precision) const
+        isApprox(T const& rhs, double precision) const
         {
             return representation_.isApprox(rhs.representation_, precision);
         }
@@ -157,13 +149,6 @@ namespace quant::geometry
 
 namespace quant
 {
-
-    template <typename T, typename DifferenceType>
-    T
-    geometry::operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs)
-    {
-        return T(lhs.pointFromOrigin().representation_ + rhs.representation_);
-    }
 
     template <typename T, typename DifferenceType>
     DifferenceType

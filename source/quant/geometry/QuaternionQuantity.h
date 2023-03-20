@@ -11,18 +11,15 @@
 namespace quant::geometry
 {
 
-    template <typename T>
+    template <typename T, typename DifferenceType>
     class QuaternionQuantity;
 
 
-    template <typename T>
-    T operator+(Difference<T> const& lhs, QuaternionQuantity<T> const& rhs);
+    template <typename T, typename DifferenceType>
+    Difference<T> operator-(QuaternionQuantity<T, DifferenceType> const& lhs,
+                            QuaternionQuantity<T, DifferenceType> const& rhs);
 
-
-    template <typename T>
-    Difference<T> operator-(QuaternionQuantity<T> const& lhs, QuaternionQuantity<T> const& rhs);
-
-    template <typename T>
+    template <typename T, typename DifferenceType = Difference<T>>
     class QuaternionQuantity
     {
     protected:
@@ -135,7 +132,7 @@ namespace quant::geometry
         Difference<T>
         deltaToOrigin() const
         {
-            return Difference<T>(static_cast<const T&>(*this));
+            return Difference<T>(static_cast<T const&>(*this));
         }
 
         // Convert.
@@ -164,17 +161,15 @@ namespace quant::geometry
 
         // Transform.
 
-        template <typename T_>
-        friend T_ geometry::operator+(Difference<T_> const& lhs, QuaternionQuantity<T_> const& rhs);
-
-        template <typename T_>
-        friend Difference<T_> geometry::operator-(QuaternionQuantity<T_> const& lhs,
-                                                  QuaternionQuantity<T_> const& rhs);
+        template <typename T_, typename DifferenceType_>
+        friend Difference<T_>
+        geometry::operator-(QuaternionQuantity<T_, DifferenceType_> const& lhs,
+                            QuaternionQuantity<T_, DifferenceType_> const& rhs);
 
         // Compare.
 
         bool
-        operator==(const T& rhs) const
+        operator==(T const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
@@ -182,7 +177,7 @@ namespace quant::geometry
         }
 
         bool
-        operator!=(const T& rhs) const
+        operator!=(T const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
@@ -190,10 +185,13 @@ namespace quant::geometry
         }
 
         bool
-        isApprox(const T& rhs, double const precision) const
+        isApprox(T const& rhs, double const precision) const
         {
             return representation_.isApprox(rhs.representation_, precision);
         }
+
+        using QuantityType = T;
+        using QuantityDifferenceType = DifferenceType;
 
     protected:
         Eigen::Quaterniond representation_;
@@ -203,13 +201,6 @@ namespace quant::geometry
 
 namespace quant
 {
-
-    template <typename T>
-    T
-    geometry::operator+(Difference<T> const& lhs, QuaternionQuantity<T> const& rhs)
-    {
-        return T(lhs.pointFromOrigin().representation_ * rhs.representation_);
-    }
 
     template <typename T>
     Difference<T>

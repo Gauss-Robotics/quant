@@ -101,12 +101,12 @@ namespace quant
             ;
         }
 
-        explicit Difference(const T& differenceObject) : differenceObject_{differenceObject}
+        explicit Difference(T const& differenceObject) : differenceObject_{differenceObject}
         {
             ;
         }
 
-        const T&
+        T const&
         pointFromOrigin() const
         {
             // point.deltaToOrigin() = delta = point - origin
@@ -201,6 +201,9 @@ template <typename Linear, typename Angular, typename Derived>
 Derived
 quant::operator+(Difference<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs)
 {
+    // TODO(dreher): Unclear whether this is desired. For types like Spatial it would make sense to
+    // add some linear velocity to a twist or similar, but it doesn't make much sense to add to
+    // positions or similar.
     return Derived(op + rhs.linear_, rhs.angular_);
 }
 
@@ -215,6 +218,7 @@ template <typename Linear, typename Angular, typename Derived>
 Derived
 quant::operator+(Difference<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs)
 {
+    // TODO(dreher): See above.
     return Derived(rhs.linear_, op + rhs.angular_);
 }
 
