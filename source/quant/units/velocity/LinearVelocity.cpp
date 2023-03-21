@@ -1,17 +1,15 @@
 #include "LinearVelocity.h"
 
-
 namespace quant::units::velocity
 {
 
-} // namespace quant::units::velocity
-
+}  // namespace quant::units::velocity
 
 namespace quant::units
 {
 
     velocity::LinearVelocity
-    position::operator/(const LinearDisplacement& dx, const Duration& dt)
+    position::operator/(LinearDisplacement const& dx, Duration const& dt)
     {
         const Eigen::Vector3d xyz =
             dx.pointFromOrigin().toMilliMeters().toEigen() / dt.toSecondsDouble();
@@ -20,10 +18,10 @@ namespace quant::units
     }
 
     std::ostream&
-    velocity::operator<<(std::ostream& out, const LinearVelocity& rhs)
+    velocity::operator<<(std::ostream& out, LinearVelocity const& rhs)
     {
         out << rhs.toString("LinearVelocity", "mm/s");
         return out;
     }
 
-} // namespace quant::units
+}  // namespace quant::units

@@ -1,23 +1,29 @@
 #pragma once
 
+#include <quant/geometry/ScalarQuantity.h>
 
 #include <cstdint>
 #include <ostream>
 #include <string>
 
-#include <quant/geometry/VectorQuantity.h>
+namespace quant::units::velocity
+{
 
+    class LinearVelocity;
+
+}
 
 namespace quant::units::speed
 {
 
     constexpr double m2mm = 1'000;
 
-
-    class Speed : geometry::Magnitude<Speed>
+    class Speed : public geometry::ScalarQuantity<Speed>
     {
 
     public:
+        Speed(quant::units::velocity::LinearVelocity const& vel);
+
         static Speed
         MilliMetersPerSecond(double milliMetersPerSecond)
         {
@@ -41,16 +47,16 @@ namespace quant::units::speed
         // Operators.
 
     protected:
-        using geometry::Magnitude<Speed>::Magnitude;
+        using geometry::ScalarQuantity<Speed>::ScalarQuantity;
     };
 
+    std::ostream& operator<<(std::ostream& out, Speed const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const Speed& rhs);
-
-} // namespace quant::units::speed
-
+}  // namespace quant::units::speed
 
 namespace quant
 {
+
     using units::speed::Speed;
-} // namespace quant
+
+}  // namespace quant

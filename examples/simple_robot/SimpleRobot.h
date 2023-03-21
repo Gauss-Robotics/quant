@@ -8,6 +8,7 @@ namespace simple_robot_example
 
     class SimpleRobot
     {
+    public:
     };
 
 } // namespace simple_robot_example

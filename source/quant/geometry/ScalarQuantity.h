@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <quant/geometry/common.h>
 
 #include <sstream>
@@ -11,7 +10,6 @@ namespace quant::geometry
 
     template <typename T, typename DifferenceType, typename ScalarType>
     class ScalarQuantity;
-
 
     template <typename T, typename DifferenceType, typename ScalarType>
     DifferenceType operator-(ScalarQuantity<T, DifferenceType, ScalarType> const& lhs,
@@ -37,7 +35,7 @@ namespace quant::geometry
         DifferenceType
         deltaToOrigin() const
         {
-            return DifferenceType(static_cast<const T&>(*this));
+            return DifferenceType(static_cast<T const&>(*this));
         }
 
         // Convert.
@@ -80,19 +78,19 @@ namespace quant::geometry
         // Compare.
 
         bool
-        operator==(const T& rhs) const
+        operator==(T const& rhs) const
         {
             return representation_ == rhs.representation_;
         }
 
         bool
-        operator!=(const T& rhs) const
+        operator!=(T const& rhs) const
         {
             return representation_ != rhs.representation_;
         }
 
         bool
-        isApprox(const T& rhs, ScalarType precision) const
+        isApprox(T const& rhs, ScalarType precision) const
         {
             return std::abs(representation_ - rhs.representation_) < precision;
         }

@@ -1,25 +1,30 @@
 #pragma once
 
-
-#include <ostream>
-
-#include <Eigen/Geometry>
-
 #include <quant/geometry/VectorQuantity.h>
 #include <quant/units/position/LinearDisplacement.h>
 #include <quant/units/position/Position.h>
-#include <quant/units/speed.h>
+#include <quant/units/speed/Speed.h>
 #include <quant/units/time/Duration.h>
 
+#include <Eigen/Geometry>
+
+#include <ostream>
 
 namespace quant::units::velocity
 {
 
-    class LinearVelocity : public geometry::VectorQuantity<LinearVelocity>
+    /**
+     * @brief An object of this class describes a linear velocity.
+     *
+     * - The difference of a LinearVelocity is LinearVelocityDifference.
+     * - The magnitude of a Linear Veloctiy is Speed.
+     */
+    class LinearVelocity :
+        public geometry::VectorQuantity<LinearVelocity, Difference<LinearVelocity>>
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<LinearVelocity>::VectorQuantity;
+        using geometry::VectorQuantity<LinearVelocity, Difference<LinearVelocity>>::VectorQuantity;
 
         static LinearVelocity
         Zero()
@@ -43,25 +48,24 @@ namespace quant::units::velocity
         Speed
         toSpeed() const
         {
-            return Speed::MilliMetersPerSecond(toMagnitude().toScalar());
+            return Speed::MilliMetersPerSecond(representation_.norm());
         }
     };
 
+    std::ostream& operator<<(std::ostream& out, LinearVelocity const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const LinearVelocity& rhs);
-
-} // namespace quant::units::velocity
-
+}  // namespace quant::units::velocity
 
 namespace quant::units::position
 {
 
-    velocity::LinearVelocity operator/(const LinearDisplacement& dx, const Duration& dt);
+    velocity::LinearVelocity operator/(LinearDisplacement const& dx, Duration const& dt);
 
-} // namespace quant::units::position
-
+}  // namespace quant::units::position
 
 namespace quant
 {
+
     using units::velocity::LinearVelocity;
-} // namespace quant
+
+}  // namespace quant

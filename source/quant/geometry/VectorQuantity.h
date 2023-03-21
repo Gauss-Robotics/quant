@@ -6,25 +6,10 @@
 
 #include <Eigen/Geometry>
 
-#include <quant/geometry/ScalarQuantity.h>
 #include <quant/geometry/common.h>
 
 namespace quant::geometry
 {
-
-    template <typename VectorType>
-    class Magnitude : public ScalarQuantity<Magnitude<VectorType>>
-    {
-    public:
-        using geometry::ScalarQuantity<Magnitude<VectorType>>::ScalarQuantity;
-
-        Magnitude(double value) :
-            geometry::ScalarQuantity<Magnitude<VectorType>>::ScalarQuantity(value)
-        {
-            ; // TODO: Why is this required?!
-        }
-    };
-
 
     template <typename T, typename DifferenceType>
     class VectorQuantity;
@@ -65,12 +50,6 @@ namespace quant::geometry
         toVector() const
         {
             return Vector::FromEigen(representation_);
-        }
-
-        Magnitude<T>
-        toMagnitude() const
-        {
-            return Magnitude<T>(representation_.norm());
         }
 
     public:

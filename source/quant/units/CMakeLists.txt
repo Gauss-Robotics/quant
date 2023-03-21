@@ -54,6 +54,7 @@ add_library(units SHARED
     speed.h
     speed_fwd.h
     speed/Speed.h
+    speed/Speed.cpp
 
     mass.h
     mass_fwd.h
