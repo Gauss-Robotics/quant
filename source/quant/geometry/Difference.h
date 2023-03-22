@@ -15,6 +15,9 @@ namespace quant::geometry
         using DifferenceType = Difference<Type>;
     };
 
+    /**
+     * Represents the difference of two objects of type T.
+     */
     template <typename T>
     class Difference
     {
@@ -29,37 +32,36 @@ namespace quant::geometry
             ;
         }
 
-        T const&
-        pointFromOrigin() const
-        {
-            // point.deltaToOrigin() = delta = point - origin
-            // delta.pointFromOrigin() = point = delta + origin
-            return differenceObject_;
-        }
-
         bool
         operator==(Difference<T> const& rhs) const
         {
-            return this->differenceObject_ == rhs.differenceObject_;
+            return differenceObject_ == rhs.differenceObject_;
         }
 
         bool
         operator!=(Difference<T> const& rhs) const
         {
-            return this->differenceObject_ != rhs.differenceObject_;
+            return differenceObject_ != rhs.differenceObject_;
         }
 
-    protected:
+    public:
         T differenceObject_;
     };
 
     template <typename T>
     T
-    operator+(typename DefineDifferenceType<T>::DifferenceType const& lhs, T const& rhs);
+    operator+(typename DefineDifferenceType<T>::DifferenceType const& lhs, T const& rhs)
+    {
+        return lhs.differenceObject_.representation_ + rhs.representation_;
+    }
 
     template <typename T>
     typename DefineDifferenceType<T>::DifferenceType
-    operator-(T const& lhs, T const& rhs);
+    operator-(T const& lhs, T const& rhs)
+    {
+        using DifferenceType = typename DefineDifferenceType<T>::DifferenceType;
+        return DifferenceType(lhs.representation_ - rhs.representation_);
+    }
 
 }  // namespace quant::geometry
 

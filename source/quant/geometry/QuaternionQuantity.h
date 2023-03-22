@@ -15,11 +15,13 @@ namespace quant::geometry
     class QuaternionQuantity;
 
     template <typename T, typename DifferenceType>
-    T operator+(Difference<T> const& lhs, QuaternionQuantity<T, DifferenceType> const& rhs);
+    T
+    operator+(Difference<T> const& lhs, QuaternionQuantity<T, DifferenceType> const& rhs);
 
     template <typename T, typename DifferenceType>
-    Difference<T> operator-(QuaternionQuantity<T, DifferenceType> const& lhs,
-                            QuaternionQuantity<T, DifferenceType> const& rhs);
+    Difference<T>
+    operator-(QuaternionQuantity<T, DifferenceType> const& lhs,
+              QuaternionQuantity<T, DifferenceType> const& rhs);
 
     template <typename T, typename DifferenceType = Difference<T>>
     class QuaternionQuantity
@@ -164,8 +166,9 @@ namespace quant::geometry
         // Transform.
 
         template <typename T_, typename DifferenceType_>
-        friend T_ geometry::operator+(Difference<T_> const& lhs,
-                                      QuaternionQuantity<T_, DifferenceType_> const& rhs);
+        friend T_
+        geometry::operator+(Difference<T_> const& lhs,
+                            QuaternionQuantity<T_, DifferenceType_> const& rhs);
 
         template <typename T_, typename DifferenceType_>
         friend Difference<T_>
@@ -199,8 +202,10 @@ namespace quant::geometry
         using QuantityType = T;
         using QuantityDifferenceType = DifferenceType;
 
-    protected:
+    public:
         Eigen::Quaterniond representation_;
+
+        friend class Difference<T>;
     };
 
 }  // namespace quant::geometry

@@ -12,8 +12,9 @@ namespace quant::geometry
     class ScalarQuantity;
 
     template <typename T, typename DifferenceType, typename ScalarType>
-    DifferenceType operator-(ScalarQuantity<T, DifferenceType, ScalarType> const& lhs,
-                             ScalarQuantity<T, DifferenceType, ScalarType> const& rhs);
+    DifferenceType
+    operator-(ScalarQuantity<T, DifferenceType, ScalarType> const& lhs,
+              ScalarQuantity<T, DifferenceType, ScalarType> const& rhs);
 
     template <typename T, typename DifferenceType = Difference<T>, typename ScalarType = double>
     class ScalarQuantity
@@ -102,6 +103,8 @@ namespace quant::geometry
         }
 
         ScalarType representation_;
+
+        friend class Difference<T>;
     };
 
     template <typename T, typename DifferenceType>

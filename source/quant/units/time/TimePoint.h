@@ -1,19 +1,15 @@
 #pragma once
 
+#include <quant/geometry/ScalarQuantity.h>
+#include <quant/units/time/detail/UnitConversions.h>
+#include <quant/units/time_fwd.h>
 
 #include <cstdint>
 #include <ostream>
 #include <string>
 
-#include <quant/geometry/ScalarQuantity.h>
-#include <quant/units/time/detail/UnitConversions.h>
-
-
 namespace quant::units::time
 {
-
-    class Duration;
-
 
     /**
      * @brief Represents a time point.
@@ -33,25 +29,29 @@ namespace quant::units::time
          * @param microSeconds Amount of microseconds.
          * @return TimePoint instance.
          */
-        static TimePoint MicroSeconds(std::int64_t microSeconds);
+        static TimePoint
+        MicroSeconds(std::int64_t microSeconds);
 
         /**
          * @brief Returns the amount of microseconds.
          * @return Amount of microseconds.
          */
-        std::int64_t toMicroSeconds() const;
+        std::int64_t
+        toMicroSeconds() const;
 
         /**
          * @brief Tests whether the time point is positive (value in µs > 0).
          * @return True if time point is positive, else otherwise.
          */
-        bool isPositive() const;
+        bool
+        isPositive() const;
 
         /**
          * @brief Tests whether the time point is zero.
          * @return True if time point is zero, else otherwise.
          */
-        bool isZero() const;
+        bool
+        isZero() const;
 
         /**
          * @brief String representation of the current time point in minimal/default format.
@@ -81,36 +81,41 @@ namespace quant::units::time
          * @return Formatted time point.
          */
         std::string
-        toTimePointString(const std::string& format) const
+        toTimePointString(std::string const& format) const
         {
             return toQuantityUnitString(format);
         }
 
         // Operators.
 
-        bool operator<(const TimePoint& rhs) const;
+        bool
+        operator<(TimePoint const& rhs) const;
 
-        bool operator<=(const TimePoint& rhs) const;
+        bool
+        operator<=(TimePoint const& rhs) const;
 
-        bool operator==(const TimePoint& rhs) const;
+        bool
+        operator==(TimePoint const& rhs) const;
 
-        bool operator!=(const TimePoint& rhs) const;
+        bool
+        operator!=(TimePoint const& rhs) const;
 
-        bool operator>=(const TimePoint& rhs) const;
+        bool
+        operator>=(TimePoint const& rhs) const;
 
-        bool operator>(const TimePoint& rhs) const;
+        bool
+        operator>(TimePoint const& rhs) const;
 
     protected:
         using geometry::ScalarIntegerQuantity<TimePoint, Duration>::ScalarQuantity;
     };
 
+    std::ostream&
+    operator<<(std::ostream& out, TimePoint const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const TimePoint& rhs);
-
-} // namespace quant::units::time
-
+}  // namespace quant::units::time
 
 namespace quant
 {
     using units::time::TimePoint;
-} // namespace quant
+}  // namespace quant

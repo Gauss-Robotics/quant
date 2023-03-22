@@ -2,6 +2,18 @@
 
 #include <quant/geometry/Difference.h>
 #include <quant/units/position/Pose.h>
+#include <quant/units/position_fwd.h>
+
+namespace quant::geometry
+{
+
+    template <>
+    struct DefineDifferenceType<quant::Pose>
+    {
+        using DifferenceType = units::position::SpatialDisplacement;
+    };
+
+}  // namespace quant::geometry
 
 namespace quant::units::position
 {

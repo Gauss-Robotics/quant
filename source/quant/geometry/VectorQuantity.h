@@ -11,17 +11,7 @@
 namespace quant::geometry
 {
 
-    template <typename T, typename DifferenceType>
-    class VectorQuantity;
-
-    template <typename T, typename DifferenceType>
-    T operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs);
-
-    template <typename T, typename DifferenceType>
-    DifferenceType operator-(VectorQuantity<T, DifferenceType> const& lhs,
-                             VectorQuantity<T, DifferenceType> const& rhs);
-
-    template <typename T, typename DifferenceType = Difference<T>>
+    template <typename T>
     class VectorQuantity
     {
     protected:
@@ -69,18 +59,11 @@ namespace quant::geometry
             return T(0, 0, 0);
         }
 
-        Difference<T>
-        deltaToOrigin() const
-        {
-            return Difference<T>(static_cast<T const&>(*this));
-        }
-
         // Convert.
 
         std::string
         toString(std::string const& quantityName = "", std::string const& unit = "") const
         {
-            const Vector v = toVector();
             std::stringstream out;
             out << "<";
 
@@ -89,19 +72,9 @@ namespace quant::geometry
                 out << quantityName << " ";
             }
 
-            out << v.toString(unit) << ">";
+            out << toVector().toString(unit) << ">";
             return out.str();
         }
-
-        // Transform.
-
-        template <typename T_, typename DifferenceType_>
-        friend T_ operator+(Difference<T_> const& lhs,
-                            VectorQuantity<T_, DifferenceType_> const& rhs);
-
-        template <typename T_, typename DifferenceType_>
-        friend DifferenceType_ operator-(VectorQuantity<T_, DifferenceType_> const& lhs,
-                                         VectorQuantity<T_, DifferenceType_> const& rhs);
 
         // Compare.
 
@@ -123,31 +96,11 @@ namespace quant::geometry
             return representation_.isApprox(rhs.representation_, precision);
         }
 
-        using QuantityType = T;
-        using QuantityDifferenceType = DifferenceType;
-
-    protected:
+    public:  // TODO(dreher): Make protected.
         Eigen::Vector3d representation_;
+
+        friend class Difference<T>;
+        friend class AngularDisplacement;
     };
 
 }  // namespace quant::geometry
-
-namespace quant
-{
-
-    template <typename T, typename DifferenceType>
-    T
-    geometry::operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs)
-    {
-        return T(lhs.pointFromOrigin().representation_ + rhs.representation_);
-    }
-
-    template <typename T, typename DifferenceType>
-    DifferenceType
-    geometry::operator-(VectorQuantity<T, DifferenceType> const& lhs,
-                        VectorQuantity<T, DifferenceType> const& rhs)
-    {
-        return DifferenceType(T(lhs.representation_ - rhs.representation_));
-    }
-
-}  // namespace quant

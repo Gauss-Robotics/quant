@@ -64,7 +64,7 @@ namespace quant::geometry
     inline std::ostream&
     operator<<(std::ostream& os, Vector const& v)
     {
-        return os << v.toString();
+        return os << "<Vector " << v.toString() << ">";
     }
 
 }  // namespace quant::geometry

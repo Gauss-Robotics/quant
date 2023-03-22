@@ -64,6 +64,8 @@ namespace quant::geometry
         }
 
         Eigen::Isometry3d representation_;
+
+        friend class Difference<T>;
     };
 
 }  // namespace quant::geometry

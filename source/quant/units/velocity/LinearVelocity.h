@@ -19,12 +19,11 @@ namespace quant::units::velocity
      * - The difference of a LinearVelocity is LinearVelocityDifference.
      * - The magnitude of a Linear Veloctiy is Speed.
      */
-    class LinearVelocity :
-        public geometry::VectorQuantity<LinearVelocity, Difference<LinearVelocity>>
+    class LinearVelocity : public geometry::VectorQuantity<LinearVelocity>
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<LinearVelocity, Difference<LinearVelocity>>::VectorQuantity;
+        using geometry::VectorQuantity<LinearVelocity>::VectorQuantity;
 
         static LinearVelocity
         Zero()
@@ -52,14 +51,16 @@ namespace quant::units::velocity
         }
     };
 
-    std::ostream& operator<<(std::ostream& out, LinearVelocity const& rhs);
+    std::ostream&
+    operator<<(std::ostream& out, LinearVelocity const& rhs);
 
 }  // namespace quant::units::velocity
 
 namespace quant::units::position
 {
 
-    velocity::LinearVelocity operator/(LinearDisplacement const& dx, Duration const& dt);
+    velocity::LinearVelocity
+    operator/(LinearDisplacement const& dx, Duration const& dt);
 
 }  // namespace quant::units::position
 

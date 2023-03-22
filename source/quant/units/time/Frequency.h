@@ -1,12 +1,10 @@
 #pragma once
 
+#include <quant/units/time/Duration.h>
 
 #include <cstdint>
 #include <ostream>
 #include <string>
-
-#include <quant/units/time/Duration.h>
-
 
 namespace quant::units::time
 {
@@ -18,67 +16,96 @@ namespace quant::units::time
     {
         // Public API.
     public:
-        Frequency(const Duration& cycleDuration);
+        Frequency(Duration const& cycleDuration);
 
-        static Frequency Hertz(std::int64_t hertz);
+        static Frequency
+        Hertz(std::int64_t hertz);
 
-        static Frequency HertzDouble(double hertz);
+        static Frequency
+        HertzDouble(double hertz);
 
-        std::int64_t toHertz() const;
+        std::int64_t
+        toHertz() const;
 
-        double toHertzDouble() const;
+        double
+        toHertzDouble() const;
 
-        Duration toCycleDuration() const;
+        Duration
+        toCycleDuration() const;
 
-        std::string toFrequencyString() const;
+        std::string
+        toFrequencyString() const;
 
         // Operators.
     public:
-        Frequency operator+(const Frequency& rhs) const;
+        Frequency
+        operator+(Frequency const& rhs) const;
 
-        Frequency& operator+=(const Frequency& rhs);
+        Frequency&
+        operator+=(Frequency const& rhs);
 
-        Frequency operator-(const Frequency& rhs) const;
+        Frequency
+        operator-(Frequency const& rhs) const;
 
-        Frequency& operator-=(const Frequency& rhs);
+        Frequency&
+        operator-=(Frequency const& rhs);
 
-        Frequency operator*(double rhs) const;
+        Frequency
+        operator*(double rhs) const;
 
-        Frequency operator*(int rhs) const;
+        Frequency
+        operator*(int rhs) const;
 
-        Frequency operator*(std::int64_t rhs) const;
+        Frequency
+        operator*(std::int64_t rhs) const;
 
-        Frequency& operator*=(double rhs);
+        Frequency&
+        operator*=(double rhs);
 
-        Frequency& operator*=(int rhs);
+        Frequency&
+        operator*=(int rhs);
 
-        Frequency& operator*=(std::int64_t rhs);
+        Frequency&
+        operator*=(std::int64_t rhs);
 
-        double operator/(const Frequency& rhs) const;
+        double
+        operator/(Frequency const& rhs) const;
 
-        Frequency operator/(double rhs) const;
+        Frequency
+        operator/(double rhs) const;
 
-        Frequency operator/(int rhs) const;
+        Frequency
+        operator/(int rhs) const;
 
-        Frequency operator/(std::int64_t rhs) const;
+        Frequency
+        operator/(std::int64_t rhs) const;
 
-        Frequency& operator/=(double rhs);
+        Frequency&
+        operator/=(double rhs);
 
-        Frequency& operator/=(int rhs);
+        Frequency&
+        operator/=(int rhs);
 
-        Frequency& operator/=(std::int64_t rhs);
+        Frequency&
+        operator/=(std::int64_t rhs);
 
-        bool operator<(const Frequency& rhs) const;
+        bool
+        operator<(Frequency const& rhs) const;
 
-        bool operator<=(const Frequency& rhs) const;
+        bool
+        operator<=(Frequency const& rhs) const;
 
-        bool operator==(const Frequency& rhs) const;
+        bool
+        operator==(Frequency const& rhs) const;
 
-        bool operator!=(const Frequency& rhs) const;
+        bool
+        operator!=(Frequency const& rhs) const;
 
-        bool operator>=(const Frequency& rhs) const;
+        bool
+        operator>=(Frequency const& rhs) const;
 
-        bool operator>(const Frequency& rhs) const;
+        bool
+        operator>(Frequency const& rhs) const;
 
     protected:
         /**
@@ -87,20 +114,21 @@ namespace quant::units::time
         Duration cycleDuration_;
     };
 
+    Frequency
+    operator/(double cyclesPerDuration, Duration const& duration);
 
-    Frequency operator/(double cyclesPerDuration, const Duration& duration);
+    Frequency
+    operator/(int cyclesPerDuration, Duration const& duration);
 
-    Frequency operator/(int cyclesPerDuration, const Duration& duration);
+    Frequency
+    operator/(std::int64_t cyclesPerDuration, Duration const& duration);
 
-    Frequency operator/(std::int64_t cyclesPerDuration, const Duration& duration);
+    std::ostream&
+    operator<<(std::ostream& out, Frequency const& rhs);
 
-
-    std::ostream& operator<<(std::ostream& out, const Frequency& rhs);
-
-} // namespace quant::units::time
-
+}  // namespace quant::units::time
 
 namespace quant
 {
     using units::time::Frequency;
-} // namespace quant
+}  // namespace quant

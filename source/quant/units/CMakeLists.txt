@@ -3,7 +3,6 @@ add_library(units SHARED
 
     time.h
     time_fwd.h
-    time/forward_declarations.h
     time/TimePoint.h
     time/TimePoint.cpp
     time/Duration.h
@@ -17,7 +16,6 @@ add_library(units SHARED
     position/Position.h
     position/Position.cpp
     position/Orientation.h
-    position/Orientation.cpp
     position/Pose.h
     position/Pose.cpp
     position/LinearDisplacement.h
@@ -32,6 +30,7 @@ add_library(units SHARED
     velocity/AngularVelocity.cpp
     velocity/Twist.h
     velocity/Twist.cpp
+    velocity/LinearVelocityDifference.h
 
     acceleration.h
     acceleration_fwd.h
@@ -68,6 +67,7 @@ add_library(units SHARED
     force/Torque.cpp
     force/Wrench.h
     force/Wrench.cpp
+    force/ForceDifference.h
 
     temperature.h
     temperature_fwd.h

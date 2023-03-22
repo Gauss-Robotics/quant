@@ -4,21 +4,21 @@
 #include <quant/units/position_fwd.h>
 #include <quant/units/time/Duration.h>
 
-#include <Eigen/Geometry>
-
 #include <ostream>
 
 namespace quant::units::position
 {
 
-    class Position : public geometry::VectorQuantity<Position, LinearDisplacement>
+    /**
+     * @brief Models a position in Euclidean space.
+     */
+    class Position : public geometry::VectorQuantity<Position>
     {
-        friend class LinearDisplacement;
 
     public:
         // Construct.
 
-        using geometry::VectorQuantity<Position, LinearDisplacement>::VectorQuantity;
+        using geometry::VectorQuantity<Position>::VectorQuantity;
 
         static Position
         MilliMeters(double x, double y, double z)
@@ -51,28 +51,24 @@ namespace quant::units::position
         Vector
         toMilliMeters() const
         {
-            return {representation_.x(), representation_.y(), representation_.z()};
+            return {.x = representation_.x(), .y = representation_.y(), .z = representation_.z()};
         }
 
-    protected:
-        friend Position operator*(Difference<Orientation> const& rotation,
-                                  Position const& position);
-        friend Difference<Position> operator*(Difference<Orientation> const& rotation,
-                                              Difference<Position> const& translation);
+        friend class LinearDisplacement;
+        friend class AngularDisplacement;
     };
 
-    std::ostream& operator<<(std::ostream& out, Position const& rhs);
-
-    /// Rotate a position.
-    Position operator*(Difference<Orientation> const& rotation, Position const& position);
-
-    /// Rotate a translation.
-    Difference<Position> operator*(Difference<Orientation> const& rotation,
-                                   Difference<Position> const& translation);
+    inline std::ostream&
+    operator<<(std::ostream& out, Position const& rhs)
+    {
+        return out << rhs.toString("Position", "mm");
+    }
 
 }  // namespace quant::units::position
 
 namespace quant
 {
+
     using units::position::Position;
+
 }  // namespace quant

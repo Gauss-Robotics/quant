@@ -12,7 +12,7 @@ namespace quant::units
     position::operator/(LinearDisplacement const& dx, Duration const& dt)
     {
         const Eigen::Vector3d xyz =
-            dx.pointFromOrigin().toMilliMeters().toEigen() / dt.toSecondsDouble();
+            dx.differenceObject_.toMilliMeters().toEigen() / dt.toSecondsDouble();
         return velocity::LinearVelocity::MilliMetersPerSecond(
             {.x = xyz.x(), .y = xyz.y(), .z = xyz.z()});
     }

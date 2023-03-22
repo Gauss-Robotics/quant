@@ -1,10 +1,7 @@
 #pragma once
 
-
 #include <quant/geometry/QuaternionQuantity.h>
 #include <quant/units/position_fwd.h>
-
-#include <Eigen/Geometry>
 
 #include <ostream>
 
@@ -32,15 +29,19 @@ namespace quant::units::position
             return this->toAngleAxis();
         }
 
-
     protected:
-        friend Position operator*(Difference<Orientation> const& rotation,
-                                  Position const& position);
-        friend Difference<Position> operator*(Difference<Orientation> const& rotation,
-                                              Difference<Position> const& translation);
+        friend Position
+        operator*(Difference<Orientation> const& rotation, Position const& position);
+        friend Difference<Position>
+        operator*(Difference<Orientation> const& rotation, Difference<Position> const& translation);
     };
 
-    std::ostream& operator<<(std::ostream& out, Orientation const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, Orientation const& rhs)
+    {
+        out << rhs.toString("Orientation", "rad");
+        return out;
+    }
 
 }  // namespace quant::units::position
 

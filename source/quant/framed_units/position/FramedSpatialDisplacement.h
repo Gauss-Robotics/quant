@@ -13,7 +13,7 @@ namespace quant::framed_geometry
         using FramedType = framed_units::position::FramedSpatialDisplacement;
     };
 
-} // namespace quant::framed_geometry
+}  // namespace quant::framed_geometry
 
 namespace quant::framed_units::position
 {
@@ -23,11 +23,11 @@ namespace quant::framed_units::position
         using Framed<SpatialDisplacement>::Framed;
     };
 
-} // namespace quant::framed_units::position
+}  // namespace quant::framed_units::position
 
 namespace quant
 {
 
     using framed_units::position::FramedSpatialDisplacement;
 
-} // namespace quant
+}  // namespace quant

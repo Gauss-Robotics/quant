@@ -3,10 +3,25 @@
 #include <quant/geometry/Difference.h>
 #include <quant/units/time/TimePoint.h>
 #include <quant/units/time/detail/UnitConversions.h>
+#include <quant/units/time_fwd.h>
+
+namespace quant::geometry
+{
+
+    template <>
+    struct DefineDifferenceType<quant::TimePoint>
+    {
+        using DifferenceType = units::time::Duration;
+    };
+
+}  // namespace quant::geometry
 
 namespace quant::units::time
 {
 
+    /**
+     * @brief Represents a duration.
+     */
     class Duration :
         // A duration is the difference of time points.
         public Difference<TimePoint>,
@@ -50,13 +65,15 @@ namespace quant::units::time
          * @brief Tests whether the time point is positive (value in µs > 0).
          * @return True if time point is positive, else otherwise.
          */
-        bool isPositive() const;
+        bool
+        isPositive() const;
 
         /**
          * @brief Tests whether the time point is zero.
          * @return True if time point is zero, else otherwise.
          */
-        bool isZero() const;
+        bool
+        isZero() const;
 
         /**
          * @brief String representation of the current duration in minimal/default format.
@@ -91,54 +108,78 @@ namespace quant::units::time
             return toQuantityUnitString(format);
         }
 
-        Duration operator+(Duration const& rhs) const;
+        Duration
+        operator+(Duration const& rhs) const;
 
-        Duration& operator+=(Duration const& rhs);
+        Duration&
+        operator+=(Duration const& rhs);
 
-        Duration operator-(Duration const& rhs) const;
+        Duration
+        operator-(Duration const& rhs) const;
 
-        Duration& operator-=(Duration const& rhs);
+        Duration&
+        operator-=(Duration const& rhs);
 
-        Duration operator*(double rhs) const;
+        Duration
+        operator*(double rhs) const;
 
-        Duration operator*(int rhs) const;
+        Duration
+        operator*(int rhs) const;
 
-        Duration operator*(std::int64_t rhs) const;
+        Duration
+        operator*(std::int64_t rhs) const;
 
-        Duration& operator*=(double rhs);
+        Duration&
+        operator*=(double rhs);
 
-        Duration& operator*=(int rhs);
+        Duration&
+        operator*=(int rhs);
 
-        Duration& operator*=(std::int64_t rhs);
+        Duration&
+        operator*=(std::int64_t rhs);
 
-        double operator/(Duration const& rhs) const;
+        double
+        operator/(Duration const& rhs) const;
 
-        Duration operator/(double rhs) const;
+        Duration
+        operator/(double rhs) const;
 
-        Duration operator/(int rhs) const;
+        Duration
+        operator/(int rhs) const;
 
-        Duration operator/(std::int64_t rhs) const;
+        Duration
+        operator/(std::int64_t rhs) const;
 
-        Duration& operator/=(double rhs);
+        Duration&
+        operator/=(double rhs);
 
-        Duration& operator/=(int rhs);
+        Duration&
+        operator/=(int rhs);
 
-        Duration& operator/=(std::int64_t rhs);
+        Duration&
+        operator/=(std::int64_t rhs);
 
-        bool operator<(Duration const& rhs) const;
+        bool
+        operator<(Duration const& rhs) const;
 
-        bool operator<=(Duration const& rhs) const;
+        bool
+        operator<=(Duration const& rhs) const;
 
-        bool operator==(Duration const& rhs) const;
+        bool
+        operator==(Duration const& rhs) const;
 
-        bool operator!=(Duration const& rhs) const;
+        bool
+        operator!=(Duration const& rhs) const;
 
-        bool operator>=(Duration const& rhs) const;
+        bool
+        operator>=(Duration const& rhs) const;
 
-        bool operator>(Duration const& rhs) const;
+        bool
+        operator>(Duration const& rhs) const;
     };
 
-    std::ostream& operator<<(std::ostream& out, Duration const& rhs);
+    std::ostream&
+    operator<<(std::ostream& out, Duration const& rhs);
 
 }  // namespace quant::units::time
 
