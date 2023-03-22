@@ -1,7 +1,6 @@
 #pragma once
 
-
-#include <quant/geometry/common.h>
+#include <quant/geometry/Spatial.h>
 #include <quant/units/force/Force.h>
 #include <quant/units/force/Torque.h>
 

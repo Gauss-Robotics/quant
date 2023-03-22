@@ -10,4 +10,4 @@ namespace quant::units::speed
         ;
     }
 
-} // namespace quant::units::speed
+}  // namespace quant::units::speed

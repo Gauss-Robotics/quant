@@ -1,10 +1,8 @@
 #pragma once
 
-
-#include <quant/geometry/common.h>
+#include <quant/geometry/Spatial.h>
 #include <quant/units/velocity/AngularVelocity.h>
 #include <quant/units/velocity/LinearVelocity.h>
-
 
 namespace quant::units::velocity
 {
@@ -19,8 +17,7 @@ namespace quant::units::velocity
         using Spatial<LinearVelocity, AngularVelocity, Twist>::Spatial;
     };
 
-} // namespace quant::units::velocity
-
+}  // namespace quant::units::velocity
 
 namespace quant
 {

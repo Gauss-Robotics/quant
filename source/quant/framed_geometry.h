@@ -1,4 +1,3 @@
 #pragma once
 
-
-#include <quant/framed_geometry/common.h>
+#include <quant/framed_geometry/Framed.h>

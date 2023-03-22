@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/common.h>
+#include <quant/geometry/Difference.h>
 
 #include <sstream>
 #include <typeinfo>

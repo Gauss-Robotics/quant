@@ -1,8 +1,11 @@
 add_library(geometry SHARED
     ../geometry.h
+    ../geometry_fwd.h
 
-    common.h
-    common.cpp
+    Vector.h
+    AxisAngle.h
+    Spatial.h
+    Difference.h
 
     ScalarQuantity.h
     VectorQuantity.h

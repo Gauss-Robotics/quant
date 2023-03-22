@@ -17,9 +17,9 @@ add_library(framed_units SHARED
     position/FramedPosition.h
     position/FramedOrientation.h
     position/FramedPose.h
-    #position/FramedLinearDisplacement.h
-    #position/FramedAngularDisplacement.h
-    #position/FramedSpatialDisplacement.h
+    position/FramedLinearDisplacement.h
+    position/FramedAngularDisplacement.h
+    position/FramedSpatialDisplacement.h
 
     #velocity.h
     #velocity_fwd.h

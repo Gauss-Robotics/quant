@@ -1,5 +1,6 @@
 #pragma once
 
+#include <quant/geometry/Difference.h>
 
 #include <Eigen/Geometry>
 
@@ -9,7 +10,7 @@
 namespace quant::geometry
 {
 
-    template <typename T>
+    template <typename T, typename DifferenceType = Difference<T>>
     class IsometryQuantity
     {
         // Construct.

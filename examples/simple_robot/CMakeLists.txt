@@ -9,6 +9,6 @@ set_target_properties(simple_robot_example
 )
 
 target_link_libraries(simple_robot_example
-    PRIVATE
+    PUBLIC
         quant::framed_units
 )

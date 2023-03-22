@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace quant::units::position
 {
 
@@ -12,8 +11,7 @@ namespace quant::units::position
     class AngularDisplacement;
     class SpatialDisplacement;
 
-} // namespace quant::units::position
-
+}  // namespace quant::units::position
 
 namespace quant
 {
@@ -22,8 +20,8 @@ namespace quant
     using units::position::Pose;
     using units::position::Position;
 
-    using units::position::LinearDisplacement;
     using units::position::AngularDisplacement;
+    using units::position::LinearDisplacement;
     using units::position::SpatialDisplacement;
 
-} // namespace quant
+}  // namespace quant

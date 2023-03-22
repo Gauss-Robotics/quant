@@ -1,12 +1,12 @@
 #pragma once
 
-
-#include <ostream>
-#include <typeinfo>
+#include <quant/geometry/Difference.h>
+#include <quant/geometry/Vector.h>
 
 #include <Eigen/Geometry>
 
-#include <quant/geometry/common.h>
+#include <ostream>
+#include <typeinfo>
 
 namespace quant::geometry
 {
@@ -14,10 +14,8 @@ namespace quant::geometry
     template <typename T, typename DifferenceType>
     class VectorQuantity;
 
-
     template <typename T, typename DifferenceType>
     T operator+(Difference<T> const& lhs, VectorQuantity<T, DifferenceType> const& rhs);
-
 
     template <typename T, typename DifferenceType>
     DifferenceType operator-(VectorQuantity<T, DifferenceType> const& lhs,
@@ -91,7 +89,7 @@ namespace quant::geometry
                 out << quantityName << " ";
             }
 
-            out << io::toString(v, unit) << ">";
+            out << v.toString(unit) << ">";
             return out.str();
         }
 
@@ -132,7 +130,7 @@ namespace quant::geometry
         Eigen::Vector3d representation_;
     };
 
-} // namespace quant::geometry
+}  // namespace quant::geometry
 
 namespace quant
 {
@@ -152,4 +150,4 @@ namespace quant
         return DifferenceType(T(lhs.representation_ - rhs.representation_));
     }
 
-} // namespace quant
+}  // namespace quant

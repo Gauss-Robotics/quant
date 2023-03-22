@@ -1,10 +1,9 @@
 #pragma once
 
+#include <Eigen/Geometry>
 
 #include <quant/geometry/IsometryQuantity.h>
 #include <quant/units/position_fwd.h>
-
-#include <Eigen/Geometry>
 
 namespace quant::units::position
 {
@@ -19,9 +18,9 @@ namespace quant::units::position
         friend class Transform;
     };
 
-}  // namespace quant::units::position
+} // namespace quant::units::position
 
 namespace quant
 {
     using units::position::Pose;
-}  // namespace quant
+} // namespace quant

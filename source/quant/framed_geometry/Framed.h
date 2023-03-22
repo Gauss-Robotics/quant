@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <array>
 #include <cassert>
 #include <cstdio>
@@ -18,10 +17,18 @@ namespace quant::framed_geometry
         std::string_view baseFrame;
     };
 
-
     template <typename T>
     class Framed;
 
+    /**
+     * Template meta programming utility to define the framed type of a type via template
+     * specialization.
+     */
+    template <typename Type>
+    struct DefineFramedType
+    {
+        using FramedType = Framed<Type>;
+    };
 
     template <typename T>
     Framed<typename T::QuantityDifferenceType> operator-(Framed<T> const& lhs,
@@ -47,10 +54,11 @@ namespace quant::framed_geometry
             baseFrame = baseFrameData_.data();
         }
 
-        Framed<T>
+        typename DefineFramedType<T>::FramedType
         enframe(T const& objectToFrame, std::string_view name) const
         {
-            return Framed<T>(objectToFrame, {.name = name, .baseFrame = this->name});
+            using FramedT = typename DefineFramedType<T>::FramedType;
+            return FramedT(objectToFrame, {.name = name, .baseFrame = this->name});
         }
 
         template <typename T_>

@@ -1,7 +1,6 @@
 #pragma once
 
-
-#include <quant/geometry/common.h>
+#include <quant/geometry/Difference.h>
 #include <quant/units/position/Pose.h>
 
 namespace quant::units::position

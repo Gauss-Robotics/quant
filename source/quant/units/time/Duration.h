@@ -1,10 +1,8 @@
 #pragma once
 
-
-#include <quant/geometry/common.h>
+#include <quant/geometry/Difference.h>
 #include <quant/units/time/TimePoint.h>
 #include <quant/units/time/detail/UnitConversions.h>
-
 
 namespace quant::units::time
 {
@@ -22,7 +20,7 @@ namespace quant::units::time
             ;
         }
 
-        explicit Duration(const TimePoint& t) : Difference<TimePoint>(t)
+        explicit Duration(TimePoint const& t) : Difference<TimePoint>(t)
         {
             ;
         }
@@ -88,18 +86,18 @@ namespace quant::units::time
          * @return Formatted duration.
          */
         std::string
-        toDurationString(const std::string& format) const
+        toDurationString(std::string const& format) const
         {
             return toQuantityUnitString(format);
         }
 
-        Duration operator+(const Duration& rhs) const;
+        Duration operator+(Duration const& rhs) const;
 
-        Duration& operator+=(const Duration& rhs);
+        Duration& operator+=(Duration const& rhs);
 
-        Duration operator-(const Duration& rhs) const;
+        Duration operator-(Duration const& rhs) const;
 
-        Duration& operator-=(const Duration& rhs);
+        Duration& operator-=(Duration const& rhs);
 
         Duration operator*(double rhs) const;
 
@@ -113,7 +111,7 @@ namespace quant::units::time
 
         Duration& operator*=(std::int64_t rhs);
 
-        double operator/(const Duration& rhs) const;
+        double operator/(Duration const& rhs) const;
 
         Duration operator/(double rhs) const;
 
@@ -127,24 +125,22 @@ namespace quant::units::time
 
         Duration& operator/=(std::int64_t rhs);
 
-        bool operator<(const Duration& rhs) const;
+        bool operator<(Duration const& rhs) const;
 
-        bool operator<=(const Duration& rhs) const;
+        bool operator<=(Duration const& rhs) const;
 
-        bool operator==(const Duration& rhs) const;
+        bool operator==(Duration const& rhs) const;
 
-        bool operator!=(const Duration& rhs) const;
+        bool operator!=(Duration const& rhs) const;
 
-        bool operator>=(const Duration& rhs) const;
+        bool operator>=(Duration const& rhs) const;
 
-        bool operator>(const Duration& rhs) const;
+        bool operator>(Duration const& rhs) const;
     };
 
+    std::ostream& operator<<(std::ostream& out, Duration const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const Duration& rhs);
-
-} // namespace quant::units::time
-
+}  // namespace quant::units::time
 
 namespace quant
 {

@@ -1,10 +1,9 @@
 #pragma once
 
+#include <quant/framed_geometry/Framed.h>
+#include <quant/units/position/Position.h>
 
 #include <Eigen/Geometry>
-
-#include <quant/framed_geometry/common.h>
-#include <quant/units/position/Position.h>
 
 namespace quant::framed_units::position
 {
@@ -19,11 +18,11 @@ namespace quant::framed_units::position
         }
     };
 
-} // namespace quant::framed_units::position
+}  // namespace quant::framed_units::position
 
 namespace quant
 {
 
     using framed_units::position::FramedPosition;
 
-} // namespace quant
+}  // namespace quant
