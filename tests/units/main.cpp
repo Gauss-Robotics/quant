@@ -129,12 +129,6 @@ TEST_CASE("testing position")
         CHECK(p.isApprox(p1, Precision));
     }
 
-    SUBCASE("testing difference")
-    {
-        Position const tl = p1 - p2;  // TODO(dreher): Should this work?
-        CHECK(tl.toMilliMeters().toEigen() == Eigen::Vector3d(100, 100, 300));
-    }
-
     SUBCASE("testing position component access")
     {
         CHECK(p1.toMilliMeters().toEigen() == Eigen::Vector3d(100, 200, 300));
@@ -188,7 +182,7 @@ TEST_CASE("testing velocity")
         CHECK(t2.linear() == vel1);
 
         AngularVelocity const vel2 = AngularVelocity::RadiansPerSecond({.angle = M_PI});
-        Twist const t3 = Difference<AngularVelocity>(vel2) + t1;
+        Twist const t3 = AngularVelocityDifference(vel2) + t1;
         CHECK(t3.angular().isApprox(vel2, Precision));
     }
 
@@ -245,7 +239,7 @@ TEST_CASE("testing force")
         CHECK(w2.linear() == f);
 
         Torque const t = Torque::NewtonMeters(AxisAngle::AroundY(1));
-        Difference<Torque> const dt(t);
+        TorqueDifference const dt(t);
         Wrench const w3 = dt + w1;
 
         std::cout << "Torque actual: " << w3.angular() << "." << std::endl;

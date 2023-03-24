@@ -11,6 +11,16 @@ namespace quant::units::position
     class AngularDisplacement;
     class SpatialDisplacement;
 
+    struct DomainDef
+    {
+        using LinearState = Position;
+        using AngularState = Orientation;
+        using SpatialState = Pose;
+        using LinearDifference = LinearDisplacement;
+        using AngularDifference = AngularDisplacement;
+        using SpatialDifference = SpatialDisplacement;
+    };
+
 }  // namespace quant::units::position
 
 namespace quant

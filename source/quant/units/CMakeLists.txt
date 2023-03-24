@@ -31,6 +31,7 @@ add_library(units SHARED
     velocity/Twist.h
     velocity/Twist.cpp
     velocity/LinearVelocityDifference.h
+    velocity/AngularVelocityDifference.h
 
     acceleration.h
     acceleration_fwd.h
@@ -68,6 +69,7 @@ add_library(units SHARED
     force/Wrench.h
     force/Wrench.cpp
     force/ForceDifference.h
+    force/TorqueDifference.h
 
     temperature.h
     temperature_fwd.h

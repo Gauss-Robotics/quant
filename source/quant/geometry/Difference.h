@@ -42,20 +42,6 @@ namespace quant::geometry
             ;
         }
 
-        QuantityT
-        operator+(QuantityT const& rhs) const
-        {
-            using acc = detail::Accessor<QuantityT>;
-            if constexpr (std::is_same_v<, ><QuantityT::Representation, Eigen::Quaterniond>)
-            {
-                return acc::make(acc::representation(differenceObject_) * acc::representation(rhs));
-            }
-            else
-            {
-                return acc::make(acc::representation(differenceObject_) + acc::representation(rhs));
-            }
-        }
-
         bool
         operator==(Difference<QuantityT> const& rhs) const
         {
@@ -73,10 +59,10 @@ namespace quant::geometry
     };
 
     template <typename QuantityT>
-    typename std::enable_if_t<
+    /*typename std::enable_if_t<
         std::is_base_of_v<ScalarQuantity<QuantityT, std::int64_t>, QuantityT> or
-            std::is_base_of_v<VectorQuantity<QuantityT>, QuantityT>,
-        DifferenceTypeOf<QuantityT>>
+            std::is_base_of_v<VectorQuantity<QuantityT>, QuantityT>,*/
+    DifferenceTypeOf<QuantityT>  //>
     operator-(QuantityT const& lhs, QuantityT const& rhs)
     {
         using acc = detail::Accessor<QuantityT>;
@@ -84,12 +70,34 @@ namespace quant::geometry
             acc::make(acc::representation(lhs) - acc::representation(rhs)));
     }
 
+    template <typename QuantityT>
+    class LinearDifference : public Difference<QuantityT>
+    {
+    public:
+        using Difference<QuantityT>::Difference;
+
+        QuantityT
+        operator+(QuantityT const& rhs) const
+        {
+            using acc = detail::Accessor<QuantityT>;
+            return acc::make(acc::representation(this->differenceObject_) +
+                             acc::representation(rhs));
+        }
+    };
+
+    template <typename QuantityT>
+    class AngularDifference : public Difference<QuantityT>
+    {
+    public:
+        using Difference<QuantityT>::Difference;
+
+        QuantityT
+        operator*(QuantityT const& rhs) const
+        {
+            using acc = detail::Accessor<QuantityT>;
+            return acc::make(acc::representation(this->differenceObject_) *
+                             acc::representation(rhs));
+        }
+    };
+
 }  // namespace quant::geometry
-
-namespace quant
-{
-
-    using geometry::Difference;
-    using geometry::DifferenceTypeOf;
-
-}  // namespace quant

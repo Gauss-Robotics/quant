@@ -1,7 +1,6 @@
 #pragma once
 
 #include <quant/geometry/AxisAngle.h>
-#include <quant/geometry/Difference.h>
 #include <quant/geometry/detail/Accessors.h>
 #include <quant/geometry_fwd.h>
 

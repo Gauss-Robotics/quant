@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/Difference.h>
+#include <quant/geometry/detail/Accessors.h>
 
 #include <Eigen/Geometry>
 

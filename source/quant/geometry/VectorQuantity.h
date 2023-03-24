@@ -1,6 +1,5 @@
 #pragma once
 
-#include <quant/geometry/Difference.h>
 #include <quant/geometry/Vector.h>
 #include <quant/geometry/detail/Accessors.h>
 
@@ -21,12 +20,6 @@ namespace quant::geometry
         VectorQuantity() : representation_(0, 0, 0)
         {
             ;
-        }
-
-        VectorQuantity(Difference<BaseQuantityT> const& deltaP) :
-            VectorQuantity(deltaP.differenceObject_)
-        {
-            ;  // TODO(dreher): Does this overload make sense? No Difference here if possible
         }
 
         static BaseQuantityT
@@ -104,20 +97,6 @@ namespace quant::geometry
         }
 
         friend class detail::Accessor<BaseQuantityT>;
-    };
-
-    class LinearDifference;
-
-    class LinearQuantity
-    {
-    public:
-        LinearQuantity() : representation_{0, 0, 0}
-        {
-            ;
-        }
-
-    protected:
-        Eigen::Vector3d representation_;
     };
 
 }  // namespace quant::geometry

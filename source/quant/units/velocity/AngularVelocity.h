@@ -1,12 +1,10 @@
 #pragma once
 
-
-#include <ostream>
+#include <quant/geometry/QuaternionQuantity.h>
 
 #include <Eigen/Geometry>
 
-#include <quant/geometry/QuaternionQuantity.h>
-
+#include <ostream>
 
 namespace quant::units::velocity
 {
@@ -25,11 +23,10 @@ namespace quant::units::velocity
         }
 
         static AngularVelocity
-        RadiansPerSecond(const AxisAngle& aa)
+        RadiansPerSecond(AxisAngle const& aa)
         {
             return {aa};
         }
-
 
         // Convert.
 
@@ -40,13 +37,12 @@ namespace quant::units::velocity
         }
     };
 
+    std::ostream&
+    operator<<(std::ostream& out, AngularVelocity const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const AngularVelocity& rhs);
-
-} // namespace quant::units::velocity
-
+}  // namespace quant::units::velocity
 
 namespace quant
 {
     using units::velocity::AngularVelocity;
-} // namespace quant
+}  // namespace quant

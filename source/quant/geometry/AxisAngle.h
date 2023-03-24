@@ -1,6 +1,7 @@
 #pragma once
 
 #include <quant/geometry/Vector.h>
+#include <quant/geometry_fwd.h>
 
 #include <Eigen/Geometry>
 
@@ -69,10 +70,3 @@ namespace quant::geometry
     }
 
 }  // namespace quant::geometry
-
-namespace quant
-{
-
-    using geometry::AxisAngle;
-
-}  // namespace quant

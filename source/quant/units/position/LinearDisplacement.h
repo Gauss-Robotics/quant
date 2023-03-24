@@ -14,22 +14,22 @@ namespace quant::geometry
         using DifferenceType = units::position::LinearDisplacement;
     };
 
-} // namespace quant::geometry
+}  // namespace quant::geometry
 
 namespace quant::units::position
 {
 
-    class LinearDisplacement : public Difference<Position>
+    class LinearDisplacement : public LinearDifference<Position>
 
     {
 
     public:
-        LinearDisplacement() : Difference<Position>()
+        LinearDisplacement() : LinearDifference<Position>()
         {
             ;
         }
 
-        explicit LinearDisplacement(Position const& t) : Difference<Position>(t)
+        explicit LinearDisplacement(Position const& t) : LinearDifference<Position>(t)
         {
             ;
         }
@@ -59,11 +59,11 @@ namespace quant::units::position
         }
     };
 
-} // namespace quant::units::position
+}  // namespace quant::units::position
 
 namespace quant
 {
 
     using units::position::LinearDisplacement;
 
-} // namespace quant
+}  // namespace quant

@@ -3,8 +3,18 @@
 namespace quant::geometry
 {
 
+    class Vector;
+
+    class AxisAngle;
+
     template <typename BaseQuantityT>
     class Difference;
+
+    template <typename BaseQuantityT>
+    class LinearDifference;
+
+    template <typename BaseQuantityT>
+    class AngularDifference;
 
     template <typename BaseQuantityT>
     struct DefineDifferenceType;
@@ -27,12 +37,20 @@ namespace quant::geometry
     template <typename BaseQuantityT>
     class IsometryQuantity;
 
+    template <typename Linear, typename Angular, typename Derived>
+    class Spatial;
+
 }  // namespace quant::geometry
 
 namespace quant
 {
 
+    using geometry::AngularDifference;
+    using geometry::AxisAngle;
     using geometry::Difference;
     using geometry::DifferenceTypeOf;
+    using geometry::LinearDifference;
+    using geometry::Spatial;
+    using geometry::Vector;
 
 }  // namespace quant

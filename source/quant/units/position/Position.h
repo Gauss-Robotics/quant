@@ -54,6 +54,8 @@ namespace quant::units::position
             return {.x = representation_.x(), .y = representation_.y(), .z = representation_.z()};
         }
 
+        using Domain = DomainDef;
+
         friend class LinearDisplacement;
         friend class AngularDisplacement;
     };

@@ -1,16 +1,14 @@
 #pragma once
 
 #include <quant/geometry/Difference.h>
+#include <quant/geometry_fwd.h>
 
 namespace quant::geometry
 {
 
     template <typename Linear, typename Angular, typename Derived>
-    class Spatial;
-
-    template <typename Linear, typename Angular, typename Derived>
     Derived
-    operator+(Difference<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs);
+    operator+(DifferenceTypeOf<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
     Derived
@@ -18,7 +16,7 @@ namespace quant::geometry
 
     template <typename Linear, typename Angular, typename Derived>
     Derived
-    operator+(Difference<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs);
+    operator+(DifferenceTypeOf<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
     Derived
@@ -54,7 +52,7 @@ namespace quant::geometry
     public:
         template <typename Linear_, typename Angular_, typename Derived_>
         friend Derived_
-        geometry::operator+(Difference<Linear_> const& op,
+        geometry::operator+(DifferenceTypeOf<Linear_> const& op,
                             Spatial<Linear_, Angular_, Derived_> const& rhs);
 
         template <typename Linear_, typename Angular_, typename Derived_>
@@ -63,7 +61,8 @@ namespace quant::geometry
 
         template <typename Linear_, typename Angular_, typename Derived_>
         friend Derived_
-        operator+(Difference<Angular_> const& op, Spatial<Linear_, Angular_, Derived_> const& rhs);
+        operator+(DifferenceTypeOf<Angular_> const& op,
+                  Spatial<Linear_, Angular_, Derived_> const& rhs);
 
         template <typename Linear_, typename Angular_, typename Derived_>
         friend Derived_
@@ -81,7 +80,8 @@ namespace quant
 
     template <typename Linear, typename Angular, typename Derived>
     Derived
-    geometry::operator+(Difference<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs)
+    geometry::operator+(DifferenceTypeOf<Linear> const& op,
+                        Spatial<Linear, Angular, Derived> const& rhs)
     {
         return Derived(op + rhs.linear_, rhs.angular_);
     }
@@ -95,9 +95,10 @@ namespace quant
 
     template <typename Linear, typename Angular, typename Derived>
     Derived
-    geometry::operator+(Difference<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs)
+    geometry::operator+(DifferenceTypeOf<Angular> const& op,
+                        Spatial<Linear, Angular, Derived> const& rhs)
     {
-        return Derived(rhs.linear_, op + rhs.angular_);
+        return Derived(rhs.linear_, op * rhs.angular_);
     }
 
     template <typename Linear, typename Angular, typename Derived>
@@ -106,12 +107,5 @@ namespace quant
     {
         return Derived(rhs.linear_, rhs.angular_ - op);
     }
-
-}  // namespace quant
-
-namespace quant
-{
-
-    using geometry::Spatial;
 
 }  // namespace quant
