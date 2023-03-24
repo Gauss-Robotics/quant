@@ -188,7 +188,7 @@ TEST_CASE("testing velocity")
         CHECK(t2.linear() == vel1);
 
         AngularVelocity const vel2 = AngularVelocity::RadiansPerSecond({.angle = M_PI});
-        Twist const t3 = vel2.deltaToOrigin() + t1;
+        Twist const t3 = Difference<AngularVelocity>(vel2) + t1;
         CHECK(t3.angular().isApprox(vel2, Precision));
     }
 
@@ -245,7 +245,7 @@ TEST_CASE("testing force")
         CHECK(w2.linear() == f);
 
         Torque const t = Torque::NewtonMeters(AxisAngle::AroundY(1));
-        Difference<Torque> const dt = t.deltaToOrigin();
+        Difference<Torque> const dt(t);
         Wrench const w3 = dt + w1;
 
         std::cout << "Torque actual: " << w3.angular() << "." << std::endl;

@@ -9,16 +9,20 @@ namespace quant::geometry
     class Spatial;
 
     template <typename Linear, typename Angular, typename Derived>
-    Derived operator+(Difference<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs);
+    Derived
+    operator+(Difference<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
-    Derived operator-(Linear const& op, Spatial<Linear, Angular, Derived> const& rhs);
+    Derived
+    operator-(Linear const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
-    Derived operator+(Difference<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs);
+    Derived
+    operator+(Difference<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
-    Derived operator-(Angular const& op, Spatial<Linear, Angular, Derived> const& rhs);
+    Derived
+    operator-(Angular const& op, Spatial<Linear, Angular, Derived> const& rhs);
 
     template <typename Linear, typename Angular, typename Derived>
     class Spatial
@@ -49,20 +53,21 @@ namespace quant::geometry
 
     public:
         template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_ geometry::operator+(Difference<Linear_> const& op,
-                                            Spatial<Linear_, Angular_, Derived_> const& rhs);
+        friend Derived_
+        geometry::operator+(Difference<Linear_> const& op,
+                            Spatial<Linear_, Angular_, Derived_> const& rhs);
 
         template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_ geometry::operator-(Linear_ const& op,
-                                            Spatial<Linear_, Angular_, Derived_> const& rhs);
+        friend Derived_
+        geometry::operator-(Linear_ const& op, Spatial<Linear_, Angular_, Derived_> const& rhs);
 
         template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_ operator+(Difference<Angular_> const& op,
-                                  Spatial<Linear_, Angular_, Derived_> const& rhs);
+        friend Derived_
+        operator+(Difference<Angular_> const& op, Spatial<Linear_, Angular_, Derived_> const& rhs);
 
         template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_ operator-(Angular_ const& op,
-                                  Spatial<Linear_, Angular_, Derived_> const& rhs);
+        friend Derived_
+        operator-(Angular_ const& op, Spatial<Linear_, Angular_, Derived_> const& rhs);
 
     protected:
         Linear linear_;

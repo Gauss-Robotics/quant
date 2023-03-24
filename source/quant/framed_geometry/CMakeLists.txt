@@ -1,5 +1,6 @@
 add_library(framed_geometry SHARED
     ../framed_geometry.h
+    ../framed_geometry_fwd.h
 
     Framed.h
 )

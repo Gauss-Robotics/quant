@@ -1,6 +1,7 @@
 #pragma once
 
-#include <quant/geometry/Difference.h>
+#include <quant/geometry/detail/Accessors.h>
+#include <quant/geometry_fwd.h>
 
 #include <sstream>
 #include <typeinfo>
@@ -8,15 +9,7 @@
 namespace quant::geometry
 {
 
-    template <typename T, typename DifferenceType, typename ScalarType>
-    class ScalarQuantity;
-
-    template <typename T, typename DifferenceType, typename ScalarType>
-    DifferenceType
-    operator-(ScalarQuantity<T, DifferenceType, ScalarType> const& lhs,
-              ScalarQuantity<T, DifferenceType, ScalarType> const& rhs);
-
-    template <typename T, typename DifferenceType = Difference<T>, typename ScalarType = double>
+    template <typename BaseQuantityT, typename ScalarType>
     class ScalarQuantity
     {
     public:
@@ -27,16 +20,10 @@ namespace quant::geometry
             ;
         }
 
-        static T
+        static BaseQuantityT
         Origin()
         {
-            return T(0);
-        }
-
-        DifferenceType
-        deltaToOrigin() const
-        {
-            return DifferenceType(static_cast<T const&>(*this));
+            return BaseQuantityT(0);
         }
 
         // Convert.
@@ -69,32 +56,27 @@ namespace quant::geometry
             return out.str();
         }
 
-        // Transform.
-
-        template <typename T_, typename DifferenceType_, typename ScalarType_>
-        friend DifferenceType_
-        geometry::operator-(ScalarQuantity<T_, DifferenceType_, ScalarType_> const& lhs,
-                            ScalarQuantity<T_, DifferenceType_, ScalarType_> const& rhs);
-
         // Compare.
 
         bool
-        operator==(T const& rhs) const
+        operator==(BaseQuantityT const& rhs) const
         {
             return representation_ == rhs.representation_;
         }
 
         bool
-        operator!=(T const& rhs) const
+        operator!=(BaseQuantityT const& rhs) const
         {
             return representation_ != rhs.representation_;
         }
 
         bool
-        isApprox(T const& rhs, ScalarType precision) const
+        isApprox(BaseQuantityT const& rhs, ScalarType precision) const
         {
             return std::abs(representation_ - rhs.representation_) < precision;
         }
+
+        using Representation = ScalarType;
 
     protected:
         ScalarQuantity(ScalarType value) : representation_{value}
@@ -102,25 +84,13 @@ namespace quant::geometry
             ;
         }
 
+    public:
         ScalarType representation_;
 
-        friend class Difference<T>;
+        friend class detail::Accessor<BaseQuantityT>;
     };
 
-    template <typename T, typename DifferenceType>
-    using ScalarIntegerQuantity = ScalarQuantity<T, DifferenceType, std::int64_t>;
+    template <typename T>
+    using ScalarIntegerQuantity = ScalarQuantity<T, std::int64_t>;
 
 }  // namespace quant::geometry
-
-namespace quant
-{
-
-    template <typename T, typename DifferenceType, typename ScalarType>
-    DifferenceType
-    geometry::operator-(ScalarQuantity<T, DifferenceType, ScalarType> const& lhs,
-                        ScalarQuantity<T, DifferenceType, ScalarType> const& rhs)
-    {
-        return DifferenceType(T(lhs.representation_ - rhs.representation_));
-    }
-
-}  // namespace quant

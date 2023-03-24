@@ -10,7 +10,7 @@
 namespace quant::geometry
 {
 
-    template <typename T, typename DifferenceType = Difference<T>>
+    template <typename BaseQuantityT>
     class IsometryQuantity
     {
         // Construct.
@@ -20,31 +20,33 @@ namespace quant::geometry
             ;
         }
 
-        static T
+        static BaseQuantityT
         Origin()
         {
-            return T{Eigen::Isometry3d::Identity()};
+            return BaseQuantityT{Eigen::Isometry3d::Identity()};
         }
 
         // Compare.
 
         bool
-        operator==(T const& rhs) const
+        operator==(BaseQuantityT const& rhs) const
         {
             return representation_ == rhs._representation;
         }
 
         bool
-        operator!=(T const& rhs) const
+        operator!=(BaseQuantityT const& rhs) const
         {
             return representation_ != rhs._representation;
         }
 
         bool
-        isApprox(T const& rhs, double const precision) const
+        isApprox(BaseQuantityT const& rhs, double const precision) const
         {
             return representation_.isApprox(rhs._representation, precision);
         }
+
+        using Representation = Eigen::Isometry3d const&;
 
     protected:
         IsometryQuantity(Eigen::Isometry3d const& tf) : representation_(tf)
@@ -65,7 +67,7 @@ namespace quant::geometry
 
         Eigen::Isometry3d representation_;
 
-        friend class Difference<T>;
+        friend class detail::Accessor<BaseQuantityT>;
     };
 
 }  // namespace quant::geometry

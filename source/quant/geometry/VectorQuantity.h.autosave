@@ -115,7 +115,7 @@ namespace quant::geometry
         {
             ;
         }
-
+        
     protected:
         Eigen::Vector3d representation_;
     };

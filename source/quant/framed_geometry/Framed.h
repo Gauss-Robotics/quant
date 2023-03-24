@@ -1,5 +1,10 @@
 #pragma once
 
+#include <quant/framed_geometry_fwd.h>
+#include <quant/geometry/Difference.h>
+
+#include <Eigen/Core>
+
 #include <array>
 #include <cassert>
 #include <cstdio>
@@ -9,61 +14,92 @@
 namespace quant::framed_geometry
 {
 
+    /**
+     * @brief Maximum number of characters used for a frame identifier (name or baseFrame).
+     */
     constexpr std::uint32_t frameDataMaxStringSize = 128;
 
-    struct Frame
+    /**
+     * @brief Uniquely identifies a frame.
+     */
+    struct FrameData
     {
         std::string_view name;
         std::string_view baseFrame;
     };
 
-    template <typename T>
-    class Framed;
-
     /**
-     * Template meta programming utility to define the framed type of a type via template
+     * @brief Template meta programming utility to define the framed type of a type via template
      * specialization.
+     *
+     * Default is a `Framed<Quantity>`, but the built-in units usually have `FramedQuantity`
+     * specialization with convenience APIs, defined operators, etc.
+     *
+     * Example: `FramedLinearDisplacement` is a specialized `Framed<LinearDisplacement>`.
      */
-    template <typename Type>
+    template <typename Quantity>
     struct DefineFramedType
     {
-        using FramedType = Framed<Type>;
+        using FramedType = Framed<Quantity>;
     };
 
-    template <typename T>
-    Framed<typename T::QuantityDifferenceType> operator-(Framed<T> const& lhs,
-                                                         Framed<T> const& rhs);
+    /**
+     * @brief Lookup type def for semantic template resolution.
+     */
+    template <typename Quantity>
+    using FramedTypeOf = typename DefineFramedType<Quantity>::FramedType;
 
     /**
      * @brief Wrapper to associate a named geometric object with a base frame.
+     *
+     * On construction, the name and baseFrame strings referred to the string_views in a `Frame` are
+     * copied into own internal private members (`nameData_` and `baseFrameData_`) on the stack with
+     * a maximum number of chars defined in `frameDataMaxStringSize`. The names can be accessed
+     * using the public string_views `name` and `baseFrame`.
      */
-    template <typename T>
+    template <typename QuantityT>
     class Framed
     {
     public:
-        Framed(T const& objectToFrame, Frame const& frameData) : framedObject_{objectToFrame}
+        Framed(QuantityT const& objectToFrame, FrameData const& frameData) :
+            framedObject_{objectToFrame}
         {
             // TODO(dreher): Ensure that names are not too long.
 
             // snprintf guarantees null-termination (not the case for frameName.copy()).
+            // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
             std::snprintf(nameData_.data(), nameData_.size(), "%s", frameData.name.data());
-            name = nameData_.data();
-
             std::snprintf(
                 baseFrameData_.data(), baseFrameData_.size(), "%s", frameData.baseFrame.data());
+            // NOLINTEND(cppcoreguidelines-pro-type-vararg)
+
+            name = nameData_.data();
             baseFrame = baseFrameData_.data();
         }
 
-        typename DefineFramedType<T>::FramedType
-        enframe(T const& objectToFrame, std::string_view name) const
+        FramedTypeOf<QuantityT>
+        enframe(QuantityT const& objectToFrame, std::string_view name) const
         {
-            using FramedT = typename DefineFramedType<T>::FramedType;
-            return FramedT(objectToFrame, {.name = name, .baseFrame = this->name});
+            return FramedTypeOf<QuantityT>(objectToFrame, {.name = name, .baseFrame = this->name});
         }
 
-        template <typename T_>
-        friend Framed<typename T_::QuantityDifferenceType> operator-(Framed<T_> const& lhs,
-                                                                     Framed<T_> const& rhs);
+        FramedTypeOf<DifferenceTypeOf<QuantityT>>
+        operator-(Framed<QuantityT> const& rhs) const
+        {
+            class Accessor : public QuantityT
+            {
+            public:
+                using QuantityT::VectorQuantity;
+            };
+
+            Eigen::Vector3d res = framedObject_.representation_ - rhs.framedObject_.representation_;
+
+            // QuantityT quantity = Accessor(res);
+
+            assert(baseFrame == rhs.baseFrame);
+            return FramedTypeOf<DifferenceTypeOf<QuantityT>>(DifferenceTypeOf<QuantityT>(),
+                                                             {.name = name, .baseFrame = rhs.name});
+        }
 
         std::string_view name;
         std::string_view baseFrame;
@@ -79,7 +115,7 @@ namespace quant::framed_geometry
          */
         std::array<char, frameDataMaxStringSize> baseFrameData_;
 
-        T framedObject_;
+        QuantityT framedObject_;
     };
 
 }  // namespace quant::framed_geometry
@@ -87,22 +123,7 @@ namespace quant::framed_geometry
 namespace quant
 {
 
-    template <typename T>
-    framed_geometry::Framed<typename T::QuantityDifferenceType>
-    framed_geometry::operator-(Framed<T> const& lhs, Framed<T> const& rhs)
-    {
-        // TODO(dreher): Exceptions and no-excpt alternative.
-        assert(lhs.baseFrame == rhs.baseFrame);
-        return Framed<typename T::QuantityDifferenceType>(
-            lhs.framedObject_ - rhs.framedObject_, {.name = lhs.name, .baseFrame = rhs.name});
-    }
-
-}  // namespace quant
-
-namespace quant
-{
-
-    using framed_geometry::Frame;
     using framed_geometry::Framed;
+    using framed_geometry::FrameData;
 
 }  // namespace quant

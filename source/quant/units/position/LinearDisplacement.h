@@ -14,12 +14,13 @@ namespace quant::geometry
         using DifferenceType = units::position::LinearDisplacement;
     };
 
-}  // namespace quant::geometry
+} // namespace quant::geometry
 
 namespace quant::units::position
 {
 
     class LinearDisplacement : public Difference<Position>
+
     {
 
     public:
@@ -58,11 +59,11 @@ namespace quant::units::position
         }
     };
 
-}  // namespace quant::units::position
+} // namespace quant::units::position
 
 namespace quant
 {
 
     using units::position::LinearDisplacement;
 
-}
+} // namespace quant

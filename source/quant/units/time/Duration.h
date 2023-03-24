@@ -48,7 +48,7 @@ namespace quant::units::time
         static Duration
         MicroSeconds(std::int64_t microSeconds)
         {
-            return TimePoint::MicroSeconds(microSeconds).deltaToOrigin();
+            return Duration{TimePoint::MicroSeconds(microSeconds)};
         }
 
         /**

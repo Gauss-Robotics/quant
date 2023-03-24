@@ -1,6 +1,5 @@
 #include "Duration.h"
 
-
 namespace quant::units::time
 {
 
@@ -10,68 +9,58 @@ namespace quant::units::time
         return differenceObject_.isPositive();
     }
 
-
     bool
     Duration::isZero() const
     {
         return differenceObject_.isZero();
     }
 
-
     Duration
-    Duration::operator+(const Duration& rhs) const
+    Duration::operator+(Duration const& rhs) const
     {
-        return TimePoint(this->differenceObject_.representation_ +
-                         rhs.differenceObject_.representation_)
-            .deltaToOrigin();
+        return Duration{TimePoint(this->differenceObject_.representation_ +
+                                  rhs.differenceObject_.representation_)};
     }
 
-
     Duration&
-    Duration::operator+=(const Duration& rhs)
+    Duration::operator+=(Duration const& rhs)
     {
         this->differenceObject_.representation_ += rhs.differenceObject_.representation_;
         return *this;
     }
 
-
-    Duration
+    /*Duration
     Duration::operator-(const Duration& rhs) const
     {
         return TimePoint(this->differenceObject_.representation_ -
                          rhs.differenceObject_.representation_)
             .deltaToOrigin();
-    }
-
+    }*/
 
     Duration&
-    Duration::operator-=(const Duration& rhs)
+    Duration::operator-=(Duration const& rhs)
     {
         this->differenceObject_.representation_ -= rhs.differenceObject_.representation_;
         return *this;
     }
 
-
     Duration
     Duration::operator*(double rhs) const
     {
-        return TimePoint(this->differenceObject_.representation_ * rhs).deltaToOrigin();
+        return Duration{TimePoint(this->differenceObject_.representation_ * rhs)};
     }
-
 
     Duration
     Duration::operator*(int rhs) const
     {
-        return TimePoint(this->differenceObject_.representation_ * rhs).deltaToOrigin();
+        return Duration{TimePoint(this->differenceObject_.representation_ * rhs)};
     }
-
 
     Duration
     Duration::operator*(std::int64_t rhs) const
     {
-        return TimePoint(this->differenceObject_.representation_ * rhs).deltaToOrigin();
+        return Duration{TimePoint(this->differenceObject_.representation_ * rhs)};
     }
-
 
     Duration&
     Duration::operator*=(double rhs)
@@ -80,14 +69,12 @@ namespace quant::units::time
         return *this;
     }
 
-
     Duration&
     Duration::operator*=(int rhs)
     {
         this->differenceObject_.representation_ *= rhs;
         return *this;
     }
-
 
     Duration&
     Duration::operator*=(std::int64_t rhs)
@@ -96,107 +83,92 @@ namespace quant::units::time
         return *this;
     }
 
-
     double
-    Duration::operator/(const Duration& rhs) const
+    Duration::operator/(Duration const& rhs) const
     {
-        return this->differenceObject_.toMicroSecondsDouble() /
+        return differenceObject_.toMicroSecondsDouble() /
                rhs.differenceObject_.toMicroSecondsDouble();
     }
-
 
     Duration
     Duration::operator/(double rhs) const
     {
-        return TimePoint(this->differenceObject_.toMicroSecondsDouble() / rhs).deltaToOrigin();
+        return Duration{TimePoint(differenceObject_.toMicroSecondsDouble() / rhs)};
     }
-
 
     Duration
     Duration::operator/(int rhs) const
     {
-        return TimePoint(this->differenceObject_.toMicroSecondsDouble() / rhs).deltaToOrigin();
+        return Duration{TimePoint(differenceObject_.toMicroSecondsDouble() / rhs)};
     }
-
 
     Duration
     Duration::operator/(std::int64_t rhs) const
     {
-        return TimePoint(this->differenceObject_.toMicroSecondsDouble() / rhs).deltaToOrigin();
+        return Duration{TimePoint(differenceObject_.toMicroSecondsDouble() / rhs)};
     }
-
 
     Duration&
     Duration::operator/=(double rhs)
     {
-        this->differenceObject_.representation_ /= rhs;
+        differenceObject_.representation_ /= rhs;
         return *this;
     }
-
 
     Duration&
     Duration::operator/=(int rhs)
     {
-        this->differenceObject_.representation_ /= rhs;
+        differenceObject_.representation_ /= rhs;
         return *this;
     }
-
 
     Duration&
     Duration::operator/=(std::int64_t rhs)
     {
-        this->differenceObject_.representation_ /= rhs;
+        differenceObject_.representation_ /= rhs;
         return *this;
     }
 
-
     bool
-    Duration::operator<(const Duration& rhs) const
+    Duration::operator<(Duration const& rhs) const
     {
-        return this->differenceObject_ < rhs.differenceObject_;
+        return differenceObject_ < rhs.differenceObject_;
     }
 
-
     bool
-    Duration::operator<=(const Duration& rhs) const
+    Duration::operator<=(Duration const& rhs) const
     {
-        return this->differenceObject_ <= rhs.differenceObject_;
+        return differenceObject_ <= rhs.differenceObject_;
     }
 
-
     bool
-    Duration::operator==(const Duration& rhs) const
+    Duration::operator==(Duration const& rhs) const
     {
-        return this->differenceObject_ == rhs.differenceObject_;
+        return differenceObject_ == rhs.differenceObject_;
     }
 
-
     bool
-    Duration::operator!=(const Duration& rhs) const
+    Duration::operator!=(Duration const& rhs) const
     {
-        return this->differenceObject_ != rhs.differenceObject_;
+        return differenceObject_ != rhs.differenceObject_;
     }
 
-
     bool
-    Duration::operator>=(const Duration& rhs) const
+    Duration::operator>=(Duration const& rhs) const
     {
-        return this->differenceObject_ >= rhs.differenceObject_;
+        return differenceObject_ >= rhs.differenceObject_;
     }
 
-
     bool
-    Duration::operator>(const Duration& rhs) const
+    Duration::operator>(Duration const& rhs) const
     {
-        return this->differenceObject_ > rhs.differenceObject_;
+        return differenceObject_ > rhs.differenceObject_;
     }
-
 
     std::ostream&
-    operator<<(std::ostream& out, const Duration& rhs)
+    operator<<(std::ostream& out, Duration const& rhs)
     {
-        out << rhs.toDurationString();
-        return out;
+        return out << rhs.toDurationString();
     }
 
-} // namespace quant::units::time
+}  // namespace quant::units::time

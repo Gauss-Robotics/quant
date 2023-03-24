@@ -46,7 +46,7 @@ namespace quant::geometry
         operator+(QuantityT const& rhs) const
         {
             using acc = detail::Accessor<QuantityT>;
-            if constexpr (std::is_same_v<, ><QuantityT::Representation, Eigen::Quaterniond>)
+            if constexpr (std::is_same_v<QuantityT::Representation, Eigen::Quaterniond>)
             {
                 return acc::make(acc::representation(differenceObject_) * acc::representation(rhs));
             }

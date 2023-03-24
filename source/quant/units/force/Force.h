@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <quant/geometry/VectorQuantity.h>
 
 #include <Eigen/Geometry>
@@ -29,7 +28,8 @@ namespace quant::units::force
         }
     };
 
-    std::ostream& operator<<(std::ostream& out, Force const& rhs);
+    std::ostream&
+    operator<<(std::ostream& out, Force const& rhs);
 
 }  // namespace quant::units::force
 

@@ -30,6 +30,10 @@ There are dedicated types for states and operations.  Specifically, if two
 states are subtracted, the result will be a difference type.  See the following 
 tables.  For some geometric concepts, special names are given.
 
+In the following, if we refer to a base quantity, we mean a geometric object
+describing a state, whereas when we refer to a quantity, it may refer to a state
+or an operation.
+
 
 #### R<sup>3</sup> (3-Dimensional Space)
 

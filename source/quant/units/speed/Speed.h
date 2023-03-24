@@ -36,7 +36,8 @@ namespace quant::units::speed
             return {metersPerSecond * m2mm};
         }
 
-        std::string toString() const;
+        std::string
+        toString() const;
 
         double
         toMilliMetersPerSecond() const
@@ -50,7 +51,8 @@ namespace quant::units::speed
         using geometry::ScalarQuantity<Speed>::ScalarQuantity;
     };
 
-    std::ostream& operator<<(std::ostream& out, Speed const& rhs);
+    std::ostream&
+    operator<<(std::ostream& out, Speed const& rhs);
 
 }  // namespace quant::units::speed
 

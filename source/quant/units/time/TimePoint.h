@@ -16,7 +16,7 @@ namespace quant::units::time
      */
     class TimePoint :
         // A time point is a scalar integer quantity.
-        public geometry::ScalarIntegerQuantity<TimePoint, Duration>,
+        public geometry::ScalarIntegerQuantity<TimePoint>,
         // A time point can be specified in several temporal units.
         public detail::UnitConversions<TimePoint>
     {
@@ -107,7 +107,7 @@ namespace quant::units::time
         operator>(TimePoint const& rhs) const;
 
     protected:
-        using geometry::ScalarIntegerQuantity<TimePoint, Duration>::ScalarQuantity;
+        using geometry::ScalarIntegerQuantity<TimePoint>::ScalarQuantity;
     };
 
     std::ostream&

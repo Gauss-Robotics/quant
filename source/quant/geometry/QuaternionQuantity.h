@@ -2,7 +2,10 @@
 
 #include <quant/geometry/AxisAngle.h>
 #include <quant/geometry/Difference.h>
+#include <quant/geometry/detail/Accessors.h>
+#include <quant/geometry_fwd.h>
 
+#include <Eigen/Core>
 #include <Eigen/Geometry>
 
 #include <ostream>
@@ -11,19 +14,7 @@
 namespace quant::geometry
 {
 
-    template <typename T, typename DifferenceType>
-    class QuaternionQuantity;
-
-    template <typename T, typename DifferenceType>
-    T
-    operator+(Difference<T> const& lhs, QuaternionQuantity<T, DifferenceType> const& rhs);
-
-    template <typename T, typename DifferenceType>
-    Difference<T>
-    operator-(QuaternionQuantity<T, DifferenceType> const& lhs,
-              QuaternionQuantity<T, DifferenceType> const& rhs);
-
-    template <typename T, typename DifferenceType = Difference<T>>
+    template <typename BaseQuantityT>
     class QuaternionQuantity
     {
     protected:
@@ -127,16 +118,10 @@ namespace quant::geometry
             ;
         }
 
-        static T
+        static BaseQuantityT
         Origin()
         {
-            return T();
-        }
-
-        Difference<T>
-        deltaToOrigin() const
-        {
-            return Difference<T>(static_cast<T const&>(*this));
+            return BaseQuantityT();
         }
 
         // Convert.
@@ -163,22 +148,10 @@ namespace quant::geometry
             return out.str();
         }
 
-        // Transform.
-
-        template <typename T_, typename DifferenceType_>
-        friend T_
-        geometry::operator+(Difference<T_> const& lhs,
-                            QuaternionQuantity<T_, DifferenceType_> const& rhs);
-
-        template <typename T_, typename DifferenceType_>
-        friend Difference<T_>
-        geometry::operator-(QuaternionQuantity<T_, DifferenceType_> const& lhs,
-                            QuaternionQuantity<T_, DifferenceType_> const& rhs);
-
         // Compare.
 
         bool
-        operator==(T const& rhs) const
+        operator==(BaseQuantityT const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
@@ -186,46 +159,25 @@ namespace quant::geometry
         }
 
         bool
-        operator!=(T const& rhs) const
+        operator!=(BaseQuantityT const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
-            return not((*this) == rhs);
+            return representation_.coeffs() != rhs.representation_.coeffs();
         }
 
         bool
-        isApprox(T const& rhs, double const precision) const
+        isApprox(BaseQuantityT const& rhs, double const precision) const
         {
             return representation_.isApprox(rhs.representation_, precision);
         }
 
-        using QuantityType = T;
-        using QuantityDifferenceType = DifferenceType;
+        using Representation = Eigen::Quaterniond const&;
 
     public:
         Eigen::Quaterniond representation_;
 
-        friend class Difference<T>;
+        friend class detail::Accessor<BaseQuantityT>;
     };
 
 }  // namespace quant::geometry
-
-namespace quant
-{
-
-    template <typename T, typename DifferenceType>
-    T
-    geometry::operator+(Difference<T> const& lhs, QuaternionQuantity<T, DifferenceType> const& rhs)
-    {
-        return T(lhs.pointFromOrigin().representation_ * rhs.representation_);
-    }
-
-    template <typename T>
-    Difference<T>
-    geometry::operator-(QuaternionQuantity<T> const& lhs, QuaternionQuantity<T> const& rhs)
-    {
-        // TODO(dreher): Figure out return T(representation_ - rhs.representation_);
-        return T();  // Delta<T>(T(lhs.representation_ - rhs.representation_));
-    }
-
-}  // namespace quant

@@ -11,6 +11,8 @@ add_library(geometry SHARED
     VectorQuantity.h
     QuaternionQuantity.h
     IsometryQuantity.h
+
+    detail/Accessors.h
 )
 
 set_target_properties(geometry

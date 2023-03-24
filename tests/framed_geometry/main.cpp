@@ -1,20 +1,17 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
-
-#include <quant/framed_geometry.h>
-#include <quant/geometry/QuaternionQuantity.h>  // only for testing incomplete type errors
-#include <quant/units.h>
-
-#include <doctest/doctest.h>
-
 #include <iostream>
 
+#include <doctest/doctest.h>
+#include <quant/framed_geometry.h>
+#include <quant/geometry/QuaternionQuantity.h> // only for testing incomplete type errors
+#include <quant/units.h>
 
 using namespace quant;
 
 TEST_CASE("testing basic constructions")
 {
-    void* d = nullptr;  // Dummy.
+    void* d = nullptr; // Dummy.
 
     Framed<void*> const f1{d, {.name = "TCP", .baseFrame = "ARMAR-6::RobotRoot"}};
 
@@ -59,7 +56,7 @@ TEST_CASE("testing basic framed differences")
 {
     SUBCASE("testing framed difference with Position")
     {
-        Position const p = Position::Origin();  // Dummy position.
+        Position const p = Position::Origin(); // Dummy position.
 
         Framed<Position> const tcp{p, {.name = "TCP", .baseFrame = "ARMAR-6::RobotRoot"}};
         Framed<Position> const com{p, {.name = "CoM", .baseFrame = "ARMAR-6::RobotRoot"}};
@@ -72,7 +69,7 @@ TEST_CASE("testing basic framed differences")
 
     SUBCASE("testing framed difference with Orientation")
     {
-        Orientation const p = Orientation::Origin();  // Dummy orientation.
+        Orientation const p = Orientation::Origin(); // Dummy orientation.
 
         Framed<Orientation> const tcp{p, {.name = "TCP", .baseFrame = "ARMAR-6::RobotRoot"}};
         Framed<Orientation> const com{p, {.name = "CoM", .baseFrame = "ARMAR-6::RobotRoot"}};
@@ -84,7 +81,7 @@ TEST_CASE("testing basic framed differences")
 
     SUBCASE("testing framed difference with Pose")
     {
-        Pose const p = Pose::Origin();  // Dummy pose.
+        Pose const p = Pose::Origin(); // Dummy pose.
 
         Framed<Pose> const tcp{p, {.name = "TCP", .baseFrame = "ARMAR-6::RobotRoot"}};
         Framed<Pose> const com{p, {.name = "CoM", .baseFrame = "ARMAR-6::RobotRoot"}};
