@@ -12,13 +12,13 @@ namespace quant::units::position
     /**
      * @brief Models a position in Euclidean space.
      */
-    class Position : public geometry::VectorQuantity<Position>
+    class Position : public geometry::VectorQuantity<Domain>
     {
 
     public:
         // Construct.
 
-        using geometry::VectorQuantity<Position>::VectorQuantity;
+        using geometry::VectorQuantity<Domain>::VectorQuantity;
 
         static Position
         MilliMeters(double x, double y, double z)
@@ -53,8 +53,6 @@ namespace quant::units::position
         {
             return {.x = representation_.x(), .y = representation_.y(), .z = representation_.z()};
         }
-
-        using Domain = DomainDef;
 
         friend class LinearDisplacement;
         friend class AngularDisplacement;

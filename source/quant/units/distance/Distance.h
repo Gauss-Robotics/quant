@@ -1,20 +1,18 @@
 #pragma once
 
+#include <quant/geometry/ScalarQuantity.h>
+#include <quant/units/distance_fwd.h>
 
 #include <cstdint>
 #include <ostream>
 #include <string>
-
-#include <quant/geometry/ScalarQuantity.h>
-
 
 namespace quant::units::distance
 {
 
     constexpr double m2mm = 1'000;
 
-
-    class Distance : geometry::ScalarQuantity<Distance>
+    class Distance : geometry::ScalarQuantity<Domain>
     {
 
     public:
@@ -30,7 +28,8 @@ namespace quant::units::distance
             return {meters * m2mm};
         }
 
-        std::string toString() const;
+        std::string
+        toString() const;
 
         double
         toMilliMeters() const
@@ -41,16 +40,16 @@ namespace quant::units::distance
         // Operators.
 
     protected:
-        using geometry::ScalarQuantity<Distance>::ScalarQuantity;
+        using geometry::ScalarQuantity<Domain>::ScalarQuantity;  // TODO(dreher): Remove? All scalar
+                                                                 // quantities
     };
 
+    std::ostream&
+    operator<<(std::ostream& out, Distance const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const Distance& rhs);
-
-} // namespace quant::units::distance
-
+}  // namespace quant::units::distance
 
 namespace quant
 {
     using units::distance::Distance;
-} // namespace quant
+}  // namespace quant

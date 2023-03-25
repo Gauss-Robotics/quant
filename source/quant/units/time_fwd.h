@@ -7,6 +7,12 @@ namespace quant::units::time
     class Duration;
     class Frequency;
 
+    struct Domain
+    {
+        using State = TimePoint;
+        using Difference = Duration;
+    };
+
 }  // namespace quant::units::time
 
 namespace quant

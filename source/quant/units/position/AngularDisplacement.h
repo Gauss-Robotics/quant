@@ -19,11 +19,11 @@ namespace quant::geometry
 namespace quant::units::position
 {
 
-    class AngularDisplacement : public AngularDifference<Orientation>
+    class AngularDisplacement : public AngularDifference<Domain>
     {
 
     public:
-        using AngularDifference<Orientation>::AngularDifference;
+        using AngularDifference<Domain>::AngularDifference;
 
         static AngularDisplacement
         Radians(AxisAngle const& aa)

@@ -19,20 +19,12 @@ namespace quant::geometry
 namespace quant::units::position
 {
 
-    class LinearDisplacement : public LinearDifference<Position>
+    class LinearDisplacement : public LinearDifference<Domain>
 
     {
 
     public:
-        LinearDisplacement() : LinearDifference<Position>()
-        {
-            ;
-        }
-
-        explicit LinearDisplacement(Position const& t) : LinearDifference<Position>(t)
-        {
-            ;
-        }
+        using LinearDifference<Domain>::LinearDifference;
 
         static LinearDisplacement
         MilliMeters(double x, double y, double z)

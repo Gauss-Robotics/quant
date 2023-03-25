@@ -24,21 +24,13 @@ namespace quant::units::time
      */
     class Duration :
         // A duration is the difference of time points.
-        public Difference<TimePoint>,
+        public ScalarDifference<Domain>,
         // A duration can be specified in several temporal units.
         public detail::UnitConversions<Duration>
     {
 
     public:
-        Duration() : Difference<TimePoint>()
-        {
-            ;
-        }
-
-        explicit Duration(TimePoint const& t) : Difference<TimePoint>(t)
-        {
-            ;
-        }
+        using ScalarDifference<Domain>::ScalarDifference;
 
         /**
          * @brief Constructs a time point in microseconds.

@@ -5,6 +5,7 @@
 #include <quant/units/position/Position.h>
 #include <quant/units/speed/Speed.h>
 #include <quant/units/time/Duration.h>
+#include <quant/units/velocity_fwd.h>
 
 #include <Eigen/Geometry>
 
@@ -19,17 +20,11 @@ namespace quant::units::velocity
      * - The difference of a LinearVelocity is LinearVelocityDifference.
      * - The magnitude of a Linear Veloctiy is Speed.
      */
-    class LinearVelocity : public geometry::VectorQuantity<LinearVelocity>
+    class LinearVelocity : public geometry::VectorQuantity<Domain>
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<LinearVelocity>::VectorQuantity;
-
-        static LinearVelocity
-        Zero()
-        {
-            return Origin();
-        }
+        using geometry::VectorQuantity<Domain>::VectorQuantity;
 
         static LinearVelocity
         MilliMetersPerSecond(Vector xyz)

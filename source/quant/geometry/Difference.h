@@ -59,45 +59,145 @@ namespace quant::geometry
     };
 
     template <typename QuantityT>
-    /*typename std::enable_if_t<
-        std::is_base_of_v<ScalarQuantity<QuantityT, std::int64_t>, QuantityT> or
-            std::is_base_of_v<VectorQuantity<QuantityT>, QuantityT>,*/
-    DifferenceTypeOf<QuantityT>  //>
+    typename std::enable_if_t<std::is_same_v<typename QuantityT::GeometricType, ScalarStateType>,
+                              DifferenceTypeOf<QuantityT>>
     operator-(QuantityT const& lhs, QuantityT const& rhs)
     {
-        using acc = detail::Accessor<QuantityT>;
-        return DifferenceTypeOf<QuantityT>(
-            acc::make(acc::representation(lhs) - acc::representation(rhs)));
+        using sacc = detail::QuantityAccessor<QuantityT>;
+        using dacc = detail::DifferenceAccessor<QuantityT>;
+        return typename QuantityT::DomainType::Difference(
+            dacc::make(sacc::representation(lhs) - sacc::representation(rhs)));
     }
 
     template <typename QuantityT>
-    class LinearDifference : public Difference<QuantityT>
+    typename std::enable_if_t<std::is_same_v<typename QuantityT::GeometricType, LinearStateType>,
+                              DifferenceTypeOf<QuantityT>>
+    operator-(QuantityT const& lhs, QuantityT const& rhs)
+    {
+        using sacc = detail::QuantityAccessor<QuantityT>;
+        using dacc = detail::DifferenceAccessor<QuantityT>;
+        return typename QuantityT::DomainType::LinearDifference(
+            dacc::make(sacc::representation(lhs) - sacc::representation(rhs)));
+    }
+
+    template <typename Domain>
+    class ScalarDifference : public Difference<typename Domain::State>
     {
     public:
-        using Difference<QuantityT>::Difference;
+        using Difference<typename Domain::State>::Difference;
 
-        QuantityT
-        operator+(QuantityT const& rhs) const
+        explicit ScalarDifference(typename Domain::State const& differenceObject) :
+            Difference<typename Domain::State>(differenceObject)
         {
-            using acc = detail::Accessor<QuantityT>;
+            ;
+        }
+
+        static typename Domain::State
+        Zero()
+        {
+            return typename Domain::State::Zero();
+        }
+
+        typename Domain::State
+        operator+(typename Domain::State const& rhs) const
+        {
+            using acc = detail::QuantityAccessor<typename Domain::State>;
             return acc::make(acc::representation(this->differenceObject_) +
                              acc::representation(rhs));
         }
+
+        using GeometricRepresentationType = typename Domain::State::GeometricRepresentationType;
+        using GeometricType = DifferenceType;
+        using DomainType = Domain;
+
+        friend class detail::DifferenceAccessor<Domain>;
     };
 
-    template <typename QuantityT>
-    class AngularDifference : public Difference<QuantityT>
+    template <typename Domain>
+    class LinearDifference : public Difference<typename Domain::LinearState>
     {
     public:
-        using Difference<QuantityT>::Difference;
+        using Difference<typename Domain::LinearState>::Difference;
 
-        QuantityT
-        operator*(QuantityT const& rhs) const
+        explicit LinearDifference(typename Domain::LinearState const& differenceObject) :
+            Difference<typename Domain::LinearState>(differenceObject)
         {
-            using acc = detail::Accessor<QuantityT>;
-            return acc::make(acc::representation(this->differenceObject_) *
-                             acc::representation(rhs));
+            ;
         }
+
+        static typename Domain::LinearState
+        Zero()
+        {
+            return typename Domain::LinearState::Zero();
+        }
+
+        typename Domain::LinearState
+        operator+(typename Domain::LinearState const& rhs) const
+        {
+            using lsacc = detail::QuantityAccessor<typename Domain::LinearState>;
+            return lsacc::make(lsacc::representation(this->differenceObject_) +
+                               lsacc::representation(rhs));
+        }
+
+        using GeometricRepresentationType =
+            typename Domain::LinearState::GeometricRepresentationType;
+        using GeometricType = DifferenceType;
+        using DomainType = Domain;
+
+        friend class detail::DifferenceAccessor<Domain>;
+    };
+
+    template <typename Domain>
+    class AngularDifference : public Difference<typename Domain::AngularState>
+    {
+    public:
+        using Difference<typename Domain::AngularState>::Difference;
+
+        explicit AngularDifference(typename Domain::AngularState const& differenceObject) :
+            Difference<typename Domain::AngularState>(differenceObject)
+        {
+            ;
+        }
+
+        static typename Domain::AngularState
+        Zero()
+        {
+            return typename Domain::AngularState::Zero();
+        }
+
+        typename Domain::LinearState
+        operator*(typename Domain::LinearState const& rhs) const
+        {
+            using lsacc = detail::QuantityAccessor<typename Domain::LinearState>;
+            using asacc = detail::QuantityAccessor<typename Domain::AngularState>;
+            return lsacc::make(asacc::representation(this->differenceObject_) *
+                               lsacc::representation(rhs));
+        }
+
+        typename Domain::LinearDifference
+        operator*(typename Domain::LinearDifference const& rhs) const
+        {
+            using lsacc = detail::QuantityAccessor<typename Domain::LinearState>;
+            using asacc = detail::QuantityAccessor<typename Domain::AngularState>;
+            using ldacc = detail::DifferenceAccessor<typename Domain::LinearDifference>;
+            return ldacc::make(asacc::representation(this->differenceObject_) *
+                               lsacc::representation(rhs.differenceObject_));
+        }
+
+        typename Domain::AngularState
+        operator*(typename Domain::AngularState const& rhs) const
+        {
+            using asacc = detail::QuantityAccessor<typename Domain::AngularState>;
+            return asacc::make(asacc::representation(this->differenceObject_) *
+                               asacc::representation(rhs));
+        }
+
+        using GeometricRepresentationType =
+            typename Domain::AngularState::GeometricRepresentationType;
+        using GeometricType = DifferenceType;
+        using DomainType = Domain;
+
+        friend class detail::DifferenceAccessor<Domain>;
     };
 
 }  // namespace quant::geometry

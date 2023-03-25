@@ -16,8 +16,8 @@ export(
     TARGETS
         geometry
         units
-        framed_geometry
-        framed_units
+        #framed_geometry
+        #framed_units
     NAMESPACE
         quant::
     FILE
@@ -28,8 +28,8 @@ install(
     TARGETS
         geometry
         units
-        framed_geometry
-        framed_units
+        #framed_geometry
+        #framed_units
     EXPORT
         quant_export_set
     DESTINATION

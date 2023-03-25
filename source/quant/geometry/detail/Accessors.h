@@ -8,25 +8,36 @@ namespace quant::geometry::detail
 {
 
     template <typename BaseQuantityT>
-    class Accessor
+    class QuantityAccessor
     {
     public:
-        static typename BaseQuantityT::Representation
+        static typename BaseQuantityT::GeometricRepresentationType
         representation(BaseQuantityT const& vq)
         {
             return vq.representation_;
         }
 
         static BaseQuantityT
-        make(typename BaseQuantityT::Representation representation)
+        make(typename BaseQuantityT::GeometricRepresentationType representation)
         {
             return BaseQuantityT(representation);
         }
+    };
 
-        static typename BaseQuantityT::Representation
-        add(BaseQuantityT const& rhs, BaseQuantityT const& lhs)
+    template <typename DifferenceT>
+    class DifferenceAccessor
+    {
+    public:
+        static typename DifferenceT::GeometricRepresentationType
+        representation(DifferenceT const& d)
         {
-            return rhs + lhs;
+            return d.differenceObject_;
+        }
+
+        static DifferenceT
+        make(typename DifferenceT::GeometricRepresentationType differenceObject)
+        {
+            return DifferenceT(differenceObject);
         }
     };
 

@@ -18,20 +18,11 @@ namespace quant::geometry
 namespace quant::units::velocity
 {
 
-    class LinearVelocityDifference : public LinearDifference<LinearVelocity>
+    class LinearVelocityDifference : public LinearDifference<Domain>
     {
 
     public:
-        LinearVelocityDifference() : LinearDifference<LinearVelocity>()
-        {
-            ;
-        }
-
-        explicit LinearVelocityDifference(LinearVelocity const& t) :
-            LinearDifference<LinearVelocity>(t)
-        {
-            ;
-        }
+        using LinearDifference<Domain>::LinearDifference;
     };
 
 }  // namespace quant::units::velocity

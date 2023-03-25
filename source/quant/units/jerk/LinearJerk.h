@@ -1,30 +1,28 @@
 #pragma once
 
-
-#include <ostream>
+#include <quant/geometry/VectorQuantity.h>
+#include <quant/units/jerk_fwd.h>
 
 #include <Eigen/Geometry>
 
-#include <quant/geometry/VectorQuantity.h>
-
+#include <ostream>
 
 namespace quant::units::jerk
 {
 
-    class LinearJerk : public geometry::VectorQuantity<LinearJerk>
+    class LinearJerk : public geometry::VectorQuantity<Domain>
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<LinearJerk>::VectorQuantity;
+        using geometry::VectorQuantity<Domain>::VectorQuantity;
     };
 
+    std::ostream&
+    operator<<(std::ostream& out, LinearJerk const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const LinearJerk& rhs);
-
-} // namespace quant::units::jerk
-
+}  // namespace quant::units::jerk
 
 namespace quant
 {
     using units::jerk::LinearJerk;
-} // namespace quant
+}  // namespace quant

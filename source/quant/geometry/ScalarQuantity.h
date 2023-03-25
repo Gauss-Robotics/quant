@@ -9,7 +9,7 @@
 namespace quant::geometry
 {
 
-    template <typename BaseQuantityT, typename ScalarType>
+    template <typename Domain, typename ScalarType>
     class ScalarQuantity
     {
     public:
@@ -20,10 +20,10 @@ namespace quant::geometry
             ;
         }
 
-        static BaseQuantityT
-        Origin()
+        static typename Domain::State
+        Zero()
         {
-            return BaseQuantityT(0);
+            return typename Domain::State(0);
         }
 
         // Convert.
@@ -59,26 +59,28 @@ namespace quant::geometry
         // Compare.
 
         bool
-        operator==(BaseQuantityT const& rhs) const
+        operator==(typename Domain::State const& rhs) const
         {
             return representation_ == rhs.representation_;
         }
 
         bool
-        operator!=(BaseQuantityT const& rhs) const
+        operator!=(typename Domain::State const& rhs) const
         {
             return representation_ != rhs.representation_;
         }
 
         bool
-        isApprox(BaseQuantityT const& rhs, ScalarType precision) const
+        isApprox(typename Domain::State const& rhs, ScalarType precision) const
         {
             return std::abs(representation_ - rhs.representation_) < precision;
         }
 
-        using Representation = ScalarType;
+        using GeometricRepresentationType = ScalarType;
+        using GeometricType = ScalarStateType;
+        using DomainType = Domain;
 
-    protected:
+    public:
         ScalarQuantity(ScalarType value) : representation_{value}
         {
             ;
@@ -87,10 +89,7 @@ namespace quant::geometry
     public:
         ScalarType representation_;
 
-        friend class detail::Accessor<BaseQuantityT>;
+        friend class detail::QuantityAccessor<typename Domain::State>;
     };
-
-    template <typename T>
-    using ScalarIntegerQuantity = ScalarQuantity<T, std::int64_t>;
 
 }  // namespace quant::geometry

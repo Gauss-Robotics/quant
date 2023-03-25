@@ -8,12 +8,12 @@
 namespace quant::units::position
 {
 
-    class Orientation : public geometry::QuaternionQuantity<Orientation>
+    class Orientation : public geometry::QuaternionQuantity<Domain>
     {
     public:
         // Construct.
 
-        using geometry::QuaternionQuantity<Orientation>::QuaternionQuantity;
+        using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
 
         static Orientation
         Radians(AxisAngle const& aa)

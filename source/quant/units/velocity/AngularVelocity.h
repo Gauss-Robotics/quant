@@ -1,6 +1,7 @@
 #pragma once
 
 #include <quant/geometry/QuaternionQuantity.h>
+#include <quant/units/velocity_fwd.h>
 
 #include <Eigen/Geometry>
 
@@ -9,18 +10,12 @@
 namespace quant::units::velocity
 {
 
-    class AngularVelocity : public geometry::QuaternionQuantity<AngularVelocity>
+    class AngularVelocity : public geometry::QuaternionQuantity<Domain>
     {
     public:
         // Construct.
 
-        using geometry::QuaternionQuantity<AngularVelocity>::QuaternionQuantity;
-
-        static AngularVelocity
-        Zero()
-        {
-            return Origin();
-        }
+        using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
 
         static AngularVelocity
         RadiansPerSecond(AxisAngle const& aa)

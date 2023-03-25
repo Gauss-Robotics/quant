@@ -1,6 +1,7 @@
 #pragma once
 
 #include <quant/geometry/VectorQuantity.h>
+#include <quant/units/force_fwd.h>
 
 #include <Eigen/Geometry>
 
@@ -9,17 +10,11 @@
 namespace quant::units::force
 {
 
-    class Force : public geometry::VectorQuantity<Force>
+    class Force : public geometry::VectorQuantity<Domain>
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<Force>::VectorQuantity;
-
-        static Force
-        Zero()
-        {
-            return Origin();
-        }
+        using geometry::VectorQuantity<Domain>::VectorQuantity;
 
         static Force
         Newton(Vector xyz)

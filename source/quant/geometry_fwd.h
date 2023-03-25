@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cinttypes>
+
 namespace quant::geometry
 {
 
@@ -7,13 +9,36 @@ namespace quant::geometry
 
     class AxisAngle;
 
+    struct StateType
+    {
+    };
+
+    struct ScalarStateType : public StateType
+    {
+    };
+
+    struct LinearStateType : public StateType
+    {
+    };
+
+    struct AngularStateType : public StateType
+    {
+    };
+
+    struct DifferenceType
+    {
+    };
+
     template <typename BaseQuantityT>
     class Difference;
 
-    template <typename BaseQuantityT>
+    template <typename Domain>
+    class ScalarDifference;
+
+    template <typename Domain>
     class LinearDifference;
 
-    template <typename BaseQuantityT>
+    template <typename Domain>
     class AngularDifference;
 
     template <typename BaseQuantityT>
@@ -25,8 +50,8 @@ namespace quant::geometry
     template <typename BaseQuantityT, typename ScalarType = double>
     class ScalarQuantity;
 
-    template <typename BaseQuantityT>
-    class ScalarIntQuantity;
+    template <typename T>
+    using ScalarIntegerQuantity = ScalarQuantity<T, std::int64_t>;
 
     template <typename BaseQuantityT>
     class VectorQuantity;
@@ -50,6 +75,7 @@ namespace quant
     using geometry::Difference;
     using geometry::DifferenceTypeOf;
     using geometry::LinearDifference;
+    using geometry::ScalarDifference;
     using geometry::Spatial;
     using geometry::Vector;
 

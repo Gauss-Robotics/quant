@@ -1,30 +1,28 @@
 #pragma once
 
-
-#include <ostream>
+#include <quant/geometry/VectorQuantity.h>
+#include <quant/units/acceleration_fwd.h>
 
 #include <Eigen/Geometry>
 
-#include <quant/geometry/VectorQuantity.h>
-
+#include <ostream>
 
 namespace quant::units::acceleration
 {
 
-    class LinearAcceleration : public geometry::VectorQuantity<LinearAcceleration>
+    class LinearAcceleration : public geometry::VectorQuantity<Domain>
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<LinearAcceleration>::VectorQuantity;
+        using geometry::VectorQuantity<Domain>::VectorQuantity;
     };
 
+    std::ostream&
+    operator<<(std::ostream& out, LinearAcceleration const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const LinearAcceleration& rhs);
-
-} // namespace quant::units::acceleration
-
+}  // namespace quant::units::acceleration
 
 namespace quant
 {
     using units::acceleration::LinearAcceleration;
-} // namespace quant
+}  // namespace quant

@@ -46,7 +46,9 @@ namespace quant::geometry
             return representation_.isApprox(rhs._representation, precision);
         }
 
-        using Representation = Eigen::Isometry3d const&;
+        using GeometricRepresentationType = Eigen::Isometry3d const&;
+        using GeometricType = StateType;
+        // using DomainType = Domain;
 
     protected:
         IsometryQuantity(Eigen::Isometry3d const& tf) : representation_(tf)
@@ -67,7 +69,7 @@ namespace quant::geometry
 
         Eigen::Isometry3d representation_;
 
-        friend class detail::Accessor<BaseQuantityT>;
+        friend class detail::QuantityAccessor<BaseQuantityT>;
     };
 
 }  // namespace quant::geometry

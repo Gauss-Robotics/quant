@@ -13,7 +13,7 @@
 namespace quant::geometry
 {
 
-    template <typename BaseQuantityT>
+    template <typename Domain>
     class QuaternionQuantity
     {
     protected:
@@ -117,10 +117,10 @@ namespace quant::geometry
             ;
         }
 
-        static BaseQuantityT
-        Origin()
+        static typename Domain::AngularState
+        Zero()
         {
-            return BaseQuantityT();
+            return typename Domain::AngularState();
         }
 
         // Convert.
@@ -150,7 +150,7 @@ namespace quant::geometry
         // Compare.
 
         bool
-        operator==(BaseQuantityT const& rhs) const
+        operator==(typename Domain::AngularState const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
@@ -158,7 +158,7 @@ namespace quant::geometry
         }
 
         bool
-        operator!=(BaseQuantityT const& rhs) const
+        operator!=(typename Domain::AngularState const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
@@ -166,17 +166,19 @@ namespace quant::geometry
         }
 
         bool
-        isApprox(BaseQuantityT const& rhs, double const precision) const
+        isApprox(typename Domain::AngularState const& rhs, double const precision) const
         {
             return representation_.isApprox(rhs.representation_, precision);
         }
 
-        using Representation = Eigen::Quaterniond const&;
+        using GeometricRepresentationType = Eigen::Quaterniond const&;
+        using GeometricType = AngularStateType;
+        using DomainType = Domain;
 
     public:
         Eigen::Quaterniond representation_;
 
-        friend class detail::Accessor<BaseQuantityT>;
+        friend class detail::QuantityAccessor<typename Domain::AngularState>;
     };
 
 }  // namespace quant::geometry

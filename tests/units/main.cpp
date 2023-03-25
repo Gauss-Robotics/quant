@@ -106,7 +106,7 @@ TEST_CASE("testing position")
         Position const p1;
         CHECK(p1.toMilliMeters().toEigen() == Eigen::Vector3d(0, 0, 0));
 
-        Position const p2 = Position::Origin();
+        Position const p2 = Position::Zero();
         CHECK(p2.toMilliMeters().toEigen() == Eigen::Vector3d(0, 0, 0));
 
         Position const p3 = Position::MilliMeters({.x = 1, .y = 2, .z = 3});
@@ -250,6 +250,8 @@ TEST_CASE("testing force")
 
 TEST_CASE("testing temperature")
 {
+    // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+
     SUBCASE("testing canonical zero constructions")
     {
         Temperature const zeroDefault;
@@ -347,4 +349,6 @@ TEST_CASE("testing temperature")
         CHECK(absoluteZero.toDegreeFahrenheit() == doctest::Approx(-459.67));
         CHECK(absoluteZero.toDegreeRankine() == doctest::Approx(0));
     }
+
+    // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 }

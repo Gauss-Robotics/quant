@@ -1,7 +1,7 @@
 #pragma once
 
-
 #include <quant/geometry/ScalarQuantity.h>
+#include <quant/units/temperature_fwd.h>
 
 #include <cstdint>
 #include <ostream>
@@ -23,7 +23,7 @@ namespace quant::units::temperature
     constexpr double rankine2celsiusOffset = -celsius2rankineOffset;
     constexpr double rankine2celsiusFactor = fahrenheit2celsiusFactor;
 
-    class Temperature : geometry::ScalarQuantity<Temperature>
+    class Temperature : geometry::ScalarQuantity<Domain>
     {
 
     public:
@@ -51,7 +51,8 @@ namespace quant::units::temperature
             return {(rankine + rankine2celsiusOffset) * rankine2celsiusFactor};
         }
 
-        std::string toString() const;
+        std::string
+        toString() const;
 
         double
         toDegreeCelsius() const
@@ -80,10 +81,11 @@ namespace quant::units::temperature
         // Operators.
 
     protected:
-        using geometry::ScalarQuantity<Temperature>::ScalarQuantity;
+        using geometry::ScalarQuantity<Domain>::ScalarQuantity;
     };
 
-    std::ostream& operator<<(std::ostream& out, Temperature const& rhs);
+    std::ostream&
+    operator<<(std::ostream& out, Temperature const& rhs);
 
 }  // namespace quant::units::temperature
 

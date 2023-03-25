@@ -1,0 +1,35 @@
+#pragma once
+
+namespace quant::units::jerk
+{
+
+    class LinearJerk;
+    class AngularJerk;
+    class SpatialJerk;
+    class LinearJerkDifference;
+    class AngularJerkDifference;
+    class SpatialJerkDifference;
+
+    struct Domain
+    {
+        using LinearState = LinearJerk;
+        using AngularState = AngularJerk;
+        using SpatialState = SpatialJerk;
+        using LinearDifference = LinearJerkDifference;
+        using AngularDifference = AngularJerkDifference;
+        using SpatialDifference = SpatialJerkDifference;
+    };
+
+}  // namespace quant::units::jerk
+
+namespace quant
+{
+
+    using units::jerk::AngularJerk;
+    using units::jerk::AngularJerkDifference;
+    using units::jerk::LinearJerk;
+    using units::jerk::LinearJerkDifference;
+    using units::jerk::SpatialJerk;
+    using units::jerk::SpatialJerkDifference;
+
+}  // namespace quant

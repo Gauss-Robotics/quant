@@ -19,11 +19,11 @@ namespace quant::geometry
 namespace quant::units::velocity
 {
 
-    class AngularVelocityDifference : public AngularDifference<AngularVelocity>
+    class AngularVelocityDifference : public AngularDifference<Domain>
     {
 
     public:
-        using AngularDifference<AngularVelocity>::AngularDifference;
+        using AngularDifference<Domain>::AngularDifference;
     };
 
 }  // namespace quant::units::velocity

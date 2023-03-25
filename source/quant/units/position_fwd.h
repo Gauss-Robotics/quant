@@ -11,7 +11,7 @@ namespace quant::units::position
     class AngularDisplacement;
     class SpatialDisplacement;
 
-    struct DomainDef
+    struct Domain
     {
         using LinearState = Position;
         using AngularState = Orientation;

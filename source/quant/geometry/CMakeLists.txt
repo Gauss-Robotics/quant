@@ -2,8 +2,6 @@ add_library(geometry SHARED
     ../geometry.h
     ../geometry_fwd.h
 
-    DomainDefinition.h
-
     Vector.h
     AxisAngle.h
     Spatial.h

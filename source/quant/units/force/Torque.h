@@ -1,7 +1,7 @@
 #pragma once
 
-
 #include <quant/geometry/QuaternionQuantity.h>
+#include <quant/units/force_fwd.h>
 
 #include <Eigen/Geometry>
 
@@ -10,17 +10,11 @@
 namespace quant::units::force
 {
 
-    class Torque : public geometry::QuaternionQuantity<Torque>
+    class Torque : public geometry::QuaternionQuantity<Domain>
     {
         // Construct.
     public:
-        using geometry::QuaternionQuantity<Torque>::QuaternionQuantity;
-
-        static Torque
-        Zero()
-        {
-            return Origin();
-        }
+        using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
 
         static Torque
         NewtonMeters(AxisAngle aa)
@@ -29,7 +23,8 @@ namespace quant::units::force
         }
     };
 
-    std::ostream& operator<<(std::ostream& out, Torque const& rhs);
+    std::ostream&
+    operator<<(std::ostream& out, Torque const& rhs);
 
 }  // namespace quant::units::force
 

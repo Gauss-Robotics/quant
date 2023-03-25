@@ -11,25 +11,38 @@
 namespace quant::geometry
 {
 
-    template <typename BaseQuantityT>
+    template <typename Domain>
     class VectorQuantity
     {
     public:
         // Construct.
 
+        /**
+         * @brief VectorQuantity
+         */
         VectorQuantity() : representation_(0, 0, 0)
         {
             ;
         }
 
-        static BaseQuantityT
-        Origin()
+        /**
+         * @brief Zero
+         * @return
+         */
+        static typename Domain::LinearState
+        Zero()
         {
-            return BaseQuantityT(0, 0, 0);
+            return typename Domain::LinearState(0, 0, 0);
         }
 
         // Convert.
 
+        /**
+         * @brief toString
+         * @param quantityName
+         * @param unit
+         * @return
+         */
         std::string
         toString(std::string const& quantityName = "", std::string const& unit = "") const
         {
@@ -48,29 +61,30 @@ namespace quant::geometry
         // Compare.
 
         bool
-        operator==(BaseQuantityT const& rhs) const
+        operator==(typename Domain::LinearState const& rhs) const
         {
             return representation_ == rhs.representation_;
         }
 
         bool
-        operator!=(BaseQuantityT const& rhs) const
+        operator!=(typename Domain::LinearState const& rhs) const
         {
             return representation_ != rhs.representation_;
         }
 
         bool
-        isApprox(BaseQuantityT const& rhs, double precision) const
+        isApprox(typename Domain::LinearState const& rhs, double precision) const
         {
             return representation_.isApprox(rhs.representation_, precision);
         }
 
-        using Representation = Eigen::Ref<Eigen::Vector3d const>;
+        using GeometricRepresentationType = Eigen::Ref<Eigen::Vector3d const>;
+        using GeometricType = LinearStateType;
+        using DomainType = Domain;
 
     public:  // TODO(dreher): Make protected.
         Eigen::Vector3d representation_;
 
-    protected:
         // Construct.
 
         VectorQuantity(double x, double y, double z) : representation_(x, y, z)
@@ -96,7 +110,7 @@ namespace quant::geometry
             return Vector::FromEigen(representation_);
         }
 
-        friend class detail::Accessor<BaseQuantityT>;
+        friend class detail::QuantityAccessor<typename Domain::LinearState>;
     };
 
 }  // namespace quant::geometry

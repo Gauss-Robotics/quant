@@ -18,19 +18,11 @@ namespace quant::geometry
 namespace quant::units::force
 {
 
-    class ForceDifference : public LinearDifference<Force>
+    class ForceDifference : public LinearDifference<Domain>
     {
 
     public:
-        ForceDifference() : LinearDifference<Force>()
-        {
-            ;
-        }
-
-        explicit ForceDifference(Force const& t) : LinearDifference<Force>(t)
-        {
-            ;
-        }
+        using LinearDifference<Domain>::LinearDifference;
     };
 
 }  // namespace quant::units::force

@@ -19,11 +19,11 @@ namespace quant::geometry
 namespace quant::units::force
 {
 
-    class TorqueDifference : public AngularDifference<Torque>
+    class TorqueDifference : public AngularDifference<Domain>
     {
 
     public:
-        using AngularDifference<TorqueDifference>::AngularDifference;
+        using AngularDifference<Domain>::AngularDifference;
 
         static TorqueDifference
         NewtonMeters(AxisAngle const& aa)
