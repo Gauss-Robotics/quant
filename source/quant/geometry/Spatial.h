@@ -17,11 +17,11 @@ namespace quant::geometry
         }
 
         static typename Domain::SpatialState
-        Zero()
+        zero()
         {
             using Linear = typename Domain::LinearState;
             using Angular = typename Domain::AngularState;
-            return typename Domain::SpatialState(Linear::Zero(), Angular::Zero());
+            return typename Domain::SpatialState(Linear::zero(), Angular::zero());
         }
 
         typename Domain::LinearState

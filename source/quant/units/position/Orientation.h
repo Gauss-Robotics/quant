@@ -13,10 +13,8 @@ namespace quant::units::position
     public:
         // Construct.
 
-        using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
-
         static Orientation
-        Radians(AxisAngle const& aa)
+        radians(AxisAngle const& aa)
         {
             return {aa};
         }
@@ -28,6 +26,8 @@ namespace quant::units::position
         {
             return this->toAngleAxis();
         }
+
+        using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
     };
 
     inline std::ostream&

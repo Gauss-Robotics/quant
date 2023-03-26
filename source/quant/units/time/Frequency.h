@@ -19,10 +19,10 @@ namespace quant::units::time
         Frequency(Duration const& cycleDuration);
 
         static Frequency
-        Hertz(std::int64_t hertz);
+        hertz(std::int64_t hertz);
 
         static Frequency
-        HertzDouble(double hertz);
+        hertzDouble(double hertz);
 
         std::int64_t
         toHertz() const;
@@ -127,8 +127,3 @@ namespace quant::units::time
     operator<<(std::ostream& out, Frequency const& rhs);
 
 }  // namespace quant::units::time
-
-namespace quant
-{
-    using units::time::Frequency;
-}  // namespace quant

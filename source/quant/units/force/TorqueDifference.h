@@ -15,9 +15,9 @@ namespace quant::units::force
         using AngularDifference<Domain>::AngularDifference;
 
         static TorqueDifference
-        NewtonMeters(AxisAngle const& aa)
+        newtonMeters(AxisAngle const& aa)
         {
-            return TorqueDifference{Torque::NewtonMeters(aa)};
+            return TorqueDifference{Torque::newtonMeters(aa)};
         }
     };
 

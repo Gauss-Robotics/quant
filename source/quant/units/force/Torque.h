@@ -17,7 +17,7 @@ namespace quant::units::force
         using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
 
         static Torque
-        NewtonMeters(AxisAngle aa)
+        newtonMeters(AxisAngle aa)
         {
             return {aa};
         }

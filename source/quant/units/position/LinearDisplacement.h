@@ -16,15 +16,15 @@ namespace quant::units::position
         using LinearDifference<Domain>::LinearDifference;
 
         static LinearDisplacement
-        MilliMeters(double x, double y, double z)
+        milliMeters(double x, double y, double z)
         {
-            return LinearDisplacement(Position::MilliMeters(x, y, z));
+            return LinearDisplacement(Position::milliMeters(x, y, z));
         }
 
         static LinearDisplacement
-        MilliMeters(Vector xyz)
+        milliMeters(Vector xyz)
         {
-            return LinearDisplacement(Position::MilliMeters(xyz));
+            return LinearDisplacement(Position::milliMeters(xyz));
         }
 
         Vector

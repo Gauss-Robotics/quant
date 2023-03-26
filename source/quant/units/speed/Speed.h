@@ -2,17 +2,11 @@
 
 #include <quant/geometry/ScalarQuantity.h>
 #include <quant/units/speed_fwd.h>
+#include <quant/units/velocity_fwd.h>
 
 #include <cstdint>
 #include <ostream>
 #include <string>
-
-namespace quant::units::velocity
-{
-
-    class LinearVelocity;
-
-}
 
 namespace quant::units::speed
 {
@@ -26,13 +20,13 @@ namespace quant::units::speed
         Speed(quant::units::velocity::LinearVelocity const& vel);
 
         static Speed
-        MilliMetersPerSecond(double milliMetersPerSecond)
+        milliMetersPerSecond(double milliMetersPerSecond)
         {
             return {milliMetersPerSecond};
         }
 
         static Speed
-        MetersPerSecond(double metersPerSecond)
+        metersPerSecond(double metersPerSecond)
         {
             return {metersPerSecond * m2mm};
         }
@@ -56,10 +50,3 @@ namespace quant::units::speed
     operator<<(std::ostream& out, Speed const& rhs);
 
 }  // namespace quant::units::speed
-
-namespace quant
-{
-
-    using units::speed::Speed;
-
-}  // namespace quant

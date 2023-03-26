@@ -15,9 +15,9 @@ namespace quant::units::position
         using AngularDifference<Domain>::AngularDifference;
 
         static AngularDisplacement
-        Radians(AxisAngle const& aa)
+        radians(AxisAngle const& aa)
         {
-            return AngularDisplacement(Orientation::Radians(aa));
+            return AngularDisplacement(Orientation::radians(aa));
         }
     };
 

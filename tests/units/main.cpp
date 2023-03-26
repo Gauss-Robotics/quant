@@ -17,84 +17,84 @@ TEST_CASE("testing time")
 {
     SUBCASE("TimePointTest")
     {
-        TimePoint const t1 = TimePoint::MicroSeconds(100);
+        TimePoint const t1 = TimePoint::microSeconds(100);
         CHECK(t1.toMicroSeconds() == 100);
 
-        TimePoint const t2 = TimePoint::MilliSeconds(100);
+        TimePoint const t2 = TimePoint::milliSeconds(100);
         CHECK(t2.toMicroSeconds() == 100'000);
 
-        TimePoint const t3 = TimePoint::Seconds(100);
+        TimePoint const t3 = TimePoint::seconds(100);
         CHECK(t3.toMicroSeconds() == 100'000'000);
 
-        TimePoint const t4 = TimePoint::Minutes(100);
+        TimePoint const t4 = TimePoint::minutes(100);
         CHECK(t4.toMicroSeconds() == 6'000'000'000);
 
-        TimePoint const t5 = TimePoint::Hours(100);
+        TimePoint const t5 = TimePoint::hours(100);
         CHECK(t5.toMicroSeconds() == 360'000'000'000);
 
-        TimePoint const t6 = TimePoint::Days(100);
+        TimePoint const t6 = TimePoint::days(100);
         CHECK(t6.toMicroSeconds() == 8'640'000'000'000);
     }
 
     SUBCASE("TimePointRoundingTest")
     {
-        TimePoint const t1Down = TimePoint::MicroSeconds(499);
+        TimePoint const t1Down = TimePoint::microSeconds(499);
         CHECK(t1Down.toMilliSeconds() == 0);
-        TimePoint const t1Up = TimePoint::MicroSeconds(500);
+        TimePoint const t1Up = TimePoint::microSeconds(500);
         CHECK(t1Up.toMilliSeconds() == 1);
 
-        TimePoint const t2Down = TimePoint::MilliSeconds(499);
+        TimePoint const t2Down = TimePoint::milliSeconds(499);
         CHECK(t2Down.toSeconds() == 0);
-        TimePoint const t2Up = TimePoint::MilliSeconds(500);
+        TimePoint const t2Up = TimePoint::milliSeconds(500);
         CHECK(t2Up.toSeconds() == 1);
 
-        TimePoint const t3Down = TimePoint::Seconds(29);
+        TimePoint const t3Down = TimePoint::seconds(29);
         CHECK(t3Down.toMinutes() == 0);
-        TimePoint const t3Up = TimePoint::Seconds(30);
+        TimePoint const t3Up = TimePoint::seconds(30);
         CHECK(t3Up.toMinutes() == 1);
 
-        TimePoint const t4Down = TimePoint::Minutes(29);
+        TimePoint const t4Down = TimePoint::minutes(29);
         CHECK(t4Down.toHours() == 0);
-        TimePoint const t4Up = TimePoint::Minutes(30);
+        TimePoint const t4Up = TimePoint::minutes(30);
         CHECK(t4Up.toHours() == 1);
 
-        TimePoint const t5Down = TimePoint::Hours(11);
+        TimePoint const t5Down = TimePoint::hours(11);
         CHECK(t5Down.toDays() == 0);
-        TimePoint const t5Up = TimePoint::Hours(12);
+        TimePoint const t5Up = TimePoint::hours(12);
         CHECK(t5Up.toDays() == 1);
     }
 
     SUBCASE("DurationRoundingTest")
     {
-        Duration const t1Down = Duration::MicroSeconds(499);
+        Duration const t1Down = Duration::microSeconds(499);
         CHECK(t1Down.toMilliSeconds() == 0);
-        Duration const t1Up = Duration::MicroSeconds(500);
+        Duration const t1Up = Duration::microSeconds(500);
         CHECK(t1Up.toMilliSeconds() == 1);
 
-        Duration const t2Down = Duration::MilliSeconds(499);
+        Duration const t2Down = Duration::milliSeconds(499);
         CHECK(t2Down.toSeconds() == 0);
-        Duration const t2Up = Duration::MilliSeconds(500);
+        Duration const t2Up = Duration::milliSeconds(500);
         CHECK(t2Up.toSeconds() == 1);
 
-        Duration const t3Down = Duration::Seconds(29);
+        Duration const t3Down = Duration::seconds(29);
         CHECK(t3Down.toMinutes() == 0);
-        Duration const t3Up = Duration::Seconds(30);
+        Duration const t3Up = Duration::seconds(30);
         CHECK(t3Up.toMinutes() == 1);
 
-        Duration const t4Down = Duration::Minutes(29);
+        Duration const t4Down = Duration::minutes(29);
         CHECK(t4Down.toHours() == 0);
-        Duration const t4Up = Duration::Minutes(30);
+        Duration const t4Up = Duration::minutes(30);
         CHECK(t4Up.toHours() == 1);
 
-        Duration const t5Down = Duration::Hours(11);
+        Duration const t5Down = Duration::hours(11);
         CHECK(t5Down.toDays() == 0);
-        Duration const t5Up = Duration::Hours(12);
+        Duration const t5Up = Duration::hours(12);
         CHECK(t5Up.toDays() == 1);
     }
 
     SUBCASE("DurationTest")
     {
-        Duration const d1 = TimePoint::MicroSeconds(1000) - TimePoint::MicroSeconds(333);
+        Duration const d1 = TimePoint::microSeconds(1000) - TimePoint::microSeconds(333);
         CHECK(d1.toMicroSeconds() == 667);
     }
 }
@@ -106,23 +106,23 @@ TEST_CASE("testing position")
         Position const p1;
         CHECK(p1.toMilliMeters().toEigen() == Eigen::Vector3d(0, 0, 0));
 
-        Position const p2 = Position::Zero();
+        Position const p2 = Position::zero();
         CHECK(p2.toMilliMeters().toEigen() == Eigen::Vector3d(0, 0, 0));
 
-        Position const p3 = Position::MilliMeters({.x = 1, .y = 2, .z = 3});
+        Position const p3 = Position::milliMeters({.x = 1, .y = 2, .z = 3});
         CHECK(p3.toMilliMeters().toEigen() == Eigen::Vector3d(1, 2, 3));
 
-        Position const p4 = Position::MilliMeters(Vector::FromEigen(Eigen::Vector3d(3, 2, 1)));
+        Position const p4 = Position::milliMeters(Vector::fromEigen(Eigen::Vector3d(3, 2, 1)));
         CHECK(p4.toMilliMeters().toEigen() == Eigen::Vector3d(3, 2, 1));
     }
 
-    Position const p1 = Position::MilliMeters(100, 200, 300);
-    Position const p2 = Position::MilliMeters(0, 100, 0);
+    Position const p1 = Position::milliMeters(100, 200, 300);
+    Position const p2 = Position::milliMeters(0, 100, 0);
 
     SUBCASE("testing operators")
     {
         LinearDisplacement const disturbance =
-            LinearDisplacement::MilliMeters({.x = 1e-14, .z = 1e-15});
+            LinearDisplacement::milliMeters({.x = 1e-14, .z = 1e-15});
         Position const p = disturbance + p1;
 
         CHECK(p1 != p);
@@ -139,16 +139,16 @@ TEST_CASE("testing position")
 
     SUBCASE("testing different operations")
     {
-        AngularDisplacement const rot = AngularDisplacement::Radians(AxisAngle::AroundY(M_PI));
-        Position const pos1 = Position::MilliMeters({.y = 100, .z = 200});
+        AngularDisplacement const rot = AngularDisplacement::radians(AxisAngle::aroundY(M_PI));
+        Position const pos1 = Position::milliMeters({.y = 100, .z = 200});
         Position const rotPos = rot * pos1;
         CHECK(rotPos.toMilliMeters().x == doctest::Approx(0));
         CHECK(rotPos.toMilliMeters().y == doctest::Approx(100));
         CHECK(rotPos.toMilliMeters().z == doctest::Approx(-200));
 
-        LinearDisplacement const trans = LinearDisplacement::MilliMeters({.x = 5, .z = 100});
+        LinearDisplacement const trans = LinearDisplacement::milliMeters({.x = 5, .z = 100});
         Position const transPos = trans + pos1;
-        CHECK(transPos == Position::MilliMeters({.x = 5, .y = 100, .z = 300}));
+        CHECK(transPos == Position::milliMeters({.x = 5, .y = 100, .z = 300}));
 
         LinearDisplacement const rotTrans = rot * trans;
         CHECK(rotTrans.toMilliMeters().x == doctest::Approx(-5));
@@ -168,7 +168,7 @@ TEST_CASE("testing velocity")
     {
         Eigen::AngleAxisd const radPerSec(M_PI / 2, Eigen::Vector3d(1, 0, 1).normalized());
         AngularVelocity const av =
-            AngularVelocity::RadiansPerSecond(AxisAngle::FromEigen(radPerSec));
+            AngularVelocity::radiansPerSecond(AxisAngle::fromEigen(radPerSec));
         Eigen::AngleAxisd const radPerSecReconstructed = av.toAngleAxis().toEigen();
 
         CHECK(radPerSecReconstructed.isApprox(radPerSec, Precision));
@@ -176,12 +176,12 @@ TEST_CASE("testing velocity")
 
     SUBCASE("CompoundTypesTest1")
     {
-        Twist const t1 = Twist::Zero();
-        LinearVelocity const vel1 = LinearVelocity::MilliMetersPerSecond({.y = 100});
+        Twist const t1 = Twist::zero();
+        LinearVelocity const vel1 = LinearVelocity::milliMetersPerSecond({.y = 100});
         Twist const t2 = LinearVelocityDifference(vel1) + t1;
         CHECK(t2.linear() == vel1);
 
-        AngularVelocity const vel2 = AngularVelocity::RadiansPerSecond({.angle = M_PI});
+        AngularVelocity const vel2 = AngularVelocity::radiansPerSecond({.angle = M_PI});
         Twist const t3 = AngularVelocityDifference(vel2) + t1;
         CHECK(t3.angular().isApprox(vel2, Precision));
     }
@@ -189,12 +189,12 @@ TEST_CASE("testing velocity")
     SUBCASE("testing complex unit conversions")
     {
         // First measurement.
-        Position const x1 = Position::MilliMeters({.z = 100});
-        TimePoint const t1 = TimePoint::Seconds(15);
+        Position const x1 = Position::milliMeters({.z = 100});
+        TimePoint const t1 = TimePoint::seconds(15);
 
         // Second measurement.
-        Position const x2 = Position::MilliMeters({.x = 100, .y = 100, .z = 200});
-        TimePoint const t2 = TimePoint::Seconds(17);
+        Position const x2 = Position::milliMeters({.x = 100, .y = 100, .z = 200});
+        TimePoint const t2 = TimePoint::seconds(17);
 
         // Calculate differences.
         LinearDisplacement const dx = x2 - x1;
@@ -221,7 +221,7 @@ TEST_CASE("testing velocity")
 
         // Check velocity.
         LinearVelocity const velTarget =
-            LinearVelocity::MilliMetersPerSecond({.x = 50, .y = 50, .z = 50});
+            LinearVelocity::milliMetersPerSecond({.x = 50, .y = 50, .z = 50});
         std::cout << "Velocity actual: " << vel << "." << std::endl;
         std::cout << "Velocity target: " << velTarget << "." << std::endl;
         CHECK(vel.isApprox(velTarget, Precision));
@@ -232,13 +232,13 @@ TEST_CASE("testing force")
 {
     SUBCASE("CompoundTypesTest2")
     {
-        Force const f = Force::Newton(Vector({.y = 100}));
+        Force const f = Force::newton(Vector({.y = 100}));
         ForceDifference const df{f};
-        Wrench const w1 = Wrench::Zero();
+        Wrench const w1 = Wrench::zero();
         Wrench const w2 = df + w1;
         CHECK(w2.linear() == f);
 
-        Torque const t = Torque::NewtonMeters(AxisAngle::AroundY(1));
+        Torque const t = Torque::newtonMeters(AxisAngle::aroundY(1));
         TorqueDifference const dt(t);
         Wrench const w3 = dt + w1;
 
@@ -258,38 +258,38 @@ TEST_CASE("testing temperature")
 
         CHECK(zeroDefault.toDegreeCelsius() == 0);
 
-        Temperature const zeroDegreeCelsius = Temperature::DegreeCelcius(0);
+        Temperature const zeroDegreeCelsius = Temperature::degreeCelcius(0);
 
         CHECK(zeroDegreeCelsius.toDegreeCelsius() == 0);
 
-        Temperature const zeroDegreeCelsiusFromKelvin = Temperature::Kelvin(273.15);
+        Temperature const zeroDegreeCelsiusFromKelvin = Temperature::kelvin(273.15);
 
         CHECK(zeroDegreeCelsiusFromKelvin.toDegreeCelsius() == 0);
 
-        Temperature const zeroDegreeCelsiusFromDegreeFahrenheit = Temperature::DegreeFahrenheit(32);
+        Temperature const zeroDegreeCelsiusFromDegreeFahrenheit = Temperature::degreeFahrenheit(32);
 
         CHECK(zeroDegreeCelsiusFromDegreeFahrenheit.toDegreeCelsius() == doctest::Approx(0));
 
-        Temperature const zeroDegreeCelsiusFromDegreeRankine = Temperature::DegreeRankine(491.67);
+        Temperature const zeroDegreeCelsiusFromDegreeRankine = Temperature::degreeRankine(491.67);
 
         CHECK(zeroDegreeCelsiusFromDegreeRankine.toDegreeCelsius() == doctest::Approx(0));
     }
 
     SUBCASE("testing unit-specific zero constructions")
     {
-        Temperature const zeroDegreeCelsius = Temperature::DegreeCelcius(0);
+        Temperature const zeroDegreeCelsius = Temperature::degreeCelcius(0);
 
         CHECK(zeroDegreeCelsius.toDegreeCelsius() == 0);
 
-        Temperature const zeroKelvin = Temperature::Kelvin(0);
+        Temperature const zeroKelvin = Temperature::kelvin(0);
 
         CHECK(zeroKelvin.toDegreeCelsius() == -273.15);
 
-        Temperature const zeroDegreeFahrenheit = Temperature::DegreeFahrenheit(0);
+        Temperature const zeroDegreeFahrenheit = Temperature::degreeFahrenheit(0);
 
         CHECK(zeroDegreeFahrenheit.toDegreeCelsius() == doctest::Approx(-17.7778));
 
-        Temperature const zeroDegreeRankine = Temperature::DegreeRankine(0);
+        Temperature const zeroDegreeRankine = Temperature::degreeRankine(0);
 
         CHECK(zeroDegreeRankine.toDegreeCelsius() == doctest::Approx(-273.15));
     }
@@ -299,7 +299,7 @@ TEST_CASE("testing temperature")
         // Data for these unit tests taken from the comparison table from the German wikipedia:
         // https://de.wikipedia.org/wiki/Grad_Fahrenheit
 
-        Temperature const waterBoilingPoint = Temperature::DegreeCelcius(100);
+        Temperature const waterBoilingPoint = Temperature::degreeCelcius(100);
 
         CHECK(waterBoilingPoint.toDegreeCelsius() == 100);
         CHECK(waterBoilingPoint.toKelvin() == 373.15);
@@ -307,42 +307,42 @@ TEST_CASE("testing temperature")
         CHECK(waterBoilingPoint.toDegreeRankine() == doctest::Approx(671.67));
 
         // According to Fahrenheit.
-        Temperature const bodyTemperatureHuman = Temperature::DegreeFahrenheit(96);
+        Temperature const bodyTemperatureHuman = Temperature::degreeFahrenheit(96);
 
         CHECK(bodyTemperatureHuman.toDegreeCelsius() == doctest::Approx(35.5556));
         CHECK(bodyTemperatureHuman.toDegreeFahrenheit() == doctest::Approx(96));
         CHECK(bodyTemperatureHuman.toKelvin() == doctest::Approx(308.705));
         CHECK(bodyTemperatureHuman.toDegreeRankine() == doctest::Approx(555.67));
 
-        Temperature const waterTriplePoint = Temperature::Kelvin(273.16);
+        Temperature const waterTriplePoint = Temperature::kelvin(273.16);
 
         CHECK(waterTriplePoint.toDegreeCelsius() == doctest::Approx(0.01));
         CHECK(waterTriplePoint.toKelvin() == doctest::Approx(273.16));
         CHECK(waterTriplePoint.toDegreeFahrenheit() == doctest::Approx(32.018));
         CHECK(waterTriplePoint.toDegreeRankine() == doctest::Approx(491.688));
 
-        Temperature const waterFreezingPointC = Temperature::DegreeCelcius(0);
+        Temperature const waterFreezingPointC = Temperature::degreeCelcius(0);
 
         CHECK(waterFreezingPointC.toDegreeCelsius() == doctest::Approx(0));
         CHECK(waterFreezingPointC.toKelvin() == doctest::Approx(273.15));
         CHECK(waterFreezingPointC.toDegreeFahrenheit() == doctest::Approx(32));
         CHECK(waterFreezingPointC.toDegreeRankine() == doctest::Approx(491.67));
 
-        Temperature const waterFreezingPointF = Temperature::DegreeFahrenheit(32);
+        Temperature const waterFreezingPointF = Temperature::degreeFahrenheit(32);
 
         CHECK(waterFreezingPointF.toDegreeCelsius() == doctest::Approx(0));
         CHECK(waterFreezingPointF.toKelvin() == doctest::Approx(273.15));
         CHECK(waterFreezingPointF.toDegreeFahrenheit() == doctest::Approx(32));
         CHECK(waterFreezingPointF.toDegreeRankine() == doctest::Approx(491.67));
 
-        Temperature const nh4clIceWaterMix = Temperature::DegreeFahrenheit(0);
+        Temperature const nh4clIceWaterMix = Temperature::degreeFahrenheit(0);
 
         CHECK(nh4clIceWaterMix.toDegreeCelsius() == doctest::Approx(-17.7778));
         CHECK(nh4clIceWaterMix.toKelvin() == doctest::Approx(255.372));
         CHECK(nh4clIceWaterMix.toDegreeFahrenheit() == doctest::Approx(0));
         CHECK(nh4clIceWaterMix.toDegreeRankine() == doctest::Approx(459.67));
 
-        Temperature const absoluteZero = Temperature::Kelvin(0);
+        Temperature const absoluteZero = Temperature::kelvin(0);
 
         CHECK(absoluteZero.toDegreeCelsius() == doctest::Approx(-273.15));
         CHECK(absoluteZero.toKelvin() == doctest::Approx(0));

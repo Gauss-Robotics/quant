@@ -20,27 +20,27 @@ namespace quant::geometry
         Vector axis{.x = 1, .y = 0, .z = 0};
 
         static AxisAngle
-        AroundX(double angle)
+        aroundX(double angle)
         {
-            return {.angle = angle, .axis = Vector::UnitX()};
+            return {.angle = angle, .axis = Vector::unitX()};
         }
 
         static AxisAngle
-        AroundY(double angle)
+        aroundY(double angle)
         {
-            return {.angle = angle, .axis = Vector::UnitY()};
+            return {.angle = angle, .axis = Vector::unitY()};
         }
 
         static AxisAngle
-        AroundZ(double angle)
+        aroundZ(double angle)
         {
-            return {.angle = angle, .axis = Vector::UnitZ()};
+            return {.angle = angle, .axis = Vector::unitZ()};
         }
 
         static AxisAngle
-        FromEigen(Eigen::AngleAxisd const& eigen)
+        fromEigen(Eigen::AngleAxisd const& eigen)
         {
-            return {.angle = eigen.angle(), .axis = Vector::FromEigen(eigen.axis())};
+            return {.angle = eigen.angle(), .axis = Vector::fromEigen(eigen.axis())};
         }
 
         Eigen::AngleAxisd

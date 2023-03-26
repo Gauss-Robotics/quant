@@ -1,12 +1,10 @@
 #pragma once
 
+#include <quant/units/time/Duration.h>
 
 #include <cstdint>
 #include <ostream>
 #include <string>
-
-#include <quant/core/time/Duration.h>
-
 
 namespace quant::units::mass
 {
@@ -17,31 +15,27 @@ namespace quant::units::mass
     public:
         Mass();
 
-        static Mass MilliGram(std::int64_t);
+        static Mass milliGram(std::int64_t);
 
-        static Mass Gram(std::int64_t);
+        static Mass gram(std::int64_t);
 
-        static Mass KiloGram(std::int64_t);
+        static Mass kiloGram(std::int64_t);
 
-        std::string toString() const;
+        std::string
+        toString() const;
 
-        std::int64_t toMicroGram() const;
+        std::int64_t
+        toMicroGram() const;
 
         // Operators.
-    public:
+
     private:
         Mass(std::int64_t microGram);
 
         std::int64_t microGram_;
     };
 
+    std::ostream&
+    operator<<(std::ostream& out, Mass const& rhs);
 
-    std::ostream& operator<<(std::ostream& out, const Mass& rhs);
-
-} // namespace quant::units::mass
-
-
-namespace quant
-{
-    using core::units::mass::Mass;
-} // namespace quant
+}  // namespace quant::units::mass

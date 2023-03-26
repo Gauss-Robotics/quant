@@ -40,7 +40,7 @@ namespace quant::geometry
 
         using DifferenceObjectType = QuantityT;
 
-    public:  // TODO(dreher) Shouldn't be public.
+    protected:
         QuantityT differenceObject_;
     };
 
@@ -58,7 +58,7 @@ namespace quant::geometry
         }
 
         static typename Domain::State
-        Zero()
+        zero()
         {
             return typename Domain::State::Zero();
         }
@@ -81,6 +81,9 @@ namespace quant::geometry
                                                 ScalarDifference<Domain>>;
     };
 
+    /**
+     * SFINAE type and alias for a difference of scalar quantities.
+     */
     template <typename QuantityT>
     using ScalarQuantityDifference =
         std::enable_if_t<std::is_same_v<typename QuantityT::GeometricType, ScalarStateType>,
@@ -114,7 +117,7 @@ namespace quant::geometry
         }
 
         static typename Domain::LinearState
-        Zero()
+        zero()
         {
             return typename Domain::LinearState::Zero();
         }
@@ -139,6 +142,9 @@ namespace quant::geometry
                                                 LinearDifference<Domain>>;
     };
 
+    /**
+     * SFINAE type and alias for a difference of linear quantities.
+     */
     template <typename QuantityT>
     using LinearQuantityDifference =
         std::enable_if_t<std::is_same_v<typename QuantityT::GeometricType, LinearStateType>,

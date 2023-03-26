@@ -18,7 +18,7 @@ namespace quant::units::velocity
         using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
 
         static AngularVelocity
-        RadiansPerSecond(AxisAngle const& aa)
+        radiansPerSecond(AxisAngle const& aa)
         {
             return {aa};
         }
@@ -36,8 +36,3 @@ namespace quant::units::velocity
     operator<<(std::ostream& out, AngularVelocity const& rhs);
 
 }  // namespace quant::units::velocity
-
-namespace quant
-{
-    using units::velocity::AngularVelocity;
-}  // namespace quant

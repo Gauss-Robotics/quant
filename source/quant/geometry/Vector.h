@@ -18,25 +18,25 @@ namespace quant::geometry
         double z = 0;
 
         static Vector
-        UnitX()
+        unitX()
         {
             return {.x = 1};
         }
 
         static Vector
-        UnitY()
+        unitY()
         {
             return {.y = 1};
         }
 
         static Vector
-        UnitZ()
+        unitZ()
         {
             return {.z = 1};
         }
 
         static Vector
-        FromEigen(Eigen::Vector3d const& eigen)
+        fromEigen(Eigen::Vector3d const& eigen)
         {
             return {.x = eigen.x(), .y = eigen.y(), .z = eigen.z()};
         }
@@ -68,10 +68,3 @@ namespace quant::geometry
     }
 
 }  // namespace quant::geometry
-
-namespace quant
-{
-
-    using geometry::Vector;
-
-}  // namespace quant

@@ -30,7 +30,7 @@ namespace quant::geometry
          * @return
          */
         static typename Domain::LinearState
-        Zero()
+        zero()
         {
             return typename Domain::LinearState(0, 0, 0);
         }
@@ -105,7 +105,7 @@ namespace quant::geometry
         Vector
         toVector() const
         {
-            return Vector::FromEigen(representation_);
+            return Vector::fromEigen(representation_);
         }
 
         Eigen::Vector3d representation_;

@@ -30,7 +30,7 @@ namespace quant::units::time
          * @return TimePoint instance.
          */
         static TimePoint
-        MicroSeconds(std::int64_t microSeconds);
+        microSeconds(std::int64_t microSeconds);
 
         /**
          * @brief Returns the amount of microseconds.

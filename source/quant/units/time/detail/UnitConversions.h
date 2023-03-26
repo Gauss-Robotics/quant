@@ -1,10 +1,8 @@
 #pragma once
 
-
 #include <cstdint>
 #include <iomanip>
 #include <string>
-
 
 namespace quant::units::time::detail
 {
@@ -31,7 +29,6 @@ namespace quant::units::time::detail
     constexpr double us2h = us2m * m2h;
     constexpr double us2d = us2h * h2d;
 
-
     template <typename TimePointOrDuration>
     class UnitConversions
     {
@@ -42,7 +39,7 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        MicroSeconds(int microSeconds)
+        microSeconds(int microSeconds)
         {
             return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(microSeconds));
         }
@@ -53,7 +50,7 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        MicroSeconds(double microSeconds)
+        microSeconds(double microSeconds)
         {
             return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(microSeconds));
         }
@@ -64,9 +61,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        MilliSeconds(std::int64_t milliSeconds)
+        milliSeconds(std::int64_t milliSeconds)
         {
-            return TimePointOrDuration::MicroSeconds(
+            return TimePointOrDuration::microSeconds(
                 static_cast<std::int64_t>(milliSeconds * ms2us));
         }
 
@@ -76,9 +73,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        MilliSeconds(int milliSeconds)
+        milliSeconds(int milliSeconds)
         {
-            return TimePointOrDuration::MicroSeconds(
+            return TimePointOrDuration::microSeconds(
                 static_cast<std::int64_t>(milliSeconds * ms2us));
         }
 
@@ -88,9 +85,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        MilliSeconds(double milliSeconds)
+        milliSeconds(double milliSeconds)
         {
-            return TimePointOrDuration::MicroSeconds(
+            return TimePointOrDuration::microSeconds(
                 static_cast<std::int64_t>(milliSeconds * ms2us));
         }
 
@@ -100,9 +97,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Seconds(std::int64_t seconds)
+        seconds(std::int64_t seconds)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(seconds * s2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(seconds * s2us));
         }
 
         /**
@@ -111,9 +108,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Seconds(int seconds)
+        seconds(int seconds)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(seconds * s2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(seconds * s2us));
         }
 
         /**
@@ -122,9 +119,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Seconds(double seconds)
+        seconds(double seconds)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(seconds * s2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(seconds * s2us));
         }
 
         /**
@@ -133,9 +130,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Minutes(std::int64_t minutes)
+        minutes(std::int64_t minutes)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(minutes * m2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(minutes * m2us));
         }
 
         /**
@@ -144,9 +141,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Minutes(int minutes)
+        minutes(int minutes)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(minutes * m2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(minutes * m2us));
         }
 
         /**
@@ -155,9 +152,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Minutes(double minutes)
+        minutes(double minutes)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(minutes * m2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(minutes * m2us));
         }
 
         /**
@@ -166,9 +163,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Hours(std::int64_t hours)
+        hours(std::int64_t hours)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(hours * h2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(hours * h2us));
         }
 
         /**
@@ -177,9 +174,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Hours(int hours)
+        hours(int hours)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(hours * h2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(hours * h2us));
         }
 
         /**
@@ -188,9 +185,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Hours(double hours)
+        hours(double hours)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(hours * h2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(hours * h2us));
         }
 
         /**
@@ -199,9 +196,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Days(std::int64_t days)
+        days(std::int64_t days)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(days * d2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(days * d2us));
         }
 
         /**
@@ -210,9 +207,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Days(int days)
+        days(int days)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(days * d2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(days * d2us));
         }
 
         /**
@@ -221,9 +218,9 @@ namespace quant::units::time::detail
          * @return TimePoint or Duration instance.
          */
         static TimePointOrDuration
-        Days(double days)
+        days(double days)
         {
-            return TimePointOrDuration::MicroSeconds(static_cast<std::int64_t>(days * d2us));
+            return TimePointOrDuration::microSeconds(static_cast<std::int64_t>(days * d2us));
         }
 
         /**
@@ -233,7 +230,7 @@ namespace quant::units::time::detail
         double
         toMicroSecondsDouble() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSeconds();
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSeconds();
         }
 
         /**
@@ -243,7 +240,7 @@ namespace quant::units::time::detail
         std::int64_t
         toMilliSeconds() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2ms +
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2ms +
                    intRoundingOffset;
         }
 
@@ -254,7 +251,7 @@ namespace quant::units::time::detail
         double
         toMilliSecondsDouble() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2ms;
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2ms;
         }
 
         /**
@@ -264,7 +261,7 @@ namespace quant::units::time::detail
         std::int64_t
         toSeconds() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2s +
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2s +
                    intRoundingOffset;
         }
 
@@ -275,7 +272,7 @@ namespace quant::units::time::detail
         double
         toSecondsDouble() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2s;
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2s;
         }
 
         /**
@@ -285,7 +282,7 @@ namespace quant::units::time::detail
         std::int64_t
         toMinutes() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2m +
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2m +
                    intRoundingOffset;
         }
 
@@ -296,7 +293,7 @@ namespace quant::units::time::detail
         double
         toMinutesDouble() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2m;
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2m;
         }
 
         /**
@@ -306,7 +303,7 @@ namespace quant::units::time::detail
         std::int64_t
         toHours() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2h +
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2h +
                    intRoundingOffset;
         }
 
@@ -317,7 +314,7 @@ namespace quant::units::time::detail
         double
         toHoursDouble() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2h;
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2h;
         }
 
         /**
@@ -327,7 +324,7 @@ namespace quant::units::time::detail
         std::int64_t
         toDays() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2d +
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2d +
                    intRoundingOffset;
         }
 
@@ -338,7 +335,7 @@ namespace quant::units::time::detail
         double
         toDaysDouble() const
         {
-            return static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble() * us2d;
+            return static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble() * us2d;
         }
 
     protected:
@@ -348,7 +345,7 @@ namespace quant::units::time::detail
             using namespace detail;
 
             double time_count =
-                static_cast<const TimePointOrDuration&>(*this).toMicroSecondsDouble();
+                static_cast<TimePointOrDuration const&>(*this).toMicroSecondsDouble();
             std::string unit = "µs";
 
             if (time_count >= ms2us)
@@ -387,18 +384,18 @@ namespace quant::units::time::detail
         }
 
         std::string
-        toQuantityUnitString(const std::string& format) const
+        toQuantityUnitString(std::string const& format) const
         {
             using namespace detail;
 
             constexpr size_t stringBufferSize = 32;
 
             const std::int64_t usec =
-                static_cast<const TimePointOrDuration&>(*this).toMicroSeconds();
+                static_cast<TimePointOrDuration const&>(*this).toMicroSeconds();
             const std::int64_t usecRemainder = usec % 1'000'000;
-            const auto msec = static_cast<std::int64_t>(
+            auto const msec = static_cast<std::int64_t>(
                 (static_cast<double>(usecRemainder) * us2ms) + intRoundingOffset);
-            const auto time = static_cast<time_t>(static_cast<double>(usec) / 1'000'000);
+            auto const time = static_cast<time_t>(static_cast<double>(usec) / 1'000'000);
 
             struct tm tr;
             localtime_r(&time, &tr);
@@ -410,11 +407,11 @@ namespace quant::units::time::detail
             }
 
             std::string postformat(buf);
-            //postformat = quant::alg::replace_all(postformat, "%msec", std::to_string(msec));
-            //postformat =
-            //    quant::alg::replace_all(postformat, "%usec", std::to_string(usecRemainder));
+            // postformat = quant::alg::replace_all(postformat, "%msec", std::to_string(msec));
+            // postformat =
+            //     quant::alg::replace_all(postformat, "%usec", std::to_string(usecRemainder));
             return postformat;
         }
     };
 
-} // namespace quant::units::time::detail
+}  // namespace quant::units::time::detail

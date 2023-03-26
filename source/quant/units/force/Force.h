@@ -17,7 +17,7 @@ namespace quant::units::force
         using geometry::VectorQuantity<Domain>::VectorQuantity;
 
         static Force
-        Newton(Vector xyz)
+        newton(Vector xyz)
         {
             return {xyz.x, xyz.y, xyz.z};
         }

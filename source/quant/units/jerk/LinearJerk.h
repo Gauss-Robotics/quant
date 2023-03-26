@@ -21,8 +21,3 @@ namespace quant::units::jerk
     operator<<(std::ostream& out, LinearJerk const& rhs);
 
 }  // namespace quant::units::jerk
-
-namespace quant
-{
-    using units::jerk::LinearJerk;
-}  // namespace quant

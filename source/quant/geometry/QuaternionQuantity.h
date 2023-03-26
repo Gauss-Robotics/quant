@@ -118,7 +118,7 @@ namespace quant::geometry
         }
 
         static typename Domain::AngularState
-        Zero()
+        zero()
         {
             return typename Domain::AngularState();
         }
@@ -128,7 +128,7 @@ namespace quant::geometry
         AxisAngle
         toAngleAxis() const
         {
-            return AxisAngle::FromEigen(Eigen::AngleAxisd(representation_));
+            return AxisAngle::fromEigen(Eigen::AngleAxisd(representation_));
         }
 
         std::string
@@ -175,7 +175,7 @@ namespace quant::geometry
         using GeometricType = AngularStateType;
         using DomainType = Domain;
 
-    public:
+    protected:
         Eigen::Quaterniond representation_;
 
         friend class detail::QuantityAccessor<typename Domain::AngularState>;

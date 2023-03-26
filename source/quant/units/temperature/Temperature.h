@@ -28,25 +28,25 @@ namespace quant::units::temperature
 
     public:
         static Temperature
-        DegreeCelcius(double celsius)
+        degreeCelcius(double celsius)
         {
             return {celsius};
         }
 
         static Temperature
-        Kelvin(double kelvin)
+        kelvin(double kelvin)
         {
             return {kelvin + kelvin2celsiusOffset};
         }
 
         static Temperature
-        DegreeFahrenheit(double fahrenheit)
+        degreeFahrenheit(double fahrenheit)
         {
             return {(fahrenheit + fahrenheit2celsiusOffset) * fahrenheit2celsiusFactor};
         }
 
         static Temperature
-        DegreeRankine(double rankine)
+        degreeRankine(double rankine)
         {
             return {(rankine + rankine2celsiusOffset) * rankine2celsiusFactor};
         }
@@ -88,8 +88,3 @@ namespace quant::units::temperature
     operator<<(std::ostream& out, Temperature const& rhs);
 
 }  // namespace quant::units::temperature
-
-namespace quant
-{
-    using units::temperature::Temperature;
-}  // namespace quant

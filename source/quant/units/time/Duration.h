@@ -27,9 +27,9 @@ namespace quant::units::time
          * @return Duration instance.
          */
         static Duration
-        MicroSeconds(std::int64_t microSeconds)
+        microSeconds(std::int64_t microSeconds)
         {
-            return Duration{TimePoint::MicroSeconds(microSeconds)};
+            return Duration{TimePoint::microSeconds(microSeconds)};
         }
 
         /**

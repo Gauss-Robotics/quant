@@ -21,7 +21,7 @@ namespace quant::geometry
         }
 
         static typename Domain::State
-        Zero()
+        zero()
         {
             return typename Domain::State(0);
         }
@@ -80,13 +80,12 @@ namespace quant::geometry
         using GeometricType = ScalarStateType;
         using DomainType = Domain;
 
-    public:
+    protected:
         ScalarQuantity(ScalarType value) : representation_{value}
         {
             ;
         }
 
-    public:
         ScalarType representation_;
 
         friend class detail::QuantityAccessor<typename Domain::State>;

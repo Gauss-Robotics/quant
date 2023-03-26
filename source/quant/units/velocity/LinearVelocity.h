@@ -24,16 +24,14 @@ namespace quant::units::velocity
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<Domain>::VectorQuantity;
-
         static LinearVelocity
-        MilliMetersPerSecond(Vector xyz)
+        milliMetersPerSecond(Vector xyz)
         {
             return {xyz.x, xyz.y, xyz.z};
         }
 
         static LinearVelocity
-        MetersPerSecond(Vector xyz)
+        metersPerSecond(Vector xyz)
         {
             constexpr int m2mm = 1'000;
             return {xyz.x * m2mm, xyz.y * m2mm, xyz.z * m2mm};
@@ -42,8 +40,10 @@ namespace quant::units::velocity
         Speed
         toSpeed() const
         {
-            return Speed::MilliMetersPerSecond(representation_.norm());
+            return Speed::milliMetersPerSecond(representation_.norm());
         }
+
+        using geometry::VectorQuantity<Domain>::VectorQuantity;
     };
 
     std::ostream&

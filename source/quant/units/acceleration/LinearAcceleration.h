@@ -21,8 +21,3 @@ namespace quant::units::acceleration
     operator<<(std::ostream& out, LinearAcceleration const& rhs);
 
 }  // namespace quant::units::acceleration
-
-namespace quant
-{
-    using units::acceleration::LinearAcceleration;
-}  // namespace quant

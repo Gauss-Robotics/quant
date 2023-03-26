@@ -21,26 +21,26 @@ namespace quant::units::position
         using geometry::VectorQuantity<Domain>::VectorQuantity;
 
         static Position
-        MilliMeters(double x, double y, double z)
+        milliMeters(double x, double y, double z)
         {
             return {x, y, z};
         }
 
         static Position
-        MilliMeters(Vector xyz)
+        milliMeters(Vector xyz)
         {
             return {xyz.x, xyz.y, xyz.z};
         }
 
         static Position
-        Meters(double x, double y, double z)
+        meters(double x, double y, double z)
         {
             constexpr int m2mm = 1'000;
             return {x * m2mm, y * m2mm, z * m2mm};
         }
 
         static Position
-        Meters(Vector xyz)
+        meters(Vector xyz)
         {
             constexpr int m2mm = 1'000;
             return {xyz.x * m2mm, xyz.y * m2mm, xyz.z * m2mm};
