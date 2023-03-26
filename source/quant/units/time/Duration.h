@@ -5,17 +5,6 @@
 #include <quant/units/time/detail/UnitConversions.h>
 #include <quant/units/time_fwd.h>
 
-namespace quant::geometry
-{
-
-    template <>
-    struct DefineDifferenceType<quant::TimePoint>
-    {
-        using DifferenceType = units::time::Duration;
-    };
-
-}  // namespace quant::geometry
-
 namespace quant::units::time
 {
 
@@ -174,10 +163,3 @@ namespace quant::units::time
     operator<<(std::ostream& out, Duration const& rhs);
 
 }  // namespace quant::units::time
-
-namespace quant
-{
-
-    using units::time::Duration;
-
-}

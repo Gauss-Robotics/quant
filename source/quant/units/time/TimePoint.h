@@ -114,8 +114,3 @@ namespace quant::units::time
     operator<<(std::ostream& out, TimePoint const& rhs);
 
 }  // namespace quant::units::time
-
-namespace quant
-{
-    using units::time::TimePoint;
-}  // namespace quant

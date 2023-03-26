@@ -2,8 +2,6 @@
 
 #include <quant/geometry_fwd.h>
 
-#include <Eigen/Core>
-
 namespace quant::geometry::detail
 {
 
@@ -24,20 +22,22 @@ namespace quant::geometry::detail
         }
     };
 
-    template <typename DifferenceT>
+    template <typename DifferenceT, typename BaseDifferenceT>
     class DifferenceAccessor
     {
     public:
         static typename DifferenceT::GeometricRepresentationType
-        representation(DifferenceT const& d)
+        representation(BaseDifferenceT const& d)
         {
-            return d.differenceObject_;
+            using State = QuantityAccessor<typename DifferenceT::DifferenceObjectType>;
+            return State::representation(d.differenceObject_);
         }
 
         static DifferenceT
         make(typename DifferenceT::GeometricRepresentationType differenceObject)
         {
-            return DifferenceT(differenceObject);
+            using State = QuantityAccessor<typename DifferenceT::DifferenceObjectType>;
+            return DifferenceT(State::make(differenceObject));
         }
     };
 

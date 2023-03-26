@@ -28,12 +28,6 @@ namespace quant::units::position
         {
             return this->toAngleAxis();
         }
-
-    protected:
-        friend Position
-        operator*(Difference<Orientation> const& rotation, Position const& position);
-        friend Difference<Position>
-        operator*(Difference<Orientation> const& rotation, Difference<Position> const& translation);
     };
 
     inline std::ostream&
@@ -44,8 +38,3 @@ namespace quant::units::position
     }
 
 }  // namespace quant::units::position
-
-namespace quant
-{
-    using units::position::Orientation;
-}  // namespace quant

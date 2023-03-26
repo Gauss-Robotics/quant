@@ -41,12 +41,6 @@ namespace quant::geometry
     template <typename Domain>
     class AngularDifference;
 
-    template <typename BaseQuantityT>
-    struct DefineDifferenceType;
-
-    template <typename BaseQuantityT>
-    using DifferenceTypeOf = typename DefineDifferenceType<BaseQuantityT>::DifferenceType;
-
     template <typename BaseQuantityT, typename ScalarType = double>
     class ScalarQuantity;
 
@@ -62,7 +56,7 @@ namespace quant::geometry
     template <typename BaseQuantityT>
     class IsometryQuantity;
 
-    template <typename Linear, typename Angular, typename Derived>
+    template <typename Domain>
     class Spatial;
 
 }  // namespace quant::geometry
@@ -73,7 +67,6 @@ namespace quant
     using geometry::AngularDifference;
     using geometry::AxisAngle;
     using geometry::Difference;
-    using geometry::DifferenceTypeOf;
     using geometry::LinearDifference;
     using geometry::ScalarDifference;
     using geometry::Spatial;

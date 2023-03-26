@@ -58,10 +58,3 @@ namespace quant::units::position
     operator/(LinearDisplacement const& dx, Duration const& dt);
 
 }  // namespace quant::units::position
-
-namespace quant
-{
-
-    using units::velocity::LinearVelocity;
-
-}  // namespace quant

@@ -65,10 +65,3 @@ namespace quant::units::position
     }
 
 }  // namespace quant::units::position
-
-namespace quant
-{
-
-    using units::position::Position;
-
-}  // namespace quant

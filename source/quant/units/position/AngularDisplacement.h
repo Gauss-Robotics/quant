@@ -5,17 +5,6 @@
 #include <quant/units/position/Orientation.h>
 #include <quant/units/position_fwd.h>
 
-namespace quant::geometry
-{
-
-    template <>
-    struct DefineDifferenceType<quant::Orientation>
-    {
-        using DifferenceType = units::position::AngularDisplacement;
-    };
-
-}  // namespace quant::geometry
-
 namespace quant::units::position
 {
 
@@ -33,10 +22,3 @@ namespace quant::units::position
     };
 
 }  // namespace quant::units::position
-
-namespace quant
-{
-
-    using units::position::AngularDisplacement;
-
-}  // namespace quant

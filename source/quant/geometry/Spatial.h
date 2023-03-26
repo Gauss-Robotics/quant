@@ -6,106 +6,65 @@
 namespace quant::geometry
 {
 
-    template <typename Linear, typename Angular, typename Derived>
-    Derived
-    operator+(DifferenceTypeOf<Linear> const& op, Spatial<Linear, Angular, Derived> const& rhs);
-
-    template <typename Linear, typename Angular, typename Derived>
-    Derived
-    operator-(Linear const& op, Spatial<Linear, Angular, Derived> const& rhs);
-
-    template <typename Linear, typename Angular, typename Derived>
-    Derived
-    operator+(DifferenceTypeOf<Angular> const& op, Spatial<Linear, Angular, Derived> const& rhs);
-
-    template <typename Linear, typename Angular, typename Derived>
-    Derived
-    operator-(Angular const& op, Spatial<Linear, Angular, Derived> const& rhs);
-
-    template <typename Linear, typename Angular, typename Derived>
+    template <typename Domain>
     class Spatial
     {
     public:
-        Spatial(Linear linear, Angular angular) : linear_{linear}, angular_{angular}
+        Spatial(typename Domain::LinearState linear, typename Domain::AngularState angular) :
+            linear_{linear}, angular_{angular}
         {
             ;
         }
 
-        static Derived
+        static typename Domain::SpatialState
         Zero()
         {
-            return Derived(Linear::Zero(), Angular::Zero());
+            using Linear = typename Domain::LinearState;
+            using Angular = typename Domain::AngularState;
+            return typename Domain::SpatialState(Linear::Zero(), Angular::Zero());
         }
 
-        Linear
+        typename Domain::LinearState
         linear() const
         {
             return linear_;
         }
 
-        Angular
+        typename Domain::AngularState
         angular() const
         {
             return angular_;
         }
 
-    public:
-        template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_
-        geometry::operator+(DifferenceTypeOf<Linear_> const& op,
-                            Spatial<Linear_, Angular_, Derived_> const& rhs);
+        friend typename Domain::SpatialState
+        operator+(typename Domain::LinearDifference const& op,
+                  typename Domain::SpatialState const& rhs)
+        {
+            return typename Domain::SpatialState(op + rhs.linear_, rhs.angular_);
+        }
 
-        template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_
-        geometry::operator-(Linear_ const& op, Spatial<Linear_, Angular_, Derived_> const& rhs);
+        friend typename Domain::SpatialState
+        operator-(typename Domain::LinearState const& op, typename Domain::SpatialState const& rhs)
+        {
+            return typename Domain::SpatialState(rhs.linear_ - op, rhs.angular_);
+        }
 
-        template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_
-        operator+(DifferenceTypeOf<Angular_> const& op,
-                  Spatial<Linear_, Angular_, Derived_> const& rhs);
+        friend typename Domain::SpatialState
+        operator+(typename Domain::AngularDifference const& op,
+                  typename Domain::SpatialState const& rhs)
+        {
+            return typename Domain::SpatialState(rhs.linear_, op * rhs.angular_);
+        }
 
-        template <typename Linear_, typename Angular_, typename Derived_>
-        friend Derived_
-        operator-(Angular_ const& op, Spatial<Linear_, Angular_, Derived_> const& rhs);
+        friend typename Domain::SpatialState
+        operator-(typename Domain::AngularState const& op, typename Domain::SpatialState const& rhs)
+        {
+            return typename Domain::SpatialState(rhs.linear_, rhs.angular_ - op);
+        }
 
     protected:
-        Linear linear_;
-        Angular angular_;
+        typename Domain::LinearState linear_;
+        typename Domain::AngularState angular_;
     };
 
 }  // namespace quant::geometry
-
-namespace quant
-{
-
-    template <typename Linear, typename Angular, typename Derived>
-    Derived
-    geometry::operator+(DifferenceTypeOf<Linear> const& op,
-                        Spatial<Linear, Angular, Derived> const& rhs)
-    {
-        return Derived(op + rhs.linear_, rhs.angular_);
-    }
-
-    template <typename Linear, typename Angular, typename Derived>
-    Derived
-    geometry::operator-(Linear const& op, Spatial<Linear, Angular, Derived> const& rhs)
-    {
-        return Derived(rhs.linear_ - op, rhs.angular_);
-    }
-
-    template <typename Linear, typename Angular, typename Derived>
-    Derived
-    geometry::operator+(DifferenceTypeOf<Angular> const& op,
-                        Spatial<Linear, Angular, Derived> const& rhs)
-    {
-        return Derived(rhs.linear_, op * rhs.angular_);
-    }
-
-    template <typename Linear, typename Angular, typename Derived>
-    Derived
-    geometry::operator-(Angular const& op, Spatial<Linear, Angular, Derived> const& rhs)
-    {
-        return Derived(rhs.linear_, rhs.angular_ - op);
-    }
-
-}  // namespace quant

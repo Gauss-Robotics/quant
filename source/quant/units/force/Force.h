@@ -27,10 +27,3 @@ namespace quant::units::force
     operator<<(std::ostream& out, Force const& rhs);
 
 }  // namespace quant::units::force
-
-namespace quant
-{
-
-    using units::force::Force;
-
-}  // namespace quant

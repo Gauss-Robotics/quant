@@ -5,17 +5,6 @@
 #include <quant/units/force/Torque.h>
 #include <quant/units/force_fwd.h>
 
-namespace quant::geometry
-{
-
-    template <>
-    struct DefineDifferenceType<quant::Torque>
-    {
-        using DifferenceType = units::force::TorqueDifference;
-    };
-
-}  // namespace quant::geometry
-
 namespace quant::units::force
 {
 
@@ -33,10 +22,3 @@ namespace quant::units::force
     };
 
 }  // namespace quant::units::force
-
-namespace quant
-{
-
-    using units::force::TorqueDifference;
-
-}  // namespace quant

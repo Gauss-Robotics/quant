@@ -27,10 +27,3 @@ namespace quant::units::force
     operator<<(std::ostream& out, Torque const& rhs);
 
 }  // namespace quant::units::force
-
-namespace quant
-{
-
-    using units::force::Torque;
-
-}  // namespace quant

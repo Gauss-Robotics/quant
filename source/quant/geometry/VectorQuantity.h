@@ -12,7 +12,7 @@ namespace quant::geometry
 {
 
     template <typename Domain>
-    class VectorQuantity
+    class VectorQuantity  // TODO(dreher): Rename to LinearQuantity
     {
     public:
         // Construct.
@@ -82,9 +82,7 @@ namespace quant::geometry
         using GeometricType = LinearStateType;
         using DomainType = Domain;
 
-    public:  // TODO(dreher): Make protected.
-        Eigen::Vector3d representation_;
-
+    protected:
         // Construct.
 
         VectorQuantity(double x, double y, double z) : representation_(x, y, z)
@@ -109,6 +107,8 @@ namespace quant::geometry
         {
             return Vector::FromEigen(representation_);
         }
+
+        Eigen::Vector3d representation_;
 
         friend class detail::QuantityAccessor<typename Domain::LinearState>;
     };

@@ -23,8 +23,3 @@ namespace quant::units::time
     operator<<(std::ostream& out, TimeInterval const& rhs);
 
 }  // namespace quant::units::time
-
-namespace quant
-{
-    using units::time::TimeInterval;
-}  // namespace quant
