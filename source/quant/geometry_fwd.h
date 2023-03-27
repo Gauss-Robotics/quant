@@ -12,7 +12,7 @@ namespace quant::geometry
     class ScalarState;
 
     template <typename T>
-    using ScalarIntegerQuantity = ScalarState<T, std::int64_t>;
+    using ScalarIntegerState = ScalarState<T, std::int64_t>;
 
     template <typename BaseQuantityT>
     class LinearState;
@@ -54,6 +54,10 @@ namespace quant::geometry
     {
     };
 
+    struct SpatialStateType : public StateType
+    {
+    };
+
     struct DifferenceType
     {
     };
@@ -67,6 +71,10 @@ namespace quant::geometry
     };
 
     struct AngularDifferenceType : public DifferenceType
+    {
+    };
+
+    struct SpatialDifferenceType : public DifferenceType
     {
     };
 

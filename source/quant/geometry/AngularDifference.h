@@ -63,7 +63,7 @@ namespace quant::geometry
         using Difference<typename Domain::AngularState>::Difference;
         using GeometricRepresentationType =
             typename Domain::AngularState::GeometricRepresentationType;
-        using GeometricType = DifferenceType;
+        using GeometricType = AngularDifferenceType;
         using DomainType = Domain;
 
         friend class detail::DifferenceAccessor<typename Domain::AngularDifference,
