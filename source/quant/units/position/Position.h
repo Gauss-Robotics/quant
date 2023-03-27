@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/VectorQuantity.h>
+#include <quant/geometry/LinearState.h>
 #include <quant/units/position_fwd.h>
 #include <quant/units/time/Duration.h>
 
@@ -12,13 +12,13 @@ namespace quant::units::position
     /**
      * @brief Models a position in Euclidean space.
      */
-    class Position : public geometry::VectorQuantity<Domain>
+    class Position : public geometry::LinearState<Domain>
     {
 
     public:
         // Construct.
 
-        using geometry::VectorQuantity<Domain>::VectorQuantity;
+        using geometry::LinearState<Domain>::LinearState;
 
         static Position
         milliMeters(double x, double y, double z)

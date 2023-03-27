@@ -1,5 +1,6 @@
 #pragma once
 
+#include <quant/geometry/ScalarState.h>
 #include <quant/units/time/Duration.h>
 
 #include <cstdint>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/VectorQuantity.h>
+#include <quant/geometry/LinearState.h>
 #include <quant/units/force_fwd.h>
 
 #include <Eigen/Geometry>
@@ -10,11 +10,11 @@
 namespace quant::units::force
 {
 
-    class Force : public geometry::VectorQuantity<Domain>
+    class Force : public geometry::LinearState<Domain>
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<Domain>::VectorQuantity;
+        using geometry::LinearState<Domain>::LinearState;
 
         static Force
         newton(Vector xyz)

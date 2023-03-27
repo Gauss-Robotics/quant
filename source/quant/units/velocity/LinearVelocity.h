@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/VectorQuantity.h>
+#include <quant/geometry/LinearState.h>
 #include <quant/units/position/LinearDisplacement.h>
 #include <quant/units/position/Position.h>
 #include <quant/units/speed/Speed.h>
@@ -20,7 +20,7 @@ namespace quant::units::velocity
      * - The difference of a LinearVelocity is LinearVelocityDifference.
      * - The magnitude of a Linear Veloctiy is Speed.
      */
-    class LinearVelocity : public geometry::VectorQuantity<Domain>
+    class LinearVelocity : public geometry::LinearState<Domain>
     {
         // Construct.
     public:
@@ -43,7 +43,7 @@ namespace quant::units::velocity
             return Speed::milliMetersPerSecond(representation_.norm());
         }
 
-        using geometry::VectorQuantity<Domain>::VectorQuantity;
+        using geometry::LinearState<Domain>::LinearState;
     };
 
     std::ostream&

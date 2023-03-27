@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/QuaternionQuantity.h>
+#include <quant/geometry/AngularState.h>
 #include <quant/units/jerk_fwd.h>
 
 #include <Eigen/Geometry>
@@ -10,11 +10,11 @@
 namespace quant::units::jerk
 {
 
-    class AngularJerk : public geometry::QuaternionQuantity<Domain>
+    class AngularJerk : public geometry::AngularState<Domain>
     {
         // Construct.
     public:
-        using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
+        using geometry::AngularState<Domain>::AngularState;
     };
 
     std::ostream&

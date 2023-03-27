@@ -1,13 +1,13 @@
 #pragma once
 
-#include <quant/geometry/Difference.h>
+#include <quant/geometry/LinearDifference.h>
 #include <quant/units/velocity/LinearVelocity.h>
 #include <quant/units/velocity_fwd.h>
 
 namespace quant::units::velocity
 {
 
-    class LinearVelocityDifference : public LinearDifference<Domain>
+    class LinearVelocityDifference : public geometry::LinearDifference<Domain>
     {
 
     public:

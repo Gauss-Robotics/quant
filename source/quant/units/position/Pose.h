@@ -1,16 +1,16 @@
 #pragma once
 
-#include <quant/geometry/IsometryQuantity.h>
+#include <quant/geometry/SpatialIsometricState.h>
 #include <quant/units/position_fwd.h>
 
 namespace quant::units::position
 {
 
-    class Pose : public geometry::IsometryQuantity<Pose>
+    class Pose : public geometry::SpatialIsometricState<Pose>
     {
         // Construct.
     public:
-        using geometry::IsometryQuantity<Pose>::IsometryQuantity;
+        using geometry::SpatialIsometricState<Pose>::SpatialIsometricState;
     };
 
 }  // namespace quant::units::position

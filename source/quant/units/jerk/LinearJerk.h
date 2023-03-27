@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/VectorQuantity.h>
+#include <quant/geometry/LinearState.h>
 #include <quant/units/jerk_fwd.h>
 
 #include <Eigen/Geometry>
@@ -10,11 +10,11 @@
 namespace quant::units::jerk
 {
 
-    class LinearJerk : public geometry::VectorQuantity<Domain>
+    class LinearJerk : public geometry::LinearState<Domain>
     {
         // Construct.
     public:
-        using geometry::VectorQuantity<Domain>::VectorQuantity;
+        using geometry::LinearState<Domain>::LinearState;
     };
 
     std::ostream&

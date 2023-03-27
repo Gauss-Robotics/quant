@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/detail/Accessors.h>
+#include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>
 
 #include <sstream>
@@ -10,12 +10,12 @@ namespace quant::geometry
 {
 
     template <typename Domain, typename ScalarType>
-    class ScalarQuantity
+    class ScalarState
     {
     public:
         // Construct.
 
-        ScalarQuantity() : representation_{0}
+        ScalarState() : representation_{0}
         {
             ;
         }
@@ -81,7 +81,7 @@ namespace quant::geometry
         using DomainType = Domain;
 
     protected:
-        ScalarQuantity(ScalarType value) : representation_{value}
+        ScalarState(ScalarType value) : representation_{value}
         {
             ;
         }

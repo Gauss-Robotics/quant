@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/Difference.h>
+#include <quant/geometry/LinearDifference.h>
 #include <quant/units/distance/Distance.h>
 #include <quant/units/position/Position.h>
 #include <quant/units/position_fwd.h>
@@ -8,7 +8,7 @@
 namespace quant::units::position
 {
 
-    class LinearDisplacement : public LinearDifference<Domain>
+    class LinearDisplacement : public geometry::LinearDifference<Domain>
 
     {
 

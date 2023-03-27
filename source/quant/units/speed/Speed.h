@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/ScalarQuantity.h>
+#include <quant/geometry/ScalarState.h>
 #include <quant/units/speed_fwd.h>
 #include <quant/units/velocity_fwd.h>
 
@@ -13,7 +13,7 @@ namespace quant::units::speed
 
     constexpr double m2mm = 1'000;
 
-    class Speed : public geometry::ScalarQuantity<Domain>
+    class Speed : public geometry::ScalarState<Domain>
     {
 
     public:
@@ -43,7 +43,7 @@ namespace quant::units::speed
         // Operators.
 
     protected:
-        using geometry::ScalarQuantity<Domain>::ScalarQuantity;
+        using geometry::ScalarState<Domain>::ScalarState;  // TODO(dreher): Remove?
     };
 
     std::ostream&

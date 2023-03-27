@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/ScalarQuantity.h>
+#include <quant/geometry/ScalarState.h>
 #include <quant/units/distance_fwd.h>
 
 #include <cstdint>
@@ -12,7 +12,7 @@ namespace quant::units::distance
 
     constexpr double m2mm = 1'000;
 
-    class Distance : geometry::ScalarQuantity<Domain>
+    class Distance : geometry::ScalarState<Domain>
     {
 
     public:
@@ -40,8 +40,8 @@ namespace quant::units::distance
         // Operators.
 
     protected:
-        using geometry::ScalarQuantity<Domain>::ScalarQuantity;  // TODO(dreher): Remove? All scalar
-                                                                 // quantities
+        using geometry::ScalarState<Domain>::ScalarState;  // TODO(dreher): Remove? All scalar
+                                                           // quantities
     };
 
     std::ostream&

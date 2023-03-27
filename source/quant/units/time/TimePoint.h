@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/ScalarQuantity.h>
+#include <quant/geometry/ScalarState.h>
 #include <quant/units/time/detail/UnitConversions.h>
 #include <quant/units/time_fwd.h>
 
@@ -107,7 +107,7 @@ namespace quant::units::time
         operator>(TimePoint const& rhs) const;
 
     protected:
-        using geometry::ScalarIntegerQuantity<Domain>::ScalarQuantity;
+        using geometry::ScalarIntegerQuantity<Domain>::ScalarState;
     };
 
     std::ostream&

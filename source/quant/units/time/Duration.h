@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/Difference.h>
+#include <quant/geometry/ScalarDifference.h>
 #include <quant/units/time/TimePoint.h>
 #include <quant/units/time/detail/UnitConversions.h>
 #include <quant/units/time_fwd.h>
@@ -13,7 +13,7 @@ namespace quant::units::time
      */
     class Duration :
         // A duration is the difference of time points.
-        public ScalarDifference<Domain>,
+        public geometry::ScalarDifference<Domain>,
         // A duration can be specified in several temporal units.
         public detail::UnitConversions<Duration>
     {

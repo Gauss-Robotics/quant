@@ -6,8 +6,37 @@ namespace quant::geometry
 {
 
     class Vector;
-
     class AxisAngle;
+
+    template <typename BaseQuantityT, typename ScalarType = double>
+    class ScalarState;
+
+    template <typename T>
+    using ScalarIntegerQuantity = ScalarState<T, std::int64_t>;
+
+    template <typename BaseQuantityT>
+    class LinearState;
+
+    template <typename BaseQuantityT>
+    class AngularState;
+
+    template <typename BaseQuantityT>
+    class SpatialIsometricState;
+
+    template <typename Domain>
+    class SpatialState;
+
+    template <typename BaseQuantityT>
+    class Difference;
+
+    template <typename Domain>
+    class ScalarDifference;
+
+    template <typename Domain>
+    class LinearDifference;
+
+    template <typename Domain>
+    class AngularDifference;
 
     struct StateType
     {
@@ -29,47 +58,24 @@ namespace quant::geometry
     {
     };
 
-    template <typename BaseQuantityT>
-    class Difference;
+    struct ScalarDifferenceType : public DifferenceType
+    {
+    };
 
-    template <typename Domain>
-    class ScalarDifference;
+    struct LinearDifferenceType : public DifferenceType
+    {
+    };
 
-    template <typename Domain>
-    class LinearDifference;
-
-    template <typename Domain>
-    class AngularDifference;
-
-    template <typename BaseQuantityT, typename ScalarType = double>
-    class ScalarQuantity;
-
-    template <typename T>
-    using ScalarIntegerQuantity = ScalarQuantity<T, std::int64_t>;
-
-    template <typename BaseQuantityT>
-    class VectorQuantity;
-
-    template <typename BaseQuantityT>
-    class QuaternionQuantity;
-
-    template <typename BaseQuantityT>
-    class IsometryQuantity;
-
-    template <typename Domain>
-    class Spatial;
+    struct AngularDifferenceType : public DifferenceType
+    {
+    };
 
 }  // namespace quant::geometry
 
 namespace quant
 {
 
-    using geometry::AngularDifference;
     using geometry::AxisAngle;
-    using geometry::Difference;
-    using geometry::LinearDifference;
-    using geometry::ScalarDifference;
-    using geometry::Spatial;
     using geometry::Vector;
 
 }  // namespace quant

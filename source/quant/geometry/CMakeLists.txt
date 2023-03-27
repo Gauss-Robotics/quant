@@ -4,15 +4,21 @@ add_library(geometry SHARED
 
     Vector.h
     AxisAngle.h
-    Spatial.h
+
+    ScalarState.h
+    LinearState.h
+    AngularState.h
+    SpatialState.h
+    SpatialIsometricState.h
+
     Difference.h
+    ScalarDifference.h
+    LinearDifference.h
+    AngularDifference.h
+    SpatialDifference.h
 
-    ScalarQuantity.h
-    VectorQuantity.h
-    QuaternionQuantity.h
-    IsometryQuantity.h
-
-    detail/Accessors.h
+    detail/QuantityAccessor.h
+    detail/DifferenceAccessor.h
 )
 
 set_target_properties(geometry

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <quant/geometry/Vector.h>
-#include <quant/geometry/detail/Accessors.h>
+#include <quant/geometry/detail/QuantityAccessor.h>
 
 #include <Eigen/Geometry>
 
@@ -12,7 +12,7 @@ namespace quant::geometry
 {
 
     template <typename Domain>
-    class VectorQuantity  // TODO(dreher): Rename to LinearQuantity
+    class LinearState
     {
     public:
         // Construct.
@@ -20,7 +20,7 @@ namespace quant::geometry
         /**
          * @brief VectorQuantity
          */
-        VectorQuantity() : representation_(0, 0, 0)
+        LinearState() : representation_(0, 0, 0)
         {
             ;
         }
@@ -85,17 +85,17 @@ namespace quant::geometry
     protected:
         // Construct.
 
-        VectorQuantity(double x, double y, double z) : representation_(x, y, z)
+        LinearState(double x, double y, double z) : representation_(x, y, z)
         {
             ;
         }
 
-        VectorQuantity(Vector const& xyz) : representation_(xyz.x, xyz.y, xyz.z)
+        LinearState(Vector const& xyz) : representation_(xyz.x, xyz.y, xyz.z)
         {
             ;
         }
 
-        VectorQuantity(Eigen::Ref<Eigen::Vector3d const> vector) : representation_(vector)
+        LinearState(Eigen::Ref<Eigen::Vector3d const> vector) : representation_(vector)
         {
             ;
         }

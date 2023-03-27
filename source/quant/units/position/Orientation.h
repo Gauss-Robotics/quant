@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/QuaternionQuantity.h>
+#include <quant/geometry/AngularState.h>
 #include <quant/units/position_fwd.h>
 
 #include <ostream>
@@ -8,7 +8,7 @@
 namespace quant::units::position
 {
 
-    class Orientation : public geometry::QuaternionQuantity<Domain>
+    class Orientation : public geometry::AngularState<Domain>
     {
     public:
         // Construct.
@@ -27,7 +27,7 @@ namespace quant::units::position
             return this->toAngleAxis();
         }
 
-        using geometry::QuaternionQuantity<Domain>::QuaternionQuantity;
+        using geometry::AngularState<Domain>::AngularState;
     };
 
     inline std::ostream&

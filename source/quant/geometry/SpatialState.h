@@ -7,10 +7,10 @@ namespace quant::geometry
 {
 
     template <typename Domain>
-    class Spatial
+    class SpatialState
     {
     public:
-        Spatial(typename Domain::LinearState linear, typename Domain::AngularState angular) :
+        SpatialState(typename Domain::LinearState linear, typename Domain::AngularState angular) :
             linear_{linear}, angular_{angular}
         {
             ;

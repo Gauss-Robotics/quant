@@ -7,7 +7,7 @@
 namespace quant::units::position
 {
 
-    class SpatialDisplacement : public Difference<Pose>
+    class SpatialDisplacement : public geometry::Difference<Pose>
     {
 
     public:

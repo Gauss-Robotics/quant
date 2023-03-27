@@ -1,14 +1,14 @@
 #pragma once
 
+#include <quant/geometry/AngularDifference.h>
 #include <quant/geometry/AxisAngle.h>
-#include <quant/geometry/Difference.h>
 #include <quant/units/force/Torque.h>
 #include <quant/units/force_fwd.h>
 
 namespace quant::units::force
 {
 
-    class TorqueDifference : public AngularDifference<Domain>
+    class TorqueDifference : public geometry::AngularDifference<Domain>
     {
 
     public:

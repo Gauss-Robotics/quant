@@ -1,13 +1,13 @@
 #pragma once
 
-#include <quant/geometry/Difference.h>
+#include <quant/geometry/LinearDifference.h>
 #include <quant/units/force/Force.h>
 #include <quant/units/force_fwd.h>
 
 namespace quant::units::force
 {
 
-    class ForceDifference : public LinearDifference<Domain>
+    class ForceDifference : public geometry::LinearDifference<Domain>
     {
 
     public:

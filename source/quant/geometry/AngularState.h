@@ -1,7 +1,7 @@
 #pragma once
 
 #include <quant/geometry/AxisAngle.h>
-#include <quant/geometry/detail/Accessors.h>
+#include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>
 
 #include <Eigen/Core>
@@ -14,7 +14,7 @@ namespace quant::geometry
 {
 
     template <typename Domain>
-    class QuaternionQuantity
+    class AngularState
     {
     protected:
         // Construct.
@@ -25,10 +25,10 @@ namespace quant::geometry
          * @param pitch
          * @param yaw
          */
-        QuaternionQuantity(float const roll, float const pitch, float const yaw) :
-            QuaternionQuantity(static_cast<double>(roll),
-                               static_cast<double>(pitch),
-                               static_cast<double>(yaw))
+        AngularState(float const roll, float const pitch, float const yaw) :
+            AngularState(static_cast<double>(roll),
+                         static_cast<double>(pitch),
+                         static_cast<double>(yaw))
         {
             ;
         }
@@ -39,7 +39,7 @@ namespace quant::geometry
          * @param pitch
          * @param yaw
          */
-        QuaternionQuantity(double const roll, double const pitch, double const yaw) :
+        AngularState(double const roll, double const pitch, double const yaw) :
             representation_(Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitX()) *
                             Eigen::AngleAxisd(pitch, Eigen::Vector3d::UnitY()) *
                             Eigen::AngleAxisd(yaw, Eigen::Vector3d::UnitZ()))
@@ -47,7 +47,7 @@ namespace quant::geometry
             ;
         }
 
-        QuaternionQuantity(AxisAngle const& aa) : QuaternionQuantity(aa.toEigen())
+        AngularState(AxisAngle const& aa) : AngularState(aa.toEigen())
         {
             ;
         }
@@ -56,7 +56,7 @@ namespace quant::geometry
          * @brief Construct quaternion from Euler angles.
          * @param p
          */
-        QuaternionQuantity(Eigen::Vector3f const& p) : QuaternionQuantity(p.cast<double>().eval())
+        AngularState(Eigen::Vector3f const& p) : AngularState(p.cast<double>().eval())
         {
             ;
         }
@@ -65,7 +65,7 @@ namespace quant::geometry
          * @brief Construct quaternion from Euler angles.
          * @param p
          */
-        QuaternionQuantity(Eigen::Vector3d const& p) : QuaternionQuantity(p.x(), p.y(), p.z())
+        AngularState(Eigen::Vector3d const& p) : AngularState(p.x(), p.y(), p.z())
         {
             ;
         }
@@ -74,7 +74,7 @@ namespace quant::geometry
          * @brief Construct quaternion from rotation matrix.
          * @param r
          */
-        QuaternionQuantity(Eigen::Matrix3f const& r) : representation_(r.cast<double>().eval())
+        AngularState(Eigen::Matrix3f const& r) : representation_(r.cast<double>().eval())
         {
             ;
         }
@@ -83,7 +83,7 @@ namespace quant::geometry
          * @brief Construct quaternion from rotation matrix.
          * @param r
          */
-        QuaternionQuantity(Eigen::Matrix3d const& r) : representation_(r)
+        AngularState(Eigen::Matrix3d const& r) : representation_(r)
         {
             ;
         }
@@ -92,7 +92,7 @@ namespace quant::geometry
          * @brief Construct quaternion from angle axis.
          * @param r
          */
-        QuaternionQuantity(Eigen::AngleAxisd const& r) : representation_(r)
+        AngularState(Eigen::AngleAxisd const& r) : representation_(r)
         {
             ;
         }
@@ -101,7 +101,7 @@ namespace quant::geometry
          * @brief Construct quaternion from Eigen quaternion.
          * @param r
          */
-        QuaternionQuantity(Eigen::Quaterniond const& r) : representation_(r)
+        AngularState(Eigen::Quaterniond const& r) : representation_(r)
         {
             ;
         }
@@ -112,7 +112,7 @@ namespace quant::geometry
         /**
          * @brief Default constructed quaternion.
          */
-        QuaternionQuantity() : representation_(1, 0, 0, 0)
+        AngularState() : representation_(1, 0, 0, 0)
         {
             ;
         }

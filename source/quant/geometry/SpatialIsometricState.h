@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/detail/Accessors.h>
+#include <quant/geometry/detail/QuantityAccessor.h>
 
 #include <Eigen/Geometry>
 
@@ -11,11 +11,11 @@ namespace quant::geometry
 {
 
     template <typename BaseQuantityT>
-    class IsometryQuantity
+    class SpatialIsometricState
     {
         // Construct.
     public:
-        IsometryQuantity() : representation_(Eigen::Isometry3d::Identity())
+        SpatialIsometricState() : representation_(Eigen::Isometry3d::Identity())
         {
             ;
         }
@@ -51,18 +51,18 @@ namespace quant::geometry
         // using DomainType = Domain;
 
     protected:
-        IsometryQuantity(Eigen::Isometry3d const& tf) : representation_(tf)
+        SpatialIsometricState(Eigen::Isometry3d const& tf) : representation_(tf)
         {
             ;
         }
 
-        IsometryQuantity(Eigen::Ref<const Eigen::Matrix4f> const& tf) :
+        SpatialIsometricState(Eigen::Ref<const Eigen::Matrix4f> const& tf) :
             representation_(tf.cast<double>())
         {
             ;
         }
 
-        IsometryQuantity(Eigen::Ref<const Eigen::Matrix4d> const& tf) : representation_(tf)
+        SpatialIsometricState(Eigen::Ref<const Eigen::Matrix4d> const& tf) : representation_(tf)
         {
             ;
         }
