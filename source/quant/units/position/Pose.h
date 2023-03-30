@@ -11,6 +11,8 @@ namespace quant::units::position
         // Construct.
     public:
         using geometry::SpatialIsometricState<Pose>::SpatialIsometricState;
+
+        using DifferenceType = SpatialDisplacement;
     };
 
 }  // namespace quant::units::position

@@ -10,24 +10,17 @@ namespace quant::framed_geometry
     template <>
     struct DefineFramedType<quant::SpatialDisplacement>
     {
-        using FramedType = framed_units::position::FramedSpatialDisplacement;
+        using FramedType = framed_units::position::SpatialDisplacement;
     };
 
 }  // namespace quant::framed_geometry
 
 namespace quant::framed_units::position
 {
-    class FramedSpatialDisplacement : public Framed<SpatialDisplacement>
+    class SpatialDisplacement : public Framed<position::SpatialDisplacement>
     {
     public:
-        using Framed<SpatialDisplacement>::Framed;
+        using Framed<position::SpatialDisplacement>::Framed;
     };
 
 }  // namespace quant::framed_units::position
-
-namespace quant
-{
-
-    using framed_units::position::FramedSpatialDisplacement;
-
-}  // namespace quant

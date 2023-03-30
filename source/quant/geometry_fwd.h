@@ -5,14 +5,17 @@
 namespace quant::geometry
 {
 
+    template <typename Domain>
+    struct InstantiateDomain;
+
     class Vector;
     class AxisAngle;
 
     template <typename BaseQuantityT, typename ScalarType = double>
     class ScalarState;
 
-    template <typename T>
-    using ScalarIntegerState = ScalarState<T, std::int64_t>;
+    template <typename BaseQuantityT>
+    using ScalarIntegerState = ScalarState<BaseQuantityT, /* ScalarType = */ std::int64_t>;
 
     template <typename BaseQuantityT>
     class LinearState;
@@ -37,6 +40,9 @@ namespace quant::geometry
 
     template <typename Domain>
     class AngularDifference;
+
+    template <typename Domain>
+    class SpatialDifference;
 
     struct StateType
     {
@@ -78,6 +84,21 @@ namespace quant::geometry
     {
     };
 
+    template <typename StateT>
+    struct DefineDifferenceTypeOf
+    {
+        using DifferenceType = Difference<StateT>;
+    };
+
+    template <typename StateT>
+    using DifferenceTypeOf = typename DefineDifferenceTypeOf<StateT>::DifferenceType;
+
+    template <typename DifferenceT>
+    struct DefineStateTypeOf
+    {
+        using StateType = typename DifferenceT::StateType;
+    };
+
 }  // namespace quant::geometry
 
 namespace quant
@@ -85,5 +106,7 @@ namespace quant
 
     using geometry::AxisAngle;
     using geometry::Vector;
+
+    using geometry::DifferenceTypeOf;
 
 }  // namespace quant

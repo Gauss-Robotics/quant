@@ -19,6 +19,8 @@ namespace quant::units::position
         {
             return AngularDisplacement(Orientation::radians(aa));
         }
+
+        using StateType = Orientation;
     };
 
 }  // namespace quant::units::position

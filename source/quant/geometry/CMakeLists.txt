@@ -24,8 +24,6 @@ add_library(geometry SHARED
 set_target_properties(geometry
     PROPERTIES
         LINKER_LANGUAGE CXX
-        CXX_STANDARD 17
-        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/source"
 )
 
 target_link_libraries(geometry

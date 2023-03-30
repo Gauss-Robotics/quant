@@ -2,11 +2,16 @@ cmake_minimum_required(VERSION 3.10)
 
 project(quant LANGUAGES CXX)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_STATIC_LIBRARY_PREFIX "lib_${CMAKE_PROJECT_NAME}_")
+set(CMAKE_SHARED_LIBRARY_PREFIX "lib_${CMAKE_PROJECT_NAME}_")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/source")
+
 find_package(Eigen3 REQUIRED)
 find_package(doctest REQUIRED)
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 add_subdirectory(source)
 add_subdirectory(tests)
@@ -16,8 +21,8 @@ export(
     TARGETS
         geometry
         units
-        #framed_geometry
-        #framed_units
+        framed_geometry
+        framed_units
     NAMESPACE
         quant::
     FILE
@@ -28,8 +33,8 @@ install(
     TARGETS
         geometry
         units
-        #framed_geometry
-        #framed_units
+        framed_geometry
+        framed_units
     EXPORT
         quant_export_set
     DESTINATION

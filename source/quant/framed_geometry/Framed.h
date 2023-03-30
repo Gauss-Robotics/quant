@@ -2,6 +2,8 @@
 
 #include <quant/framed_geometry_fwd.h>
 #include <quant/geometry/Difference.h>
+#include <quant/geometry/LinearDifference.h>
+#include <quant/geometry_fwd.h>
 
 #include <Eigen/Core>
 
@@ -62,19 +64,27 @@ namespace quant::framed_geometry
     {
     public:
         Framed(QuantityT const& objectToFrame, FrameData const& frameData) :
+            name{[&]() -> char const*
+                 {
+                     // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
+                     std::snprintf(nameData_.data(), nameData_.size(), "%s", frameData.name.data());
+                     // NOLINTEND(cppcoreguidelines-pro-type-vararg)
+                     return nameData_.data();
+                 }()},
+            baseFrame{[&]() -> char const*
+                      {
+                          // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
+                          std::snprintf(baseFrameData_.data(),
+                                        baseFrameData_.size(),
+                                        "%s",
+                                        frameData.baseFrame.data());
+                          // NOLINTEND(cppcoreguidelines-pro-type-vararg)
+
+                          return baseFrameData_.data();
+                      }()},
             framedObject_{objectToFrame}
         {
-            // TODO(dreher): Ensure that names are not too long.
-
-            // snprintf guarantees null-termination (not the case for frameName.copy()).
-            // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
-            std::snprintf(nameData_.data(), nameData_.size(), "%s", frameData.name.data());
-            std::snprintf(
-                baseFrameData_.data(), baseFrameData_.size(), "%s", frameData.baseFrame.data());
-            // NOLINTEND(cppcoreguidelines-pro-type-vararg)
-
-            name = nameData_.data();
-            baseFrame = baseFrameData_.data();
+            ;
         }
 
         FramedTypeOf<QuantityT>
@@ -86,23 +96,13 @@ namespace quant::framed_geometry
         FramedTypeOf<DifferenceTypeOf<QuantityT>>
         operator-(Framed<QuantityT> const& rhs) const
         {
-            class Accessor : public QuantityT
-            {
-            public:
-                using QuantityT::VectorQuantity;
-            };
-
-            Eigen::Vector3d res = framedObject_.representation_ - rhs.framedObject_.representation_;
-
-            // QuantityT quantity = Accessor(res);
-
             assert(baseFrame == rhs.baseFrame);
             return FramedTypeOf<DifferenceTypeOf<QuantityT>>(DifferenceTypeOf<QuantityT>(),
                                                              {.name = name, .baseFrame = rhs.name});
         }
 
-        std::string_view name;
-        std::string_view baseFrame;
+        const std::string_view name;
+        const std::string_view baseFrame;
 
     private:
         /**
@@ -119,11 +119,3 @@ namespace quant::framed_geometry
     };
 
 }  // namespace quant::framed_geometry
-
-namespace quant
-{
-
-    using framed_geometry::Framed;
-    using framed_geometry::FrameData;
-
-}  // namespace quant

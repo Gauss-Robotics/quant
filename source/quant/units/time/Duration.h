@@ -157,6 +157,8 @@ namespace quant::units::time
 
         bool
         operator>(Duration const& rhs) const;
+
+        using StateType = TimePoint;
     };
 
     std::ostream&

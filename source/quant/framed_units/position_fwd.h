@@ -3,25 +3,35 @@
 namespace quant::framed_units::position
 {
 
-    class FramedPosition;
-    class FramedOrientation;
-    class FramedPose;
+    class Position;
+    class Orientation;
+    class Pose;
 
-    class FramedLinearDisplacement;
-    class FramedAngularDisplacement;
-    class FramedSpatialDisplacement;
+    class LinearDisplacement;
+    class AngularDisplacement;
+    class SpatialDisplacement;
+
+    struct Domain
+    {
+        using LinearState = Position;
+        using AngularState = Orientation;
+        using SpatialState = Pose;
+        using LinearDifference = LinearDisplacement;
+        using AngularDifference = AngularDisplacement;
+        using SpatialDifference = SpatialDisplacement;
+    };
 
 }  // namespace quant::framed_units::position
 
 namespace quant
 {
 
-    using framed_units::position::FramedOrientation;
-    using framed_units::position::FramedPose;
-    using framed_units::position::FramedPosition;
+    using FramedOrientation = framed_units::position::Orientation;
+    using FramedPose = framed_units::position::Pose;
+    using FramedPosition = framed_units::position::Position;
 
-    using framed_units::position::FramedAngularDisplacement;
-    using framed_units::position::FramedLinearDisplacement;
-    using framed_units::position::FramedSpatialDisplacement;
+    using FramedAngularDisplacement = framed_units::position::AngularDisplacement;
+    using FramedLinearDisplacement = framed_units::position::LinearDisplacement;
+    using FramedSpatialDisplacement = framed_units::position::SpatialDisplacement;
 
 }  // namespace quant

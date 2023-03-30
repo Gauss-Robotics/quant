@@ -21,6 +21,8 @@ namespace quant::units::force
         {
             return {xyz.x, xyz.y, xyz.z};
         }
+
+        using DifferenceType = ForceDifference;
     };
 
     std::ostream&

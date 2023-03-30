@@ -39,7 +39,7 @@ namespace quant::geometry
             return differenceObject_ != rhs.differenceObject_;
         }
 
-        using DifferenceObjectType = QuantityT;
+        using StateType = QuantityT;
 
     protected:
         QuantityT differenceObject_;

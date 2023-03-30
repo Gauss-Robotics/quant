@@ -21,7 +21,7 @@ namespace quant::geometry
         }
 
         static BaseQuantityT
-        Origin()
+        zero()
         {
             return BaseQuantityT{Eigen::Isometry3d::Identity()};
         }

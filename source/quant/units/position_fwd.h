@@ -1,5 +1,7 @@
 #pragma once
 
+#include <quant/geometry_fwd.h>
+
 namespace quant::units::position
 {
 
@@ -22,6 +24,47 @@ namespace quant::units::position
     };
 
 }  // namespace quant::units::position
+
+namespace quant::geometry
+{
+
+    template <>
+    struct DefineDifferenceTypeOf<units::position::Position>
+    {
+        using DifferenceType = units::position::LinearDisplacement;
+    };
+
+    template <>
+    struct DefineStateTypeOf<units::position::LinearDisplacement>
+    {
+        using StateType = units::position::Position;
+    };
+
+    template <>
+    struct DefineDifferenceTypeOf<units::position::Orientation>
+    {
+        using DifferenceType = units::position::AngularDisplacement;
+    };
+
+    template <>
+    struct DefineStateTypeOf<units::position::AngularDisplacement>
+    {
+        using StateType = units::position::Orientation;
+    };
+
+    template <>
+    struct DefineDifferenceTypeOf<units::position::Pose>
+    {
+        using DifferenceType = units::position::SpatialDisplacement;
+    };
+
+    template <>
+    struct DefineStateTypeOf<units::position::SpatialDisplacement>
+    {
+        using StateType = units::position::Pose;
+    };
+
+}  // namespace quant::geometry
 
 namespace quant
 {

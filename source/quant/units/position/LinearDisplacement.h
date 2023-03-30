@@ -9,7 +9,6 @@ namespace quant::units::position
 {
 
     class LinearDisplacement : public geometry::LinearDifference<Domain>
-
     {
 
     public:
@@ -36,8 +35,10 @@ namespace quant::units::position
         Distance
         toDistance() const
         {
-            return Distance::MilliMeters(differenceObject_.representation_.norm());
+            return Distance::MilliMeters(differenceObject_.toMilliMeters().toEigen().norm());
         }
+
+        using StateType = Position;
     };
 
 }  // namespace quant::units::position

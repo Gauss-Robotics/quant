@@ -41,6 +41,7 @@ namespace quant::geometry
         }
 
         using Difference<typename Domain::LinearState>::Difference;
+
         using GeometricRepresentationType =
             typename Domain::LinearState::GeometricRepresentationType;
         using GeometricType = LinearDifferenceType;
