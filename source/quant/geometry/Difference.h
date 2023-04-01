@@ -11,7 +11,7 @@ namespace quant::geometry
 {
 
     /**
-     * Represents the difference of two states of type QuantityT.
+     * Represents the difference of two states of type `QuantityT`.
      */
     template <typename QuantityT>
     class Difference
@@ -54,8 +54,9 @@ namespace quant::geometry
     /**
      * @brief SFINAE type and alias for a difference of quantities.
      *
-     * If QuantityT is a state, this type evaluates to the defined difference type of QuantityT,
-     * otherwise this type will result in substitution failure.
+     * If `QuantityT` is a state, this type evaluates to the defined difference type of `QuantityT`
+     * via `traits::DifferenceTypeOf<QuantityT>`, otherwise this type will result in substitution
+     * failure.
      */
     template <typename QuantityT>
     using QuantityDifference =
@@ -65,8 +66,8 @@ namespace quant::geometry
      * @brief Generic difference operator.
      *
      * Returns the difference of the left-hand-side and right-hand-side either as the defined
-     * difference type of the template type QuantityT, or generally as Difference<QuantityT> if and
-     * only if QuantityT is a state.
+     * difference type of the template type QuantityT, or generally as `Difference<QuantityT>` if
+     * and only if `QuantityT` is a state.
      */
     template <typename QuantityT>
     QuantityDifference<QuantityT>

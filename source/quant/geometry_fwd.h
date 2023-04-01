@@ -70,12 +70,25 @@ namespace quant::traits
         using StateType = typename DifferenceT::StateType;
     };
 
-    template <typename StateT>
-    using StateTypeOf = typename DefineStateTypeOf<StateT>::StateType;
+    template <typename DifferenceT>
+    using StateTypeOf = typename DefineStateTypeOf<DifferenceT>::StateType;
 
+    /**
+     * @brief Tests whether the given type `Type` is a geometric state (primary template).
+     *
+     * In case of `Type` not being a state, `std::is_same` in the specialized template will yield in
+     * substitution failure, the primary template will be used, and `isState<Type>` will evaluate to
+     * false.
+     */
     template <typename Type, typename = void>
     inline constexpr bool isState = false;
 
+    /**
+     * @brief Tests whether the given type `Type` is a geometric state (specialized template).
+     *
+     * If `Type` is a state, the primary template will be overridden and `isState<Type>` will
+     * evaluate to `true`.
+     */
     template <typename Type>
     inline constexpr bool
         isState<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
