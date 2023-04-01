@@ -42,7 +42,6 @@ namespace quant::geometry
         using Difference<typename Domain::State>::Difference;
 
         using GeometricRepresentationType = typename Domain::State::GeometricRepresentationType;
-        using DomainType = Domain;
 
         friend class detail::DifferenceAccessor<typename Domain::Difference,
                                                 ScalarDifference<Domain>>;

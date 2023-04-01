@@ -5,9 +5,6 @@
 #include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>
 
-#include <type_traits>
-#include <typeinfo>
-
 namespace quant::geometry
 {
 
@@ -38,7 +35,6 @@ namespace quant::geometry
 
         using GeometricRepresentationType =
             typename Domain::LinearState::GeometricRepresentationType;
-        using DomainType = Domain;
 
         friend class detail::DifferenceAccessor<typename Domain::LinearDifference,
                                                 LinearDifference<Domain>>;

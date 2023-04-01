@@ -78,7 +78,6 @@ namespace quant::geometry
 
         using GeometricRepresentationType = ScalarType;
         using GeometricType = traits::StateType;
-        using DomainType = Domain;
 
     protected:
         ScalarState(ScalarType value) : representation_{value}

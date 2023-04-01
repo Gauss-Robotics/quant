@@ -4,9 +4,6 @@
 
 #include <Eigen/Geometry>
 
-#include <ostream>
-#include <typeinfo>
-
 namespace quant::geometry
 {
 

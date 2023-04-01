@@ -173,7 +173,6 @@ namespace quant::geometry
 
         using GeometricRepresentationType = Eigen::Quaterniond const&;
         using GeometricType = traits::StateType;
-        using DomainType = Domain;
 
     protected:
         Eigen::Quaterniond representation_;
