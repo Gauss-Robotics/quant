@@ -3,6 +3,7 @@
 #include <quant/geometry/AngularDifference.h>
 #include <quant/geometry/AxisAngle.h>
 #include <quant/units/position/Orientation.h>
+#include <quant/units/position/Position.h>
 #include <quant/units/position_fwd.h>
 
 namespace quant::units::position
@@ -12,15 +13,13 @@ namespace quant::units::position
     {
 
     public:
-        using geometry::AngularDifference<Domain>::AngularDifference;
-
         static AngularDisplacement
         radians(AxisAngle const& aa)
         {
-            return AngularDisplacement(Orientation::radians(aa));
+            return AngularDisplacement{Orientation::radians(aa)};
         }
 
-        using StateType = Orientation;
+        using geometry::AngularDifference<Domain>::AngularDifference;
     };
 
 }  // namespace quant::units::position

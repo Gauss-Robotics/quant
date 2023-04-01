@@ -28,8 +28,6 @@ namespace quant::units::position
         }
 
         using geometry::AngularState<Domain>::AngularState;
-
-        using DifferenceType = AngularDisplacement;
     };
 
     inline std::ostream&

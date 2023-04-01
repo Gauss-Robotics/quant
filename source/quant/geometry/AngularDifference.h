@@ -1,5 +1,6 @@
 #pragma once
 
+#include <quant/geometry/Difference.h>
 #include <quant/geometry/detail/DifferenceAccessor.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>

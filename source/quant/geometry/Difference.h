@@ -28,10 +28,10 @@ namespace quant::geometry
             ;
         }
 
-        static QuantityT
+        static traits::DifferenceTypeOf<QuantityT>
         zero()
         {
-            return QuantityT::Zero();
+            return traits::DifferenceTypeOf<QuantityT>{QuantityT::zero()};
         }
 
         bool

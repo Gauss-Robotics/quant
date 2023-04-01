@@ -17,7 +17,7 @@ namespace quant::units::force
         using geometry::AngularState<Domain>::AngularState;
 
         static Torque
-        newtonMeters(AxisAngle aa)
+        newton_meters(AxisAngle aa)
         {
             return {aa};
         }

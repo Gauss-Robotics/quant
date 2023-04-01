@@ -2,7 +2,6 @@
 
 #include <quant/geometry/LinearState.h>
 #include <quant/units/position_fwd.h>
-#include <quant/units/time/Duration.h>
 
 #include <ostream>
 
@@ -53,8 +52,6 @@ namespace quant::units::position
         {
             return {.x = representation_.x(), .y = representation_.y(), .z = representation_.z()};
         }
-
-        using DifferenceType = LinearDisplacement;
     };
 
     inline std::ostream&

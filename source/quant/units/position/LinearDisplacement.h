@@ -37,8 +37,6 @@ namespace quant::units::position
         {
             return Distance::MilliMeters(difference_object_.to_milli_meters().to_eigen().norm());
         }
-
-        using StateType = Position;
     };
 
 }  // namespace quant::units::position

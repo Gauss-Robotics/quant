@@ -238,7 +238,7 @@ TEST_CASE("testing force")
         Wrench const w2 = df + w1;
         CHECK(w2.linear() == f);
 
-        Torque const t = Torque::newtonMeters(AxisAngle::around_y(1));
+        Torque const t = Torque::newton_meters(AxisAngle::around_y(1));
         TorqueDifference const dt(t);
         Wrench const w3 = dt + w1;
 

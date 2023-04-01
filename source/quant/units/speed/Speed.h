@@ -32,7 +32,7 @@ namespace quant::units::speed
         }
 
         std::string
-        toString() const;
+        to_string() const;
 
         double
         to_milli_meters_per_second() const

@@ -1,22 +1,22 @@
 #pragma once
 
-#include <quant/geometry/Difference.h>
+#include <quant/geometry/SpatialDifference.h>
 #include <quant/units/position/Pose.h>
 #include <quant/units/position_fwd.h>
 
 namespace quant::units::position
 {
 
-    class SpatialDisplacement : public geometry::Difference<Pose>
+    class SpatialDisplacement : public geometry::SpatialDifference<Domain>
     {
 
     public:
-        SpatialDisplacement() : Difference<Pose>()
+        SpatialDisplacement() : geometry::SpatialDifference<Domain>()
         {
             ;
         }
 
-        explicit SpatialDisplacement(Pose const& t) : Difference<Pose>(t)
+        explicit SpatialDisplacement(Pose const& t) : geometry::SpatialDifference<Domain>(t)
         {
             ;
         }
