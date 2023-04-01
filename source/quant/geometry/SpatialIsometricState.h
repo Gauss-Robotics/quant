@@ -48,7 +48,6 @@ namespace quant::geometry
 
         using GeometricRepresentationType = Eigen::Isometry3d const&;
         using GeometricType = StateType;
-        // using DomainType = Domain;
 
     protected:
         SpatialIsometricState(Eigen::Isometry3d const& tf) : representation_(tf)

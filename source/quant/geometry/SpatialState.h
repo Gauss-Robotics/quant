@@ -62,6 +62,8 @@ namespace quant::geometry
             return typename Domain::SpatialState(rhs.linear_, rhs.angular_ - op);
         }
 
+        using GeometricType = StateType;
+
     protected:
         typename Domain::LinearState linear_;
         typename Domain::AngularState angular_;

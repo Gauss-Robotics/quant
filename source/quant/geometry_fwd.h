@@ -1,12 +1,10 @@
 #pragma once
 
 #include <cinttypes>
+#include <type_traits>
 
 namespace quant::geometry
 {
-
-    template <typename Domain>
-    struct InstantiateDomain;
 
     class Vector;
     class AxisAngle;
@@ -48,39 +46,7 @@ namespace quant::geometry
     {
     };
 
-    struct ScalarStateType : public StateType
-    {
-    };
-
-    struct LinearStateType : public StateType
-    {
-    };
-
-    struct AngularStateType : public StateType
-    {
-    };
-
-    struct SpatialStateType : public StateType
-    {
-    };
-
     struct DifferenceType
-    {
-    };
-
-    struct ScalarDifferenceType : public DifferenceType
-    {
-    };
-
-    struct LinearDifferenceType : public DifferenceType
-    {
-    };
-
-    struct AngularDifferenceType : public DifferenceType
-    {
-    };
-
-    struct SpatialDifferenceType : public DifferenceType
     {
     };
 
@@ -99,6 +65,16 @@ namespace quant::geometry
         using StateType = typename DifferenceT::StateType;
     };
 
+    template <typename StateT>
+    using StateTypeOf = typename DefineStateTypeOf<StateT>::StateType;
+
+    template <typename Type, typename = void>
+    inline constexpr bool isState = false;
+
+    template <typename Type>
+    inline constexpr bool
+        isState<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
+
 }  // namespace quant::geometry
 
 namespace quant
@@ -106,7 +82,5 @@ namespace quant
 
     using geometry::AxisAngle;
     using geometry::Vector;
-
-    using geometry::DifferenceTypeOf;
 
 }  // namespace quant

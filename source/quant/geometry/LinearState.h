@@ -79,7 +79,7 @@ namespace quant::geometry
         }
 
         using GeometricRepresentationType = Eigen::Ref<Eigen::Vector3d const>;
-        using GeometricType = LinearStateType;
+        using GeometricType = StateType;
         using DomainType = Domain;
 
     protected:

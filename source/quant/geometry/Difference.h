@@ -27,6 +27,12 @@ namespace quant::geometry
             ;
         }
 
+        static QuantityT
+        zero()
+        {
+            return QuantityT::Zero();
+        }
+
         bool
         operator==(Difference<QuantityT> const& rhs) const
         {
@@ -44,5 +50,25 @@ namespace quant::geometry
     protected:
         QuantityT differenceObject_;
     };
+
+    /**
+     * SFINAE type and alias for a difference of quantities.
+     */
+    template <typename QuantityT>
+    using QuantityDifference = std::enable_if_t<isState<QuantityT>, DifferenceTypeOf<QuantityT>>;
+
+    /**
+     * Difference operator for quantities.
+     */
+    template <typename QuantityT>
+    QuantityDifference<QuantityT>
+    operator-(QuantityT const& lhs, QuantityT const& rhs)
+    {
+        using State = detail::QuantityAccessor<QuantityT>;
+        using Difference =
+            detail::DifferenceAccessor<DifferenceTypeOf<QuantityT>, DifferenceTypeOf<QuantityT>>;
+
+        return Difference::make(State::representation(lhs) - State::representation(rhs));
+    }
 
 }  // namespace quant::geometry

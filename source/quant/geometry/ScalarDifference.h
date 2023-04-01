@@ -40,34 +40,12 @@ namespace quant::geometry
         }
 
         using Difference<typename Domain::State>::Difference;
+
         using GeometricRepresentationType = typename Domain::State::GeometricRepresentationType;
-        using GeometricType = ScalarDifferenceType;
         using DomainType = Domain;
 
         friend class detail::DifferenceAccessor<typename Domain::Difference,
                                                 ScalarDifference<Domain>>;
     };
-
-    /**
-     * SFINAE type and alias for a difference of scalar quantities.
-     */
-    template <typename QuantityT>
-    using ScalarQuantityDifference =
-        std::enable_if_t<std::is_same_v<typename QuantityT::GeometricType, ScalarStateType>,
-                         typename QuantityT::DomainType::Difference>;
-
-    /**
-     * Difference operator for scalar quantities.
-     */
-    template <typename QuantityT>
-    ScalarQuantityDifference<QuantityT>
-    operator-(QuantityT const& lhs, QuantityT const& rhs)
-    {
-        using Domain = typename QuantityT::DomainType;
-        using State = detail::QuantityAccessor<typename Domain::State>;
-        using Difference =
-            detail::DifferenceAccessor<typename Domain::Difference, ScalarDifference<Domain>>;
-        return Difference::make(State::representation(lhs) - State::representation(rhs));
-    }
 
 }  // namespace quant::geometry

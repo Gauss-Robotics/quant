@@ -19,9 +19,9 @@ namespace quant::geometry
     {
     public:
         using Difference<typename Domain::SpatialState>::Difference;
+
         using GeometricRepresentationType =
             typename Domain::LinearState::GeometricRepresentationType;
-        using GeometricType = SpatialDifferenceType;
         using DomainType = Domain;
 
         friend class detail::DifferenceAccessor<typename Domain::LinearDifference,

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <quant/framed_geometry_fwd.h>
+#include <quant/geometry_fwd.h>
+#include <quant/units/position_fwd.h>
+
 namespace quant::framed_units::position
 {
 
@@ -22,6 +26,64 @@ namespace quant::framed_units::position
     };
 
 }  // namespace quant::framed_units::position
+
+namespace quant::geometry
+{
+
+    template <>
+    struct DefineDifferenceTypeOf<framed_units::position::Position>
+    {
+        using DifferenceType = framed_units::position::LinearDisplacement;
+    };
+
+    template <>
+    struct DefineStateTypeOf<framed_units::position::LinearDisplacement>
+    {
+        using StateType = framed_units::position::Position;
+    };
+
+    template <>
+    struct DefineDifferenceTypeOf<framed_units::position::Orientation>
+    {
+        using DifferenceType = framed_units::position::AngularDisplacement;
+    };
+
+    template <>
+    struct DefineStateTypeOf<framed_units::position::AngularDisplacement>
+    {
+        using StateType = framed_units::position::Orientation;
+    };
+
+    template <>
+    struct DefineDifferenceTypeOf<framed_units::position::Pose>
+    {
+        using DifferenceType = framed_units::position::SpatialDisplacement;
+    };
+
+    template <>
+    struct DefineStateTypeOf<framed_units::position::SpatialDisplacement>
+    {
+        using StateType = framed_units::position::Pose;
+    };
+
+}  // namespace quant::geometry
+
+namespace quant::traits
+{
+
+    template <>
+    struct DefineFramedTypeOf<quant::units::position::Position>
+    {
+        using FramedType = quant::framed_units::position::Position;
+    };
+
+    template <>
+    struct DefineFramedTypeOf<quant::units::position::SpatialDisplacement>
+    {
+        using FramedType = quant::framed_units::position::SpatialDisplacement;
+    };
+
+}  // namespace quant::traits
 
 namespace quant
 {

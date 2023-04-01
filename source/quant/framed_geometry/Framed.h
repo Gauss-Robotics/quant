@@ -31,27 +31,6 @@ namespace quant::framed_geometry
     };
 
     /**
-     * @brief Template meta programming utility to define the framed type of a type via template
-     * specialization.
-     *
-     * Default is a `Framed<Quantity>`, but the built-in units usually have `FramedQuantity`
-     * specialization with convenience APIs, defined operators, etc.
-     *
-     * Example: `FramedLinearDisplacement` is a specialized `Framed<LinearDisplacement>`.
-     */
-    template <typename Quantity>
-    struct DefineFramedType
-    {
-        using FramedType = Framed<Quantity>;
-    };
-
-    /**
-     * @brief Lookup type def for semantic template resolution.
-     */
-    template <typename Quantity>
-    using FramedTypeOf = typename DefineFramedType<Quantity>::FramedType;
-
-    /**
      * @brief Wrapper to associate a named geometric object with a base frame.
      *
      * On construction, the name and baseFrame strings referred to the string_views in a `Frame` are
@@ -87,18 +66,19 @@ namespace quant::framed_geometry
             ;
         }
 
-        FramedTypeOf<QuantityT>
+        traits::FramedTypeOf<QuantityT>
         enframe(QuantityT const& objectToFrame, std::string_view name) const
         {
-            return FramedTypeOf<QuantityT>(objectToFrame, {.name = name, .baseFrame = this->name});
+            return traits::FramedTypeOf<QuantityT>(objectToFrame,
+                                                   {.name = name, .baseFrame = this->name});
         }
 
-        FramedTypeOf<DifferenceTypeOf<QuantityT>>
+        traits::FramedTypeOf<geometry::DifferenceTypeOf<QuantityT>>
         operator-(Framed<QuantityT> const& rhs) const
         {
             assert(baseFrame == rhs.baseFrame);
-            return FramedTypeOf<DifferenceTypeOf<QuantityT>>(DifferenceTypeOf<QuantityT>(),
-                                                             {.name = name, .baseFrame = rhs.name});
+            return traits::FramedTypeOf<geometry::DifferenceTypeOf<QuantityT>>(
+                geometry::DifferenceTypeOf<QuantityT>(), {.name = name, .baseFrame = rhs.name});
         }
 
         const std::string_view name;

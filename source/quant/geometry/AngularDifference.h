@@ -23,12 +23,6 @@ namespace quant::geometry
             ;
         }
 
-        static typename Domain::AngularState
-        zero()
-        {
-            return typename Domain::AngularState::Zero();
-        }
-
         typename Domain::LinearState
         operator*(typename Domain::LinearState const& rhs) const
         {
@@ -64,7 +58,6 @@ namespace quant::geometry
 
         using GeometricRepresentationType =
             typename Domain::AngularState::GeometricRepresentationType;
-        using GeometricType = AngularDifferenceType;
         using DomainType = Domain;
 
         friend class detail::DifferenceAccessor<typename Domain::AngularDifference,
