@@ -18,6 +18,18 @@ namespace simple_robot_example
 
             quant::FramedSpatialDisplacement const chest =
                 root.enframe(quant::SpatialDisplacement(), frames.chest);
+
+            quant::FramedSpatialDisplacement const armRight =
+                chest.enframe(quant::SpatialDisplacement(), frames.armRight);
+
+            quant::FramedSpatialDisplacement const tcpRight =
+                armRight.enframe(quant::SpatialDisplacement(), frames.tcpRight);
+
+            quant::FramedSpatialDisplacement const armLeft =
+                chest.enframe(quant::SpatialDisplacement(), frames.armLeft);
+
+            quant::FramedSpatialDisplacement const tcpLeft =
+                armLeft.enframe(quant::SpatialDisplacement(), frames.tcpLeft);
         }
 
         struct RobotFrames
@@ -28,7 +40,7 @@ namespace simple_robot_example
             std::string tcpRight = "Robot::RightTCP";
             std::string armLeft = "Robot::LeftArm";
             std::string tcpLeft = "Robot::LeftTCP";
-        } frames;
+        } const frames;
 
     private:
         std::unordered_map<std::string, quant::FramedSpatialDisplacement> frames_;

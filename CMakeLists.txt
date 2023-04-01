@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(quant LANGUAGES CXX)
 
+# General project settings.
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -10,9 +11,11 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "lib_${CMAKE_PROJECT_NAME}_")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/source")
 
+# Dependencies.
 find_package(Eigen3 REQUIRED)
-find_package(doctest REQUIRED)
+find_package(doctest QUIET)
 
+# Source code.
 add_subdirectory(source)
 add_subdirectory(tests)
 add_subdirectory(examples)
