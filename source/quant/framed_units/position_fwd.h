@@ -27,7 +27,7 @@ namespace quant::framed_units::position
 
 }  // namespace quant::framed_units::position
 
-namespace quant::geometry
+namespace quant::traits
 {
 
     template <>
@@ -65,11 +65,6 @@ namespace quant::geometry
     {
         using StateType = framed_units::position::Pose;
     };
-
-}  // namespace quant::geometry
-
-namespace quant::traits
-{
 
     template <>
     struct DefineFramedTypeOf<quant::units::position::Position>

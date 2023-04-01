@@ -73,12 +73,12 @@ namespace quant::framed_geometry
                                                    {.name = name, .baseFrame = this->name});
         }
 
-        traits::FramedTypeOf<geometry::DifferenceTypeOf<QuantityT>>
+        traits::FramedTypeOf<traits::DifferenceTypeOf<QuantityT>>
         operator-(Framed<QuantityT> const& rhs) const
         {
             assert(baseFrame == rhs.baseFrame);
-            return traits::FramedTypeOf<geometry::DifferenceTypeOf<QuantityT>>(
-                geometry::DifferenceTypeOf<QuantityT>(), {.name = name, .baseFrame = rhs.name});
+            return traits::FramedTypeOf<traits::DifferenceTypeOf<QuantityT>>(
+                traits::DifferenceTypeOf<QuantityT>(), {.name = name, .baseFrame = rhs.name});
         }
 
         const std::string_view name;

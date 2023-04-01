@@ -25,7 +25,7 @@ namespace quant::units::position
 
 }  // namespace quant::units::position
 
-namespace quant::geometry
+namespace quant::traits
 {
 
     template <>
@@ -64,7 +64,7 @@ namespace quant::geometry
         using StateType = units::position::Pose;
     };
 
-}  // namespace quant::geometry
+}  // namespace quant::traits
 
 namespace quant
 {

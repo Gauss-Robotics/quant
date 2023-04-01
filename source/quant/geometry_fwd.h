@@ -42,6 +42,11 @@ namespace quant::geometry
     template <typename Domain>
     class SpatialDifference;
 
+}  // namespace quant::geometry
+
+namespace quant::traits
+{
+
     struct StateType
     {
     };
@@ -53,7 +58,7 @@ namespace quant::geometry
     template <typename StateT>
     struct DefineDifferenceTypeOf
     {
-        using DifferenceType = Difference<StateT>;
+        using DifferenceType = quant::geometry::Difference<StateT>;
     };
 
     template <typename StateT>
@@ -75,7 +80,7 @@ namespace quant::geometry
     inline constexpr bool
         isState<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
 
-}  // namespace quant::geometry
+}  // namespace quant::traits
 
 namespace quant
 {

@@ -17,7 +17,7 @@ namespace quant::units::time
 
 }  // namespace quant::units::time
 
-namespace quant::geometry
+namespace quant::traits
 {
 
     template <>
@@ -32,7 +32,7 @@ namespace quant::geometry
         using StateType = units::time::TimePoint;
     };
 
-}  // namespace quant::geometry
+}  // namespace quant::traits
 
 namespace quant
 {

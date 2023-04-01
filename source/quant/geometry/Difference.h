@@ -55,7 +55,8 @@ namespace quant::geometry
      * SFINAE type and alias for a difference of quantities.
      */
     template <typename QuantityT>
-    using QuantityDifference = std::enable_if_t<isState<QuantityT>, DifferenceTypeOf<QuantityT>>;
+    using QuantityDifference =
+        std::enable_if_t<traits::isState<QuantityT>, traits::DifferenceTypeOf<QuantityT>>;
 
     /**
      * Difference operator for quantities.
@@ -65,8 +66,8 @@ namespace quant::geometry
     operator-(QuantityT const& lhs, QuantityT const& rhs)
     {
         using State = detail::QuantityAccessor<QuantityT>;
-        using Difference =
-            detail::DifferenceAccessor<DifferenceTypeOf<QuantityT>, DifferenceTypeOf<QuantityT>>;
+        using Difference = detail::DifferenceAccessor<traits::DifferenceTypeOf<QuantityT>,
+                                                      traits::DifferenceTypeOf<QuantityT>>;
 
         return Difference::make(State::representation(lhs) - State::representation(rhs));
     }

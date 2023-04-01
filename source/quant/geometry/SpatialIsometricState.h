@@ -47,7 +47,7 @@ namespace quant::geometry
         }
 
         using GeometricRepresentationType = Eigen::Isometry3d const&;
-        using GeometricType = StateType;
+        using GeometricType = traits::StateType;
 
     protected:
         SpatialIsometricState(Eigen::Isometry3d const& tf) : representation_(tf)
