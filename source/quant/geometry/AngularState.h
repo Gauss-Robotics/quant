@@ -47,7 +47,7 @@ namespace quant::geometry
             ;
         }
 
-        AngularState(AxisAngle const& aa) : AngularState(aa.toEigen())
+        AngularState(AxisAngle const& aa) : AngularState(aa.to_eigen())
         {
             ;
         }
@@ -126,24 +126,24 @@ namespace quant::geometry
         // Convert.
 
         AxisAngle
-        toAngleAxis() const
+        to_angle_axis() const
         {
-            return AxisAngle::fromEigen(Eigen::AngleAxisd(representation_));
+            return AxisAngle::from_eigen(Eigen::AngleAxisd{representation_});
         }
 
         std::string
-        toString(std::string const& quantityName, std::string const& unit) const
+        to_string(std::string const& quantity_name, std::string const& unit) const
         {
             std::string prefix = "";
 
-            if (not quantityName.empty())
+            if (not quantity_name.empty())
             {
-                prefix = quantityName + " ";
+                prefix = quantity_name + " ";
             }
 
-            const AxisAngle aa = toAngleAxis();
+            const AxisAngle aa = to_angle_axis();
             std::stringstream out;
-            out << "<" << prefix << aa.toString(unit) << ">";
+            out << "<" << prefix << aa.to_string(unit) << ">";
             return out.str();
         }
 
@@ -166,7 +166,7 @@ namespace quant::geometry
         }
 
         bool
-        isApprox(typename Domain::AngularState const& rhs, double const precision) const
+        is_approx(typename Domain::AngularState const& rhs, double const precision) const
         {
             return representation_.isApprox(rhs.representation_, precision);
         }

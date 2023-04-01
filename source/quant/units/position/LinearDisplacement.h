@@ -15,27 +15,27 @@ namespace quant::units::position
         using LinearDifference<Domain>::LinearDifference;
 
         static LinearDisplacement
-        milliMeters(double x, double y, double z)
+        milli_meters(double x, double y, double z)
         {
-            return LinearDisplacement(Position::milliMeters(x, y, z));
+            return LinearDisplacement{Position::milli_meters(x, y, z)};
         }
 
         static LinearDisplacement
-        milliMeters(Vector xyz)
+        milli_meters(Vector xyz)
         {
-            return LinearDisplacement(Position::milliMeters(xyz));
+            return LinearDisplacement{Position::milli_meters(xyz)};
         }
 
         Vector
-        toMilliMeters() const
+        to_milli_meters() const
         {
-            return differenceObject_.toMilliMeters();
+            return difference_object_.to_milli_meters();
         }
 
         Distance
-        toDistance() const
+        to_distance() const
         {
-            return Distance::MilliMeters(differenceObject_.toMilliMeters().toEigen().norm());
+            return Distance::MilliMeters(difference_object_.to_milli_meters().to_eigen().norm());
         }
 
         using StateType = Position;

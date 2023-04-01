@@ -18,37 +18,37 @@ namespace quant::geometry
         double z = 0;
 
         static Vector
-        unitX()
+        unit_x()
         {
             return {.x = 1};
         }
 
         static Vector
-        unitY()
+        unit_y()
         {
             return {.y = 1};
         }
 
         static Vector
-        unitZ()
+        unit_z()
         {
             return {.z = 1};
         }
 
         static Vector
-        fromEigen(Eigen::Vector3d const& eigen)
+        from_eigen(Eigen::Vector3d const& eigen)
         {
             return {.x = eigen.x(), .y = eigen.y(), .z = eigen.z()};
         }
 
         Eigen::Vector3d
-        toEigen() const
+        to_eigen() const
         {
             return {x, y, z};
         }
 
         std::string
-        toString(std::string const& unit = "") const
+        to_string(std::string const& unit = "") const
         {
             // [1.1 2.2 3.3] m/s
             std::stringstream ss;
@@ -64,7 +64,7 @@ namespace quant::geometry
     inline std::ostream&
     operator<<(std::ostream& os, Vector const& v)
     {
-        return os << "<Vector " << v.toString() << ">";
+        return os << "<Vector " << v.to_string() << ">";
     }
 
 }  // namespace quant::geometry

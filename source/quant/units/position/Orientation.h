@@ -22,9 +22,9 @@ namespace quant::units::position
         // Convert.
 
         AxisAngle
-        toRadians() const
+        to_radians() const
         {
-            return this->toAngleAxis();
+            return this->to_angle_axis();
         }
 
         using geometry::AngularState<Domain>::AngularState;
@@ -35,7 +35,7 @@ namespace quant::units::position
     inline std::ostream&
     operator<<(std::ostream& out, Orientation const& rhs)
     {
-        out << rhs.toString("Orientation", "rad");
+        out << rhs.to_string("Orientation", "rad");
         return out;
     }
 

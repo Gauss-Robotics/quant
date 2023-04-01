@@ -38,7 +38,7 @@ namespace quant::geometry
         }
 
         bool
-        isApprox(BaseQuantityT const& rhs, double const precision) const
+        is_approx(BaseQuantityT const& rhs, double const precision) const
         {
             return representation_.isApprox(rhs._representation, precision);
         }

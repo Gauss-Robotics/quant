@@ -1,20 +1,18 @@
 #include "Force.h"
 
-
 namespace quant::units::force
 {
 
-} // namespace quant::units::force
-
+}  // namespace quant::units::force
 
 namespace quant::units
 {
 
     std::ostream&
-    force::operator<<(std::ostream& out, const Force& rhs)
+    force::operator<<(std::ostream& out, Force const& rhs)
     {
-        out << rhs.toString("Force", "N");
+        out << rhs.to_string("Force", "N");
         return out;
     }
 
-} // namespace quant::units
+}  // namespace quant::units

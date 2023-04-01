@@ -10,25 +10,25 @@
 namespace quant::units::temperature
 {
 
-    constexpr double celsius2kelvinOffset = 273.15;
-    constexpr double celsius2fahrenheitFactor = 9. / 5.;
-    constexpr double celsius2fahrenheitOffset = 32;
+    constexpr double celsius2kelvin_offset = 273.15;
+    constexpr double celsius2fahrenheit_factor = 9. / 5.;
+    constexpr double celsius2fahrenheit_offset = 32;
 
-    constexpr double kelvin2celsiusOffset = -celsius2kelvinOffset;
-    constexpr double fahrenheit2celsiusFactor = 5. / 9.;
-    constexpr double fahrenheit2celsiusOffset = -celsius2fahrenheitOffset;
-    constexpr double fahrenheit2rankineOffset = 459.67;
+    constexpr double kelvin2celsius_offset = -celsius2kelvin_offset;
+    constexpr double fahrenheit2celsius_factor = 5. / 9.;
+    constexpr double fahrenheit2celsius_offset = -celsius2fahrenheit_offset;
+    constexpr double fahrenheit2rankine_offset = 459.67;
 
-    constexpr double celsius2rankineOffset = celsius2fahrenheitOffset + fahrenheit2rankineOffset;
-    constexpr double rankine2celsiusOffset = -celsius2rankineOffset;
-    constexpr double rankine2celsiusFactor = fahrenheit2celsiusFactor;
+    constexpr double celsius2rankine_offset = celsius2fahrenheit_offset + fahrenheit2rankine_offset;
+    constexpr double rankine2celsius_offset = -celsius2rankine_offset;
+    constexpr double rankine2celsius_factor = fahrenheit2celsius_factor;
 
     class Temperature : geometry::ScalarState<Domain>
     {
 
     public:
         static Temperature
-        degreeCelcius(double celsius)
+        degree_celcius(double celsius)
         {
             return {celsius};
         }
@@ -36,46 +36,46 @@ namespace quant::units::temperature
         static Temperature
         kelvin(double kelvin)
         {
-            return {kelvin + kelvin2celsiusOffset};
+            return {kelvin + kelvin2celsius_offset};
         }
 
         static Temperature
-        degreeFahrenheit(double fahrenheit)
+        degree_fahrenheit(double fahrenheit)
         {
-            return {(fahrenheit + fahrenheit2celsiusOffset) * fahrenheit2celsiusFactor};
+            return {(fahrenheit + fahrenheit2celsius_offset) * fahrenheit2celsius_factor};
         }
 
         static Temperature
-        degreeRankine(double rankine)
+        degree_rankine(double rankine)
         {
-            return {(rankine + rankine2celsiusOffset) * rankine2celsiusFactor};
+            return {(rankine + rankine2celsius_offset) * rankine2celsius_factor};
         }
 
         std::string
-        toString() const;
+        to_string() const;
 
         double
-        toDegreeCelsius() const
+        to_degree_celsius() const
         {
             return representation_;
         }
 
         double
-        toKelvin() const
+        to_kelvin() const
         {
-            return representation_ + celsius2kelvinOffset;
+            return representation_ + celsius2kelvin_offset;
         }
 
         double
-        toDegreeFahrenheit() const
+        to_degree_fahrenheit() const
         {
-            return representation_ * celsius2fahrenheitFactor + celsius2fahrenheitOffset;
+            return representation_ * celsius2fahrenheit_factor + celsius2fahrenheit_offset;
         }
 
         double
-        toDegreeRankine() const
+        to_degree_rankine() const
         {
-            return representation_ * celsius2fahrenheitFactor + celsius2rankineOffset;
+            return representation_ * celsius2fahrenheit_factor + celsius2rankine_offset;
         }
 
         // Operators.

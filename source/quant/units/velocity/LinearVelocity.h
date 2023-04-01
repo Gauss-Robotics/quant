@@ -25,22 +25,22 @@ namespace quant::units::velocity
         // Construct.
     public:
         static LinearVelocity
-        milliMetersPerSecond(Vector xyz)
+        milli_meters_per_second(Vector xyz)
         {
             return {xyz.x, xyz.y, xyz.z};
         }
 
         static LinearVelocity
-        metersPerSecond(Vector xyz)
+        meters_per_second(Vector xyz)
         {
             constexpr int m2mm = 1'000;
             return {xyz.x * m2mm, xyz.y * m2mm, xyz.z * m2mm};
         }
 
         Speed
-        toSpeed() const
+        to_speed() const
         {
-            return Speed::milliMetersPerSecond(representation_.norm());
+            return Speed::milli_meters_per_second(representation_.norm());
         }
 
         using geometry::LinearState<Domain>::LinearState;

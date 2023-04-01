@@ -5,7 +5,7 @@
 namespace quant::units::speed
 {
 
-    Speed::Speed(quant::units::velocity::LinearVelocity const& vel) : Speed::Speed(vel.toSpeed())
+    Speed::Speed(quant::units::velocity::LinearVelocity const& vel) : Speed::Speed(vel.to_speed())
     {
         ;
     }

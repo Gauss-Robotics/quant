@@ -15,8 +15,8 @@ namespace quant::geometry
     class LinearDifference : public Difference<typename Domain::LinearState>
     {
     public:
-        explicit LinearDifference(typename Domain::LinearState const& differenceObject) :
-            Difference<typename Domain::LinearState>(differenceObject)
+        explicit LinearDifference(typename Domain::LinearState const& difference_object) :
+            Difference<typename Domain::LinearState>(difference_object)
         {
             ;
         }

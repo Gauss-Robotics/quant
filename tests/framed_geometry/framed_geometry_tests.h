@@ -33,23 +33,23 @@ TEST_CASE("testing enframing")
     CHECK(origin.name == "::Origin");
     CHECK(origin.baseFrame == "");
 
-    Framed<Position> const robotRoot =
+    Framed<Position> const robot_root =
         origin.enframe(Position::meters({.x = 1}), "ARMAR-6::RobotRoot");
 
-    CHECK(robotRoot.name == "ARMAR-6::RobotRoot");
-    CHECK(robotRoot.baseFrame == "::Origin");
+    CHECK(robot_root.name == "ARMAR-6::RobotRoot");
+    CHECK(robot_root.baseFrame == "::Origin");
 
-    Framed<Position> const rightHandTcp =
-        robotRoot.enframe(Position::meters({.x = 0.3, .y = 0.5, .z = 1.8}), "ARMAR-6::TCP_R");
+    Framed<Position> const right_hand_tcp =
+        robot_root.enframe(Position::meters({.x = 0.3, .y = 0.5, .z = 1.8}), "ARMAR-6::TCP_R");
 
-    CHECK(rightHandTcp.name == "ARMAR-6::TCP_R");
-    CHECK(rightHandTcp.baseFrame == "ARMAR-6::RobotRoot");
+    CHECK(right_hand_tcp.name == "ARMAR-6::TCP_R");
+    CHECK(right_hand_tcp.baseFrame == "ARMAR-6::RobotRoot");
 
-    Framed<Position> const rightHandCom =
-        robotRoot.enframe(Position::meters({.x = 0.32, .y = 0.5, .z = 1.79}), "ARMAR-6::CoM_R");
+    Framed<Position> const right_hand_com =
+        robot_root.enframe(Position::meters({.x = 0.32, .y = 0.5, .z = 1.79}), "ARMAR-6::CoM_R");
 
-    CHECK(rightHandCom.name == "ARMAR-6::CoM_R");
-    CHECK(rightHandCom.baseFrame == "ARMAR-6::RobotRoot");
+    CHECK(right_hand_com.name == "ARMAR-6::CoM_R");
+    CHECK(right_hand_com.baseFrame == "ARMAR-6::RobotRoot");
 }
 
 TEST_CASE("testing basic framed differences")

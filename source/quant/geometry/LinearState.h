@@ -44,17 +44,17 @@ namespace quant::geometry
          * @return
          */
         std::string
-        toString(std::string const& quantityName = "", std::string const& unit = "") const
+        to_string(std::string const& quantity_name = "", std::string const& unit = "") const
         {
             std::stringstream out;
             out << "<";
 
-            if (not quantityName.empty())
+            if (not quantity_name.empty())
             {
-                out << quantityName << " ";
+                out << quantity_name << " ";
             }
 
-            out << toVector().toString(unit) << ">";
+            out << to_vector().to_string(unit) << ">";
             return out.str();
         }
 
@@ -73,7 +73,7 @@ namespace quant::geometry
         }
 
         bool
-        isApprox(typename Domain::LinearState const& rhs, double precision) const
+        is_approx(typename Domain::LinearState const& rhs, double precision) const
         {
             return representation_.isApprox(rhs.representation_, precision);
         }
@@ -102,9 +102,9 @@ namespace quant::geometry
         // Convert.
 
         Vector
-        toVector() const
+        to_vector() const
         {
-            return Vector::fromEigen(representation_);
+            return Vector::from_eigen(representation_);
         }
 
         Eigen::Vector3d representation_;

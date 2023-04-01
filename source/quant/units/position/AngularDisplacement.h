@@ -12,7 +12,7 @@ namespace quant::units::position
     {
 
     public:
-        using AngularDifference<Domain>::AngularDifference;
+        using geometry::AngularDifference<Domain>::AngularDifference;
 
         static AngularDisplacement
         radians(AxisAngle const& aa)

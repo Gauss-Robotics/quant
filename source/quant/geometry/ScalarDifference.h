@@ -18,8 +18,8 @@ namespace quant::geometry
     class ScalarDifference : public Difference<typename Domain::State>
     {
     public:
-        explicit ScalarDifference(typename Domain::State const& differenceObject) :
-            Difference<typename Domain::State>(differenceObject)
+        explicit ScalarDifference(typename Domain::State const& difference_object) :
+            Difference<typename Domain::State>(difference_object)
         {
             ;
         }

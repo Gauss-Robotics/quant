@@ -18,7 +18,7 @@ namespace quant::units::velocity
         using geometry::AngularState<Domain>::AngularState;
 
         static AngularVelocity
-        radiansPerSecond(AxisAngle const& aa)
+        radians_per_second(AxisAngle const& aa)
         {
             return {aa};
         }
@@ -26,9 +26,9 @@ namespace quant::units::velocity
         // Convert.
 
         AxisAngle
-        toRadiansPerSecond() const
+        to_radians_per_second() const
         {
-            return this->toAngleAxis();
+            return this->to_angle_axis();
         }
     };
 

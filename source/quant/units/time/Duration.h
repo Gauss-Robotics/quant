@@ -27,9 +27,9 @@ namespace quant::units::time
          * @return Duration instance.
          */
         static Duration
-        microSeconds(std::int64_t microSeconds)
+        micro_seconds(std::int64_t micro_seconds)
         {
-            return Duration{TimePoint::microSeconds(microSeconds)};
+            return Duration{TimePoint::micro_seconds(micro_seconds)};
         }
 
         /**
@@ -37,9 +37,9 @@ namespace quant::units::time
          * @return Amount of microseconds.
          */
         std::int64_t
-        toMicroSeconds() const
+        to_micro_seconds() const
         {
-            return differenceObject_.representation_;
+            return difference_object_.representation_;
         }
 
         /**
@@ -47,14 +47,14 @@ namespace quant::units::time
          * @return True if time point is positive, else otherwise.
          */
         bool
-        isPositive() const;
+        is_positive() const;
 
         /**
          * @brief Tests whether the time point is zero.
          * @return True if time point is zero, else otherwise.
          */
         bool
-        isZero() const;
+        is_zero() const;
 
         /**
          * @brief String representation of the current duration in minimal/default format.
@@ -66,9 +66,9 @@ namespace quant::units::time
          * @return Formatted duration.
          */
         std::string
-        toDurationString() const
+        to_duration_string() const
         {
-            return toQuantityUnitString();
+            return to_quantity_unit_string();
         }
 
         /**
@@ -84,9 +84,9 @@ namespace quant::units::time
          * @return Formatted duration.
          */
         std::string
-        toDurationString(std::string const& format) const
+        to_duration_string(std::string const& format) const
         {
-            return toQuantityUnitString(format);
+            return to_quantity_unit_string(format);
         }
 
         Duration

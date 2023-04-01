@@ -20,37 +20,37 @@ namespace quant::geometry
         Vector axis{.x = 1, .y = 0, .z = 0};
 
         static AxisAngle
-        aroundX(double angle)
+        around_x(double angle)
         {
-            return {.angle = angle, .axis = Vector::unitX()};
+            return {.angle = angle, .axis = Vector::unit_x()};
         }
 
         static AxisAngle
-        aroundY(double angle)
+        around_y(double angle)
         {
-            return {.angle = angle, .axis = Vector::unitY()};
+            return {.angle = angle, .axis = Vector::unit_y()};
         }
 
         static AxisAngle
-        aroundZ(double angle)
+        around_z(double angle)
         {
-            return {.angle = angle, .axis = Vector::unitZ()};
+            return {.angle = angle, .axis = Vector::unit_z()};
         }
 
         static AxisAngle
-        fromEigen(Eigen::AngleAxisd const& eigen)
+        from_eigen(Eigen::AngleAxisd const& eigen)
         {
-            return {.angle = eigen.angle(), .axis = Vector::fromEigen(eigen.axis())};
+            return {.angle = eigen.angle(), .axis = Vector::from_eigen(eigen.axis())};
         }
 
         Eigen::AngleAxisd
-        toEigen() const
+        to_eigen() const
         {
-            return {angle, axis.toEigen()};
+            return {angle, axis.to_eigen()};
         }
 
         std::string
-        toString(std::string const& unit = "") const
+        to_string(std::string const& unit = "") const
         {
             std::stringstream ss;
             ss << angle;
@@ -66,7 +66,7 @@ namespace quant::geometry
     inline std::ostream&
     operator<<(std::ostream& os, AxisAngle const& aa)
     {
-        return os << aa.toString();
+        return os << aa.to_string();
     }
 
 }  // namespace quant::geometry

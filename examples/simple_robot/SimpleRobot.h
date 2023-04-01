@@ -11,35 +11,35 @@ namespace simple_robot_example
     class SimpleRobot
     {
     public:
-        SimpleRobot(quant::FramedSpatialDisplacement const& globalFrame)
+        SimpleRobot(quant::FramedSpatialDisplacement const& global_frame)
         {
             quant::FramedSpatialDisplacement const root =
-                globalFrame.enframe(quant::SpatialDisplacement(), frames.root);
+                global_frame.enframe(quant::SpatialDisplacement(), frames.root);
 
             quant::FramedSpatialDisplacement const chest =
                 root.enframe(quant::SpatialDisplacement(), frames.chest);
 
-            quant::FramedSpatialDisplacement const armRight =
-                chest.enframe(quant::SpatialDisplacement(), frames.armRight);
+            quant::FramedSpatialDisplacement const arm_right =
+                chest.enframe(quant::SpatialDisplacement(), frames.arm_right);
 
-            quant::FramedSpatialDisplacement const tcpRight =
-                armRight.enframe(quant::SpatialDisplacement(), frames.tcpRight);
+            quant::FramedSpatialDisplacement const tcp_right =
+                arm_right.enframe(quant::SpatialDisplacement(), frames.tcp_right);
 
-            quant::FramedSpatialDisplacement const armLeft =
-                chest.enframe(quant::SpatialDisplacement(), frames.armLeft);
+            quant::FramedSpatialDisplacement const arm_left =
+                chest.enframe(quant::SpatialDisplacement(), frames.arm_left);
 
-            quant::FramedSpatialDisplacement const tcpLeft =
-                armLeft.enframe(quant::SpatialDisplacement(), frames.tcpLeft);
+            quant::FramedSpatialDisplacement const tcp_left =
+                arm_left.enframe(quant::SpatialDisplacement(), frames.tcp_left);
         }
 
         struct RobotFrames
         {
             std::string root = "Robot::Root";
             std::string chest = "Robot::Chest";
-            std::string armRight = "Robot::RightArm";
-            std::string tcpRight = "Robot::RightTCP";
-            std::string armLeft = "Robot::LeftArm";
-            std::string tcpLeft = "Robot::LeftTCP";
+            std::string arm_right = "Robot::RightArm";
+            std::string tcp_right = "Robot::RightTCP";
+            std::string arm_left = "Robot::LeftArm";
+            std::string tcp_left = "Robot::LeftTCP";
         } const frames;
 
     private:

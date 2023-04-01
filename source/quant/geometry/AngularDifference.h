@@ -14,8 +14,8 @@ namespace quant::geometry
     class AngularDifference : public Difference<typename Domain::AngularState>
     {
     public:
-        explicit AngularDifference(typename Domain::AngularState const& differenceObject) :
-            Difference<typename Domain::AngularState>(differenceObject)
+        explicit AngularDifference(typename Domain::AngularState const& difference_object) :
+            Difference<typename Domain::AngularState>(difference_object)
         {
             ;
         }

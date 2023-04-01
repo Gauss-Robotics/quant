@@ -30,28 +30,28 @@ namespace quant::units::time
          * @return TimePoint instance.
          */
         static TimePoint
-        microSeconds(std::int64_t microSeconds);
+        micro_seconds(std::int64_t micro_seconds);
 
         /**
          * @brief Returns the amount of microseconds.
          * @return Amount of microseconds.
          */
         std::int64_t
-        toMicroSeconds() const;
+        to_micro_seconds() const;
 
         /**
          * @brief Tests whether the time point is positive (value in µs > 0).
          * @return True if time point is positive, else otherwise.
          */
         bool
-        isPositive() const;
+        is_positive() const;
 
         /**
          * @brief Tests whether the time point is zero.
          * @return True if time point is zero, else otherwise.
          */
         bool
-        isZero() const;
+        is_zero() const;
 
         /**
          * @brief String representation of the current time point in minimal/default format.
@@ -63,9 +63,9 @@ namespace quant::units::time
          * @return Formatted time point.
          */
         std::string
-        toTimePointString() const
+        to_time_point_string() const
         {
-            return toQuantityUnitString();
+            return to_quantity_unit_string();
         }
 
         /**
@@ -81,9 +81,9 @@ namespace quant::units::time
          * @return Formatted time point.
          */
         std::string
-        toTimePointString(std::string const& format) const
+        to_time_point_string(std::string const& format) const
         {
-            return toQuantityUnitString(format);
+            return to_quantity_unit_string(format);
         }
 
         // Operators.

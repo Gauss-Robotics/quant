@@ -21,13 +21,13 @@ namespace quant::units::position
         using geometry::LinearState<Domain>::LinearState;
 
         static Position
-        milliMeters(double x, double y, double z)
+        milli_meters(double x, double y, double z)
         {
             return {x, y, z};
         }
 
         static Position
-        milliMeters(Vector xyz)
+        milli_meters(Vector xyz)
         {
             return {xyz.x, xyz.y, xyz.z};
         }
@@ -49,7 +49,7 @@ namespace quant::units::position
         // Convert.
 
         Vector
-        toMilliMeters() const
+        to_milli_meters() const
         {
             return {.x = representation_.x(), .y = representation_.y(), .z = representation_.z()};
         }
@@ -60,7 +60,7 @@ namespace quant::units::position
     inline std::ostream&
     operator<<(std::ostream& out, Position const& rhs)
     {
-        return out << rhs.toString("Position", "mm");
+        return out << rhs.to_string("Position", "mm");
     }
 
 }  // namespace quant::units::position

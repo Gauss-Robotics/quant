@@ -17,12 +17,13 @@ namespace quant::geometry
     class Difference
     {
     public:
-        Difference() : differenceObject_{}
+        Difference() : difference_object_{}
         {
             ;
         }
 
-        explicit Difference(QuantityT const& differenceObject) : differenceObject_{differenceObject}
+        explicit Difference(QuantityT const& difference_object) :
+            difference_object_{difference_object}
         {
             ;
         }
@@ -36,19 +37,19 @@ namespace quant::geometry
         bool
         operator==(Difference<QuantityT> const& rhs) const
         {
-            return differenceObject_ == rhs.differenceObject_;
+            return difference_object_ == rhs.difference_object_;
         }
 
         bool
         operator!=(Difference<QuantityT> const& rhs) const
         {
-            return differenceObject_ != rhs.differenceObject_;
+            return difference_object_ != rhs.difference_object_;
         }
 
         using StateType = QuantityT;
 
     protected:
-        QuantityT differenceObject_;
+        QuantityT difference_object_;
     };
 
     /**
@@ -60,7 +61,7 @@ namespace quant::geometry
      */
     template <typename QuantityT>
     using QuantityDifference =
-        std::enable_if_t<traits::isState<QuantityT>, traits::DifferenceTypeOf<QuantityT>>;
+        std::enable_if_t<traits::is_state<QuantityT>, traits::DifferenceTypeOf<QuantityT>>;
 
     /**
      * @brief Generic difference operator.

@@ -20,22 +20,22 @@ namespace quant::units::speed
         Speed(quant::units::velocity::LinearVelocity const& vel);
 
         static Speed
-        milliMetersPerSecond(double milliMetersPerSecond)
+        milli_meters_per_second(double milli_meters_per_second)
         {
-            return {milliMetersPerSecond};
+            return {milli_meters_per_second};
         }
 
         static Speed
-        metersPerSecond(double metersPerSecond)
+        meters_per_second(double meters_per_second)
         {
-            return {metersPerSecond * m2mm};
+            return {meters_per_second * m2mm};
         }
 
         std::string
         toString() const;
 
         double
-        toMilliMetersPerSecond() const
+        to_milli_meters_per_second() const
         {
             return representation_;
         }

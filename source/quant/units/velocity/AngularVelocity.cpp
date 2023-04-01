@@ -1,20 +1,18 @@
 #include "AngularVelocity.h"
 
-
 namespace quant::units::velocity
 {
 
-} // namespace quant::units::velocity
-
+}  // namespace quant::units::velocity
 
 namespace quant::units
 {
 
     std::ostream&
-    velocity::operator<<(std::ostream& out, const AngularVelocity& rhs)
+    velocity::operator<<(std::ostream& out, AngularVelocity const& rhs)
     {
-        out << rhs.toString("AngularVelocity", "rad/s");
+        out << rhs.to_string("AngularVelocity", "rad/s");
         return out;
     }
 
-} // namespace quant::units
+}  // namespace quant::units

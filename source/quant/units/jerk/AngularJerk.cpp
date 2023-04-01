@@ -1,20 +1,18 @@
 #include "AngularJerk.h"
 
-
 namespace quant::units::jerk
 {
 
-} // namespace quant::units::jerk
-
+}  // namespace quant::units::jerk
 
 namespace quant::units
 {
 
     std::ostream&
-    jerk::operator<<(std::ostream& out, const AngularJerk& rhs)
+    jerk::operator<<(std::ostream& out, AngularJerk const& rhs)
     {
-        out << rhs.toString("AngularJerk", "rad/s³");
+        out << rhs.to_string("AngularJerk", "rad/s³");
         return out;
     }
 
-} // namespace quant::units
+}  // namespace quant::units

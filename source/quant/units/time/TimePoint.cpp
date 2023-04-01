@@ -6,25 +6,25 @@ namespace quant::units::time
 {
 
     TimePoint
-    TimePoint::microSeconds(const std::int64_t microSeconds)
+    TimePoint::micro_seconds(const std::int64_t micro_seconds)
     {
-        return {microSeconds};
+        return {micro_seconds};
     }
 
     std::int64_t
-    TimePoint::toMicroSeconds() const
+    TimePoint::to_micro_seconds() const
     {
         return representation_;
     }
 
     bool
-    TimePoint::isPositive() const
+    TimePoint::is_positive() const
     {
         return representation_ > 0;
     }
 
     bool
-    TimePoint::isZero() const
+    TimePoint::is_zero() const
     {
         return representation_ == 0;
     }

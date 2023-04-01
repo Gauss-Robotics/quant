@@ -6,8 +6,8 @@
 namespace quant::geometry
 {
 
-    class Vector;
-    class AxisAngle;
+    struct Vector;
+    struct AxisAngle;
 
     template <typename BaseQuantityT, typename ScalarType = double>
     class ScalarState;
@@ -81,7 +81,7 @@ namespace quant::traits
      * false.
      */
     template <typename Type, typename = void>
-    inline constexpr bool isState = false;
+    inline constexpr bool is_state = false;
 
     /**
      * @brief Tests whether the given type `Type` is a geometric state (specialized template).
@@ -91,7 +91,7 @@ namespace quant::traits
      */
     template <typename Type>
     inline constexpr bool
-        isState<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
+        is_state<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
 
 }  // namespace quant::traits
 

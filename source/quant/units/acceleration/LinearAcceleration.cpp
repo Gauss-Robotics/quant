@@ -1,20 +1,18 @@
 #include "LinearAcceleration.h"
 
-
 namespace quant::units::acceleration
 {
 
-} // namespace quant::units::acceleration
-
+}  // namespace quant::units::acceleration
 
 namespace quant::units
 {
 
     std::ostream&
-    acceleration::operator<<(std::ostream& out, const LinearAcceleration& rhs)
+    acceleration::operator<<(std::ostream& out, LinearAcceleration const& rhs)
     {
-        out << rhs.toString("LinearAcceleration", "mm/s²");
+        out << rhs.to_string("LinearAcceleration", "mm/s²");
         return out;
     }
 
-} // namespace quant::units
+}  // namespace quant::units
