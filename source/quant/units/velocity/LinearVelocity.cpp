@@ -11,7 +11,7 @@ namespace quant::units
     velocity::LinearVelocity
     position::operator/(LinearDisplacement const& dx, Duration const& dt)
     {
-        const Eigen::Vector3d xyz = dx.to_milli_meters().to_eigen() / dt.to_seconds_double();
+        const Eigen::Vector3d xyz = dx.to_milli_meters().to_eigen() / dt.to_seconds();
         return velocity::LinearVelocity::milli_meters_per_second(
             {.x = xyz.x(), .y = xyz.y(), .z = xyz.z()});
     }

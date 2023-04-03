@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cinttypes>
 #include <type_traits>
 
 namespace quant::geometry
@@ -11,9 +10,6 @@ namespace quant::geometry
 
     template <typename BaseQuantityT, typename ScalarType = double>
     class ScalarState;
-
-    template <typename BaseQuantityT>
-    using ScalarIntegerState = ScalarState<BaseQuantityT, /* ScalarType = */ std::int64_t>;
 
     template <typename BaseQuantityT>
     class LinearState;
@@ -42,7 +38,7 @@ namespace quant::geometry
     template <typename Domain>
     class SpatialDifference;
 
-}  // namespace quant::geometry
+} // namespace quant::geometry
 
 namespace quant::traits
 {
@@ -93,7 +89,7 @@ namespace quant::traits
     inline constexpr bool
         is_state<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
 
-}  // namespace quant::traits
+} // namespace quant::traits
 
 namespace quant
 {
@@ -101,4 +97,4 @@ namespace quant
     using geometry::AxisAngle;
     using geometry::Vector;
 
-}  // namespace quant
+} // namespace quant

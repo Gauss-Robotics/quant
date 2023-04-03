@@ -38,58 +38,66 @@ TEST_CASE("testing time")
 
     SUBCASE("TimePointRoundingTest")
     {
+        // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+
         TimePoint const t1_down = TimePoint::micro_seconds(499);
-        CHECK(t1_down.to_milli_seconds() == 0);
+        CHECK(t1_down.to_milli_seconds() == doctest::Approx(0.499));
         TimePoint const t1_up = TimePoint::micro_seconds(500);
-        CHECK(t1_up.to_milli_seconds() == 1);
+        CHECK(t1_up.to_milli_seconds() == doctest::Approx(0.5));
 
         TimePoint const t2_down = TimePoint::milli_seconds(499);
-        CHECK(t2_down.to_seconds() == 0);
+        CHECK(t2_down.to_seconds() == doctest::Approx(0.499));
         TimePoint const t2_up = TimePoint::milli_seconds(500);
-        CHECK(t2_up.to_seconds() == 1);
+        CHECK(t2_up.to_seconds() == doctest::Approx(0.5));
 
         TimePoint const t3_down = TimePoint::seconds(29);
-        CHECK(t3_down.to_minutes() == 0);
+        CHECK(t3_down.to_minutes() == doctest::Approx(0.48333));
         TimePoint const t3_up = TimePoint::seconds(30);
-        CHECK(t3_up.to_minutes() == 1);
+        CHECK(t3_up.to_minutes() == doctest::Approx(0.5));
 
         TimePoint const t4_down = TimePoint::minutes(29);
-        CHECK(t4_down.to_hours() == 0);
+        CHECK(t4_down.to_hours() == doctest::Approx(0.48333));
         TimePoint const t4_up = TimePoint::minutes(30);
-        CHECK(t4_up.to_hours() == 1);
+        CHECK(t4_up.to_hours() == doctest::Approx(0.5));
 
         TimePoint const t5_down = TimePoint::hours(11);
-        CHECK(t5_down.to_days() == 0);
+        CHECK(t5_down.to_days() == doctest::Approx(0.45833));
         TimePoint const t5_up = TimePoint::hours(12);
-        CHECK(t5_up.to_days() == 1);
+        CHECK(t5_up.to_days() == doctest::Approx(0.5));
+
+        // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
     }
 
     SUBCASE("DurationRoundingTest")
     {
+        // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+
         Duration const t1_down = Duration::micro_seconds(499);
-        CHECK(t1_down.to_milli_seconds() == 0);
+        CHECK(t1_down.to_milli_seconds() == doctest::Approx(0.499));
         Duration const t1_up = Duration::micro_seconds(500);
-        CHECK(t1_up.to_milli_seconds() == 1);
+        CHECK(t1_up.to_milli_seconds() == doctest::Approx(0.5));
 
         Duration const t2_down = Duration::milli_seconds(499);
-        CHECK(t2_down.to_seconds() == 0);
+        CHECK(t2_down.to_seconds() == doctest::Approx(0.499));
         Duration const t2_up = Duration::milli_seconds(500);
-        CHECK(t2_up.to_seconds() == 1);
+        CHECK(t2_up.to_seconds() == doctest::Approx(0.5));
 
         Duration const t3_down = Duration::seconds(29);
-        CHECK(t3_down.to_minutes() == 0);
+        CHECK(t3_down.to_minutes() == doctest::Approx(0.48333));
         Duration const t3_up = Duration::seconds(30);
-        CHECK(t3_up.to_minutes() == 1);
+        CHECK(t3_up.to_minutes() == doctest::Approx(0.5));
 
         Duration const t4_down = Duration::minutes(29);
-        CHECK(t4_down.to_hours() == 0);
+        CHECK(t4_down.to_hours() == doctest::Approx(0.48333));
         Duration const t4_up = Duration::minutes(30);
-        CHECK(t4_up.to_hours() == 1);
+        CHECK(t4_up.to_hours() == doctest::Approx(0.5));
 
         Duration const t5_down = Duration::hours(11);
-        CHECK(t5_down.to_days() == 0);
+        CHECK(t5_down.to_days() == doctest::Approx(0.45833));
         Duration const t5_up = Duration::hours(12);
-        CHECK(t5_up.to_days() == 1);
+        CHECK(t5_up.to_days() == doctest::Approx(0.5));
+
+        // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
     }
 
     SUBCASE("DurationTest")

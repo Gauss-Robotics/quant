@@ -29,14 +29,6 @@ namespace quant::units::time
         return *this;
     }
 
-    /*Duration
-    Duration::operator-(const Duration& rhs) const
-    {
-        return TimePoint(this->differenceObject_.representation_ -
-                         rhs.differenceObject_.representation_)
-            .deltaToOrigin();
-    }*/
-
     Duration&
     Duration::operator-=(Duration const& rhs)
     {
@@ -56,12 +48,6 @@ namespace quant::units::time
         return Duration{TimePoint(this->difference_object_.representation_ * rhs)};
     }
 
-    Duration
-    Duration::operator*(std::int64_t rhs) const
-    {
-        return Duration{TimePoint(this->difference_object_.representation_ * rhs)};
-    }
-
     Duration&
     Duration::operator*=(double rhs)
     {
@@ -76,36 +62,22 @@ namespace quant::units::time
         return *this;
     }
 
-    Duration&
-    Duration::operator*=(std::int64_t rhs)
-    {
-        this->difference_object_.representation_ *= rhs;
-        return *this;
-    }
-
     double
     Duration::operator/(Duration const& rhs) const
     {
-        return difference_object_.to_micro_seconds_double() /
-               rhs.difference_object_.to_micro_seconds_double();
+        return difference_object_.to_micro_seconds() / rhs.difference_object_.to_micro_seconds();
     }
 
     Duration
     Duration::operator/(double rhs) const
     {
-        return Duration{TimePoint(difference_object_.to_micro_seconds_double() / rhs)};
+        return Duration{TimePoint(difference_object_.to_micro_seconds() / rhs)};
     }
 
     Duration
     Duration::operator/(int rhs) const
     {
-        return Duration{TimePoint(difference_object_.to_micro_seconds_double() / rhs)};
-    }
-
-    Duration
-    Duration::operator/(std::int64_t rhs) const
-    {
-        return Duration{TimePoint(difference_object_.to_micro_seconds_double() / rhs)};
+        return Duration{TimePoint(difference_object_.to_micro_seconds() / rhs)};
     }
 
     Duration&
@@ -117,13 +89,6 @@ namespace quant::units::time
 
     Duration&
     Duration::operator/=(int rhs)
-    {
-        difference_object_.representation_ /= rhs;
-        return *this;
-    }
-
-    Duration&
-    Duration::operator/=(std::int64_t rhs)
     {
         difference_object_.representation_ /= rhs;
         return *this;
