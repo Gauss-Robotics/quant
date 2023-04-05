@@ -57,25 +57,25 @@ namespace quant::units::temperature
         double
         to_degree_celsius() const
         {
-            return representation_;
+            return _representation;
         }
 
         double
         to_kelvin() const
         {
-            return representation_ + celsius2kelvin_offset;
+            return _representation + celsius2kelvin_offset;
         }
 
         double
         to_degree_fahrenheit() const
         {
-            return representation_ * celsius2fahrenheit_factor + celsius2fahrenheit_offset;
+            return _representation * celsius2fahrenheit_factor + celsius2fahrenheit_offset;
         }
 
         double
         to_degree_rankine() const
         {
-            return representation_ * celsius2fahrenheit_factor + celsius2rankine_offset;
+            return _representation * celsius2fahrenheit_factor + celsius2rankine_offset;
         }
 
         // Operators.

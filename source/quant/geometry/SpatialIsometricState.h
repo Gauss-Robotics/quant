@@ -12,7 +12,7 @@ namespace quant::geometry
     {
         // Construct.
     public:
-        SpatialIsometricState() : representation_(Eigen::Isometry3d::Identity())
+        SpatialIsometricState() : _representation(Eigen::Isometry3d::Identity())
         {
             ;
         }
@@ -28,42 +28,42 @@ namespace quant::geometry
         bool
         operator==(BaseQuantityT const& rhs) const
         {
-            return representation_ == rhs._representation;
+            return _representation == rhs._representation;
         }
 
         bool
         operator!=(BaseQuantityT const& rhs) const
         {
-            return representation_ != rhs._representation;
+            return _representation != rhs._representation;
         }
 
         bool
         is_approx(BaseQuantityT const& rhs, double const tolerance) const
         {
-            return representation_.isApprox(rhs._representation, tolerance);
+            return _representation.isApprox(rhs._representation, tolerance);
         }
 
         using GeometricRepresentationType = Eigen::Isometry3d const&;
         using GeometricType = traits::StateType;
 
     protected:
-        SpatialIsometricState(Eigen::Isometry3d const& tf) : representation_(tf)
+        SpatialIsometricState(Eigen::Isometry3d const& tf) : _representation(tf)
         {
             ;
         }
 
         SpatialIsometricState(Eigen::Ref<const Eigen::Matrix4f> const& tf) :
-            representation_(tf.cast<double>())
+            _representation(tf.cast<double>())
         {
             ;
         }
 
-        SpatialIsometricState(Eigen::Ref<const Eigen::Matrix4d> const& tf) : representation_(tf)
+        SpatialIsometricState(Eigen::Ref<const Eigen::Matrix4d> const& tf) : _representation(tf)
         {
             ;
         }
 
-        Eigen::Isometry3d representation_;
+        Eigen::Isometry3d _representation;
 
         friend class detail::QuantityAccessor<BaseQuantityT>;
     };

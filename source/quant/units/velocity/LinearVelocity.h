@@ -54,7 +54,7 @@ namespace quant::units::velocity
         Speed
         to_speed() const
         {
-            return Speed::milli_meters_per_second(representation_.norm());
+            return Speed::millimeters_per_second(_representation.norm());
         }
 
         using geometry::LinearState<Domain>::LinearState;

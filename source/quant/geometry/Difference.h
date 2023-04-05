@@ -17,13 +17,13 @@ namespace quant::geometry
     class Difference
     {
     public:
-        Difference() : difference_object_{}
+        Difference() : _difference_object{}
         {
             ;
         }
 
         explicit Difference(QuantityT const& difference_object) :
-            difference_object_{difference_object}
+            _difference_object{difference_object}
         {
             ;
         }
@@ -37,19 +37,19 @@ namespace quant::geometry
         bool
         operator==(Difference<QuantityT> const& rhs) const
         {
-            return difference_object_ == rhs.difference_object_;
+            return _difference_object == rhs._difference_object;
         }
 
         bool
         operator!=(Difference<QuantityT> const& rhs) const
         {
-            return difference_object_ != rhs.difference_object_;
+            return _difference_object != rhs._difference_object;
         }
 
         using StateType = QuantityT;
 
     protected:
-        QuantityT difference_object_;
+        QuantityT _difference_object;
     };
 
     /**

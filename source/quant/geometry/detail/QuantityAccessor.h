@@ -12,7 +12,7 @@ namespace quant::geometry::detail
         static typename BaseQuantityT::GeometricRepresentationType
         representation(BaseQuantityT const& vq)
         {
-            return vq.representation_;
+            return vq._representation;
         }
 
         static BaseQuantityT

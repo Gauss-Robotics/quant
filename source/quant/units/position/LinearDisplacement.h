@@ -23,13 +23,15 @@ namespace quant::units::position
         Vector
         to_millimeters() const
         {
-            return difference_object_.to_millimeters();
+            return {_difference_object.to_millimeters(),
+                    constants::linear_displacement_name,
+                    constants::millimeters};
         }
 
         Distance
         to_distance() const
         {
-            return Distance::MilliMeters(difference_object_.to_millimeters().norm());
+            return Distance::millimeters(_difference_object.to_millimeters().norm());
         }
 
         using LinearDifference<Domain>::LinearDifference;

@@ -17,39 +17,30 @@ namespace quant::units::distance
 
     public:
         static Distance
-        MilliMeters(double milliMeters)
+        millimeters(double millimeters)
         {
-            return {milliMeters};
+            return {millimeters};
         }
 
         static Distance
-        Meters(double meters)
+        meters(double meters)
         {
             return {meters * m2mm};
         }
 
-        std::string
-        toString() const;
-
         double
-        toMilliMeters() const
+        to_millimeters() const
         {
-            return representation_;
+            return _representation;
         }
 
         // Operators.
 
     protected:
-        using geometry::ScalarState<Domain>::ScalarState;  // TODO(dreher): Remove? All scalar
-                                                           // quantities
+        using geometry::ScalarState<Domain>::ScalarState;
     };
 
     std::ostream&
     operator<<(std::ostream& out, Distance const& rhs);
 
 }  // namespace quant::units::distance
-
-namespace quant
-{
-    using units::distance::Distance;
-}  // namespace quant

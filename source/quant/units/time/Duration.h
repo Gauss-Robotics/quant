@@ -1,8 +1,8 @@
 #pragma once
 
 #include <quant/geometry/ScalarDifference.h>
+#include <quant/units/Scalar.h>
 #include <quant/units/time/TimePoint.h>
-#include <quant/units/time/detail/UnitConversions.h>
 #include <quant/units/time_fwd.h>
 
 namespace quant::units::time
@@ -11,35 +11,138 @@ namespace quant::units::time
     /**
      * @brief Represents a duration.
      */
-    class Duration :
-        // A duration is the difference of time points.
-        public geometry::ScalarDifference<Domain>,
-        // A duration can be specified in several temporal units.
-        public detail::UnitConversions<Duration>
+    class Duration : public geometry::ScalarDifference<Domain>
     {
 
     public:
-        using ScalarDifference<Domain>::ScalarDifference;
-
         /**
          * @brief Constructs a time point in microseconds.
          * @param microSeconds Amount of microseconds.
          * @return Duration instance.
          */
         static Duration
-        microseconds(double microseconds)
+        microseconds(geometry::Scalar microseconds)
         {
             return Duration{TimePoint::microseconds(microseconds)};
+        }
+
+        /**
+         * @brief Constructs a duration from milliseconds.
+         * @param milliSeconds Amount of milliseconds.
+         * @return TimePoint or Duration instance.
+         */
+        static Duration
+        milliseconds(geometry::Scalar milliseconds)
+        {
+            return Duration{TimePoint::milliseconds(milliseconds)};
+        }
+
+        /**
+         * @brief Constructs a duration from seconds.
+         * @param seconds Amount of seconds.
+         * @return TimePoint or Duration instance.
+         */
+        static Duration
+        seconds(geometry::Scalar seconds)
+        {
+            return Duration{TimePoint::seconds(seconds)};
+        }
+
+        /**
+         * @brief Constructs a duration from minutes.
+         * @param minutes Amount of minutes.
+         * @return TimePoint or Duration instance.
+         */
+        static Duration
+        minutes(geometry::Scalar minutes)
+        {
+            return Duration{TimePoint::minutes(minutes)};
+        }
+
+        /**
+         * @brief Constructs a duration from hours.
+         * @param hours Amount of hours.
+         * @return TimePoint or Duration instance.
+         */
+        static Duration
+        hours(geometry::Scalar hours)
+        {
+            return Duration{TimePoint::hours(hours)};
+        }
+
+        /**
+         * @brief Constructs a duration from days.
+         * @param days Amount of days.
+         * @return TimePoint or Duration instance.
+         */
+        static Duration
+        days(geometry::Scalar days)
+        {
+            return Duration{TimePoint::days(days)};
         }
 
         /**
          * @brief Returns the amount of microseconds.
          * @return Amount of microseconds.
          */
-        double
+        Scalar
         to_microseconds() const
         {
-            return difference_object_.representation_;
+            return {_difference_object.to_microseconds(),
+                    constants::duration_name,
+                    constants::microseconds};
+        }
+
+        /**
+         * @brief Returns the amount of milliseconds.
+         * @return Amount of milliseconds.
+         */
+        Scalar
+        to_milliseconds() const
+        {
+            return {_difference_object.to_milliseconds(),
+                    constants::duration_name,
+                    constants::milliseconds};
+        }
+
+        /**
+         * @brief Returns the amount of seconds.
+         * @return Amount of seconds.
+         */
+        Scalar
+        to_seconds() const
+        {
+            return {_difference_object.to_seconds(), constants::duration_name, constants::seconds};
+        }
+
+        /**
+         * @brief Returns the amount of minutes.
+         * @return Amount of minutes.
+         */
+        Scalar
+        to_minutes() const
+        {
+            return {_difference_object.to_minutes(), constants::duration_name, constants::minutes};
+        }
+
+        /**
+         * @brief Returns the amount of hours.
+         * @return Amount of hours.
+         */
+        Scalar
+        to_hours() const
+        {
+            return {_difference_object.to_hours(), constants::duration_name, constants::hours};
+        }
+
+        /**
+         * @brief Returns the amount of days.
+         * @return Amount of days.
+         */
+        Scalar
+        to_days() const
+        {
+            return {_difference_object.to_days(), constants::duration_name, constants::days};
         }
 
         /**
@@ -68,14 +171,14 @@ namespace quant::units::time
         std::string
         to_duration_string() const
         {
-            return to_quantity_unit_string();
+            return _difference_object.to_time_point_string();
         }
 
         /**
          * @brief String representation of the current duration according to given format string.
          *
          * The format is according to https://en.cppreference.com/w/cpp/chrono/c/strftime. For
-         * milli seconds and micro seconds, special specifiers "%%msec" and "%%usec" were added
+         * milliseconds and microseconds, special specifiers "%%msec" and "%%usec" were added
          * respectively.
          *
          * Example format string for "10m 10.987s": "%Mm %S.%%msecs".
@@ -86,82 +189,17 @@ namespace quant::units::time
         std::string
         to_duration_string(std::string const& format) const
         {
-            return to_quantity_unit_string(format);
+            return _difference_object.to_time_point_string(format);
         }
 
-        Duration
-        operator+(Duration const& rhs) const;
-
-        Duration&
-        operator+=(Duration const& rhs);
-
-        Duration
-        operator-(Duration const& rhs) const;
-
-        Duration&
-        operator-=(Duration const& rhs);
-
-        Duration
-        operator*(double rhs) const;
-
-        Duration
-        operator*(int rhs) const;
-
-        Duration
-        operator*(std::int64_t rhs) const;
-
-        Duration&
-        operator*=(double rhs);
-
-        Duration&
-        operator*=(int rhs);
-
-        Duration&
-        operator*=(std::int64_t rhs);
-
-        double
-        operator/(Duration const& rhs) const;
-
-        Duration
-        operator/(double rhs) const;
-
-        Duration
-        operator/(int rhs) const;
-
-        Duration
-        operator/(std::int64_t rhs) const;
-
-        Duration&
-        operator/=(double rhs);
-
-        Duration&
-        operator/=(int rhs);
-
-        Duration&
-        operator/=(std::int64_t rhs);
-
-        bool
-        operator<(Duration const& rhs) const;
-
-        bool
-        operator<=(Duration const& rhs) const;
-
-        bool
-        operator==(Duration const& rhs) const;
-
-        bool
-        operator!=(Duration const& rhs) const;
-
-        bool
-        operator>=(Duration const& rhs) const;
-
-        bool
-        operator>(Duration const& rhs) const;
-
-        using StateType = TimePoint;
+    protected:
+        using ScalarDifference<Domain>::ScalarDifference;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, Duration const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, Duration const& rhs)
+    {
+        return out << rhs.to_duration_string();
+    }
 
 }  // namespace quant::units::time

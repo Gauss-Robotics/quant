@@ -216,15 +216,15 @@ TEST_CASE("testing velocity")
 
         // Check distance.
         double const dist_target = 173.20508075688772;
-        std::cout << "Distance actual: " << dist.toMilliMeters() << "." << std::endl;
+        std::cout << "Distance actual: " << dist.to_millimeters() << "." << std::endl;
         std::cout << "Distance target: " << dist_target << "." << std::endl;
-        CHECK(dist.toMilliMeters() == Circa(dist_target));
+        CHECK(dist.to_millimeters() == Circa(dist_target));
 
         // Check speed.
         double const speed_target = dist_target / 2;
-        std::cout << "Speed actual: " << speed.to_milli_meters_per_second() << "." << std::endl;
+        std::cout << "Speed actual: " << speed.to_millimeters_per_second() << "." << std::endl;
         std::cout << "Speed target: " << speed_target << "." << std::endl;
-        CHECK(speed.to_milli_meters_per_second() == Circa(speed_target));
+        CHECK(speed.to_millimeters_per_second() == Circa(speed_target));
 
         // Check velocity.
         LinearVelocity const vel_target =

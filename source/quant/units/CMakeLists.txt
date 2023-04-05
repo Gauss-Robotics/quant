@@ -1,5 +1,6 @@
 add_library(units SHARED
     ../units.h
+    Scalar.h
     Vector.h
 
     time.h
@@ -11,7 +12,6 @@ add_library(units SHARED
     time/Duration.cpp
     time/TimeInterval.h
     time/Frequency.h
-    time/detail/UnitConversions.h
 
     position.h
     position_fwd.h
@@ -64,6 +64,7 @@ add_library(units SHARED
 
     mass.h
     mass_fwd.h
+    mass_constants.h
     mass/Mass.h
 
     force.h

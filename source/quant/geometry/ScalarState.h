@@ -1,5 +1,6 @@
 #pragma once
 
+#include <quant/geometry/Scalar.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>
 
@@ -9,13 +10,13 @@
 namespace quant::geometry
 {
 
-    template <typename Domain, typename ScalarType>
+    template <typename Domain>
     class ScalarState
     {
     public:
         // Construct.
 
-        ScalarState() : representation_{0}
+        ScalarState() : _representation{0}
         {
             ;
         }
@@ -39,7 +40,7 @@ namespace quant::geometry
                 out << quantity_name << " ";
             }
 
-            out << "value=" << representation_;
+            out << "value=" << _representation;
 
             if (not unit.empty())
             {
@@ -55,37 +56,37 @@ namespace quant::geometry
         bool
         operator==(typename Domain::State const& rhs) const
         {
-            return representation_ == rhs.representation_;
+            return _representation == rhs.representation_;
         }
 
         bool
         operator!=(typename Domain::State const& rhs) const
         {
-            return representation_ != rhs.representation_;
+            return _representation != rhs.representation_;
         }
 
         bool
-        is_approx(typename Domain::State const& rhs, ScalarType tolerance) const
+        is_approx(typename Domain::State const& rhs, double tolerance) const
         {
-            return std::abs(representation_ - rhs.representation_) < tolerance;
+            return std::abs(_representation - rhs.representation_) < tolerance;
         }
 
-        using GeometricRepresentationType = ScalarType;
+        using GeometricRepresentationType = double;
         using GeometricType = traits::StateType;
 
     protected:
-        ScalarState(ScalarType value) : representation_{value}
+        ScalarState(Scalar scalar) : _representation{scalar}
         {
             ;
         }
 
-        ScalarType
+        Scalar
         to_scalar() const
         {
-            return representation_;
+            return _representation;
         }
 
-        ScalarType representation_;
+        double _representation;
 
         friend class detail::QuantityAccessor<typename Domain::State>;
     };

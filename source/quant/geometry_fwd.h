@@ -5,10 +5,11 @@
 namespace quant::geometry
 {
 
+    struct Scalar;
     struct Vector;
     struct AxisAngle;
 
-    template <typename BaseQuantityT, typename ScalarType = double>
+    template <typename BaseQuantityT>
     class ScalarState;
 
     template <typename BaseQuantityT>

@@ -40,7 +40,7 @@ namespace quant::geometry
          * @param yaw
          */
         AngularState(double const roll, double const pitch, double const yaw) :
-            representation_(Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitX()) *
+            _representation(Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitX()) *
                             Eigen::AngleAxisd(pitch, Eigen::Vector3d::UnitY()) *
                             Eigen::AngleAxisd(yaw, Eigen::Vector3d::UnitZ()))
         {
@@ -74,7 +74,7 @@ namespace quant::geometry
          * @brief Construct quaternion from rotation matrix.
          * @param r
          */
-        AngularState(Eigen::Matrix3f const& r) : representation_(r.cast<double>().eval())
+        AngularState(Eigen::Matrix3f const& r) : _representation(r.cast<double>().eval())
         {
             ;
         }
@@ -83,7 +83,7 @@ namespace quant::geometry
          * @brief Construct quaternion from rotation matrix.
          * @param r
          */
-        AngularState(Eigen::Matrix3d const& r) : representation_(r)
+        AngularState(Eigen::Matrix3d const& r) : _representation(r)
         {
             ;
         }
@@ -92,7 +92,7 @@ namespace quant::geometry
          * @brief Construct quaternion from angle axis.
          * @param r
          */
-        AngularState(Eigen::AngleAxisd const& r) : representation_(r)
+        AngularState(Eigen::AngleAxisd const& r) : _representation(r)
         {
             ;
         }
@@ -101,7 +101,7 @@ namespace quant::geometry
          * @brief Construct quaternion from Eigen quaternion.
          * @param r
          */
-        AngularState(Eigen::Quaterniond const& r) : representation_(r)
+        AngularState(Eigen::Quaterniond const& r) : _representation(r)
         {
             ;
         }
@@ -112,7 +112,7 @@ namespace quant::geometry
         /**
          * @brief Default constructed quaternion.
          */
-        AngularState() : representation_(1, 0, 0, 0)
+        AngularState() : _representation(1, 0, 0, 0)
         {
             ;
         }
@@ -128,7 +128,7 @@ namespace quant::geometry
         AxisAngle
         to_angle_axis() const
         {
-            return AxisAngle::from_eigen(Eigen::AngleAxisd{representation_});
+            return AxisAngle::from_eigen(Eigen::AngleAxisd{_representation});
         }
 
         std::string
@@ -154,7 +154,7 @@ namespace quant::geometry
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
-            return representation_.coeffs() == rhs.representation_.coeffs();
+            return _representation.coeffs() == rhs._representation.coeffs();
         }
 
         bool
@@ -162,20 +162,20 @@ namespace quant::geometry
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
-            return representation_.coeffs() != rhs.representation_.coeffs();
+            return _representation.coeffs() != rhs._representation.coeffs();
         }
 
         bool
         is_approx(typename Domain::AngularState const& rhs, double const tolerance) const
         {
-            return representation_.isApprox(rhs.representation_, tolerance);
+            return _representation.isApprox(rhs._representation, tolerance);
         }
 
         using GeometricRepresentationType = Eigen::Quaterniond const&;
         using GeometricType = traits::StateType;
 
     protected:
-        Eigen::Quaterniond representation_;
+        Eigen::Quaterniond _representation;
 
         friend class detail::QuantityAccessor<typename Domain::AngularState>;
     };

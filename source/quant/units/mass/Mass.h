@@ -1,6 +1,8 @@
 #pragma once
 
 #include <quant/geometry/ScalarState.h>
+#include <quant/units/Scalar.h>
+#include <quant/units/mass_constants.h>
 #include <quant/units/mass_fwd.h>
 
 #include <ostream>
@@ -9,11 +11,6 @@
 namespace quant::units::mass
 {
 
-    constexpr double mg2kg = 1e-6;
-    constexpr double g2kg = 1e-3;
-    constexpr double kg2g = 1e3;
-    constexpr double kg2mg = 1e6;
-
     class Mass : public geometry::ScalarState<Domain>
     {
 
@@ -21,39 +18,40 @@ namespace quant::units::mass
         Mass();
 
         static Mass
-        milligrams(double milligrams)
+        milligrams(geometry::Scalar milligrams)
         {
-            return {milligrams * mg2kg};
+            return {milligrams * constants::mg2kg};
         }
 
         static Mass
-        grams(double grams)
+        grams(geometry::Scalar grams)
         {
-            return {grams * g2kg};
+            return {grams * constants::g2kg};
         }
 
         static Mass
-        kilograms(double kilograms)
+        kilograms(geometry::Scalar kilograms)
         {
             return {kilograms};
         }
 
-        double
+        Scalar
         to_milligrams() const
         {
-            return representation_ * kg2mg;
-        }
+            return {
+                _representation * constants::kg2mg, constants::mass_name, constants::milligrams};
+        };
 
-        double
+        Scalar
         to_grams() const
         {
-            return representation_ * kg2g;
+            return {_representation * constants::kg2g, constants::mass_name, constants::grams};
         }
 
-        double
+        Scalar
         to_kilograms() const
         {
-            return representation_;
+            return {_representation, constants::mass_name, constants::kilograms};
         }
 
     private:

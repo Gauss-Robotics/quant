@@ -1,9 +1,11 @@
 #pragma once
 
 #include <quant/geometry/ScalarState.h>
-#include <quant/units/time/detail/UnitConversions.h>
+#include <quant/units/Scalar.h>
+#include <quant/units/time_constants.h>
 #include <quant/units/time_fwd.h>
 
+#include <iomanip>
 #include <ostream>
 #include <string>
 
@@ -13,14 +15,8 @@ namespace quant::units::time
     /**
      * @brief Represents a time point.
      */
-    class TimePoint :
-        // A time point is a scalar integer quantity.
-        public geometry::ScalarState<Domain>,
-        // A time point can be specified in several temporal units.
-        public detail::UnitConversions<TimePoint>
+    class TimePoint : public geometry::ScalarState<Domain>
     {
-        friend Duration;
-
         // Construct.
     public:
         /**
@@ -29,28 +25,151 @@ namespace quant::units::time
          * @return TimePoint instance.
          */
         static TimePoint
-        microseconds(double microseconds);
+        microseconds(geometry::Scalar microseconds)
+        {
+            return {microseconds};
+        }
+
+        /**
+         * @brief Constructs a time point from milliseconds.
+         * @param milliSeconds Amount of milliseconds.
+         * @return TimePoint or Duration instance.
+         */
+        static TimePoint
+        milliseconds(geometry::Scalar milliseconds)
+        {
+            return {milliseconds * constants::ms2us};
+        }
+
+        /**
+         * @brief Constructs a time point from seconds.
+         * @param seconds Amount of seconds.
+         * @return TimePoint or Duration instance.
+         */
+        static TimePoint
+        seconds(geometry::Scalar seconds)
+        {
+            return {seconds * constants::s2us};
+        }
+
+        /**
+         * @brief Constructs a time point from minutes.
+         * @param minutes Amount of minutes.
+         * @return TimePoint or Duration instance.
+         */
+        static TimePoint
+        minutes(geometry::Scalar minutes)
+        {
+            return {minutes * constants::min2us};
+        }
+
+        /**
+         * @brief Constructs a time point from hours.
+         * @param hours Amount of hours.
+         * @return TimePoint or Duration instance.
+         */
+        static TimePoint
+        hours(geometry::Scalar hours)
+        {
+            return {hours * constants::h2us};
+        }
+
+        /**
+         * @brief Constructs a time point from days.
+         * @param days Amount of days.
+         * @return TimePoint or Duration instance.
+         */
+        static TimePoint
+        days(geometry::Scalar days)
+        {
+            return {days * constants::d2us};
+        }
 
         /**
          * @brief Returns the amount of microseconds.
          * @return Amount of microseconds.
          */
-        double
-        to_microseconds() const;
+        Scalar
+        to_microseconds() const
+        {
+            return {_representation, constants::time_point_name, constants::microseconds};
+        }
+
+        /**
+         * @brief Returns the amount of milliseconds.
+         * @return Amount of milliseconds.
+         */
+        Scalar
+        to_milliseconds() const
+        {
+            return {_representation * constants::us2ms,
+                    constants::time_point_name,
+                    constants::milliseconds};
+        }
+
+        /**
+         * @brief Returns the amount of seconds.
+         * @return Amount of seconds.
+         */
+        Scalar
+        to_seconds() const
+        {
+            return {
+                _representation * constants::us2s, constants::time_point_name, constants::seconds};
+        }
+
+        /**
+         * @brief Returns the amount of minutes.
+         * @return Amount of minutes.
+         */
+        Scalar
+        to_minutes() const
+        {
+            return {_representation * constants::us2min,
+                    constants::time_point_name,
+                    constants::minutes};
+        }
+
+        /**
+         * @brief Returns the amount of hours.
+         * @return Amount of hours.
+         */
+        Scalar
+        to_hours() const
+        {
+            return {
+                _representation * constants::us2h, constants::time_point_name, constants::hours};
+        }
+
+        /**
+         * @brief Returns the amount of days.
+         * @return Amount of days.
+         */
+        Scalar
+        to_days() const
+        {
+            return {_representation * constants::us2d, constants::time_point_name, constants::days};
+        }
 
         /**
          * @brief Tests whether the time point is positive (value in µs > 0).
          * @return True if time point is positive, else otherwise.
          */
         bool
-        is_positive() const;
+        is_positive() const
+        {
+            return _representation > 0;
+        }
 
         /**
          * @brief Tests whether the time point is zero.
          * @return True if time point is zero, else otherwise.
          */
         bool
-        is_zero() const;
+        is_zero() const
+        {
+            return _representation == 0;
+        }
 
         /**
          * @brief String representation of the current time point in minimal/default format.
@@ -64,7 +183,42 @@ namespace quant::units::time
         std::string
         to_time_point_string() const
         {
-            return to_quantity_unit_string();
+            double time_count = to_microseconds();
+            std::string_view unit = constants::microseconds;
+
+            if (time_count >= constants::ms2us)
+            {
+                time_count *= constants::us2ms;
+                unit = constants::milliseconds;
+
+                if (time_count >= constants::s2ms)
+                {
+                    time_count *= constants::ms2s;
+                    unit = constants::seconds;
+
+                    if (time_count >= constants::min2s)
+                    {
+                        time_count *= constants::s2min;
+                        unit = constants::minutes;
+
+                        if (time_count >= constants::h2min)
+                        {
+                            time_count *= constants::min2h;
+                            unit = constants::hours;
+
+                            if (time_count >= constants::d2h)
+                            {
+                                time_count *= constants::h2d;
+                                unit = constants::days;
+                            }
+                        }
+                    }
+                }
+            }
+
+            std::stringstream ss;
+            ss << std::setprecision(3) << time_count << unit;
+            return ss.str();
         }
 
         /**
@@ -82,34 +236,40 @@ namespace quant::units::time
         std::string
         to_time_point_string(std::string const& format) const
         {
-            return to_quantity_unit_string(format);
+            constexpr size_t string_buffer_size = 32;
+            /*
+                          const std::int64_t usec =
+                              static_cast<TimePointOrDuration const&>(*this).to_microseconds();
+                          const std::int64_t usec_remainder = usec % 1'000'000;
+                          auto const msec = static_cast<std::int64_t>(
+                              (static_cast<double>(usec_remainder) * us2ms) + int_rounding_offset);
+                          auto const time = static_cast<time_t>(static_cast<double>(usec) /
+                 1'000'000);
+
+            struct tm tr;
+            localtime_r(&time, &tr);
+
+            char buf[string_buffer_size];
+            if (strftime(buf, sizeof(buf), format.c_str(), &tr) == 0)
+            {
+              return "";
+            }
+            */
+            std::string postformat;
+            // postformat = quant::alg::replace_all(postformat, "%msec", std::to_string(msec));
+            // postformat =
+            //     quant::alg::replace_all(postformat, "%usec", std::to_string(usecRemainder));
+            return postformat;
         }
-
-        // Operators.
-
-        bool
-        operator<(TimePoint const& rhs) const;
-
-        bool
-        operator<=(TimePoint const& rhs) const;
-
-        bool
-        operator==(TimePoint const& rhs) const;
-
-        bool
-        operator!=(TimePoint const& rhs) const;
-
-        bool
-        operator>=(TimePoint const& rhs) const;
-
-        bool
-        operator>(TimePoint const& rhs) const;
 
     protected:
         using geometry::ScalarState<Domain>::ScalarState;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, TimePoint const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, TimePoint const& rhs)
+    {
+        return out << rhs.to_time_point_string();
+    }
 
 }  // namespace quant::units::time

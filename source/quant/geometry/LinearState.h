@@ -20,7 +20,7 @@ namespace quant::geometry
         /**
          * @brief VectorQuantity
          */
-        LinearState() : representation_(0, 0, 0)
+        LinearState() : _representation(0, 0, 0)
         {
             ;
         }
@@ -56,19 +56,19 @@ namespace quant::geometry
         bool
         operator==(typename Domain::LinearState const& rhs) const
         {
-            return representation_ == rhs.representation_;
+            return _representation == rhs._representation;
         }
 
         bool
         operator!=(typename Domain::LinearState const& rhs) const
         {
-            return representation_ != rhs.representation_;
+            return _representation != rhs._representation;
         }
 
         bool
         is_approx(typename Domain::LinearState const& rhs, double tolerance) const
         {
-            return representation_.isApprox(rhs.representation_, tolerance);
+            return _representation.isApprox(rhs._representation, tolerance);
         }
 
         using GeometricRepresentationType = Eigen::Ref<Eigen::Vector3d const>;
@@ -77,17 +77,17 @@ namespace quant::geometry
     protected:
         // Construct.
 
-        LinearState(double x, double y, double z) : representation_(x, y, z)
+        LinearState(double x, double y, double z) : _representation(x, y, z)
         {
             ;
         }
 
-        LinearState(Vector const& xyz) : representation_(xyz.x, xyz.y, xyz.z)
+        LinearState(Vector const& xyz) : _representation(xyz.x, xyz.y, xyz.z)
         {
             ;
         }
 
-        LinearState(Eigen::Ref<Eigen::Vector3d const> vector) : representation_(vector)
+        LinearState(Eigen::Ref<Eigen::Vector3d const> vector) : _representation(vector)
         {
             ;
         }
@@ -97,10 +97,10 @@ namespace quant::geometry
         Vector
         to_vector() const
         {
-            return Vector::from_eigen(representation_);
+            return Vector::from_eigen(_representation);
         }
 
-        Eigen::Vector3d representation_;
+        Eigen::Vector3d _representation;
 
         friend class detail::QuantityAccessor<typename Domain::LinearState>;
     };

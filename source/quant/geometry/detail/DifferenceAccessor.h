@@ -14,7 +14,7 @@ namespace quant::geometry::detail
         representation(BaseDifferenceT const& d)
         {
             using State = QuantityAccessor<typename DifferenceT::StateType>;
-            return State::representation(d.difference_object_);
+            return State::representation(d._difference_object);
         }
 
         static DifferenceT

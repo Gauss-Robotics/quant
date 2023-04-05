@@ -20,9 +20,9 @@ namespace quant::units::speed
         Speed(quant::units::velocity::LinearVelocity const& vel);
 
         static Speed
-        milli_meters_per_second(double milli_meters_per_second)
+        millimeters_per_second(double millimeters_per_second)
         {
-            return {milli_meters_per_second};
+            return {millimeters_per_second};
         }
 
         static Speed
@@ -31,19 +31,16 @@ namespace quant::units::speed
             return {meters_per_second * m2mm};
         }
 
-        std::string
-        to_string() const;
-
         double
-        to_milli_meters_per_second() const
+        to_millimeters_per_second() const
         {
-            return representation_;
+            return _representation;
         }
 
         // Operators.
 
     protected:
-        using geometry::ScalarState<Domain>::ScalarState;  // TODO(dreher): Remove?
+        using geometry::ScalarState<Domain>::ScalarState;
     };
 
     std::ostream&

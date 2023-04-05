@@ -11,7 +11,7 @@ namespace quant::geometry
     {
     public:
         SpatialState(typename Domain::LinearState linear, typename Domain::AngularState angular) :
-            linear_{linear}, angular_{angular}
+            _linear{linear}, _angular{angular}
         {
             ;
         }
@@ -27,46 +27,46 @@ namespace quant::geometry
         typename Domain::LinearState
         linear() const
         {
-            return linear_;
+            return _linear;
         }
 
         typename Domain::AngularState
         angular() const
         {
-            return angular_;
+            return _angular;
         }
 
         friend typename Domain::SpatialState
         operator+(typename Domain::LinearDifference const& op,
                   typename Domain::SpatialState const& rhs)
         {
-            return typename Domain::SpatialState(op + rhs.linear_, rhs.angular_);
+            return typename Domain::SpatialState(op + rhs._linear, rhs._angular);
         }
 
         friend typename Domain::SpatialState
         operator-(typename Domain::LinearState const& op, typename Domain::SpatialState const& rhs)
         {
-            return typename Domain::SpatialState(rhs.linear_ - op, rhs.angular_);
+            return typename Domain::SpatialState(rhs._linear - op, rhs._angular);
         }
 
         friend typename Domain::SpatialState
         operator+(typename Domain::AngularDifference const& op,
                   typename Domain::SpatialState const& rhs)
         {
-            return typename Domain::SpatialState(rhs.linear_, op * rhs.angular_);
+            return typename Domain::SpatialState(rhs._linear, op * rhs._angular);
         }
 
         friend typename Domain::SpatialState
         operator-(typename Domain::AngularState const& op, typename Domain::SpatialState const& rhs)
         {
-            return typename Domain::SpatialState(rhs.linear_, rhs.angular_ - op);
+            return typename Domain::SpatialState(rhs._linear, rhs._angular - op);
         }
 
         using GeometricType = traits::StateType;
 
     protected:
-        typename Domain::LinearState linear_;
-        typename Domain::AngularState angular_;
+        typename Domain::LinearState _linear;
+        typename Domain::AngularState _angular;
     };
 
 }  // namespace quant::geometry
