@@ -166,9 +166,9 @@ namespace quant::geometry
         }
 
         bool
-        is_approx(typename Domain::AngularState const& rhs, double const precision) const
+        is_approx(typename Domain::AngularState const& rhs, double const tolerance) const
         {
-            return representation_.isApprox(rhs.representation_, precision);
+            return representation_.isApprox(rhs.representation_, tolerance);
         }
 
         using GeometricRepresentationType = Eigen::Quaterniond const&;

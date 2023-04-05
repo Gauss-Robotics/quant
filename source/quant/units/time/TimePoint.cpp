@@ -6,13 +6,13 @@ namespace quant::units::time
 {
 
     TimePoint
-    TimePoint::micro_seconds(double const micro_seconds)
+    TimePoint::microseconds(double const microseconds)
     {
-        return {micro_seconds};
+        return {microseconds};
     }
 
     double
-    TimePoint::to_micro_seconds() const
+    TimePoint::to_microseconds() const
     {
         return representation_;
     }
@@ -73,7 +73,7 @@ namespace quant::units
     std::ostream&
     time::operator<<(std::ostream& out, TimePoint const& rhs)
     {
-        out << rhs.toString("TimePoint", "s");
+        out << rhs.to_string("TimePoint", "s");
         return out;
     }
 

@@ -38,9 +38,9 @@ namespace quant::geometry
         }
 
         bool
-        is_approx(BaseQuantityT const& rhs, double const precision) const
+        is_approx(BaseQuantityT const& rhs, double const tolerance) const
         {
-            return representation_.isApprox(rhs._representation, precision);
+            return representation_.isApprox(rhs._representation, tolerance);
         }
 
         using GeometricRepresentationType = Eigen::Isometry3d const&;

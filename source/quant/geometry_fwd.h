@@ -38,7 +38,10 @@ namespace quant::geometry
     template <typename Domain>
     class SpatialDifference;
 
-} // namespace quant::geometry
+    template <typename T>
+    class Circa;
+
+}  // namespace quant::geometry
 
 namespace quant::traits
 {
@@ -89,12 +92,13 @@ namespace quant::traits
     inline constexpr bool
         is_state<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
 
-} // namespace quant::traits
+}  // namespace quant::traits
 
 namespace quant
 {
 
     using geometry::AxisAngle;
+    using geometry::Circa;
     using geometry::Vector;
 
-} // namespace quant
+}  // namespace quant

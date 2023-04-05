@@ -27,17 +27,17 @@ namespace quant::units::time
          * @return Duration instance.
          */
         static Duration
-        micro_seconds(std::int64_t micro_seconds)
+        microseconds(double microseconds)
         {
-            return Duration{TimePoint::micro_seconds(micro_seconds)};
+            return Duration{TimePoint::microseconds(microseconds)};
         }
 
         /**
          * @brief Returns the amount of microseconds.
          * @return Amount of microseconds.
          */
-        std::int64_t
-        to_micro_seconds() const
+        double
+        to_microseconds() const
         {
             return difference_object_.representation_;
         }

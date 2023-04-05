@@ -1,8 +1,10 @@
 add_library(units SHARED
     ../units.h
+    Vector.h
 
     time.h
     time_fwd.h
+    time_constants.h
     time/TimePoint.h
     time/TimePoint.cpp
     time/Duration.h
@@ -13,6 +15,7 @@ add_library(units SHARED
 
     position.h
     position_fwd.h
+    position_constants.h
     position/Position.h
     position/Position.cpp
     position/Orientation.h
@@ -24,6 +27,7 @@ add_library(units SHARED
 
     velocity.h
     velocity_fwd.h
+    velocity_constants.h
     velocity/LinearVelocity.h
     velocity/LinearVelocity.cpp
     velocity/AngularVelocity.h
@@ -35,6 +39,7 @@ add_library(units SHARED
 
     acceleration.h
     acceleration_fwd.h
+    acceleration_constants.h
     acceleration/LinearAcceleration.h
     acceleration/LinearAcceleration.cpp
     acceleration/AngularAcceleration.h
@@ -42,6 +47,7 @@ add_library(units SHARED
 
     jerk.h
     jerk_fwd.h
+    jerk_constants.h
     jerk/LinearJerk.h
     jerk/LinearJerk.cpp
     jerk/AngularJerk.h
@@ -62,6 +68,7 @@ add_library(units SHARED
 
     force.h
     force_fwd.h
+    force_constants.h
     force/Force.h
     force/Force.cpp
     force/Torque.h

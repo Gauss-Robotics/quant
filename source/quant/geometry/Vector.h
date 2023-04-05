@@ -1,5 +1,7 @@
 #pragma once
 
+#include <quant/geometry_fwd.h>
+
 #include <Eigen/Core>
 
 #include <sstream>
@@ -9,7 +11,7 @@ namespace quant::geometry
 {
 
     /**
-     * @brief Euclidian point convenience struct for named parameter semantics.
+     * @brief Euclidean point convenience struct for named parameter semantics.
      */
     struct Vector
     {
@@ -35,6 +37,12 @@ namespace quant::geometry
             return {.z = 1};
         }
 
+        double
+        norm() const
+        {
+            return std::sqrt(std::pow(x, 2) + std::pow(y, 2) + std::pow(z, 2));
+        }
+
         static Vector
         from_eigen(Eigen::Vector3d const& eigen)
         {
@@ -48,16 +56,23 @@ namespace quant::geometry
         }
 
         std::string
-        to_string(std::string const& unit = "") const
+        to_string() const
         {
-            // [1.1 2.2 3.3] m/s
             std::stringstream ss;
             ss << "[" << x << " " << y << " " << z << "]";
-            if (not unit.empty())
-            {
-                ss << " " << unit;
-            }
             return ss.str();
+        }
+
+        Vector
+        operator*(double const rhs) const
+        {
+            return {.x = x * rhs, .y = y * rhs, .z = z * rhs};
+        }
+
+        Vector
+        operator/(double const rhs) const
+        {
+            return {.x = x / rhs, .y = y / rhs, .z = z / rhs};
         }
     };
 

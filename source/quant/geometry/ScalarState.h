@@ -28,21 +28,15 @@ namespace quant::geometry
 
         // Convert.
 
-        ScalarType
-        toScalar() const
-        {
-            return representation_;
-        }
-
         std::string
-        toString(std::string const& quantityName = "", std::string const& unit = "") const
+        to_string(std::string const& quantity_name = "", std::string const& unit = "") const
         {
             std::stringstream out;
             out << "<";
 
-            if (not quantityName.empty())
+            if (not quantity_name.empty())
             {
-                out << quantityName << " ";
+                out << quantity_name << " ";
             }
 
             out << "value=" << representation_;
@@ -71,9 +65,9 @@ namespace quant::geometry
         }
 
         bool
-        isApprox(typename Domain::State const& rhs, ScalarType precision) const
+        is_approx(typename Domain::State const& rhs, ScalarType tolerance) const
         {
-            return std::abs(representation_ - rhs.representation_) < precision;
+            return std::abs(representation_ - rhs.representation_) < tolerance;
         }
 
         using GeometricRepresentationType = ScalarType;
@@ -83,6 +77,12 @@ namespace quant::geometry
         ScalarState(ScalarType value) : representation_{value}
         {
             ;
+        }
+
+        ScalarType
+        to_scalar() const
+        {
+            return representation_;
         }
 
         ScalarType representation_;

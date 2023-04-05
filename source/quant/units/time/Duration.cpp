@@ -65,19 +65,19 @@ namespace quant::units::time
     double
     Duration::operator/(Duration const& rhs) const
     {
-        return difference_object_.to_micro_seconds() / rhs.difference_object_.to_micro_seconds();
+        return difference_object_.to_microseconds() / rhs.difference_object_.to_microseconds();
     }
 
     Duration
     Duration::operator/(double rhs) const
     {
-        return Duration{TimePoint(difference_object_.to_micro_seconds() / rhs)};
+        return Duration{TimePoint(difference_object_.to_microseconds() / rhs)};
     }
 
     Duration
     Duration::operator/(int rhs) const
     {
-        return Duration{TimePoint(difference_object_.to_micro_seconds() / rhs)};
+        return Duration{TimePoint(difference_object_.to_microseconds() / rhs)};
     }
 
     Duration&

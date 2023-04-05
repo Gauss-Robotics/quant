@@ -5,6 +5,7 @@
 #include <quant/units/position/Position.h>
 #include <quant/units/speed/Speed.h>
 #include <quant/units/time/Duration.h>
+#include <quant/units/velocity_constants.h>
 #include <quant/units/velocity_fwd.h>
 
 #include <Eigen/Geometry>
@@ -22,19 +23,32 @@ namespace quant::units::velocity
      */
     class LinearVelocity : public geometry::LinearState<Domain>
     {
-        // Construct.
     public:
         static LinearVelocity
-        milli_meters_per_second(Vector xyz)
+        millimeters_per_second(geometry::Vector xyz)
         {
-            return {xyz.x, xyz.y, xyz.z};
+            return {xyz};
         }
 
         static LinearVelocity
-        meters_per_second(Vector xyz)
+        meters_per_second(geometry::Vector xyz)
         {
-            constexpr int m2mm = 1'000;
-            return {xyz.x * m2mm, xyz.y * m2mm, xyz.z * m2mm};
+            return {xyz * constants::mps2mmps};
+        }
+
+        Vector
+        to_millimeters_per_second() const
+        {
+            return {
+                to_vector(), constants::linear_velocity_name, constants::millimeters_per_second};
+        }
+
+        Vector
+        to_meters_per_second() const
+        {
+            return {to_vector() * constants::mmps2mps,
+                    constants::linear_velocity_name,
+                    constants::meters_per_second};
         }
 
         Speed
@@ -46,8 +60,11 @@ namespace quant::units::velocity
         using geometry::LinearState<Domain>::LinearState;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, LinearVelocity const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& os, LinearVelocity const& rhs)
+    {
+        return os << rhs.to_millimeters_per_second();
+    }
 
 }  // namespace quant::units::velocity
 

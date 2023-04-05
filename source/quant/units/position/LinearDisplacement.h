@@ -1,8 +1,10 @@
 #pragma once
 
 #include <quant/geometry/LinearDifference.h>
+#include <quant/units/Vector.h>
 #include <quant/units/distance/Distance.h>
 #include <quant/units/position/Position.h>
+#include <quant/units/position_constants.h>
 #include <quant/units/position_fwd.h>
 
 namespace quant::units::position
@@ -12,31 +14,31 @@ namespace quant::units::position
     {
 
     public:
-        using LinearDifference<Domain>::LinearDifference;
-
         static LinearDisplacement
-        milli_meters(double x, double y, double z)
+        millimeters(geometry::Vector xyz)
         {
-            return LinearDisplacement{Position::milli_meters(x, y, z)};
-        }
-
-        static LinearDisplacement
-        milli_meters(Vector xyz)
-        {
-            return LinearDisplacement{Position::milli_meters(xyz)};
+            return LinearDisplacement{Position::millimeters(xyz)};
         }
 
         Vector
-        to_milli_meters() const
+        to_millimeters() const
         {
-            return difference_object_.to_milli_meters();
+            return difference_object_.to_millimeters();
         }
 
         Distance
         to_distance() const
         {
-            return Distance::MilliMeters(difference_object_.to_milli_meters().to_eigen().norm());
+            return Distance::MilliMeters(difference_object_.to_millimeters().norm());
         }
+
+        using LinearDifference<Domain>::LinearDifference;
     };
+
+    inline std::ostream&
+    operator<<(std::ostream& os, LinearDisplacement const& rhs)
+    {
+        return os << rhs.to_millimeters();
+    }
 
 }  // namespace quant::units::position

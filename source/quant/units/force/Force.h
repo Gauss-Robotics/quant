@@ -1,7 +1,11 @@
 #pragma once
 
 #include <quant/geometry/LinearState.h>
+#include <quant/units/Vector.h>
+#include <quant/units/acceleration/LinearAcceleration.h>
+#include <quant/units/force_constants.h>
 #include <quant/units/force_fwd.h>
+#include <quant/units/mass/Mass.h>
 
 #include <Eigen/Geometry>
 
@@ -12,20 +16,37 @@ namespace quant::units::force
 
     class Force : public geometry::LinearState<Domain>
     {
-        // Construct.
     public:
-        using geometry::LinearState<Domain>::LinearState;
-
         static Force
-        newton(Vector xyz)
+        newton(geometry::Vector xyz)
         {
-            return {xyz.x, xyz.y, xyz.z};
+            return {xyz};
         }
 
-        using DifferenceType = ForceDifference;
+        Vector
+        to_newton() const
+        {
+            return {to_vector(), constants::force_name, constants::newton};
+        }
+
+        using geometry::LinearState<Domain>::LinearState;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, Force const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& os, Force const& rhs)
+    {
+        return os << rhs.to_newton();
+    }
 
 }  // namespace quant::units::force
+
+namespace quant
+{
+
+    inline Force
+    operator*(Mass const& lhs, LinearAcceleration const& rhs)
+    {
+        return Force::newton(rhs.to_meters_per_second_squared() * lhs.to_kilograms());
+    }
+
+}  // namespace quant

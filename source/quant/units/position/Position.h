@@ -1,6 +1,8 @@
 #pragma once
 
 #include <quant/geometry/LinearState.h>
+#include <quant/units/Vector.h>
+#include <quant/units/position_constants.h>
 #include <quant/units/position_fwd.h>
 
 #include <ostream>
@@ -15,49 +17,37 @@ namespace quant::units::position
     {
 
     public:
-        // Construct.
-
-        using geometry::LinearState<Domain>::LinearState;
-
         static Position
-        milli_meters(double x, double y, double z)
-        {
-            return {x, y, z};
-        }
-
-        static Position
-        milli_meters(Vector xyz)
+        millimeters(geometry::Vector xyz)
         {
             return {xyz.x, xyz.y, xyz.z};
         }
 
         static Position
-        meters(double x, double y, double z)
+        meters(geometry::Vector xyz)
         {
-            constexpr int m2mm = 1'000;
-            return {x * m2mm, y * m2mm, z * m2mm};
+            return {xyz.x * constants::m2mm, xyz.y * constants::m2mm, xyz.z * constants::m2mm};
         }
-
-        static Position
-        meters(Vector xyz)
-        {
-            constexpr int m2mm = 1'000;
-            return {xyz.x * m2mm, xyz.y * m2mm, xyz.z * m2mm};
-        }
-
-        // Convert.
 
         Vector
-        to_milli_meters() const
+        to_millimeters() const
         {
-            return {.x = representation_.x(), .y = representation_.y(), .z = representation_.z()};
+            return {to_vector(), constants::position_name, constants::meters};
         }
+
+        Vector
+        to_meters() const
+        {
+            return {to_vector() * constants::mm2m, constants::position_name, constants::meters};
+        }
+
+        using geometry::LinearState<Domain>::LinearState;
     };
 
     inline std::ostream&
-    operator<<(std::ostream& out, Position const& rhs)
+    operator<<(std::ostream& os, Position const& rhs)
     {
-        return out << rhs.to_string("Position", "mm");
+        return os << rhs.to_millimeters();
     }
 
 }  // namespace quant::units::position

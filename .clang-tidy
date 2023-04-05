@@ -56,11 +56,11 @@ CheckOptions:
     value:  lower_case
   - key:    readability-identifier-naming.ProtectedMemberCase
     value:  lower_case
-  - key:    readability-identifier-naming.ProtectedMemberSuffix
+  - key:    readability-identifier-naming.ProtectedMemberPrefix
     value:  '_'
   - key:    readability-identifier-naming.PrivateMemberCase
     value:  lower_case
-  - key:    readability-identifier-naming.PrivateMemberSuffix
+  - key:    readability-identifier-naming.PrivateMemberPrefix
     value:  '_'
   - key:    readability-identifier-naming.FunctionCase
     value:  lower_case
