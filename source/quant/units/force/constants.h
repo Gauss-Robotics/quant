@@ -10,9 +10,9 @@ namespace quant::units::force::constants
         constexpr std::string_view force = "Force";
         constexpr std::string_view torque = "Torque";
         constexpr std::string_view wrench = "Wrench";
-        constexpr std::string_view force_difference = "ForceDifference";
-        constexpr std::string_view torque_difference = "TorqueDifference";
-        constexpr std::string_view wrench_difference = "WrenchDifference";
+        constexpr std::string_view force_difference = "Force Difference";
+        constexpr std::string_view torque_difference = "Torque Difference";
+        constexpr std::string_view wrench_difference = "Wrench Difference";
 
         constexpr std::string_view newton = "Newton";
         constexpr std::string_view newton_meters = "Newton Meters";

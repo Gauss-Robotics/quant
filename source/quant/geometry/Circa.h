@@ -124,7 +124,7 @@ namespace quant
     inline std::ostream&
     geometry::operator<<(std::ostream& os, Circa<T> const& rhs)
     {
-        return os << rhs._geometric_object << " ±" << rhs._tolerance;
+        return os << rhs._geometric_object << " (±" << rhs._tolerance << ")";
     }
 
 }  // namespace quant
