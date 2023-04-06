@@ -24,8 +24,8 @@ namespace quant::units::position
         to_millimeters() const
         {
             return {_difference_object.to_millimeters(),
-                    constants::linear_displacement_name,
-                    constants::millimeters};
+                    constants::names::linear_displacement,
+                    constants::symbols::millimeters};
         }
 
         Distance

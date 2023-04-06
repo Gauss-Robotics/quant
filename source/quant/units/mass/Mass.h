@@ -38,20 +38,23 @@ namespace quant::units::mass
         Scalar
         to_milligrams() const
         {
-            return {
-                _representation * constants::kg2mg, constants::mass_name, constants::milligrams};
+            return {_representation * constants::kg2mg,
+                    constants::names::mass,
+                    constants::symbols::milligrams};
         };
 
         Scalar
         to_grams() const
         {
-            return {_representation * constants::kg2g, constants::mass_name, constants::grams};
+            return {_representation * constants::kg2g,
+                    constants::names::mass,
+                    constants::symbols::grams};
         }
 
         Scalar
         to_kilograms() const
         {
-            return {_representation, constants::mass_name, constants::kilograms};
+            return {_representation, constants::names::mass, constants::symbols::kilograms};
         }
 
     private:

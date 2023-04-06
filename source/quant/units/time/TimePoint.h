@@ -92,7 +92,8 @@ namespace quant::units::time
         Scalar
         to_microseconds() const
         {
-            return {_representation, constants::time_point_name, constants::microseconds};
+            return {
+                _representation, constants::names::time_point, constants::symbols::microseconds};
         }
 
         /**
@@ -103,8 +104,8 @@ namespace quant::units::time
         to_milliseconds() const
         {
             return {_representation * constants::us2ms,
-                    constants::time_point_name,
-                    constants::milliseconds};
+                    constants::names::time_point,
+                    constants::symbols::milliseconds};
         }
 
         /**
@@ -114,8 +115,9 @@ namespace quant::units::time
         Scalar
         to_seconds() const
         {
-            return {
-                _representation * constants::us2s, constants::time_point_name, constants::seconds};
+            return {_representation * constants::us2s,
+                    constants::names::time_point,
+                    constants::symbols::seconds};
         }
 
         /**
@@ -126,8 +128,8 @@ namespace quant::units::time
         to_minutes() const
         {
             return {_representation * constants::us2min,
-                    constants::time_point_name,
-                    constants::minutes};
+                    constants::names::time_point,
+                    constants::symbols::minutes};
         }
 
         /**
@@ -137,8 +139,9 @@ namespace quant::units::time
         Scalar
         to_hours() const
         {
-            return {
-                _representation * constants::us2h, constants::time_point_name, constants::hours};
+            return {_representation * constants::us2h,
+                    constants::names::time_point,
+                    constants::symbols::hours};
         }
 
         /**
@@ -148,7 +151,9 @@ namespace quant::units::time
         Scalar
         to_days() const
         {
-            return {_representation * constants::us2d, constants::time_point_name, constants::days};
+            return {_representation * constants::us2d,
+                    constants::names::time_point,
+                    constants::symbols::days};
         }
 
         /**
@@ -184,32 +189,32 @@ namespace quant::units::time
         to_time_point_string() const
         {
             double time_count = to_microseconds();
-            std::string_view unit = constants::microseconds;
+            std::string_view unit = constants::symbols::microseconds;
 
             if (time_count >= constants::ms2us)
             {
                 time_count *= constants::us2ms;
-                unit = constants::milliseconds;
+                unit = constants::symbols::milliseconds;
 
                 if (time_count >= constants::s2ms)
                 {
                     time_count *= constants::ms2s;
-                    unit = constants::seconds;
+                    unit = constants::symbols::seconds;
 
                     if (time_count >= constants::min2s)
                     {
                         time_count *= constants::s2min;
-                        unit = constants::minutes;
+                        unit = constants::symbols::minutes;
 
                         if (time_count >= constants::h2min)
                         {
                             time_count *= constants::min2h;
-                            unit = constants::hours;
+                            unit = constants::symbols::hours;
 
                             if (time_count >= constants::d2h)
                             {
                                 time_count *= constants::h2d;
-                                unit = constants::days;
+                                unit = constants::symbols::days;
                             }
                         }
                     }

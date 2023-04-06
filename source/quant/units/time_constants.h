@@ -5,15 +5,32 @@
 namespace quant::units::time::constants
 {
 
-    constexpr std::string_view time_point_name = "Time Point";
-    constexpr std::string_view duration_name = "Duration";
+    namespace names
+    {
 
-    constexpr std::string_view microseconds = "µs";
-    constexpr std::string_view milliseconds = "ms";
-    constexpr std::string_view seconds = "s";
-    constexpr std::string_view minutes = "min";
-    constexpr std::string_view hours = "h";
-    constexpr std::string_view days = "d";
+        constexpr std::string_view time_point = "Time Point";
+        constexpr std::string_view duration = "Duration";
+
+        constexpr std::string_view microseconds = "Microseconds";
+        constexpr std::string_view milliseconds = "Milliseconds";
+        constexpr std::string_view seconds = "Seconds";
+        constexpr std::string_view minutes = "Minutes";
+        constexpr std::string_view hours = "Hours";
+        constexpr std::string_view days = "Days";
+
+    }  // namespace names
+
+    namespace symbols
+    {
+
+        constexpr std::string_view microseconds = "µs";
+        constexpr std::string_view milliseconds = "ms";
+        constexpr std::string_view seconds = "s";
+        constexpr std::string_view minutes = "min";
+        constexpr std::string_view hours = "h";
+        constexpr std::string_view days = "d";
+
+    }  // namespace symbols
 
     constexpr double d2h = 24;
     constexpr double h2min = 60;

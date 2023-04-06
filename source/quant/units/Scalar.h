@@ -12,14 +12,16 @@ namespace quant::units
     {
 
     public:
-        Scalar(geometry::Scalar scalar, std::string_view quantity_name, std::string_view unit) :
-            geometry::Scalar(scalar), quantity_name{quantity_name}, unit{unit}
+        Scalar(geometry::Scalar scalar,
+               std::string_view quantity_name,
+               std::string_view unit_symbol) :
+            geometry::Scalar(scalar), quantity_name{quantity_name}, unit_symbol{unit_symbol}
         {
             ;
         }
 
-        Scalar(Scalar scalar, std::string_view quantity_name, std::string_view unit) :
-            geometry::Scalar(scalar), quantity_name{quantity_name}, unit{unit}
+        Scalar(Scalar scalar, std::string_view quantity_name, std::string_view unit_symbol) :
+            geometry::Scalar(scalar), quantity_name{quantity_name}, unit_symbol{unit_symbol}
         {
             ;
         }
@@ -28,12 +30,12 @@ namespace quant::units
         to_string() const
         {
             std::stringstream ss;
-            ss << quantity_name << " " << geometry::Scalar::to_string() << " " << unit;
+            ss << quantity_name << " " << geometry::Scalar::to_string() << " " << unit_symbol;
             return ss.str();
         }
 
         const std::string_view quantity_name;
-        const std::string_view unit;
+        const std::string_view unit_symbol;
     };
 
     inline std::ostream&

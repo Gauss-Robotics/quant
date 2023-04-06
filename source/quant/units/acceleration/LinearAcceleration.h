@@ -31,16 +31,16 @@ namespace quant::units::acceleration
         to_millimeters_per_second_squared() const
         {
             return {to_vector(),
-                    constants::linear_acceleration_name,
-                    constants::meters_per_second_squared};
+                    constants::names::linear_acceleration,
+                    constants::symbols::meters_per_second_squared};
         }
 
         Vector
         to_meters_per_second_squared() const
         {
             return {to_vector() * constants::mmpss2mpss,
-                    constants::linear_acceleration_name,
-                    constants::meters_per_second_squared};
+                    constants::names::linear_acceleration,
+                    constants::symbols::meters_per_second_squared};
         }
 
         using geometry::LinearState<Domain>::LinearState;

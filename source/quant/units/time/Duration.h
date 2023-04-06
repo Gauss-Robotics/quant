@@ -89,8 +89,8 @@ namespace quant::units::time
         to_microseconds() const
         {
             return {_difference_object.to_microseconds(),
-                    constants::duration_name,
-                    constants::microseconds};
+                    constants::names::duration,
+                    constants::symbols::microseconds};
         }
 
         /**
@@ -101,8 +101,8 @@ namespace quant::units::time
         to_milliseconds() const
         {
             return {_difference_object.to_milliseconds(),
-                    constants::duration_name,
-                    constants::milliseconds};
+                    constants::names::duration,
+                    constants::symbols::milliseconds};
         }
 
         /**
@@ -112,7 +112,9 @@ namespace quant::units::time
         Scalar
         to_seconds() const
         {
-            return {_difference_object.to_seconds(), constants::duration_name, constants::seconds};
+            return {_difference_object.to_seconds(),
+                    constants::names::duration,
+                    constants::symbols::seconds};
         }
 
         /**
@@ -122,7 +124,9 @@ namespace quant::units::time
         Scalar
         to_minutes() const
         {
-            return {_difference_object.to_minutes(), constants::duration_name, constants::minutes};
+            return {_difference_object.to_minutes(),
+                    constants::names::duration,
+                    constants::symbols::minutes};
         }
 
         /**
@@ -132,7 +136,9 @@ namespace quant::units::time
         Scalar
         to_hours() const
         {
-            return {_difference_object.to_hours(), constants::duration_name, constants::hours};
+            return {_difference_object.to_hours(),
+                    constants::names::duration,
+                    constants::symbols::hours};
         }
 
         /**
@@ -142,7 +148,8 @@ namespace quant::units::time
         Scalar
         to_days() const
         {
-            return {_difference_object.to_days(), constants::duration_name, constants::days};
+            return {
+                _difference_object.to_days(), constants::names::duration, constants::symbols::days};
         }
 
         /**

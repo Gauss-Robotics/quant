@@ -32,13 +32,15 @@ namespace quant::units::position
         Vector
         to_millimeters() const
         {
-            return {to_vector(), constants::position_name, constants::meters};
+            return {to_vector(), constants::names::position, constants::symbols::meters};
         }
 
         Vector
         to_meters() const
         {
-            return {to_vector() * constants::mm2m, constants::position_name, constants::meters};
+            return {to_vector() * constants::mm2m,
+                    constants::names::position,
+                    constants::symbols::meters};
         }
 
         using geometry::LinearState<Domain>::LinearState;

@@ -34,15 +34,17 @@ namespace quant::units::speed
         Scalar
         to_millimeters_per_second() const
         {
-            return {_representation, constants::speed_name, constants::millimeters_per_second};
+            return {_representation,
+                    constants::names::speed,
+                    constants::symbols::millimeters_per_second};
         }
 
         Scalar
         to_meters_per_second() const
         {
             return {_representation * constants::mmps2mps,
-                    constants::speed_name,
-                    constants::meters_per_second};
+                    constants::names::speed,
+                    constants::symbols::meters_per_second};
         }
 
         // Operators.

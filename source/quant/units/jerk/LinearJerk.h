@@ -24,8 +24,9 @@ namespace quant::units::jerk
         Vector
         to_millimeters_per_second_cubed() const
         {
-            return {
-                to_vector(), constants::linear_jerk_name, constants::millimeters_per_second_cubed};
+            return {to_vector(),
+                    constants::names::linear_jerk,
+                    constants::symbols::millimeters_per_second_cubed};
         }
 
         using geometry::LinearState<Domain>::LinearState;

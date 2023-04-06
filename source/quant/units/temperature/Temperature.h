@@ -46,25 +46,32 @@ namespace quant::units::temperature
         Scalar
         to_degree_celsius() const
         {
-            return {_representation, constants::temperature_name, constants::degree_celsius};
+            return {
+                _representation, constants::names::temperature, constants::symbols::degree_celsius};
         }
 
         Scalar
         to_kelvin() const
         {
-            return _representation + constants::c2k_offset;
+            return {_representation + constants::c2k_offset,
+                    constants::names::temperature,
+                    constants::symbols::kelvin};
         }
 
         Scalar
         to_degree_fahrenheit() const
         {
-            return _representation * constants::c2f_factor + constants::c2f_offset;
+            return {_representation * constants::c2f_factor + constants::c2f_offset,
+                    constants::names::temperature,
+                    constants::symbols::degree_fahrenheit};
         }
 
         Scalar
         to_degree_rankine() const
         {
-            return _representation * constants::c2f_factor + constants::c2ra_offset;
+            return {_representation * constants::c2f_factor + constants::c2ra_offset,
+                    constants::names::temperature,
+                    constants::symbols::degree_rankine};
         }
 
         // Operators.

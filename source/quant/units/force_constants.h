@@ -5,14 +5,26 @@
 namespace quant::units::force::constants
 {
 
-    constexpr std::string_view force_name = "Force";
-    constexpr std::string_view torque_name = "Torque";
-    constexpr std::string_view wrench_name = "Wrench";
-    constexpr std::string_view force_difference_name = "ForceDifference";
-    constexpr std::string_view torque_difference_name = "TorqueDifference";
-    constexpr std::string_view wrench_difference_name = "WrenchDifference";
+    namespace names
+    {
+        constexpr std::string_view force = "Force";
+        constexpr std::string_view torque = "Torque";
+        constexpr std::string_view wrench = "Wrench";
+        constexpr std::string_view force_difference = "ForceDifference";
+        constexpr std::string_view torque_difference = "TorqueDifference";
+        constexpr std::string_view wrench_difference = "WrenchDifference";
 
-    constexpr std::string_view newton = "N";
-    constexpr std::string_view newton_meters = "Nm";
+        constexpr std::string_view newton = "Newton";
+        constexpr std::string_view newton_meters = "Newton Meters";
+
+    }  // namespace names
+
+    namespace symbols
+    {
+
+        constexpr std::string_view newton = "N";
+        constexpr std::string_view newton_meters = "Nm";
+
+    }  // namespace symbols
 
 }  // namespace quant::units::force::constants

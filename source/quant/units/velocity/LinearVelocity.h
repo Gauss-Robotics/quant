@@ -39,16 +39,17 @@ namespace quant::units::velocity
         Vector
         to_millimeters_per_second() const
         {
-            return {
-                to_vector(), constants::linear_velocity_name, constants::millimeters_per_second};
+            return {to_vector(),
+                    constants::names::linear_velocity,
+                    constants::symbols::millimeters_per_second};
         }
 
         Vector
         to_meters_per_second() const
         {
             return {to_vector() * constants::mmps2mps,
-                    constants::linear_velocity_name,
-                    constants::meters_per_second};
+                    constants::names::linear_velocity,
+                    constants::symbols::meters_per_second};
         }
 
         Speed

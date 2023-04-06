@@ -26,7 +26,7 @@ namespace quant::units::force
         Vector
         to_newton() const
         {
-            return {to_vector(), constants::force_name, constants::newton};
+            return {to_vector(), constants::names::force, constants::symbols::newton};
         }
 
         using geometry::LinearState<Domain>::LinearState;

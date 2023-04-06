@@ -5,13 +5,28 @@
 namespace quant::units::temperature::constants
 {
 
-    constexpr std::string_view temperature_name = "Temperature";
-    constexpr std::string_view temperature_difference_name = "Temperature Difference";
+    namespace names
+    {
 
-    constexpr std::string_view degree_celsius = "°C";
-    constexpr std::string_view kelvin = "K";
-    constexpr std::string_view degree_fahrenheit = "°F";
-    constexpr std::string_view degree_rankine = "°Ra";
+        constexpr std::string_view temperature = "Temperature";
+        constexpr std::string_view temperature_difference = "Temperature Difference";
+
+        constexpr std::string_view degree_celsius = "Degree Celsius";
+        constexpr std::string_view kelvin = "Kelvin";
+        constexpr std::string_view degree_fahrenheit = "Degree Fahrenheit";
+        constexpr std::string_view degree_rankine = "Degree Rankine";
+
+    }  // namespace names
+
+    namespace symbols
+    {
+
+        constexpr std::string_view degree_celsius = "°C";
+        constexpr std::string_view kelvin = "K";
+        constexpr std::string_view degree_fahrenheit = "°F";
+        constexpr std::string_view degree_rankine = "°Ra";
+
+    }  // namespace symbols
 
     constexpr double c2k_offset = 273.15;
     constexpr double c2f_factor = 9. / 5.;

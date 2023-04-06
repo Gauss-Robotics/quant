@@ -142,6 +142,7 @@ TEST_CASE("testing position")
         CHECK(p1.to_millimeters().x == 100);
         CHECK(p1.to_millimeters().y == 200);
         CHECK(p1.to_millimeters().z == 300);
+        CHECK(p1.to_millimeters().unit == "millimeters");
     }
 
     SUBCASE("testing different operations")
