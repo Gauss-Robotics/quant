@@ -2,7 +2,7 @@
 
 #include <quant/geometry/ScalarState.h>
 #include <quant/units/Scalar.h>
-#include <quant/units/mass_constants.h>
+#include <quant/units/mass/constants.h>
 #include <quant/units/mass_fwd.h>
 
 #include <ostream>

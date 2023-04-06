@@ -3,7 +3,7 @@
 #include <quant/geometry/LinearState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/acceleration/LinearAcceleration.h>
-#include <quant/units/force_constants.h>
+#include <quant/units/force/constants.h>
 #include <quant/units/force_fwd.h>
 #include <quant/units/mass/Mass.h>
 

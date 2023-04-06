@@ -5,7 +5,7 @@ add_library(units SHARED
 
     time.h
     time_fwd.h
-    time_constants.h
+    time/constants.h
     time/TimePoint.h
     time/TimePoint.cpp
     time/Duration.h
@@ -15,7 +15,7 @@ add_library(units SHARED
 
     position.h
     position_fwd.h
-    position_constants.h
+    position/constants.h
     position/Position.h
     position/Position.cpp
     position/Orientation.h
@@ -27,7 +27,7 @@ add_library(units SHARED
 
     velocity.h
     velocity_fwd.h
-    velocity_constants.h
+    velocity/constants.h
     velocity/LinearVelocity.h
     velocity/LinearVelocity.cpp
     velocity/AngularVelocity.h
@@ -40,7 +40,7 @@ add_library(units SHARED
 
     acceleration.h
     acceleration_fwd.h
-    acceleration_constants.h
+    acceleration/constants.h
     acceleration/LinearAcceleration.h
     acceleration/LinearAcceleration.cpp
     acceleration/AngularAcceleration.h
@@ -52,7 +52,7 @@ add_library(units SHARED
 
     jerk.h
     jerk_fwd.h
-    jerk_constants.h
+    jerk/constants.h
     jerk/LinearJerk.h
     jerk/LinearJerk.cpp
     jerk/AngularJerk.h
@@ -64,25 +64,25 @@ add_library(units SHARED
 
     distance.h
     distance_fwd.h
-    distance_constants.h
+    distance/constants.h
     distance/Distance.h
 
     speed.h
     speed_fwd.h
-    speed_constants.h
+    speed/constants.h
     speed/Speed.h
     speed/Speed.cpp
     speed/SpeedDifference.h
 
     mass.h
     mass_fwd.h
-    mass_constants.h
+    mass/constants.h
     mass/Mass.h
     mass/MassDifference.h
 
     momentum.h
     momentum_fwd.h
-    momentum_constants.h
+    momentum/constants.h
     momentum/LinearMomentum.h
     momentum/AngularMomentum.h
     momentum/SpatialMomentum.h
@@ -92,7 +92,7 @@ add_library(units SHARED
 
     force.h
     force_fwd.h
-    force_constants.h
+    force/constants.h
     force/Force.h
     force/Force.cpp
     force/Torque.h
@@ -105,7 +105,7 @@ add_library(units SHARED
 
     temperature.h
     temperature_fwd.h
-    temperature_constants.h
+    temperature/constants.h
     temperature/Temperature.h
     temperature/TemperatureDifference.h
 )

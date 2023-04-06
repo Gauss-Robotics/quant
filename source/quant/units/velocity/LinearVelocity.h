@@ -5,7 +5,7 @@
 #include <quant/units/position/Position.h>
 #include <quant/units/speed/Speed.h>
 #include <quant/units/time/Duration.h>
-#include <quant/units/velocity_constants.h>
+#include <quant/units/velocity/constants.h>
 #include <quant/units/velocity_fwd.h>
 
 #include <Eigen/Geometry>

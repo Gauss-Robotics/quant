@@ -2,7 +2,7 @@
 
 #include <quant/geometry/LinearState.h>
 #include <quant/units/Vector.h>
-#include <quant/units/acceleration_constants.h>
+#include <quant/units/acceleration/constants.h>
 #include <quant/units/acceleration_fwd.h>
 
 #include <Eigen/Geometry>

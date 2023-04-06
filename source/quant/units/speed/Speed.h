@@ -2,7 +2,7 @@
 
 #include <quant/geometry/ScalarState.h>
 #include <quant/units/Scalar.h>
-#include <quant/units/speed_constants.h>
+#include <quant/units/speed/constants.h>
 #include <quant/units/speed_fwd.h>
 #include <quant/units/velocity_fwd.h>
 

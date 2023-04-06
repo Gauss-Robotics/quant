@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-using namespace quant;
+using namespace quant;  // NOLINT
 
 TEST_CASE("testing time")
 {

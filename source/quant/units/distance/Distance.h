@@ -1,6 +1,8 @@
 #pragma once
 
 #include <quant/geometry/ScalarState.h>
+#include <quant/units/Scalar.h>
+#include <quant/units/distance/constants.h>
 #include <quant/units/distance_fwd.h>
 
 #include <cstdint>
@@ -9,8 +11,6 @@
 
 namespace quant::units::distance
 {
-
-    constexpr double m2mm = 1'000;
 
     class Distance : geometry::ScalarState<Domain>
     {

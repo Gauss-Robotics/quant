@@ -2,7 +2,7 @@
 
 #include <quant/geometry/LinearState.h>
 #include <quant/units/Vector.h>
-#include <quant/units/jerk_constants.h>
+#include <quant/units/jerk/constants.h>
 #include <quant/units/jerk_fwd.h>
 
 #include <Eigen/Geometry>
