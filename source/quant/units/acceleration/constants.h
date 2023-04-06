@@ -29,6 +29,7 @@ namespace quant::units::acceleration::constants
 
         constexpr std::string_view millimeters_per_second_squared = "mm/s²";
         constexpr std::string_view meters_per_second_squared = "m/s²";
+        constexpr std::string_view radians_per_second_squared = "rad/s²";
 
     }  // namespace symbols
 

@@ -25,6 +25,7 @@ namespace quant::units::jerk::constants
 
         constexpr std::string_view millimeters_per_second_cubed = "mm/s³";
         constexpr std::string_view meters_per_second_cubed = "m/s³";
+        constexpr std::string_view radians_per_second_cubed = "rad/s³";
 
     }  // namespace symbols
 

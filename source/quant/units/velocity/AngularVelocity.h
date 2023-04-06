@@ -1,6 +1,8 @@
 #pragma once
 
 #include <quant/geometry/AngularState.h>
+#include <quant/units/AxisAngle.h>
+#include <quant/units/velocity/constants.h>
 #include <quant/units/velocity_fwd.h>
 
 #include <Eigen/Geometry>
@@ -13,12 +15,8 @@ namespace quant::units::velocity
     class AngularVelocity : public geometry::AngularState<Domain>
     {
     public:
-        // Construct.
-
-        using geometry::AngularState<Domain>::AngularState;
-
         static AngularVelocity
-        radians_per_second(AxisAngle const& aa)
+        radians_per_second(geometry::AxisAngle const& aa)
         {
             return {aa};
         }
@@ -28,11 +26,18 @@ namespace quant::units::velocity
         AxisAngle
         to_radians_per_second() const
         {
-            return this->to_angle_axis();
+            return {to_axis_angle(),
+                    constants::names::angular_velocity,
+                    constants::symbols::radians_per_second};
         }
+
+        using geometry::AngularState<Domain>::AngularState;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, AngularVelocity const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, AngularVelocity const& rhs)
+    {
+        return out << rhs.to_radians_per_second();
+    }
 
 }  // namespace quant::units::velocity

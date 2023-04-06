@@ -20,19 +20,19 @@ namespace quant::units::position
         static Position
         millimeters(geometry::Vector xyz)
         {
-            return {xyz.x, xyz.y, xyz.z};
+            return {xyz};
         }
 
         static Position
         meters(geometry::Vector xyz)
         {
-            return {xyz.x * constants::m2mm, xyz.y * constants::m2mm, xyz.z * constants::m2mm};
+            return {xyz * constants::m2mm};
         }
 
         Vector
         to_millimeters() const
         {
-            return {to_vector(), constants::names::position, constants::symbols::meters};
+            return {to_vector(), constants::names::position, constants::symbols::millimeters};
         }
 
         Vector

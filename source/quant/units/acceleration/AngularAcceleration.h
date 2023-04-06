@@ -1,6 +1,8 @@
 #pragma once
 
 #include <quant/geometry/AngularState.h>
+#include <quant/units/AxisAngle.h>
+#include <quant/units/acceleration/constants.h>
 #include <quant/units/acceleration_fwd.h>
 
 #include <Eigen/Geometry>
@@ -12,12 +14,28 @@ namespace quant::units::acceleration
 
     class AngularAcceleration : public geometry::AngularState<Domain>
     {
-        // Construct.
     public:
+        static AngularAcceleration
+        radians_per_second_squared(geometry::AxisAngle aa)
+        {
+            return {aa};
+        }
+
+        AxisAngle
+        to_radians_per_second_squared() const
+        {
+            return {to_axis_angle(),
+                    constants::names::angular_acceleration,
+                    constants::symbols::radians_per_second_squared};
+        }
+
         using geometry::AngularState<Domain>::AngularState;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, AngularAcceleration const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, AngularAcceleration const& rhs)
+    {
+        return out << rhs.to_radians_per_second_squared();
+    }
 
 }  // namespace quant::units::acceleration

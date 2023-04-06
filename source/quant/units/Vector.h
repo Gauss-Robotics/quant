@@ -14,14 +14,14 @@ namespace quant::units
     public:
         Vector(geometry::Vector const vector,
                std::string_view quantity_name,
-               std::string_view unit) :
-            geometry::Vector(vector), quantity_name{quantity_name}, unit{unit}
+               std::string_view unit_symbol) :
+            geometry::Vector(vector), quantity_name{quantity_name}, unit_symbol{unit_symbol}
         {
             ;
         }
 
-        Vector(Vector const vector, std::string_view quantity_name, std::string_view unit) :
-            geometry::Vector(vector), quantity_name{quantity_name}, unit{unit}
+        Vector(Vector const vector, std::string_view quantity_name, std::string_view unit_symbol) :
+            geometry::Vector(vector), quantity_name{quantity_name}, unit_symbol{unit_symbol}
         {
             ;
         }
@@ -30,12 +30,12 @@ namespace quant::units
         to_string() const
         {
             std::stringstream ss;
-            ss << quantity_name << " " << geometry::Vector::to_string() << " " << unit;
+            ss << geometry::Vector::to_string() << " " << unit_symbol;
             return ss.str();
         }
 
         const std::string_view quantity_name;
-        const std::string_view unit;
+        const std::string_view unit_symbol;
     };
 
     inline std::ostream&

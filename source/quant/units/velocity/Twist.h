@@ -13,7 +13,6 @@ namespace quant::units::velocity
      */
     class Twist : public geometry::SpatialState<Domain>
     {
-        // Construct.
     public:
         using SpatialState<Domain>::SpatialState;
     };

@@ -50,15 +50,10 @@ namespace quant::geometry
         }
 
         std::string
-        to_string(std::string const& unit = "") const
+        to_string() const
         {
             std::stringstream ss;
-            ss << angle;
-            if (not unit.empty())
-            {
-                ss << " " << unit;
-            }
-            ss << " around " << axis;
+            ss << angle << " around axis " << axis.to_string();
             return ss.str();
         }
     };

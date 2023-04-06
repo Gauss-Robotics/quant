@@ -69,12 +69,10 @@ namespace quant::units::temperature
         Scalar
         to_degree_rankine() const
         {
-            return {_representation * constants::c2f_factor + constants::c2ra_offset,
+            return {_representation * constants::c2ra_factor + constants::c2ra_offset,
                     constants::names::temperature,
                     constants::symbols::degree_rankine};
         }
-
-        // Operators.
 
     protected:
         using geometry::ScalarState<Domain>::ScalarState;

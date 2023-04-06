@@ -30,7 +30,7 @@ namespace quant::units
         to_string() const
         {
             std::stringstream ss;
-            ss << quantity_name << " " << geometry::Scalar::to_string() << " " << unit_symbol;
+            ss << geometry::Scalar::to_string() << " " << unit_symbol;
             return ss.str();
         }
 

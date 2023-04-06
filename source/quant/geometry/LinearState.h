@@ -5,8 +5,7 @@
 
 #include <Eigen/Geometry>
 
-#include <ostream>
-#include <typeinfo>
+#include <string>
 
 namespace quant::geometry
 {
@@ -32,7 +31,7 @@ namespace quant::geometry
         static typename Domain::LinearState
         zero()
         {
-            return typename Domain::LinearState(0, 0, 0);
+            return typename Domain::LinearState({.x = 0, .y = 0, .z = 0});
         }
 
         // Convert.
@@ -46,9 +45,7 @@ namespace quant::geometry
         std::string
         to_string() const
         {
-            std::stringstream out;
-            out << to_vector().to_string() << ">";
-            return out.str();
+            return to_vector().to_string();
         }
 
         // Compare.
@@ -76,11 +73,6 @@ namespace quant::geometry
 
     protected:
         // Construct.
-
-        LinearState(double x, double y, double z) : _representation(x, y, z)
-        {
-            ;
-        }
 
         LinearState(Vector const& xyz) : _representation(xyz.x, xyz.y, xyz.z)
         {

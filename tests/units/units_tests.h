@@ -142,7 +142,7 @@ TEST_CASE("testing position")
         CHECK(p1.to_millimeters().x == 100);
         CHECK(p1.to_millimeters().y == 200);
         CHECK(p1.to_millimeters().z == 300);
-        CHECK(p1.to_millimeters().unit == "millimeters");
+        CHECK(p1.to_millimeters().unit_symbol == "mm");
     }
 
     SUBCASE("testing different operations")
@@ -177,7 +177,7 @@ TEST_CASE("testing velocity")
         Eigen::AngleAxisd const rad_per_sec(M_PI / 2, Eigen::Vector3d(1, 0, 1).normalized());
         AngularVelocity const av =
             AngularVelocity::radians_per_second(AxisAngle::from_eigen(rad_per_sec));
-        Eigen::AngleAxisd const rad_per_sec_reconstructed = av.to_angle_axis().to_eigen();
+        Eigen::AngleAxisd const rad_per_sec_reconstructed = av.to_radians_per_second().to_eigen();
 
         CHECK(rad_per_sec_reconstructed.isApprox(rad_per_sec));
     }

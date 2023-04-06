@@ -30,6 +30,7 @@ namespace quant::units::temperature::constants
 
     constexpr double c2k_offset = 273.15;
     constexpr double c2f_factor = 9. / 5.;
+    constexpr double c2ra_factor = c2f_factor;
     constexpr double c2f_offset = 32;
 
     constexpr double k2c_offset = -c2k_offset;

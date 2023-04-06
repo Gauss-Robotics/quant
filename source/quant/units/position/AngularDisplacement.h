@@ -14,7 +14,7 @@ namespace quant::units::position
 
     public:
         static AngularDisplacement
-        radians(AxisAngle const& aa)
+        radians(geometry::AxisAngle const& aa)
         {
             return AngularDisplacement{Orientation::radians(aa)};
         }

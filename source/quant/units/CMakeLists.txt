@@ -2,6 +2,7 @@ add_library(units SHARED
     ../units.h
     Scalar.h
     Vector.h
+    AxisAngle.h
 
     time.h
     time_fwd.h

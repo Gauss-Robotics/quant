@@ -48,7 +48,7 @@ namespace quant::geometry
     inline std::ostream&
     operator<<(std::ostream& os, Scalar const& v)
     {
-        return os << "Scalar " << v.to_string();
+        return os << v.to_string();
     }
 
 }  // namespace quant::geometry
