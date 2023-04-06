@@ -23,15 +23,15 @@ namespace quant::units::distance
         }
 
         static Distance
-        meters(double meters)
+        meters(geometry::Scalar meters)
         {
-            return {meters * m2mm};
+            return {meters * constants::m2mm};
         }
 
-        double
+        Scalar
         to_millimeters() const
         {
-            return _representation;
+            return {_representation, constants::names::distance, constants::symbols::millimeters};
         }
 
         // Operators.
