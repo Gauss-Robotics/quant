@@ -36,6 +36,7 @@ add_library(units SHARED
     velocity/Twist.cpp
     velocity/LinearVelocityDifference.h
     velocity/AngularVelocityDifference.h
+    velocity/TwistDifference.h
 
     acceleration.h
     acceleration_fwd.h
@@ -44,6 +45,10 @@ add_library(units SHARED
     acceleration/LinearAcceleration.cpp
     acceleration/AngularAcceleration.h
     acceleration/AngularAcceleration.cpp
+    acceleration/SpatialAcceleration.h
+    acceleration/LinearAccelerationDifference.h
+    acceleration/AngularAccelerationDifference.h
+    acceleration/SpatialAccelerationDifference.h
 
     jerk.h
     jerk_fwd.h
@@ -52,6 +57,10 @@ add_library(units SHARED
     jerk/LinearJerk.cpp
     jerk/AngularJerk.h
     jerk/AngularJerk.cpp
+    jerk/SpatialJerk.h
+    jerk/LinearJerkDifference.h
+    jerk/AngularJerkDifference.h
+    jerk/SpatialJerkDifference.h
 
     distance.h
     distance_fwd.h
@@ -63,15 +72,23 @@ add_library(units SHARED
     speed_constants.h
     speed/Speed.h
     speed/Speed.cpp
+    speed/SpeedDifference.h
 
     mass.h
     mass_fwd.h
     mass_constants.h
     mass/Mass.h
+    mass/MassDifference.h
 
     momentum.h
     momentum_fwd.h
     momentum_constants.h
+    momentum/LinearMomentum.h
+    momentum/AngularMomentum.h
+    momentum/SpatialMomentum.h
+    momentum/LinearMomentumDifference.h
+    momentum/AngularMomentumDifference.h
+    momentum/SpatialMomentumDifference.h
 
     force.h
     force_fwd.h
@@ -84,6 +101,7 @@ add_library(units SHARED
     force/Wrench.cpp
     force/ForceDifference.h
     force/TorqueDifference.h
+    force/WrenchDifference.h
 
     temperature.h
     temperature_fwd.h
