@@ -1,6 +1,8 @@
 #pragma once
 
 #include <quant/geometry/ScalarState.h>
+#include <quant/units/Scalar.h>
+#include <quant/units/speed_constants.h>
 #include <quant/units/speed_fwd.h>
 #include <quant/units/velocity_fwd.h>
 
@@ -11,8 +13,6 @@
 namespace quant::units::speed
 {
 
-    constexpr double m2mm = 1'000;
-
     class Speed : public geometry::ScalarState<Domain>
     {
 
@@ -20,21 +20,29 @@ namespace quant::units::speed
         Speed(quant::units::velocity::LinearVelocity const& vel);
 
         static Speed
-        millimeters_per_second(double millimeters_per_second)
+        millimeters_per_second(geometry::Scalar millimeters_per_second)
         {
             return {millimeters_per_second};
         }
 
         static Speed
-        meters_per_second(double meters_per_second)
+        meters_per_second(geometry::Scalar meters_per_second)
         {
-            return {meters_per_second * m2mm};
+            return {meters_per_second * constants::mps2mmps};
         }
 
-        double
+        Scalar
         to_millimeters_per_second() const
         {
-            return _representation;
+            return {_representation, constants::speed_name, constants::millimeters_per_second};
+        }
+
+        Scalar
+        to_meters_per_second() const
+        {
+            return {_representation * constants::mmps2mps,
+                    constants::speed_name,
+                    constants::meters_per_second};
         }
 
         // Operators.

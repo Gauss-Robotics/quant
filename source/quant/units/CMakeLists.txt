@@ -55,10 +55,12 @@ add_library(units SHARED
 
     distance.h
     distance_fwd.h
+    distance_constants.h
     distance/Distance.h
 
     speed.h
     speed_fwd.h
+    speed_constants.h
     speed/Speed.h
     speed/Speed.cpp
 
@@ -66,6 +68,10 @@ add_library(units SHARED
     mass_fwd.h
     mass_constants.h
     mass/Mass.h
+
+    momentum.h
+    momentum_fwd.h
+    momentum_constants.h
 
     force.h
     force_fwd.h
@@ -81,7 +87,9 @@ add_library(units SHARED
 
     temperature.h
     temperature_fwd.h
+    temperature_constants.h
     temperature/Temperature.h
+    temperature/TemperatureDifference.h
 )
 
 set_target_properties(units

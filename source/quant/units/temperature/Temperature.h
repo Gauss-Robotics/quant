@@ -1,6 +1,8 @@
 #pragma once
 
 #include <quant/geometry/ScalarState.h>
+#include <quant/units/Scalar.h>
+#include <quant/units/temperature_constants.h>
 #include <quant/units/temperature_fwd.h>
 
 #include <cstdint>
@@ -10,72 +12,59 @@
 namespace quant::units::temperature
 {
 
-    constexpr double celsius2kelvin_offset = 273.15;
-    constexpr double celsius2fahrenheit_factor = 9. / 5.;
-    constexpr double celsius2fahrenheit_offset = 32;
-
-    constexpr double kelvin2celsius_offset = -celsius2kelvin_offset;
-    constexpr double fahrenheit2celsius_factor = 5. / 9.;
-    constexpr double fahrenheit2celsius_offset = -celsius2fahrenheit_offset;
-    constexpr double fahrenheit2rankine_offset = 459.67;
-
-    constexpr double celsius2rankine_offset = celsius2fahrenheit_offset + fahrenheit2rankine_offset;
-    constexpr double rankine2celsius_offset = -celsius2rankine_offset;
-    constexpr double rankine2celsius_factor = fahrenheit2celsius_factor;
-
     class Temperature : geometry::ScalarState<Domain>
     {
 
     public:
         static Temperature
-        degree_celcius(double celsius)
+        degree_celcius(geometry::Scalar celsius)
         {
             return {celsius};
         }
 
         static Temperature
-        kelvin(double kelvin)
+        kelvin(geometry::Scalar kelvin)
         {
-            return {kelvin + kelvin2celsius_offset};
+            return {kelvin + constants::k2c_offset};
         }
 
         static Temperature
-        degree_fahrenheit(double fahrenheit)
+        degree_fahrenheit(geometry::Scalar fahrenheit)
         {
-            return {(fahrenheit + fahrenheit2celsius_offset) * fahrenheit2celsius_factor};
+            return {(fahrenheit + constants::f2c_offset) * constants::f2c_factor};
         }
 
         static Temperature
-        degree_rankine(double rankine)
+        degree_rankine(geometry::Scalar rankine)
         {
-            return {(rankine + rankine2celsius_offset) * rankine2celsius_factor};
+            return {(rankine + constants::ra2c_offset) * constants::ra2c_factor};
         }
 
         std::string
         to_string() const;
 
-        double
+        Scalar
         to_degree_celsius() const
         {
-            return _representation;
+            return {_representation, constants::temperature_name, constants::degree_celsius};
         }
 
-        double
+        Scalar
         to_kelvin() const
         {
-            return _representation + celsius2kelvin_offset;
+            return _representation + constants::c2k_offset;
         }
 
-        double
+        Scalar
         to_degree_fahrenheit() const
         {
-            return _representation * celsius2fahrenheit_factor + celsius2fahrenheit_offset;
+            return _representation * constants::c2f_factor + constants::c2f_offset;
         }
 
-        double
+        Scalar
         to_degree_rankine() const
         {
-            return _representation * celsius2fahrenheit_factor + celsius2rankine_offset;
+            return _representation * constants::c2f_factor + constants::c2ra_offset;
         }
 
         // Operators.

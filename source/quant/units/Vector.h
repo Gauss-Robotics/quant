@@ -20,6 +20,12 @@ namespace quant::units
             ;
         }
 
+        Vector(Vector const vector, std::string_view quantity_name, std::string_view unit) :
+            geometry::Vector(vector), quantity_name{quantity_name}, unit{unit}
+        {
+            ;
+        }
+
         std::string
         to_string() const
         {

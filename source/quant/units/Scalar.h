@@ -12,9 +12,13 @@ namespace quant::units
     {
 
     public:
-        Scalar(geometry::Scalar const scalar,
-               std::string_view quantity_name,
-               std::string_view unit) :
+        Scalar(geometry::Scalar scalar, std::string_view quantity_name, std::string_view unit) :
+            geometry::Scalar(scalar), quantity_name{quantity_name}, unit{unit}
+        {
+            ;
+        }
+
+        Scalar(Scalar scalar, std::string_view quantity_name, std::string_view unit) :
             geometry::Scalar(scalar), quantity_name{quantity_name}, unit{unit}
         {
             ;
