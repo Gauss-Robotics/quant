@@ -2,11 +2,12 @@
 
 #include <quant/geometry/ScalarState.h>
 #include <quant/units/Scalar.h>
+#include <quant/units/distance/Distance.h>
 #include <quant/units/speed/constants.h>
 #include <quant/units/speed_fwd.h>
+#include <quant/units/time/Duration.h>
 #include <quant/units/velocity_fwd.h>
 
-#include <cstdint>
 #include <ostream>
 #include <string>
 
@@ -47,13 +48,25 @@ namespace quant::units::speed
                     constants::symbols::meters_per_second};
         }
 
-        // Operators.
-
     protected:
         using geometry::ScalarState<Domain>::ScalarState;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, Speed const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, Speed const& rhs)
+    {
+        return out << rhs.to_millimeters_per_second();
+    }
 
 }  // namespace quant::units::speed
+
+namespace quant
+{
+
+    inline Speed
+    operator/(Distance const& lhs, Duration const& rhs)
+    {
+        return Speed::millimeters_per_second(lhs.to_millimeters() / rhs.to_seconds());
+    }
+
+}  // namespace quant

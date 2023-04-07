@@ -1,8 +1,8 @@
 #pragma once
 
 #include <quant/geometry/LinearState.h>
-#include <quant/units/position/LinearDisplacement.h>
-#include <quant/units/position/Position.h>
+#include <quant/units/Vector.h>
+#include <quant/units/position_fwd.h>
 #include <quant/units/speed/Speed.h>
 #include <quant/units/time/Duration.h>
 #include <quant/units/velocity/constants.h>
@@ -69,10 +69,10 @@ namespace quant::units::velocity
 
 }  // namespace quant::units::velocity
 
-namespace quant::units::position
+namespace quant
 {
 
-    velocity::LinearVelocity
+    LinearVelocity
     operator/(LinearDisplacement const& dx, Duration const& dt);
 
-}  // namespace quant::units::position
+}  // namespace quant

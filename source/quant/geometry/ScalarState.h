@@ -56,19 +56,19 @@ namespace quant::geometry
         bool
         operator==(typename Domain::State const& rhs) const
         {
-            return _representation == rhs.representation_;
+            return _representation == rhs._representation;
         }
 
         bool
         operator!=(typename Domain::State const& rhs) const
         {
-            return _representation != rhs.representation_;
+            return _representation != rhs._representation;
         }
 
         bool
         is_approx(typename Domain::State const& rhs, double tolerance) const
         {
-            return std::abs(_representation - rhs.representation_) < tolerance;
+            return std::abs(_representation - rhs._representation) < tolerance;
         }
 
         using GeometricRepresentationType = double;
