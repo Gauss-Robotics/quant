@@ -13,8 +13,6 @@ namespace quant::units::velocity
 
     public:
         using AngularDifference<Domain>::AngularDifference;
-
-        using StateType = AngularVelocity;
     };
 
 }  // namespace quant::units::velocity

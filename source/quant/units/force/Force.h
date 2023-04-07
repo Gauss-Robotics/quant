@@ -6,6 +6,8 @@
 #include <quant/units/force/constants.h>
 #include <quant/units/force_fwd.h>
 #include <quant/units/mass/Mass.h>
+#include <quant/units/momentum/LinearImpulse.h>
+#include <quant/units/time/Duration.h>
 
 #include <Eigen/Geometry>
 
@@ -47,6 +49,12 @@ namespace quant
     operator*(Mass const& lhs, LinearAcceleration const& rhs)
     {
         return Force::newton(rhs.to_meters_per_second_squared() * lhs.to_kilograms());
+    }
+
+    inline Force
+    operator/(LinearImpulse const& lhs, Duration const& rhs)
+    {
+        return Force::newton(lhs.to_newton_seconds() / rhs.to_seconds());
     }
 
 }  // namespace quant

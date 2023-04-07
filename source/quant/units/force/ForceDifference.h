@@ -12,8 +12,6 @@ namespace quant::units::force
 
     public:
         using LinearDifference<Domain>::LinearDifference;
-
-        using StateType = Force;
     };
 
 }  // namespace quant::units::force

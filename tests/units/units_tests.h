@@ -264,6 +264,42 @@ TEST_CASE("testing mass")
     // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 }
 
+TEST_CASE("testing momentum")
+{
+    // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+
+    SUBCASE("basic constructions")
+    {
+        LinearMomentum const p = LinearMomentum::kilogram_meters_per_second({.x = 2.7});
+
+        CHECK(p == Circa(LinearMomentum::kilogram_meters_per_second({.x = 2.7})));
+        CHECK(p.to_kilogram_meters_per_second().x == Circa(2.7));
+        CHECK(p.to_kilogram_meters_per_second().unit_symbol == "kg⋅m/s");
+    }
+
+    SUBCASE("constructing operators")
+    {
+        Mass const m = Mass::kilograms(2);
+        LinearVelocity const v = LinearVelocity::meters_per_second({.y = 8});
+
+        LinearMomentum const p = m * v;
+
+        CHECK(p == Circa(LinearMomentum::kilogram_meters_per_second({.y = 16})));
+    }
+
+    SUBCASE("calculate force from impulse and duration")
+    {
+        LinearImpulse const dp = LinearImpulse::newton_seconds({.z = 17});
+        Duration const dt = Duration::milliseconds(800);
+
+        Force const f = dp / dt;
+
+        CHECK(f == Circa(Force::newton({.z = 21.25})));
+    }
+
+    // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+}
+
 TEST_CASE("testing force")
 {
     SUBCASE("basic constructions")

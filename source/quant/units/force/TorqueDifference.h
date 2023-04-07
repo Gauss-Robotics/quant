@@ -19,8 +19,6 @@ namespace quant::units::force
         {
             return TorqueDifference{Torque::newton_meters(aa)};
         }
-
-        using StateType = Torque;
     };
 
 }  // namespace quant::units::force

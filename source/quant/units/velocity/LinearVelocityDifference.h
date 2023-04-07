@@ -12,8 +12,6 @@ namespace quant::units::velocity
 
     public:
         using LinearDifference<Domain>::LinearDifference;
-
-        using StateType = LinearVelocity;
     };
 
 }  // namespace quant::units::velocity

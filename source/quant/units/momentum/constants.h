@@ -10,11 +10,15 @@ namespace quant::units::momentum::constants
         constexpr std::string_view linear_momentum = "Linear Momentum";
         constexpr std::string_view angular_momentum = "Angular Momentum";
         constexpr std::string_view spatial_momentum = "Spatial Momentum";
-        constexpr std::string_view linear_momentum_difference = "Linear Momentum Difference";
-        constexpr std::string_view angular_momentum_difference = "Angular Momentum Difference";
-        constexpr std::string_view spatial_momentum_difference = "Spatial Momentum Difference";
+        constexpr std::string_view linear_impulse = "Linear Impulse";
+        constexpr std::string_view angular_impulse = "Angular Impulse";
+        constexpr std::string_view spatial_impulse = "Spatial Impulse";
 
         constexpr std::string_view kilogram_meters_per_second = "Kilogram Meters per Second";
+        constexpr std::string_view newton_seconds = "Newton Seconds";
+        constexpr std::string_view kilogram_meters_squared_per_second =
+            "Kilogram Meters Squared per Second";
+        constexpr std::string_view newton_meter_seconds = "Newton Meter Seconds";
 
     }  // namespace names
 
@@ -22,6 +26,9 @@ namespace quant::units::momentum::constants
     {
 
         constexpr std::string_view kilogram_meters_per_second = "kg⋅m/s";
+        constexpr std::string_view newton_seconds = "Ns";
+        constexpr std::string_view kilogram_meters_squared_per_second = "kg⋅m²/s";
+        constexpr std::string_view newton_meter_seconds = "Nms";
 
     }  // namespace symbols
 

@@ -87,9 +87,9 @@ add_library(units SHARED
     momentum/LinearMomentum.h
     momentum/AngularMomentum.h
     momentum/SpatialMomentum.h
-    momentum/LinearMomentumDifference.h
-    momentum/AngularMomentumDifference.h
-    momentum/SpatialMomentumDifference.h
+    momentum/LinearImpulse.h
+    momentum/AngularImpulse.h
+    momentum/SpatialImpulse.h
 
     force.h
     force_fwd.h

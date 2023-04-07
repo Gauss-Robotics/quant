@@ -7,18 +7,18 @@ namespace quant::units::momentum
     class AngularMomentum;
     class SpatialMomentum;
 
-    class LinearMomentumDifference;
-    class AngularMomentumDifference;
-    class SpatialMomentumDifference;
+    class LinearImpulse;
+    class AngularImpulse;
+    class SpatialImpulse;
 
     struct Domain
     {
         using LinearState = LinearMomentum;
         using AngularState = AngularMomentum;
         using SpatialState = SpatialMomentum;
-        using LinearDifference = LinearMomentumDifference;
-        using AngularDifference = AngularMomentumDifference;
-        using SpatialDifference = SpatialMomentumDifference;
+        using LinearDifference = LinearImpulse;
+        using AngularDifference = AngularImpulse;
+        using SpatialDifference = SpatialImpulse;
     };
 
 }  // namespace quant::units::momentum
@@ -30,8 +30,8 @@ namespace quant
     using units::momentum::LinearMomentum;
     using units::momentum::SpatialMomentum;
 
-    using units::momentum::AngularMomentumDifference;
-    using units::momentum::LinearMomentumDifference;
-    using units::momentum::SpatialMomentumDifference;
+    using units::momentum::AngularImpulse;
+    using units::momentum::LinearImpulse;
+    using units::momentum::SpatialImpulse;
 
 }  // namespace quant
