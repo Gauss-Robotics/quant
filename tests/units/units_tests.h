@@ -12,6 +12,8 @@
 
 using namespace quant;  // NOLINT
 
+// NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+
 TEST_CASE("testing time")
 {
     SUBCASE("basic time point constructions")
@@ -37,8 +39,6 @@ TEST_CASE("testing time")
 
     SUBCASE("basic time point conversions")
     {
-        // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
-
         TimePoint const t1_down = TimePoint::microseconds(499);
         CHECK(t1_down.to_milliseconds() == Circa(0.499));
         TimePoint const t1_up = TimePoint::microseconds(500);
@@ -63,14 +63,10 @@ TEST_CASE("testing time")
         CHECK(t5_down.to_days() == Circa(0.45833));
         TimePoint const t5_up = TimePoint::hours(12);
         CHECK(t5_up.to_days() == Circa(0.5));
-
-        // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
     }
 
     SUBCASE("basic duration conversions")
     {
-        // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
-
         Duration const t1_down = Duration::microseconds(499);
         CHECK(t1_down.to_milliseconds() == Circa(0.499));
         Duration const t1_up = Duration::microseconds(500);
@@ -95,8 +91,6 @@ TEST_CASE("testing time")
         CHECK(t5_down.to_days() == Circa(0.45833));
         Duration const t5_up = Duration::hours(12);
         CHECK(t5_up.to_days() == Circa(0.5));
-
-        // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
     }
 
     SUBCASE("duration as difference of time point")
@@ -238,8 +232,6 @@ TEST_CASE("testing velocity")
 
 TEST_CASE("testing mass")
 {
-    // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
-
     SUBCASE("basic constructions")
     {
         Mass const m1 = Mass::milligrams(100);
@@ -260,14 +252,10 @@ TEST_CASE("testing mass")
         Mass const m2 = Mass::grams(1'234);
         CHECK(m2.to_kilograms() == 1.234);
     }
-
-    // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 }
 
 TEST_CASE("testing momentum")
 {
-    // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
-
     SUBCASE("basic constructions")
     {
         LinearMomentum const p = LinearMomentum::kilogram_meters_per_second({.x = 2.7});
@@ -277,7 +265,7 @@ TEST_CASE("testing momentum")
         CHECK(p.to_kilogram_meters_per_second().unit_symbol == "kg⋅m/s");
     }
 
-    SUBCASE("constructing operators")
+    SUBCASE("construction from mass and velocity")
     {
         Mass const m = Mass::kilograms(2);
         LinearVelocity const v = LinearVelocity::meters_per_second({.y = 8});
@@ -286,18 +274,6 @@ TEST_CASE("testing momentum")
 
         CHECK(p == Circa(LinearMomentum::kilogram_meters_per_second({.y = 16})));
     }
-
-    SUBCASE("calculate force from impulse and duration")
-    {
-        LinearImpulse const dp = LinearImpulse::newton_seconds({.z = 17});
-        Duration const dt = Duration::milliseconds(800);
-
-        Force const f = dp / dt;
-
-        CHECK(f == Circa(Force::newton({.z = 21.25})));
-    }
-
-    // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 }
 
 TEST_CASE("testing force")
@@ -319,25 +295,29 @@ TEST_CASE("testing force")
         CHECK(w3.angular() == Circa(t));
     }
 
-    SUBCASE("from acceleration and mass")
+    SUBCASE("construction from acceleration and mass")
     {
-        // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
-
         LinearAcceleration const a = LinearAcceleration::meters_per_second_squared({.x = 2.3});
         Mass const m = Mass::kilograms(2);
 
         Force const f = m * a;
 
         CHECK(f == Circa(Force::newton({.x = 4.6})));
+    }
 
-        // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+    SUBCASE("construction from impulse and duration")
+    {
+        LinearImpulse const dp = LinearImpulse::newton_seconds({.z = 17});
+        Duration const dt = Duration::milliseconds(800);
+
+        Force const f = dp / dt;
+
+        CHECK(f == Circa(Force::newton({.z = 21.25})));
     }
 }
 
 TEST_CASE("testing temperature")
 {
-    // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
-
     SUBCASE("testing canonical zero constructions")
     {
         Temperature const zero_default;
@@ -437,6 +417,6 @@ TEST_CASE("testing temperature")
         CHECK(absolute_zero.to_degree_fahrenheit() == Circa(-459.67));
         CHECK(absolute_zero.to_degree_rankine() == Circa(0));
     }
-
-    // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 }
+
+// NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
