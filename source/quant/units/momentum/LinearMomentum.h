@@ -31,13 +31,19 @@ namespace quant::units::momentum
                     constants::symbols::kilogram_meters_per_second};
         }
 
+        std::string
+        to_string() const
+        {
+            return to_kilogram_meters_per_second().to_string();
+        }
+
         using geometry::LinearState<Domain>::LinearState;
     };
 
     inline std::ostream&
     operator<<(std::ostream& os, LinearMomentum const& rhs)
     {
-        return os << rhs.to_kilogram_meters_per_second();
+        return os << rhs.to_string();
     }
 
 }  // namespace quant::units::momentum

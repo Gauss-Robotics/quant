@@ -12,12 +12,12 @@
 namespace quant::units::temperature
 {
 
-    class Temperature : geometry::ScalarState<Domain>
+    class Temperature : public geometry::ScalarState<Domain>
     {
 
     public:
         static Temperature
-        degree_celcius(geometry::Scalar celsius)
+        degrees_celcius(geometry::Scalar celsius)
         {
             return {celsius};
         }
@@ -29,22 +29,25 @@ namespace quant::units::temperature
         }
 
         static Temperature
-        degree_fahrenheit(geometry::Scalar fahrenheit)
+        degrees_fahrenheit(geometry::Scalar fahrenheit)
         {
             return {(fahrenheit + constants::f2c_offset) * constants::f2c_factor};
         }
 
         static Temperature
-        degree_rankine(geometry::Scalar rankine)
+        degrees_rankine(geometry::Scalar rankine)
         {
             return {(rankine + constants::ra2c_offset) * constants::ra2c_factor};
         }
 
         std::string
-        to_string() const;
+        to_string() const
+        {
+            return to_degrees_celsius().to_string();
+        }
 
         Scalar
-        to_degree_celsius() const
+        to_degrees_celsius() const
         {
             return {
                 _representation, constants::names::temperature, constants::symbols::degree_celsius};
@@ -59,7 +62,7 @@ namespace quant::units::temperature
         }
 
         Scalar
-        to_degree_fahrenheit() const
+        to_degrees_fahrenheit() const
         {
             return {_representation * constants::c2f_factor + constants::c2f_offset,
                     constants::names::temperature,
@@ -67,18 +70,20 @@ namespace quant::units::temperature
         }
 
         Scalar
-        to_degree_rankine() const
+        to_degrees_rankine() const
         {
             return {_representation * constants::c2ra_factor + constants::c2ra_offset,
                     constants::names::temperature,
                     constants::symbols::degree_rankine};
         }
 
-    protected:
         using geometry::ScalarState<Domain>::ScalarState;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, Temperature const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, Temperature const& rhs)
+    {
+        return out << rhs.to_string();
+    }
 
 }  // namespace quant::units::temperature

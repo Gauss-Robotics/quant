@@ -319,6 +319,42 @@ TEST_SUITE("velocity")
 
 TEST_SUITE("mass")
 {
+    TEST_CASE("masses can be trivially constructed")
+    {
+        Mass const m_default;
+        CHECK(m_default == Mass::grams(0));
+
+        Mass const m_zero = Mass::zero();
+        CHECK(m_zero == Mass::grams(0));
+    }
+
+    TEST_CASE("masses can be converted to string")
+    {
+        Mass const m = Mass::grams(0.312);
+
+        // String to automatic unit.
+        CHECK(m.to_string() == "312 mg");
+
+        SUBCASE("masses can be streamed as automatic unit")
+        {
+            std::stringstream ss;
+            ss << m;
+
+            CHECK(ss.str() == "312 mg");
+        }
+
+        // String in specific unit.
+        CHECK(m.to_grams().to_string() == "0.312 g");
+
+        SUBCASE("masses can be streamed as specific unit")
+        {
+            std::stringstream ss;
+            ss << m.to_grams();
+
+            CHECK(ss.str() == "0.312 g");
+        }
+    }
+
     TEST_CASE("basic constructions")
     {
         Mass const m1 = Mass::milligrams(100);
@@ -343,12 +379,37 @@ TEST_SUITE("mass")
 
 TEST_SUITE("momentum")
 {
+    TEST_CASE("linear momentums can be trivially constructed")
+    {
+        LinearMomentum const p_default;
+        CHECK(p_default == LinearMomentum::kilogram_meters_per_second({.x = 0, .y = 0, .z = 0}));
+
+        LinearMomentum const p_zero = LinearMomentum::zero();
+        CHECK(p_zero == LinearMomentum::kilogram_meters_per_second({.x = 0, .y = 0, .z = 0}));
+    }
+
+    TEST_CASE("linear momentums can be converted to string")
+    {
+        LinearMomentum const p =
+            LinearMomentum::kilogram_meters_per_second({.x = 0.1, .y = 0.3, .z = 0});
+
+        // String to automatic unit.
+        CHECK(p.to_string() == "[0.1 0.3 0] kg⋅m/s");
+
+        SUBCASE("linear momentums can be streamed as automatic unit")
+        {
+            std::stringstream ss;
+            ss << p;
+
+            CHECK(ss.str() == "[0.1 0.3 0] kg⋅m/s");
+        }
+    }
+
     TEST_CASE("basic constructions")
     {
         LinearMomentum const p = LinearMomentum::kilogram_meters_per_second({.x = 2.7});
 
         CHECK(p == Circa(LinearMomentum::kilogram_meters_per_second({.x = 2.7})));
-        CHECK(p.to_kilogram_meters_per_second().to_string() == "[2.7 0 0] kg⋅m/s");
     }
 
     TEST_CASE("linear momentum can be constructed from mass times velocity")
@@ -365,6 +426,31 @@ TEST_SUITE("momentum")
 
 TEST_SUITE("force")
 {
+    TEST_CASE("forces can be trivially constructed")
+    {
+        Force const f_default;
+        CHECK(f_default == Force::newton({.x = 0, .y = 0, .z = 0}));
+
+        Force const f_zero = Force::zero();
+        CHECK(f_zero == Force::newton({.x = 0, .y = 0, .z = 0}));
+    }
+
+    TEST_CASE("forces can be converted to string")
+    {
+        Force const f = Force::newton({.x = 0.1, .y = 0.3, .z = 0});
+
+        // String to automatic unit.
+        CHECK(f.to_string() == "[0.1 0.3 0] N");
+
+        SUBCASE("forces can be streamed as automatic unit")
+        {
+            std::stringstream ss;
+            ss << f;
+
+            CHECK(ss.str() == "[0.1 0.3 0] N");
+        }
+    }
+
     TEST_CASE("basic constructions")
     {
         Force const f = Force::newton(Vector({.y = 100}));
@@ -405,48 +491,84 @@ TEST_SUITE("force")
 
 TEST_SUITE("temperature")
 {
+    TEST_CASE("temperatures can be trivially constructed")
+    {
+        Temperature const t_default;
+        CHECK(t_default == Temperature::degrees_celcius(0));
+
+        Temperature const t_zero = Temperature::zero();
+        CHECK(t_zero == Temperature::degrees_celcius(0));
+    }
+
+    TEST_CASE("temperatures can be converted to string")
+    {
+        Temperature const t = Temperature::degrees_celcius(15);
+
+        // String to automatic unit.
+        CHECK(t.to_string() == "15 °C");
+
+        SUBCASE("temperatures can be streamed as automatic unit")
+        {
+            std::stringstream ss;
+            ss << t;
+
+            CHECK(ss.str() == "15 °C");
+        }
+
+        // String in specific unit.
+        CHECK(t.to_kelvin().to_string() == "288.15 K");
+
+        SUBCASE("temperatures can be streamed as specific unit")
+        {
+            std::stringstream ss;
+            ss << t.to_kelvin();
+
+            CHECK(ss.str() == "288.15 K");
+        }
+    }
+
     TEST_CASE("testing canonical zero constructions")
     {
         Temperature const zero_default;
 
-        CHECK(zero_default.to_degree_celsius() == 0);
+        CHECK(zero_default.to_degrees_celsius() == 0);
 
-        Temperature const zero_degree_celsius = Temperature::degree_celcius(0);
+        Temperature const zero_degrees_celsius = Temperature::degrees_celcius(0);
 
-        CHECK(zero_degree_celsius.to_degree_celsius() == 0);
+        CHECK(zero_degrees_celsius.to_degrees_celsius() == 0);
 
-        Temperature const zero_degree_celsius_from_kelvin = Temperature::kelvin(273.15);
+        Temperature const zero_degrees_celsius_from_kelvin = Temperature::kelvin(273.15);
 
-        CHECK(zero_degree_celsius_from_kelvin.to_degree_celsius() == 0);
+        CHECK(zero_degrees_celsius_from_kelvin.to_degrees_celsius() == 0);
 
-        Temperature const zero_degree_celsius_from_degree_fahrenheit =
-            Temperature::degree_fahrenheit(32);
+        Temperature const zero_degrees_celsius_from_degrees_fahrenheit =
+            Temperature::degrees_fahrenheit(32);
 
-        CHECK(zero_degree_celsius_from_degree_fahrenheit.to_degree_celsius() == Circa(0));
+        CHECK(zero_degrees_celsius_from_degrees_fahrenheit.to_degrees_celsius() == Circa(0));
 
-        Temperature const zero_degree_celsius_from_degree_rankine =
-            Temperature::degree_rankine(491.67);
+        Temperature const zero_degrees_celsius_from_degrees_rankine =
+            Temperature::degrees_rankine(491.67);
 
-        CHECK(zero_degree_celsius_from_degree_rankine.to_degree_celsius() == Circa(0));
+        CHECK(zero_degrees_celsius_from_degrees_rankine.to_degrees_celsius() == Circa(0));
     }
 
     TEST_CASE("testing unit-specific zero constructions")
     {
-        Temperature const zero_degree_celsius = Temperature::degree_celcius(0);
+        Temperature const zero_degrees_celsius = Temperature::degrees_celcius(0);
 
-        CHECK(zero_degree_celsius.to_degree_celsius() == 0);
+        CHECK(zero_degrees_celsius.to_degrees_celsius() == 0);
 
         Temperature const zero_kelvin = Temperature::kelvin(0);
 
-        CHECK(zero_kelvin.to_degree_celsius() == -273.15);
+        CHECK(zero_kelvin.to_degrees_celsius() == -273.15);
 
-        Temperature const zero_degree_fahrenheit = Temperature::degree_fahrenheit(0);
+        Temperature const zero_degrees_fahrenheit = Temperature::degrees_fahrenheit(0);
 
-        CHECK(zero_degree_fahrenheit.to_degree_celsius() == Circa(-17.7778));
+        CHECK(zero_degrees_fahrenheit.to_degrees_celsius() == Circa(-17.7778));
 
-        Temperature const zero_degree_rankine = Temperature::degree_rankine(0);
+        Temperature const zero_degrees_rankine = Temperature::degrees_rankine(0);
 
-        CHECK(zero_degree_rankine.to_degree_celsius() == Circa(-273.15));
+        CHECK(zero_degrees_rankine.to_degrees_celsius() == Circa(-273.15));
     }
 
     TEST_CASE("temperatures can be converted to several fix points")
@@ -454,55 +576,55 @@ TEST_SUITE("temperature")
         // Data for these unit tests taken from the comparison table from the German wikipedia:
         // https://de.wikipedia.org/wiki/Grad_Fahrenheit
 
-        Temperature const water_boiling_point = Temperature::degree_celcius(100);
+        Temperature const water_boiling_point = Temperature::degrees_celcius(100);
 
-        CHECK(water_boiling_point.to_degree_celsius() == 100);
+        CHECK(water_boiling_point.to_degrees_celsius() == 100);
         CHECK(water_boiling_point.to_kelvin() == 373.15);
-        CHECK(water_boiling_point.to_degree_fahrenheit() == 212);
-        CHECK(water_boiling_point.to_degree_rankine() == Circa(671.67));
+        CHECK(water_boiling_point.to_degrees_fahrenheit() == 212);
+        CHECK(water_boiling_point.to_degrees_rankine() == Circa(671.67));
 
         // According to Fahrenheit.
-        Temperature const body_temperature_human = Temperature::degree_fahrenheit(96);
+        Temperature const body_temperature_human = Temperature::degrees_fahrenheit(96);
 
-        CHECK(body_temperature_human.to_degree_celsius() == Circa(35.5556));
-        CHECK(body_temperature_human.to_degree_fahrenheit() == Circa(96));
+        CHECK(body_temperature_human.to_degrees_celsius() == Circa(35.5556));
+        CHECK(body_temperature_human.to_degrees_fahrenheit() == Circa(96));
         CHECK(body_temperature_human.to_kelvin() == Circa(308.705));
-        CHECK(body_temperature_human.to_degree_rankine() == Circa(555.67));
+        CHECK(body_temperature_human.to_degrees_rankine() == Circa(555.67));
 
         Temperature const water_triple_point = Temperature::kelvin(273.16);
 
-        CHECK(water_triple_point.to_degree_celsius() == Circa(0.01));
+        CHECK(water_triple_point.to_degrees_celsius() == Circa(0.01));
         CHECK(water_triple_point.to_kelvin() == Circa(273.16));
-        CHECK(water_triple_point.to_degree_fahrenheit() == Circa(32.018));
-        CHECK(water_triple_point.to_degree_rankine() == Circa(491.688));
+        CHECK(water_triple_point.to_degrees_fahrenheit() == Circa(32.018));
+        CHECK(water_triple_point.to_degrees_rankine() == Circa(491.688));
 
-        Temperature const water_freezing_point_c = Temperature::degree_celcius(0);
+        Temperature const water_freezing_point_c = Temperature::degrees_celcius(0);
 
-        CHECK(water_freezing_point_c.to_degree_celsius() == Circa(0));
+        CHECK(water_freezing_point_c.to_degrees_celsius() == Circa(0));
         CHECK(water_freezing_point_c.to_kelvin() == Circa(273.15));
-        CHECK(water_freezing_point_c.to_degree_fahrenheit() == Circa(32));
-        CHECK(water_freezing_point_c.to_degree_rankine() == Circa(491.67));
+        CHECK(water_freezing_point_c.to_degrees_fahrenheit() == Circa(32));
+        CHECK(water_freezing_point_c.to_degrees_rankine() == Circa(491.67));
 
-        Temperature const water_freezing_point_f = Temperature::degree_fahrenheit(32);
+        Temperature const water_freezing_point_f = Temperature::degrees_fahrenheit(32);
 
-        CHECK(water_freezing_point_f.to_degree_celsius() == Circa(0));
+        CHECK(water_freezing_point_f.to_degrees_celsius() == Circa(0));
         CHECK(water_freezing_point_f.to_kelvin() == Circa(273.15));
-        CHECK(water_freezing_point_f.to_degree_fahrenheit() == Circa(32));
-        CHECK(water_freezing_point_f.to_degree_rankine() == Circa(491.67));
+        CHECK(water_freezing_point_f.to_degrees_fahrenheit() == Circa(32));
+        CHECK(water_freezing_point_f.to_degrees_rankine() == Circa(491.67));
 
-        Temperature const nh4cl_ice_water_mix = Temperature::degree_fahrenheit(0);
+        Temperature const nh4cl_ice_water_mix = Temperature::degrees_fahrenheit(0);
 
-        CHECK(nh4cl_ice_water_mix.to_degree_celsius() == Circa(-17.7778));
+        CHECK(nh4cl_ice_water_mix.to_degrees_celsius() == Circa(-17.7778));
         CHECK(nh4cl_ice_water_mix.to_kelvin() == Circa(255.372));
-        CHECK(nh4cl_ice_water_mix.to_degree_fahrenheit() == Circa(0));
-        CHECK(nh4cl_ice_water_mix.to_degree_rankine() == Circa(459.67));
+        CHECK(nh4cl_ice_water_mix.to_degrees_fahrenheit() == Circa(0));
+        CHECK(nh4cl_ice_water_mix.to_degrees_rankine() == Circa(459.67));
 
         Temperature const absolute_zero = Temperature::kelvin(0);
 
-        CHECK(absolute_zero.to_degree_celsius() == Circa(-273.15));
+        CHECK(absolute_zero.to_degrees_celsius() == Circa(-273.15));
         CHECK(absolute_zero.to_kelvin() == Circa(0));
-        CHECK(absolute_zero.to_degree_fahrenheit() == Circa(-459.67));
-        CHECK(absolute_zero.to_degree_rankine() == Circa(0));
+        CHECK(absolute_zero.to_degrees_fahrenheit() == Circa(-459.67));
+        CHECK(absolute_zero.to_degrees_rankine() == Circa(0));
     }
 }
 

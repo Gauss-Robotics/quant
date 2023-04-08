@@ -31,13 +31,19 @@ namespace quant::units::force
             return {to_vector(), constants::names::force, constants::symbols::newton};
         }
 
+        std::string
+        to_string() const
+        {
+            return to_newton().to_string();
+        }
+
         using geometry::LinearState<Domain>::LinearState;
     };
 
     inline std::ostream&
     operator<<(std::ostream& os, Force const& rhs)
     {
-        return os << rhs.to_newton();
+        return os << rhs.to_string();
     }
 
 }  // namespace quant::units::force

@@ -15,8 +15,6 @@ namespace quant::units::mass
     {
 
     public:
-        Mass();
-
         static Mass
         milligrams(geometry::Scalar milligrams)
         {
@@ -57,11 +55,30 @@ namespace quant::units::mass
             return {_representation, constants::names::mass, constants::symbols::kilograms};
         }
 
-    private:
+        std::string
+        to_string() const
+        {
+            Scalar (Mass::*member_function_ptr)();
+
+            for (auto fn : {&Mass::to_kilograms, &Mass::to_grams})
+            {
+                Scalar s = (this->*fn)();
+                if (s.value > 1)
+                {
+                    return s.to_string();
+                }
+            }
+
+            return to_milligrams().to_string();
+        }
+
         using geometry::ScalarState<Domain>::ScalarState;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, Mass const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, Mass const& rhs)
+    {
+        return out << rhs.to_string();
+    }
 
 }  // namespace quant::units::mass
