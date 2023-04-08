@@ -58,13 +58,30 @@ namespace quant::units::velocity
             return Speed::millimeters_per_second(_representation.norm());
         }
 
+        std::string
+        to_string() const
+        {
+            Vector (LinearVelocity::*member_function_ptr)();
+
+            for (auto fn : {&LinearVelocity::to_meters_per_second})
+            {
+                Vector v = (this->*fn)();
+                if (v.x > 1 or v.y > 1 or v.z > 1)
+                {
+                    return v.to_string();
+                }
+            }
+
+            return to_millimeters_per_second().to_string();
+        }
+
         using geometry::LinearState<Domain>::LinearState;
     };
 
     inline std::ostream&
     operator<<(std::ostream& os, LinearVelocity const& rhs)
     {
-        return os << rhs.to_millimeters_per_second();
+        return os << rhs.to_string();
     }
 
 }  // namespace quant::units::velocity

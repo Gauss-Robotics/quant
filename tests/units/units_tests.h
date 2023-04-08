@@ -223,6 +223,42 @@ TEST_SUITE("position")
 
 TEST_SUITE("velocity")
 {
+    TEST_CASE("linear velocities can be trivially constructed")
+    {
+        LinearVelocity const v_default;
+        CHECK(v_default == LinearVelocity::millimeters_per_second({.x = 0, .y = 0, .z = 0}));
+
+        LinearVelocity const v_zero = LinearVelocity::zero();
+        CHECK(v_zero == LinearVelocity::millimeters_per_second({.x = 0, .y = 0, .z = 0}));
+    }
+
+    TEST_CASE("linear velocities can be converted to string")
+    {
+        LinearVelocity const v = LinearVelocity::meters_per_second({.x = 0.1, .y = 0.3, .z = 0});
+
+        // String to automatic unit.
+        CHECK(v.to_string() == "[100 300 0] mm/s");
+
+        SUBCASE("linear velocities can be streamed as automatic unit")
+        {
+            std::stringstream ss;
+            ss << v;
+
+            CHECK(ss.str() == "[100 300 0] mm/s");
+        }
+
+        // String in specific unit.
+        CHECK(v.to_meters_per_second().to_string() == "[0.1 0.3 0] m/s");
+
+        SUBCASE("linear velocities can be streamed as specific unit")
+        {
+            std::stringstream ss;
+            ss << v.to_meters_per_second();
+
+            CHECK(ss.str() == "[0.1 0.3 0] m/s");
+        }
+    }
+
     TEST_CASE("angular velocities can be constructed from Eigen")
     {
         Eigen::AngleAxisd const rad_per_sec(M_PI / 2, Eigen::Vector3d(1, 0, 1).normalized());
