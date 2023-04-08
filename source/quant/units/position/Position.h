@@ -43,13 +43,30 @@ namespace quant::units::position
                     constants::symbols::meters};
         }
 
+        std::string
+        to_string() const
+        {
+            Vector (Position::*member_function_ptr)();
+
+            for (auto fn : {&Position::to_meters})
+            {
+                Vector v = (this->*fn)();
+                if (v.x > 1 or v.y > 1 or v.z > 1)
+                {
+                    return v.to_string();
+                }
+            }
+
+            return to_millimeters().to_string();
+        }
+
         using geometry::LinearState<Domain>::LinearState;
     };
 
     inline std::ostream&
     operator<<(std::ostream& os, Position const& rhs)
     {
-        return os << rhs.to_millimeters();
+        return os << rhs.to_string();
     }
 
 }  // namespace quant::units::position

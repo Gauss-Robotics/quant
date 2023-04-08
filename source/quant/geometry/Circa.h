@@ -1,9 +1,9 @@
 #pragma once
 
+#include <quant/geometry/constants.h>
 #include <quant/geometry_fwd.h>
 
 #include <cmath>
-#include <limits>
 #include <ostream>
 #include <type_traits>
 
@@ -40,8 +40,7 @@ namespace quant::geometry
     {
     public:
         Circa(T const& geometric_object) :
-            _geometric_object{geometric_object},
-            _tolerance{static_cast<double>(std::numeric_limits<float>::epsilon()) * 100}
+            _geometric_object{geometric_object}, _tolerance{constants::floating_point_tolerance}
         {
             ;
         }
@@ -89,6 +88,8 @@ namespace quant
     {
         if constexpr (std::is_arithmetic_v<T>)
         {
+            // Equation taken from doctest::Approx with scale=1:
+            // https://github.com/doctest/doctest/blob/ae7a13539fb71f270b87eb2e874fbac80bc8dda2/doctest/doctest.h#L3983-L3987
             return std::fabs(rhs._geometric_object - lhs) <
                    rhs._tolerance *
                        (1 + std::max<double>(std::fabs(lhs), std::fabs(rhs._geometric_object)));

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <quant/geometry/AxisAngle.h>
+#include <quant/geometry/constants.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>
 
@@ -33,14 +34,6 @@ namespace quant::geometry
             return typename Domain::AngularState();
         }
 
-        // Convert.
-
-        std::string
-        to_string() const
-        {
-            return to_axis_angle().to_string();
-        }
-
         // Compare.
 
         bool
@@ -60,7 +53,8 @@ namespace quant::geometry
         }
 
         bool
-        is_approx(typename Domain::AngularState const& rhs, double const tolerance) const
+        is_approx(typename Domain::AngularState const& rhs,
+                  double tolerance = constants::floating_point_tolerance) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
         }

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <quant/geometry/Scalar.h>
+#include <quant/geometry/constants.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>
 
 #include <sstream>
-#include <typeinfo>
 
 namespace quant::geometry
 {
@@ -27,30 +27,6 @@ namespace quant::geometry
             return typename Domain::State(0);
         }
 
-        // Convert.
-
-        std::string
-        to_string(std::string const& quantity_name = "", std::string const& unit = "") const
-        {
-            std::stringstream out;
-            out << "<";
-
-            if (not quantity_name.empty())
-            {
-                out << quantity_name << " ";
-            }
-
-            out << "value=" << _representation;
-
-            if (not unit.empty())
-            {
-                out << unit;
-            }
-
-            out << ">";
-            return out.str();
-        }
-
         // Compare.
 
         bool
@@ -66,7 +42,8 @@ namespace quant::geometry
         }
 
         bool
-        is_approx(typename Domain::State const& rhs, double tolerance) const
+        is_approx(typename Domain::State const& rhs,
+                  double tolerance = constants::floating_point_tolerance) const
         {
             return std::abs(_representation - rhs._representation) < tolerance;
         }

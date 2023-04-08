@@ -1,6 +1,7 @@
 add_library(geometry SHARED
     ../geometry.h
     ../geometry_fwd.h
+    constants.h
 
     # Carrier and conversion types.
     Scalar.h

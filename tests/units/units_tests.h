@@ -16,6 +16,15 @@ using namespace quant;  // NOLINT
 
 TEST_SUITE("time")
 {
+    TEST_CASE("time points can be trivially constructed")
+    {
+        TimePoint const t_default;
+        CHECK(t_default == TimePoint::microseconds(0));
+
+        TimePoint const t_zero = TimePoint::zero();
+        CHECK(t_zero == TimePoint::microseconds(0));
+    }
+
     TEST_CASE("time points can be converted to other units")
     {
         CHECK(TimePoint::microseconds(100).to_microseconds() == 100);
@@ -31,6 +40,42 @@ TEST_SUITE("time")
         CHECK(TimePoint::microseconds(8'640'000'000'000).to_days() == 100);
     }
 
+    TEST_CASE("time points can be converted to string")
+    {
+        TimePoint const t = TimePoint::milliseconds(0.312);
+
+        // String to automatic unit.
+        CHECK(t.to_string() == "312 µs");
+
+        SUBCASE("time point can be streamed as automatic unit")
+        {
+            std::stringstream ss;
+            ss << t;
+
+            CHECK(ss.str() == "312 µs");
+        }
+
+        // String in specific unit.
+        CHECK(t.to_milliseconds().to_string() == "0.312 ms");
+
+        SUBCASE("time point can be streamed as specific unit")
+        {
+            std::stringstream ss;
+            ss << t.to_milliseconds();
+
+            CHECK(ss.str() == "0.312 ms");
+        }
+    }
+
+    TEST_CASE("durations can be trivially constructed")
+    {
+        Duration const d_default;
+        CHECK(d_default == Duration::microseconds(0));
+
+        Duration const d_zero = Duration::zero();
+        CHECK(d_zero == Duration::microseconds(0));
+    }
+
     TEST_CASE("durations can be converted to other units")
     {
         CHECK(Duration::microseconds(100).to_microseconds() == 100);
@@ -44,6 +89,33 @@ TEST_SUITE("time")
         CHECK(Duration::microseconds(6'000'000'000).to_minutes() == 100);
         CHECK(Duration::microseconds(360'000'000'000).to_hours() == 100);
         CHECK(Duration::microseconds(8'640'000'000'000).to_days() == 100);
+    }
+
+    TEST_CASE("durations can be converted to string")
+    {
+        Duration const t = Duration::milliseconds(0.312);
+
+        // String to automatic unit.
+        CHECK(t.to_string() == "312 µs");
+
+        SUBCASE("durations can be streamed as automatic unit")
+        {
+            std::stringstream ss;
+            ss << t;
+
+            CHECK(ss.str() == "312 µs");
+        }
+
+        // String in specific unit.
+        CHECK(t.to_milliseconds().to_string() == "0.312 ms");
+
+        SUBCASE("durations can be streamed as specific unit")
+        {
+            std::stringstream ss;
+            ss << t.to_milliseconds();
+
+            CHECK(ss.str() == "0.312 ms");
+        }
     }
 
     TEST_CASE("duration is the result of a time point difference")
@@ -67,39 +139,61 @@ TEST_SUITE("time")
 
 TEST_SUITE("position")
 {
-    TEST_CASE("testing trivial constructions")
+    TEST_CASE("positions can be trivially constructed")
     {
-        Position const p1;
-        CHECK(p1 == Position::millimeters({.x = 0, .y = 0, .z = 0}));
+        Position const x_default;
+        CHECK(x_default == Position::millimeters({.x = 0, .y = 0, .z = 0}));
 
-        Position const p2 = Position::zero();
-        CHECK(p2 == Position::millimeters({.x = 0, .y = 0, .z = 0}));
-
-        Position const p3 = Position::millimeters({.x = 1, .y = 2, .z = 3});
-        CHECK(p3.to_millimeters().x == 1);
-        CHECK(p3.to_millimeters().y == 2);
-        CHECK(p3.to_millimeters().z == 3);
-        CHECK(p3.to_millimeters().unit_symbol == "mm");
+        Position const x_zero = Position::zero();
+        CHECK(x_zero == Position::millimeters({.x = 0, .y = 0, .z = 0}));
     }
 
-    TEST_CASE("testing operators")
+    TEST_CASE("positions can be converted to string")
     {
-        Position const p = Position::millimeters({.x = 100, .y = 200, .z = 300});
+        Position const x = Position::meters({.x = 0.1, .y = 0.3, .z = 0});
+
+        // String to automatic unit.
+        CHECK(x.to_string() == "[100 300 0] mm");
+
+        SUBCASE("positions can be streamed as automatic unit")
+        {
+            std::stringstream ss;
+            ss << x;
+
+            CHECK(ss.str() == "[100 300 0] mm");
+        }
+
+        // String in specific unit.
+        CHECK(x.to_meters().to_string() == "[0.1 0.3 0] m");
+
+        SUBCASE("positions can be streamed as specific unit")
+        {
+            std::stringstream ss;
+            ss << x.to_meters();
+
+            CHECK(ss.str() == "[0.1 0.3 0] m");
+        }
+    }
+
+    TEST_CASE("positions can be compared for equality and approximate equality")
+    {
+        Position const x = Position::millimeters({.x = 100, .y = 200, .z = 300});
         LinearDisplacement const disturbance =
             LinearDisplacement::millimeters({.x = 1e-14, .z = 1e-15});
-        Position const p_disturbed = disturbance + p;
+        Position const x_disturbed = disturbance + x;
 
-        CHECK(p_disturbed != p);
-        CHECK(p_disturbed == Circa(p));
+        CHECK(x_disturbed != x);
+        CHECK(x_disturbed == Circa(x));
+        CHECK(x_disturbed.is_approx(x));
     }
 
-    TEST_CASE("testing position component access")
+    TEST_CASE("positions can be accessed for individiual components and unit symbols")
     {
-        Position const p1 = Position::millimeters({.x = 100, .y = 200, .z = 300});
-        CHECK(p1.to_millimeters().x == 100);
-        CHECK(p1.to_millimeters().y == 200);
-        CHECK(p1.to_millimeters().z == 300);
-        CHECK(p1.to_millimeters().unit_symbol == "mm");
+        Position const x = Position::millimeters({.x = 100, .y = 200, .z = 300});
+        CHECK(x.to_millimeters().x == 100);
+        CHECK(x.to_millimeters().y == 200);
+        CHECK(x.to_millimeters().z == 300);
+        CHECK(x.to_millimeters().unit_symbol == "mm");
     }
 
     TEST_CASE("testing different operations")

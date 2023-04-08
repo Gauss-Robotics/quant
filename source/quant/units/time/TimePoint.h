@@ -176,58 +176,30 @@ namespace quant::units::time
             return _representation == 0;
         }
 
-        /**
-         * @brief String representation of the current time point in minimal/default format.
-         *
-         * The minimal representation is a float representation with max. 3 decimals. The unit will
-         * be determined by the highest unit whose value is non-zero. For example, 3 seconds and 500
-         * milliseconds => "3.5s".
-         *
-         * @return Formatted time point.
-         */
         std::string
-        to_time_point_string() const
+        to_string() const
         {
-            double time_count = to_microseconds();
-            std::string_view unit = constants::symbols::microseconds;
+            Scalar (TimePoint::*member_function_ptr)();
 
-            if (time_count >= constants::ms2us)
+            for (auto fn : {&TimePoint::to_days,
+                            &TimePoint::to_hours,
+                            &TimePoint::to_minutes,
+                            &TimePoint::to_seconds,
+                            &TimePoint::to_milliseconds})
             {
-                time_count *= constants::us2ms;
-                unit = constants::symbols::milliseconds;
-
-                if (time_count >= constants::s2ms)
+                Scalar s = (this->*fn)();
+                if (s.value > 1)
                 {
-                    time_count *= constants::ms2s;
-                    unit = constants::symbols::seconds;
-
-                    if (time_count >= constants::min2s)
-                    {
-                        time_count *= constants::s2min;
-                        unit = constants::symbols::minutes;
-
-                        if (time_count >= constants::h2min)
-                        {
-                            time_count *= constants::min2h;
-                            unit = constants::symbols::hours;
-
-                            if (time_count >= constants::d2h)
-                            {
-                                time_count *= constants::h2d;
-                                unit = constants::symbols::days;
-                            }
-                        }
-                    }
+                    return s.to_string();
                 }
             }
 
-            std::stringstream ss;
-            ss << std::setprecision(3) << time_count << unit;
-            return ss.str();
+            return to_microseconds().to_string();
         }
 
         /**
-         * @brief String representation of the current time point according to given format string.
+         * @brief String representation of the current time point according to given format
+         * string.
          *
          * The format is according to https://en.cppreference.com/w/cpp/chrono/c/strftime. For
          * milli seconds and micro seconds, special specifiers "%%msec" and "%%usec" were added
@@ -239,7 +211,7 @@ namespace quant::units::time
          * @return Formatted time point.
          */
         std::string
-        to_time_point_string(std::string const& format) const
+        to_string(std::string const& format) const
         {
             constexpr size_t string_buffer_size = 32;
             /*
@@ -274,7 +246,7 @@ namespace quant::units::time
     inline std::ostream&
     operator<<(std::ostream& out, TimePoint const& rhs)
     {
-        return out << rhs.to_time_point_string();
+        return out << rhs.to_string();
     }
 
 }  // namespace quant::units::time

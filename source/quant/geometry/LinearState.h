@@ -1,6 +1,7 @@
 #pragma once
 
 #include <quant/geometry/Vector.h>
+#include <quant/geometry/constants.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
 
 #include <Eigen/Geometry>
@@ -34,20 +35,6 @@ namespace quant::geometry
             return typename Domain::LinearState({.x = 0, .y = 0, .z = 0});
         }
 
-        // Convert.
-
-        /**
-         * @brief toString
-         * @param quantityName
-         * @param unit
-         * @return
-         */
-        std::string
-        to_string() const
-        {
-            return to_vector().to_string();
-        }
-
         // Compare.
 
         bool
@@ -63,7 +50,8 @@ namespace quant::geometry
         }
 
         bool
-        is_approx(typename Domain::LinearState const& rhs, double tolerance) const
+        is_approx(typename Domain::LinearState const& rhs,
+                  double tolerance = constants::floating_point_tolerance) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
         }

@@ -24,12 +24,6 @@ namespace quant::geometry
             ;
         }
 
-        static typename Domain::State
-        zero()
-        {
-            return typename Domain::State::Zero();
-        }
-
         typename Domain::State
         operator+(typename Domain::State const& rhs) const
         {

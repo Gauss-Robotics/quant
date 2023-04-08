@@ -176,9 +176,9 @@ namespace quant::units::time
          * @return Formatted duration.
          */
         std::string
-        to_duration_string() const
+        to_string() const
         {
-            return _difference_object.to_time_point_string();
+            return _difference_object.to_string();
         }
 
         /**
@@ -194,9 +194,9 @@ namespace quant::units::time
          * @return Formatted duration.
          */
         std::string
-        to_duration_string(std::string const& format) const
+        to_string(std::string const& format) const
         {
-            return _difference_object.to_time_point_string(format);
+            return _difference_object.to_string(format);
         }
 
     protected:
@@ -206,7 +206,7 @@ namespace quant::units::time
     inline std::ostream&
     operator<<(std::ostream& out, Duration const& rhs)
     {
-        return out << rhs.to_duration_string();
+        return out << rhs.to_string();
     }
 
 }  // namespace quant::units::time
