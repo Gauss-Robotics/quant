@@ -30,6 +30,28 @@ namespace simple_robot_example
 
             quant::FramedSpatialDisplacement const tcp_left =
                 arm_left.enframe(quant::SpatialDisplacement(), frames.tcp_left);
+
+            quant::FramedSpatialDisplacement const camera =
+                chest.enframe(quant::SpatialDisplacement(), frames.camera);
+        }
+
+        void
+        look_at(quant::FramedPose const& location)
+        {
+            ;
+        }
+
+        quant::FramedPose
+        detect_object() const
+        {
+            quant::Pose const object_pose;
+            return quant::FramedPose(object_pose, {.name = "Object", .base_frame = frames.camera});
+        }
+
+        void
+        grasp(quant::FramedPose const& grasp)
+        {
+            ;
         }
 
         struct RobotFrames
@@ -40,10 +62,11 @@ namespace simple_robot_example
             std::string tcp_right = "Robot::RightTCP";
             std::string arm_left = "Robot::LeftArm";
             std::string tcp_left = "Robot::LeftTCP";
+            std::string camera = "Robot::Camera";
         } const frames;
 
     private:
-        std::unordered_map<std::string, quant::FramedSpatialDisplacement> frames_;
+        std::unordered_map<std::string, quant::FramedSpatialDisplacement> _frames;
     };
 
 }  // namespace simple_robot_example
