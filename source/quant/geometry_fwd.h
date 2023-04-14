@@ -93,6 +93,12 @@ namespace quant::traits
     inline constexpr bool
         is_state<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
 
+    template <typename Type, typename = void>
+    inline constexpr bool is_difference = false;
+
+    template <typename Type>
+    inline constexpr bool is_difference<Type, std::void_t<typename Type::StateType>> = true;
+
 }  // namespace quant::traits
 
 namespace quant

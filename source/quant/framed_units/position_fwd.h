@@ -73,6 +73,30 @@ namespace quant::traits
     };
 
     template <>
+    struct DefineFramedTypeOf<quant::units::position::Orientation>
+    {
+        using FramedType = quant::framed_units::position::Orientation;
+    };
+
+    template <>
+    struct DefineFramedTypeOf<quant::units::position::Pose>
+    {
+        using FramedType = quant::framed_units::position::Pose;
+    };
+
+    template <>
+    struct DefineFramedTypeOf<quant::units::position::LinearDisplacement>
+    {
+        using FramedType = quant::framed_units::position::LinearDisplacement;
+    };
+
+    template <>
+    struct DefineFramedTypeOf<quant::units::position::AngularDisplacement>
+    {
+        using FramedType = quant::framed_units::position::AngularDisplacement;
+    };
+
+    template <>
     struct DefineFramedTypeOf<quant::units::position::SpatialDisplacement>
     {
         using FramedType = quant::framed_units::position::SpatialDisplacement;

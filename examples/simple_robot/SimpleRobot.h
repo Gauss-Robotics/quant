@@ -2,8 +2,8 @@
 
 #include <quant/framed_units/position.h>
 
+#include <map>
 #include <string>
-#include <unordered_map>
 
 namespace simple_robot_example
 {
@@ -11,10 +11,10 @@ namespace simple_robot_example
     class SimpleRobot
     {
     public:
-        SimpleRobot(quant::FramedSpatialDisplacement const& global_frame)
+        SimpleRobot(quant::FramedSpatialDisplacement const& origin)
         {
             quant::FramedSpatialDisplacement const root =
-                global_frame.enframe(quant::SpatialDisplacement(), frames.root);
+                origin.enframe(quant::SpatialDisplacement(), frames.root);
 
             quant::FramedSpatialDisplacement const chest =
                 root.enframe(quant::SpatialDisplacement(), frames.chest);
@@ -33,12 +33,13 @@ namespace simple_robot_example
 
             quant::FramedSpatialDisplacement const camera =
                 chest.enframe(quant::SpatialDisplacement(), frames.camera);
+
+            _frames[std::string(root.name)] = root;
         }
 
         void
         look_at(quant::FramedPose const& location)
         {
-            ;
         }
 
         quant::FramedPose
@@ -66,7 +67,7 @@ namespace simple_robot_example
         } const frames;
 
     private:
-        std::unordered_map<std::string, quant::FramedSpatialDisplacement> _frames;
+        std::map<std::string, quant::FramedSpatialDisplacement> _frames;
     };
 
 }  // namespace simple_robot_example

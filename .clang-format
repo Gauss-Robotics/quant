@@ -30,6 +30,8 @@ IndentCaseLabels: true
 
 # AlignConsecutiveAssignments: Consecutive
 AlignTrailingComments: false
+AlignAfterOpenBracket: AlwaysBreak
+LambdaBodyIndentation: Signature
 
 BinPackArguments: false
 BinPackParameters: false

@@ -20,6 +20,12 @@ namespace quant::units::position
             return LinearDisplacement{Position::millimeters(xyz)};
         }
 
+        static LinearDisplacement
+        meters(geometry::Vector xyz)
+        {
+            return LinearDisplacement{Position::meters(xyz)};
+        }
+
         Vector
         to_millimeters() const
         {

@@ -26,27 +26,27 @@ TEST_CASE("testing basic constructions")
 
 TEST_CASE("testing enframing")
 {
-    Position const p = Position::zero();
+    LinearDisplacement const p = LinearDisplacement::zero();
 
-    Framed<Position> const origin{p, {.name = "::Origin", .base_frame = ""}};
+    Framed<LinearDisplacement> const origin{p, {.name = "::Origin", .base_frame = ""}};
 
     CHECK(origin.name == "::Origin");
     CHECK(origin.base_frame == "");
 
-    Framed<Position> const robot_root =
-        origin.enframe(Position::meters({.x = 1}), "ARMAR-6::RobotRoot");
+    Framed<LinearDisplacement> const robot_root =
+        origin.enframe(LinearDisplacement::meters({.x = 1}), "ARMAR-6::RobotRoot");
 
     CHECK(robot_root.name == "ARMAR-6::RobotRoot");
     CHECK(robot_root.base_frame == "::Origin");
 
-    Framed<Position> const right_hand_tcp =
-        robot_root.enframe(Position::meters({.x = 0.3, .y = 0.5, .z = 1.8}), "ARMAR-6::TCP_R");
+    Framed<LinearDisplacement> const right_hand_tcp = robot_root.enframe(
+        LinearDisplacement::meters({.x = 0.3, .y = 0.5, .z = 1.8}), "ARMAR-6::TCP_R");
 
     CHECK(right_hand_tcp.name == "ARMAR-6::TCP_R");
     CHECK(right_hand_tcp.base_frame == "ARMAR-6::RobotRoot");
 
-    Framed<Position> const right_hand_com =
-        robot_root.enframe(Position::meters({.x = 0.32, .y = 0.5, .z = 1.79}), "ARMAR-6::CoM_R");
+    Framed<LinearDisplacement> const right_hand_com = robot_root.enframe(
+        LinearDisplacement::meters({.x = 0.32, .y = 0.5, .z = 1.79}), "ARMAR-6::CoM_R");
 
     CHECK(right_hand_com.name == "ARMAR-6::CoM_R");
     CHECK(right_hand_com.base_frame == "ARMAR-6::RobotRoot");

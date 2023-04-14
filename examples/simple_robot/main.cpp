@@ -11,13 +11,11 @@ main(int argc, char* argv[])  // NOLINT
     SimpleRobot robot{origin};
 
     // Detect an object on the table.
-    quant::FramedPose const table{
-        quant::Pose(),
-        {.name = "table", .base_frame = "::Origin"}};  // = origin.enframe(quant::Pose(), "table");
+    quant::FramedPose const table = origin.enframe(quant::Pose(), "table");
     robot.look_at(table);
     quant::FramedPose const object = robot.detect_object();
 
-    // Grasp an object
+    // Grasp an object.
     robot.grasp(object);
 
     return 0;
