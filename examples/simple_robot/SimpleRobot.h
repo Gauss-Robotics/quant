@@ -34,12 +34,13 @@ namespace simple_robot_example
             quant::FramedSpatialDisplacement const camera =
                 chest.enframe(quant::SpatialDisplacement(), frames.camera);
 
-            _frames[std::string(root.name)] = root;
+            _frames[std::string(root.name())] = root;
         }
 
         void
         look_at(quant::FramedPose const& location)
         {
+            ;
         }
 
         quant::FramedPose

@@ -17,7 +17,7 @@ namespace quant::framed_geometry
 {
 
     /**
-     * @brief Maximum number of characters used for a frame identifier (name or base_frame).
+     * @brief Maximum number of characters or byte used for a frame identifier (name or base_frame).
      */
     constexpr std::uint32_t frame_data_max_string_size = 128;
 
@@ -42,28 +42,21 @@ namespace quant::framed_geometry
     class Framed
     {
     public:
-        Framed(QuantityT const& object_to_frame, FrameData const& frame_data) :
-            name{[&]() -> char const*
-                 {
-                     // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
-                     std::snprintf(
-                         _name_data.data(), _name_data.size(), "%s", frame_data.name.data());
-                     // NOLINTEND(cppcoreguidelines-pro-type-vararg)
-                     return _name_data.data();
-                 }()},
-            base_frame{[&]() -> char const*
-                       {
-                           // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
-                           std::snprintf(_base_frame_data.data(),
-                                         _base_frame_data.size(),
-                                         "%s",
-                                         frame_data.base_frame.data());
-                           // NOLINTEND(cppcoreguidelines-pro-type-vararg)
-                           return _base_frame_data.data();
-                       }()},
-            _framed_object{object_to_frame}
+        Framed() : Framed(QuantityT::zero(), {.name = "::", .base_frame = "::"})
         {
             ;
+        }
+
+        Framed(QuantityT const& object_to_frame, FrameData const& frame_data) :
+            _framed_object{object_to_frame}
+        {
+            // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
+            std::snprintf(_name_data.data(), _name_data.size(), "%s", frame_data.name.data());
+            std::snprintf(_base_frame_data.data(),
+                          _base_frame_data.size(),
+                          "%s",
+                          frame_data.base_frame.data());
+            // NOLINTEND(cppcoreguidelines-pro-type-vararg)
         }
 
         /**
@@ -81,7 +74,7 @@ namespace quant::framed_geometry
         enframe(Type const& object_to_frame, std::string_view name) const
         {
             return traits::FramedTypeOf<Type>(object_to_frame,
-                                              {.name = name, .base_frame = this->name});
+                                              {.name = name, .base_frame = this->name()});
         }
 
         traits::FramedTypeOf<traits::DifferenceTypeOf<QuantityT>>
@@ -89,17 +82,29 @@ namespace quant::framed_geometry
         {
             assert(base_frame == rhs.base_frame);
             return traits::FramedTypeOf<traits::DifferenceTypeOf<QuantityT>>(
-                traits::DifferenceTypeOf<QuantityT>(), {.name = name, .base_frame = rhs.name});
+                traits::DifferenceTypeOf<QuantityT>(), {.name = name(), .base_frame = rhs.name()});
         }
 
         Framed<QuantityT>&
         operator=(Framed<QuantityT> const& t)
         {
+            _name_data = t._name_data;
+            _base_frame_data = t._base_frame_data;
+            _framed_object = t._framed_object;
             return *this;
         }
 
-        const std::string_view name;
-        const std::string_view base_frame;
+        std::string_view
+        name() const
+        {
+            return _name_data.data();
+        }
+
+        std::string_view
+        base_frame() const
+        {
+            return _base_frame_data.data();
+        }
 
     private:
         /**
