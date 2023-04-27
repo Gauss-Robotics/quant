@@ -33,10 +33,10 @@ namespace quant::framed_geometry
     /**
      * @brief Wrapper to associate a named geometric object with a base frame.
      *
-     * On construction, the name and baseFrame strings referred to the string_views in a `Frame` are
-     * copied into own internal private members (`_name_data` and `_base_frame_data`) on the stack
-     * with a maximum number of chars defined in `frame_data_max_string_size`. The names can be
-     * accessed using the public string_views `name` and `base_frame`.
+     * On construction, the name and base frame strings referred to the string_views in a `Frame`
+     * are copied into own internal private members (`_name_data` and `_base_frame_data`) on the
+     * stack with a maximum number of chars defined in `frame_data_max_string_size`. The names can
+     * be accessed using the accessors `name()` and `base_frame()`.
      */
     template <typename QuantityT>
     class Framed
@@ -80,7 +80,7 @@ namespace quant::framed_geometry
         traits::FramedTypeOf<traits::DifferenceTypeOf<QuantityT>>
         operator-(Framed<QuantityT> const& rhs) const
         {
-            assert(base_frame == rhs.base_frame);
+            assert(base_frame == rhs.base_frame);  // TODO(dreher): Allow configuring.
             return traits::FramedTypeOf<traits::DifferenceTypeOf<QuantityT>>(
                 traits::DifferenceTypeOf<QuantityT>(), {.name = name(), .base_frame = rhs.name()});
         }
@@ -108,12 +108,12 @@ namespace quant::framed_geometry
 
     private:
         /**
-         * @brief This member holds the actual data of `name`.
+         * @brief The name of the held geometric object.
          */
         std::array<char, frame_data_max_string_size> _name_data;
 
         /**
-         * @brief This member holds the actual data of `baseFrame`.
+         * @brief The name of the base frame of the held geometric object.
          */
         std::array<char, frame_data_max_string_size> _base_frame_data;
 
