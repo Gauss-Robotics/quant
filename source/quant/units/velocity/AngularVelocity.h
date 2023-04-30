@@ -12,7 +12,7 @@
 namespace quant::units::velocity
 {
 
-    class AngularVelocity : public geometry::AngularState<Domain>
+    class AngularVelocity : public geometry::AngularState<AngularVelocity>
     {
     public:
         static AngularVelocity
@@ -31,7 +31,7 @@ namespace quant::units::velocity
                     constants::symbols::radians_per_second};
         }
 
-        using geometry::AngularState<Domain>::AngularState;
+        using geometry::AngularState<AngularVelocity>::AngularState;
     };
 
     inline std::ostream&

@@ -12,7 +12,7 @@
 namespace quant::units::jerk
 {
 
-    class AngularJerk : public geometry::AngularState<Domain>
+    class AngularJerk : public geometry::AngularState<AngularJerk>
     {
     public:
         static AngularJerk
@@ -29,7 +29,7 @@ namespace quant::units::jerk
                     constants::symbols::radians_per_second_cubed};
         }
 
-        using geometry::AngularState<Domain>::AngularState;
+        using geometry::AngularState<AngularJerk>::AngularState;
     };
 
     inline std::ostream&

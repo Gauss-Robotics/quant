@@ -13,7 +13,7 @@ namespace quant::units::position
     /**
      * @brief Models a position in Euclidean space.
      */
-    class Position : public geometry::LinearState<Domain>
+    class Position : public geometry::LinearState<Position>
     {
 
     public:
@@ -60,7 +60,7 @@ namespace quant::units::position
             return to_millimeters().to_string();
         }
 
-        using geometry::LinearState<Domain>::LinearState;
+        using geometry::LinearState<Position>::LinearState;
     };
 
     inline std::ostream&

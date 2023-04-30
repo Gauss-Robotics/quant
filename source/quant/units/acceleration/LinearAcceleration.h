@@ -12,7 +12,7 @@
 namespace quant::units::acceleration
 {
 
-    class LinearAcceleration : public geometry::LinearState<Domain>
+    class LinearAcceleration : public geometry::LinearState<LinearAcceleration>
     {
     public:
         static LinearAcceleration
@@ -43,7 +43,7 @@ namespace quant::units::acceleration
                     constants::symbols::meters_per_second_squared};
         }
 
-        using geometry::LinearState<Domain>::LinearState;
+        using geometry::LinearState<LinearAcceleration>::LinearState;
     };
 
     inline std::ostream&

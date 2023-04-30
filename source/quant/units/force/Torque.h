@@ -12,12 +12,10 @@
 namespace quant::units::force
 {
 
-    class Torque : public geometry::AngularState<Domain>
+    class Torque : public geometry::AngularState<Torque>
     {
         // Construct.
     public:
-        using geometry::AngularState<Domain>::AngularState;
-
         static Torque
         newton_meters(geometry::AxisAngle aa)
         {
@@ -29,6 +27,8 @@ namespace quant::units::force
         {
             return {to_axis_angle(), constants::names::torque, constants::symbols::newton_meters};
         }
+
+        using geometry::AngularState<Torque>::AngularState;
     };
 
     inline std::ostream&

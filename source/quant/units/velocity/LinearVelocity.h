@@ -21,7 +21,7 @@ namespace quant::units::velocity
      * - The difference of a LinearVelocity is LinearVelocityDifference.
      * - The magnitude of a Linear Veloctiy is Speed.
      */
-    class LinearVelocity : public geometry::LinearState<Domain>
+    class LinearVelocity : public geometry::LinearState<LinearVelocity>
     {
     public:
         static LinearVelocity
@@ -75,7 +75,7 @@ namespace quant::units::velocity
             return to_millimeters_per_second().to_string();
         }
 
-        using geometry::LinearState<Domain>::LinearState;
+        using geometry::LinearState<LinearVelocity>::LinearState;
     };
 
     inline std::ostream&

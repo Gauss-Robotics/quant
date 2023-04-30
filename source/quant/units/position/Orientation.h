@@ -10,7 +10,7 @@
 namespace quant::units::position
 {
 
-    class Orientation : public geometry::AngularState<Domain>
+    class Orientation : public geometry::AngularState<Orientation>
     {
     public:
         static Orientation
@@ -25,7 +25,7 @@ namespace quant::units::position
             return {to_axis_angle(), constants::names::orientation, constants::names::radians};
         }
 
-        using geometry::AngularState<Domain>::AngularState;
+        using geometry::AngularState<Orientation>::AngularState;
     };
 
     inline std::ostream&

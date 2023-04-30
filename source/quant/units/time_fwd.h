@@ -9,27 +9,25 @@ namespace quant::units::time
     class Duration;
     class Frequency;
 
-    struct Domain
-    {
-        using State = TimePoint;
-        using Difference = Duration;
-    };
-
 }  // namespace quant::units::time
 
 namespace quant::traits
 {
 
+    using TimeDomain = Define1DDomain<units::time::TimePoint, units::time::Duration>;
+
     template <>
-    struct DefineDifferenceTypeOf<units::time::TimePoint>
+    struct DefineTraits<units::time::TimePoint>
     {
-        using DifferenceType = units::time::Duration;
+        using Domain = TimeDomain;
+        using Difference = units::time::Duration;
     };
 
     template <>
-    struct DefineStateTypeOf<units::time::Duration>
+    struct DefineTraits<units::time::Duration>
     {
-        using StateType = units::time::TimePoint;
+        using Domain = TimeDomain;
+        using State = units::time::TimePoint;
     };
 
 }  // namespace quant::traits

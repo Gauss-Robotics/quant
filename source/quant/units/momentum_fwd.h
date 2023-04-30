@@ -1,5 +1,7 @@
 #pragma once
 
+#include <quant/geometry_fwd.h>
+
 namespace quant::units::momentum
 {
 
@@ -11,17 +13,26 @@ namespace quant::units::momentum
     class AngularImpulse;
     class SpatialImpulse;
 
-    struct Domain
+}  // namespace quant::units::momentum
+
+namespace quant::traits
+{
+
+    using MomentumDomain = Define3DDomain<units::momentum::LinearMomentum,
+                                          units::momentum::AngularMomentum,
+                                          units::momentum::SpatialMomentum,
+                                          units::momentum::LinearImpulse,
+                                          units::momentum::AngularImpulse,
+                                          units::momentum::SpatialImpulse>;
+
+    template <>
+    struct DefineTraits<units::momentum::LinearMomentum>
     {
-        using LinearState = LinearMomentum;
-        using AngularState = AngularMomentum;
-        using SpatialState = SpatialMomentum;
-        using LinearDifference = LinearImpulse;
-        using AngularDifference = AngularImpulse;
-        using SpatialDifference = SpatialImpulse;
+        using Domain = MomentumDomain;
+        using Difference = units::momentum::LinearImpulse;
     };
 
-}  // namespace quant::units::momentum
+}  // namespace quant::traits
 
 namespace quant
 {

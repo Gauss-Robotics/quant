@@ -15,26 +15,34 @@ namespace quant::framed_geometry
 namespace quant::traits
 {
 
-    /**
-     * @brief Template meta programming utility to define the framed type of a type via template
-     * specialization.
-     *
-     * Default is a `Framed<Quantity>`, but the built-in units usually have `FramedQuantity`
-     * specialization with convenience APIs, defined operators, etc.
-     *
-     * Example: `FramedLinearDisplacement` is a specialized `Framed<LinearDisplacement>`.
-     */
-    template <typename Quantity>
-    struct DefineFramedTypeOf
+    template <typename Type>
+    struct DefineFramedTraits
     {
-        using FramedType = framed_geometry::Framed<Quantity>;
     };
 
-    /**
-     * @brief Lookup type def for semantic template resolution.
-     */
-    template <typename Quantity>
-    using FramedTypeOf = typename DefineFramedTypeOf<Quantity>::FramedType;
+    template <typename Type>
+    using framed_traits_of = DefineFramedTraits<Type>;
+
+    template <typename Type>
+    concept framed = requires { typename framed_traits_of<Type>::Framed; };
+
+    namespace detail
+    {
+        template <typename Type, typename = void>
+        struct evaluate_framed_type
+        {
+            using FramedType = framed_geometry::Framed<Type>;
+        };
+
+        template <typename Type>
+        struct evaluate_framed_type<Type, std::void_t<typename framed_traits_of<Type>::Framed>>
+        {
+            using FramedType = typename framed_traits_of<Type>::Framed;
+        };
+    }  // namespace detail
+
+    template <typename Type>
+    using framed_type_of = typename detail::evaluate_framed_type<Type>::FramedType;
 
 }  // namespace quant::traits
 

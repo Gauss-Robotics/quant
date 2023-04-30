@@ -11,11 +11,11 @@ namespace quant::units::force
     /**
      * @brief Represents a wrench, i.e., a screw of force and torque.
      */
-    class Wrench : public geometry::SpatialState<Domain>
+    class Wrench : public geometry::SpatialState<Wrench>
     {
         // Construct.
     public:
-        using SpatialState<Domain>::SpatialState;
+        using geometry::SpatialState<Wrench>::SpatialState;
     };
 
 }  // namespace quant::units::force

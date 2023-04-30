@@ -11,7 +11,7 @@
 namespace quant::geometry
 {
 
-    template <typename Domain>
+    template <typename StateType>
     class LinearState
     {
     public:
@@ -29,35 +29,35 @@ namespace quant::geometry
          * @brief Zero
          * @return
          */
-        static typename Domain::LinearState
+        static StateType
         zero()
         {
-            return typename Domain::LinearState({.x = 0, .y = 0, .z = 0});
+            return StateType({.x = 0, .y = 0, .z = 0});
         }
 
         // Compare.
 
         bool
-        operator==(typename Domain::LinearState const& rhs) const
+        operator==(StateType const& rhs) const
         {
             return _representation == rhs._representation;
         }
 
         bool
-        operator!=(typename Domain::LinearState const& rhs) const
+        operator!=(StateType const& rhs) const
         {
             return _representation != rhs._representation;
         }
 
         bool
-        is_approx(typename Domain::LinearState const& rhs,
+        is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
         }
 
         using GeometricRepresentationType = Eigen::Ref<Eigen::Vector3d const>;
-        using GeometricType = traits::StateType;
+        using GeometricType = traits::LinearStateType;
 
     protected:
         // Construct.
@@ -82,7 +82,7 @@ namespace quant::geometry
 
         Eigen::Vector3d _representation;
 
-        friend class detail::QuantityAccessor<typename Domain::LinearState>;
+        friend class detail::StateAccessor<StateType>;
     };
 
 }  // namespace quant::geometry

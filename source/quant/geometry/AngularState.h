@@ -13,7 +13,7 @@
 namespace quant::geometry
 {
 
-    template <typename Domain>
+    template <typename StateType>
     class AngularState
     {
 
@@ -28,16 +28,16 @@ namespace quant::geometry
             ;
         }
 
-        static typename Domain::AngularState
+        static StateType
         zero()
         {
-            return typename Domain::AngularState();
+            return StateType();
         }
 
         // Compare.
 
         bool
-        operator==(typename Domain::AngularState const& rhs) const
+        operator==(StateType const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
@@ -45,7 +45,7 @@ namespace quant::geometry
         }
 
         bool
-        operator!=(typename Domain::AngularState const& rhs) const
+        operator!=(StateType const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
@@ -53,14 +53,14 @@ namespace quant::geometry
         }
 
         bool
-        is_approx(typename Domain::AngularState const& rhs,
+        is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
         }
 
         using GeometricRepresentationType = Eigen::Quaterniond const&;
-        using GeometricType = traits::StateType;
+        using GeometricType = traits::AngularStateType;
 
     protected:
         // Construct.
@@ -85,7 +85,7 @@ namespace quant::geometry
 
         Eigen::Quaterniond _representation;
 
-        friend class detail::QuantityAccessor<typename Domain::AngularState>;
+        friend class detail::StateAccessor<StateType>;
     };
 
 }  // namespace quant::geometry

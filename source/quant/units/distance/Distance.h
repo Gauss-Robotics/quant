@@ -12,7 +12,7 @@
 namespace quant::units::distance
 {
 
-    class Distance : geometry::ScalarState<Domain>
+    class Distance : geometry::ScalarState<Distance>
     {
 
     public:
@@ -37,7 +37,7 @@ namespace quant::units::distance
         // Operators.
 
     protected:
-        using geometry::ScalarState<Domain>::ScalarState;
+        using geometry::ScalarState<Distance>::ScalarState;
     };
 
     std::ostream&

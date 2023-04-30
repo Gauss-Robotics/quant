@@ -1,7 +1,7 @@
 #pragma once
 
-#include <quant/geometry/AngularDifference.h>
 #include <quant/geometry/AxisAngle.h>
+#include <quant/geometry/Difference.h>
 #include <quant/units/position/Orientation.h>
 #include <quant/units/position/Position.h>
 #include <quant/units/position_fwd.h>
@@ -9,7 +9,7 @@
 namespace quant::units::position
 {
 
-    class AngularDisplacement : public geometry::AngularDifference<Domain>
+    class AngularDisplacement : public geometry::Difference<Orientation>
     {
 
     public:
@@ -19,7 +19,7 @@ namespace quant::units::position
             return AngularDisplacement{Orientation::radians(aa)};
         }
 
-        using geometry::AngularDifference<Domain>::AngularDifference;
+        using geometry::Difference<Orientation>::Difference;
     };
 
 }  // namespace quant::units::position

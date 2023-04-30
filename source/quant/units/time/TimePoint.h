@@ -15,7 +15,7 @@ namespace quant::units::time
     /**
      * @brief Represents a time point.
      */
-    class TimePoint : public geometry::ScalarState<Domain>
+    class TimePoint : public geometry::ScalarState<TimePoint>
     {
         // Construct.
     public:
@@ -240,7 +240,7 @@ namespace quant::units::time
         }
 
     protected:
-        using geometry::ScalarState<Domain>::ScalarState;
+        using geometry::ScalarState<TimePoint>::ScalarState;
     };
 
     inline std::ostream&

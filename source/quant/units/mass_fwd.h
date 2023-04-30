@@ -7,11 +7,6 @@ namespace quant::units::mass
 
     class Mass;
 
-    struct Domain
-    {
-        using State = Mass;
-    };
-
 }  // namespace quant::units::mass
 
 namespace quant

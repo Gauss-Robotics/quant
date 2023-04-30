@@ -11,10 +11,10 @@ namespace quant::units::velocity
     /**
      * @brief Represents a twist, i.e., a screw of linear and angular velocity.
      */
-    class Twist : public geometry::SpatialState<Domain>
+    class Twist : public geometry::SpatialState<Twist>
     {
     public:
-        using SpatialState<Domain>::SpatialState;
+        using geometry::SpatialState<Twist>::SpatialState;
     };
 
 }  // namespace quant::units::velocity

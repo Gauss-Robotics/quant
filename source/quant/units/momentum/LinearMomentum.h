@@ -14,7 +14,7 @@
 namespace quant::units::momentum
 {
 
-    class LinearMomentum : public geometry::LinearState<Domain>
+    class LinearMomentum : public geometry::LinearState<LinearMomentum>
     {
     public:
         static LinearMomentum
@@ -37,7 +37,7 @@ namespace quant::units::momentum
             return to_kilogram_meters_per_second().to_string();
         }
 
-        using geometry::LinearState<Domain>::LinearState;
+        using geometry::LinearState<LinearMomentum>::LinearState;
     };
 
     inline std::ostream&

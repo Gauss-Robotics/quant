@@ -1,5 +1,6 @@
 #pragma once
 
+#include <concepts>
 #include <type_traits>
 
 namespace quant::geometry
@@ -31,12 +32,6 @@ namespace quant::geometry
     class ScalarDifference;
 
     template <typename Domain>
-    class LinearDifference;
-
-    template <typename Domain>
-    class AngularDifference;
-
-    template <typename Domain>
     class SpatialDifference;
 
     template <typename T>
@@ -51,53 +46,120 @@ namespace quant::traits
     {
     };
 
+    struct ScalarStateType : public StateType
+    {
+    };
+
+    struct LinearStateType : public StateType
+    {
+    };
+
+    struct AngularStateType : public StateType
+    {
+    };
+
+    struct SpatialStateType : public StateType
+    {
+    };
+
     struct DifferenceType
     {
     };
 
-    template <typename StateT>
-    struct DefineDifferenceTypeOf
+    struct OneDimensionalDomainType
     {
-        using DifferenceType = quant::geometry::Difference<StateT>;
     };
 
-    template <typename StateT>
-    using DifferenceTypeOf = typename DefineDifferenceTypeOf<StateT>::DifferenceType;
-
-    template <typename DifferenceT>
-    struct DefineStateTypeOf
+    struct ThreeDimensionalDomainType
     {
-        using StateType = typename DifferenceT::StateType;
     };
 
+    template <typename StateType, typename DifferenceType>
+    struct Define1DDomain
+    {
+        using DomainType = OneDimensionalDomainType;
+        using State = StateType;
+        using Difference = DifferenceType;
+    };
+
+    template <typename LinearStateType,
+              typename AngularStateType,
+              typename SpatialStateType,
+              typename LinearDifferenceType,
+              typename AngularDifferenceType,
+              typename SpatialDifferenceType>
+    struct Define3DDomain
+    {
+        using DomainType = ThreeDimensionalDomainType;
+        using LinearState = LinearStateType;
+        using AngularState = AngularStateType;
+        using SpatialState = SpatialStateType;
+        using LinearDifference = LinearDifferenceType;
+        using AngularDifference = AngularDifferenceType;
+        using SpatialDifference = SpatialDifferenceType;
+    };
+
+    template <typename Type>
+    struct DefineTraits
+    {
+    };
+
+    template <typename Type>
+    using traits_of = DefineTraits<Type>;
+
+    template <typename Type>
+    concept state = std::derived_from<typename Type::GeometricType, StateType>;
+
+    template <typename Type>
+    concept scalar_state = std::derived_from<typename Type::GeometricType, ScalarStateType>;
+
+    template <typename Type>
+    concept linear_state = std::derived_from<typename Type::GeometricType, LinearStateType>;
+
+    template <typename Type>
+    concept angular_state = std::derived_from<typename Type::GeometricType, AngularStateType>;
+
+    template <typename Type>
+    concept difference =
+        std::derived_from<typename Type::DifferenceObjectType::GeometricType, StateType>;
+
+    template <typename Type>
+    concept scalar_difference =
+        std::derived_from<typename Type::DifferenceObjectType::GeometricType, ScalarStateType>;
+
+    template <typename Type>
+    concept linear_difference =
+        std::derived_from<typename Type::DifferenceObjectType::GeometricType, LinearStateType>;
+
+    template <typename Type>
+    concept angular_difference =
+        std::derived_from<typename Type::DifferenceObjectType::GeometricType, AngularStateType>;
+
+    template <typename Type>
+    using domain_type_of = typename traits_of<Type>::Domain;
+
+    template <typename StateT>
+        requires state<StateT>
+    using difference_type_of = typename traits_of<StateT>::Difference;
+
     template <typename DifferenceT>
-    using StateTypeOf = typename DefineStateTypeOf<DifferenceT>::StateType;
+        requires difference<DifferenceT>
+    using state_type_of = typename traits_of<DifferenceT>::State;
 
-    /**
-     * @brief Tests whether the given type `Type` is a geometric state (primary template).
-     *
-     * In case of `Type` not being a state, `std::is_same` in the specialized template will yield in
-     * substitution failure, the primary template will be used, and `isState<Type>` will evaluate to
-     * false.
-     */
-    template <typename Type, typename = void>
-    inline constexpr bool is_state = false;
-
-    /**
-     * @brief Tests whether the given type `Type` is a geometric state (specialized template).
-     *
-     * If `Type` is a state, the primary template will be overridden and `isState<Type>` will
-     * evaluate to `true`.
-     */
-    template <typename Type>
-    inline constexpr bool
-        is_state<Type, std::void_t<std::is_same<typename Type::GeometricType, StateType>>> = true;
-
-    template <typename Type, typename = void>
-    inline constexpr bool is_difference = false;
+    template <typename Type1, typename Type2>
+    concept same_domain = std::same_as<domain_type_of<Type1>, domain_type_of<Type2>>;
 
     template <typename Type>
-    inline constexpr bool is_difference<Type, std::void_t<typename Type::StateType>> = true;
+    using linear_state_in_domain_of = domain_type_of<Type>::LinearState;
+
+    template <typename Type>
+    using angular_state_in_domain_of = domain_type_of<Type>::AngularState;
+
+    template <typename Type>
+    using linear_difference_in_domain_of = domain_type_of<Type>::LinearDifference;
+
+    template <typename Type>
+    using angular_difference_in_domain_of = domain_type_of<Type>::AngularDifference;
 
 }  // namespace quant::traits
 

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <quant/geometry/LinearDifference.h>
+#include <quant/geometry/Difference.h>
 #include <quant/units/momentum/LinearMomentum.h>
 #include <quant/units/momentum_fwd.h>
 
 namespace quant::units::momentum
 {
 
-    class LinearImpulse : public geometry::LinearDifference<Domain>
+    class LinearImpulse : public geometry::Difference<LinearMomentum>
     {
 
     public:
@@ -25,7 +25,7 @@ namespace quant::units::momentum
                     constants::symbols::newton_seconds};
         }
 
-        using LinearDifference<Domain>::LinearDifference;
+        using geometry::Difference<LinearMomentum>::Difference;
     };
 
 }  // namespace quant::units::momentum

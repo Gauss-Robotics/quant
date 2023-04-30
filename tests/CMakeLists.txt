@@ -11,11 +11,6 @@ add_executable(test_all
     framed_geometry/framed_geometry_tests.h
 )
 
-set_target_properties(test_all
-    PROPERTIES
-        CXX_STANDARD 17
-)
-
 target_link_libraries(test_all
     PUBLIC
         doctest::doctest

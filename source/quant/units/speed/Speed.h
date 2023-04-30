@@ -14,7 +14,7 @@
 namespace quant::units::speed
 {
 
-    class Speed : public geometry::ScalarState<Domain>
+    class Speed : public geometry::ScalarState<Speed>
     {
 
     public:
@@ -49,7 +49,7 @@ namespace quant::units::speed
         }
 
     protected:
-        using geometry::ScalarState<Domain>::ScalarState;
+        using geometry::ScalarState<Speed>::ScalarState;
     };
 
     inline std::ostream&

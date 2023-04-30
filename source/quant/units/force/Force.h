@@ -16,7 +16,7 @@
 namespace quant::units::force
 {
 
-    class Force : public geometry::LinearState<Domain>
+    class Force : public geometry::LinearState<Force>
     {
     public:
         static Force
@@ -37,7 +37,7 @@ namespace quant::units::force
             return to_newton().to_string();
         }
 
-        using geometry::LinearState<Domain>::LinearState;
+        using geometry::LinearState<Force>::LinearState;
     };
 
     inline std::ostream&

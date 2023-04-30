@@ -6,7 +6,7 @@ namespace quant::geometry::detail
 {
 
     template <typename BaseQuantityT>
-    class QuantityAccessor
+    class StateAccessor
     {
     public:
         static typename BaseQuantityT::GeometricRepresentationType
