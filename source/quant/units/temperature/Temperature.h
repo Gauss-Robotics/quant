@@ -12,7 +12,7 @@
 namespace quant::units::temperature
 {
 
-    class Temperature : public geometry::ScalarState<Domain>
+    class Temperature : public geometry::ScalarState<Temperature>
     {
 
     public:
@@ -77,7 +77,7 @@ namespace quant::units::temperature
                     constants::symbols::degree_rankine};
         }
 
-        using geometry::ScalarState<Domain>::ScalarState;
+        using geometry::ScalarState<Temperature>::ScalarState;
     };
 
     inline std::ostream&

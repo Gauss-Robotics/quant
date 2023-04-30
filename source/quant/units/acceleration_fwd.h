@@ -11,16 +11,6 @@ namespace quant::units::acceleration
     class AngularAccelerationDifference;
     class SpatialAccelerationDifference;
 
-    struct Domain
-    {
-        using LinearState = LinearAcceleration;
-        using AngularState = AngularAcceleration;
-        using SpatialState = SpatialAcceleration;
-        using LinearDifference = LinearAccelerationDifference;
-        using AngularDifference = AngularAccelerationDifference;
-        using SpatialDifference = SpatialAccelerationDifference;
-    };
-
 }  // namespace quant::units::acceleration
 
 namespace quant

@@ -13,55 +13,58 @@ namespace quant::units::position
     class AngularDisplacement;
     class SpatialDisplacement;
 
-    struct Domain
-    {
-        using LinearState = Position;
-        using AngularState = Orientation;
-        using SpatialState = Pose;
-        using LinearDifference = LinearDisplacement;
-        using AngularDifference = AngularDisplacement;
-        using SpatialDifference = SpatialDisplacement;
-    };
-
 }  // namespace quant::units::position
 
 namespace quant::traits
 {
 
+    using PositionDomain = Define3DDomain<units::position::Position,
+                                          units::position::Orientation,
+                                          units::position::Pose,
+                                          units::position::LinearDisplacement,
+                                          units::position::AngularDisplacement,
+                                          units::position::SpatialDisplacement>;
+
     template <>
-    struct DefineDifferenceTypeOf<units::position::Position>
+    struct DefineTraits<units::position::Position>
     {
-        using DifferenceType = units::position::LinearDisplacement;
+        using Domain = PositionDomain;
+        using Difference = units::position::LinearDisplacement;
     };
 
     template <>
-    struct DefineStateTypeOf<units::position::LinearDisplacement>
+    struct DefineTraits<units::position::LinearDisplacement>
     {
-        using StateType = units::position::Position;
+        using Domain = PositionDomain;
+        using State = units::position::Position;
     };
 
     template <>
-    struct DefineDifferenceTypeOf<units::position::Orientation>
+    struct DefineTraits<units::position::Orientation>
     {
-        using DifferenceType = units::position::AngularDisplacement;
+        using Domain = PositionDomain;
+        using Difference = units::position::AngularDisplacement;
     };
 
     template <>
-    struct DefineStateTypeOf<units::position::AngularDisplacement>
+    struct DefineTraits<units::position::AngularDisplacement>
     {
-        using StateType = units::position::Orientation;
+        using Domain = PositionDomain;
+        using State = units::position::Orientation;
     };
 
     template <>
-    struct DefineDifferenceTypeOf<units::position::Pose>
+    struct DefineTraits<units::position::Pose>
     {
-        using DifferenceType = units::position::SpatialDisplacement;
+        using Domain = PositionDomain;
+        using Difference = units::position::SpatialDisplacement;
     };
 
     template <>
-    struct DefineStateTypeOf<units::position::SpatialDisplacement>
+    struct DefineTraits<units::position::SpatialDisplacement>
     {
-        using StateType = units::position::Pose;
+        using Domain = PositionDomain;
+        using State = units::position::Pose;
     };
 
 }  // namespace quant::traits

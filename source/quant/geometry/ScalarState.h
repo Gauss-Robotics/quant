@@ -10,7 +10,7 @@
 namespace quant::geometry
 {
 
-    template <typename Domain>
+    template <typename StateType>
     class ScalarState
     {
     public:
@@ -21,35 +21,35 @@ namespace quant::geometry
             ;
         }
 
-        static typename Domain::State
+        static StateType
         zero()
         {
-            return typename Domain::State(0);
+            return StateType(0);
         }
 
         // Compare.
 
         bool
-        operator==(typename Domain::State const& rhs) const
+        operator==(StateType const& rhs) const
         {
             return _representation == rhs._representation;
         }
 
         bool
-        operator!=(typename Domain::State const& rhs) const
+        operator!=(StateType const& rhs) const
         {
             return _representation != rhs._representation;
         }
 
         bool
-        is_approx(typename Domain::State const& rhs,
+        is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
         {
             return std::abs(_representation - rhs._representation) < tolerance;
         }
 
         using GeometricRepresentationType = double;
-        using GeometricType = traits::StateType;
+        using GeometricType = traits::ScalarStateType;
 
     protected:
         ScalarState(Scalar scalar) : _representation{scalar}
@@ -65,7 +65,7 @@ namespace quant::geometry
 
         double _representation;
 
-        friend class detail::QuantityAccessor<typename Domain::State>;
+        friend class detail::StateAccessor<StateType>;
     };
 
 }  // namespace quant::geometry

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/ScalarDifference.h>
+#include <quant/geometry/Difference.h>
 #include <quant/units/Scalar.h>
 #include <quant/units/time/TimePoint.h>
 #include <quant/units/time_fwd.h>
@@ -11,7 +11,7 @@ namespace quant::units::time
     /**
      * @brief Represents a duration.
      */
-    class Duration : public geometry::ScalarDifference<Domain>
+    class Duration : public geometry::Difference<TimePoint>
     {
 
     public:
@@ -200,7 +200,7 @@ namespace quant::units::time
         }
 
     protected:
-        using ScalarDifference<Domain>::ScalarDifference;
+        using geometry::Difference<TimePoint>::Difference;
     };
 
     inline std::ostream&

@@ -11,16 +11,6 @@ namespace quant::units::jerk
     class AngularJerkDifference;
     class SpatialJerkDifference;
 
-    struct Domain
-    {
-        using LinearState = LinearJerk;
-        using AngularState = AngularJerk;
-        using SpatialState = SpatialJerk;
-        using LinearDifference = LinearJerkDifference;
-        using AngularDifference = AngularJerkDifference;
-        using SpatialDifference = SpatialJerkDifference;
-    };
-
 }  // namespace quant::units::jerk
 
 namespace quant

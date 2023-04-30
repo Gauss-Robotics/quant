@@ -30,76 +30,64 @@ namespace quant::framed_units::position
 namespace quant::traits
 {
 
+    using FramedPositionDomain = Define3DDomain<framed_units::position::Position,
+                                                framed_units::position::Orientation,
+                                                framed_units::position::Pose,
+                                                framed_units::position::LinearDisplacement,
+                                                framed_units::position::AngularDisplacement,
+                                                framed_units::position::SpatialDisplacement>;
+
     template <>
-    struct DefineDifferenceTypeOf<framed_units::position::Position>
+    struct DefineFramedTraits<units::position::Position> :
+        public traits_of<units::position::Position>
     {
-        using DifferenceType = framed_units::position::LinearDisplacement;
+        using FramedDomain = FramedPositionDomain;
+        using Framed = framed_units::position::Position;
+        using FramedDifference = framed_units::position::LinearDisplacement;
     };
 
     template <>
-    struct DefineStateTypeOf<framed_units::position::LinearDisplacement>
+    struct DefineFramedTraits<units::position::LinearDisplacement> :
+        public traits_of<units::position::LinearDisplacement>
     {
-        using StateType = framed_units::position::Position;
+        using FramedDomain = FramedPositionDomain;
+        using Framed = framed_units::position::LinearDisplacement;
+        using FramedState = framed_units::position::Position;
     };
 
     template <>
-    struct DefineDifferenceTypeOf<framed_units::position::Orientation>
+    struct DefineFramedTraits<units::position::Orientation> :
+        public traits_of<units::position::Orientation>
     {
-        using DifferenceType = framed_units::position::AngularDisplacement;
+        using FramedDomain = FramedPositionDomain;
+        using Framed = framed_units::position::Orientation;
+        using FramedDifference = framed_units::position::AngularDisplacement;
     };
 
     template <>
-    struct DefineStateTypeOf<framed_units::position::AngularDisplacement>
+    struct DefineFramedTraits<units::position::AngularDisplacement> :
+        public traits_of<units::position::AngularDisplacement>
     {
-        using StateType = framed_units::position::Orientation;
+        using FramedDomain = FramedPositionDomain;
+        using Framed = framed_units::position::AngularDisplacement;
+        using FramedState = framed_units::position::Orientation;
     };
 
     template <>
-    struct DefineDifferenceTypeOf<framed_units::position::Pose>
+    struct DefineFramedTraits<units::position::Pose> : public traits_of<units::position::Pose>
     {
-        using DifferenceType = framed_units::position::SpatialDisplacement;
+        using FramedDomain = FramedPositionDomain;
+        using Framed = framed_units::position::Pose;
+        using FramedDifference = framed_units::position::SpatialDisplacement;
     };
 
     template <>
-    struct DefineStateTypeOf<framed_units::position::SpatialDisplacement>
+    struct DefineFramedTraits<units::position::SpatialDisplacement> :
+        public traits_of<units::position::SpatialDisplacement>
     {
-        using StateType = framed_units::position::Pose;
-    };
-
-    template <>
-    struct DefineFramedTypeOf<quant::units::position::Position>
-    {
-        using FramedType = quant::framed_units::position::Position;
-    };
-
-    template <>
-    struct DefineFramedTypeOf<quant::units::position::Orientation>
-    {
-        using FramedType = quant::framed_units::position::Orientation;
-    };
-
-    template <>
-    struct DefineFramedTypeOf<quant::units::position::Pose>
-    {
-        using FramedType = quant::framed_units::position::Pose;
-    };
-
-    template <>
-    struct DefineFramedTypeOf<quant::units::position::LinearDisplacement>
-    {
-        using FramedType = quant::framed_units::position::LinearDisplacement;
-    };
-
-    template <>
-    struct DefineFramedTypeOf<quant::units::position::AngularDisplacement>
-    {
-        using FramedType = quant::framed_units::position::AngularDisplacement;
-    };
-
-    template <>
-    struct DefineFramedTypeOf<quant::units::position::SpatialDisplacement>
-    {
-        using FramedType = quant::framed_units::position::SpatialDisplacement;
+        using FramedDomain = FramedPositionDomain;
+        using Framed = framed_units::position::SpatialDisplacement;
+        using FramedState = framed_units::position::Pose;
     };
 
 }  // namespace quant::traits

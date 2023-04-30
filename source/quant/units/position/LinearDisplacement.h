@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearDifference.h>
+#include <quant/geometry/Difference.h>
 #include <quant/units/Vector.h>
 #include <quant/units/distance/Distance.h>
 #include <quant/units/position/Position.h>
@@ -10,7 +10,7 @@
 namespace quant::units::position
 {
 
-    class LinearDisplacement : public geometry::LinearDifference<Domain>
+    class LinearDisplacement : public geometry::Difference<Position>
     {
 
     public:
@@ -40,7 +40,7 @@ namespace quant::units::position
             return Distance::millimeters(_difference_object.to_millimeters().norm());
         }
 
-        using LinearDifference<Domain>::LinearDifference;
+        using geometry::Difference<Position>::Difference;
     };
 
     inline std::ostream&

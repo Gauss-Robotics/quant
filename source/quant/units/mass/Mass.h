@@ -11,7 +11,7 @@
 namespace quant::units::mass
 {
 
-    class Mass : public geometry::ScalarState<Domain>
+    class Mass : public geometry::ScalarState<Mass>
     {
 
     public:
@@ -72,7 +72,7 @@ namespace quant::units::mass
             return to_milligrams().to_string();
         }
 
-        using geometry::ScalarState<Domain>::ScalarState;
+        using geometry::ScalarState<Mass>::ScalarState;
     };
 
     inline std::ostream&

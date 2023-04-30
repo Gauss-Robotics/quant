@@ -15,13 +15,7 @@ add_library(geometry SHARED
     SpatialState.h
     SpatialIsometricState.h
 
-    # Basic difference types.
     Difference.h
-    ScalarDifference.h
-    LinearDifference.h
-    AngularDifference.h
-    SpatialDifference.h
-
     Circa.h
 
     # Accessors.

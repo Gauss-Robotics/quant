@@ -2,7 +2,6 @@
 
 #include <quant/framed_geometry_fwd.h>
 #include <quant/geometry/Difference.h>
-#include <quant/geometry/LinearDifference.h>
 #include <quant/geometry_fwd.h>
 
 #include <Eigen/Core>
@@ -70,19 +69,12 @@ namespace quant::framed_geometry
          * @return Framed type of object_to_frame.
          */
         template <typename Type>
-        std::enable_if_t<traits::is_difference<QuantityT>, traits::FramedTypeOf<Type>>
+            requires traits::difference<QuantityT>
+        traits::framed_type_of<Type>
         enframe(Type const& object_to_frame, std::string_view name) const
         {
-            return traits::FramedTypeOf<Type>(object_to_frame,
-                                              {.name = name, .base_frame = this->name()});
-        }
-
-        traits::FramedTypeOf<traits::DifferenceTypeOf<QuantityT>>
-        operator-(Framed<QuantityT> const& rhs) const
-        {
-            assert(base_frame == rhs.base_frame);  // TODO(dreher): Allow configuring.
-            return traits::FramedTypeOf<traits::DifferenceTypeOf<QuantityT>>(
-                traits::DifferenceTypeOf<QuantityT>(), {.name = name(), .base_frame = rhs.name()});
+            return traits::framed_type_of<Type>(object_to_frame,
+                                                {.name = name, .base_frame = this->name()});
         }
 
         Framed<QuantityT>&
@@ -119,5 +111,16 @@ namespace quant::framed_geometry
 
         QuantityT _framed_object;
     };
+
+    template <typename StateType>
+        requires traits::state<StateType>
+    traits::framed_type_of<traits::difference_type_of<StateType>>
+    operator-(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
+    {
+        assert(lhs.base_frame() == rhs.base_frame());
+        return traits::framed_type_of<traits::difference_type_of<StateType>>(
+            traits::difference_type_of<StateType>(),
+            {.name = lhs.name(), .base_frame = rhs.name()});
+    }
 
 }  // namespace quant::framed_geometry

@@ -64,8 +64,8 @@ namespace quant::geometry
         }
 
         Eigen::Isometry3d _representation;
-
-        friend class detail::QuantityAccessor<BaseQuantityT>;
+        
+        friend class detail::StateAccessor<BaseQuantityT>;
     };
 
 }  // namespace quant::geometry

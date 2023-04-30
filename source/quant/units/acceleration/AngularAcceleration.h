@@ -12,7 +12,7 @@
 namespace quant::units::acceleration
 {
 
-    class AngularAcceleration : public geometry::AngularState<Domain>
+    class AngularAcceleration : public geometry::AngularState<AngularAcceleration>
     {
     public:
         static AngularAcceleration
@@ -29,7 +29,7 @@ namespace quant::units::acceleration
                     constants::symbols::radians_per_second_squared};
         }
 
-        using geometry::AngularState<Domain>::AngularState;
+        using geometry::AngularState<AngularAcceleration>::AngularState;
     };
 
     inline std::ostream&

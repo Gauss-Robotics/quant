@@ -6,22 +6,23 @@
 namespace quant::geometry::detail
 {
 
-    template <typename DifferenceT, typename BaseDifferenceT>
+    template <typename DifferenceType>
     class DifferenceAccessor
     {
     public:
-        static typename DifferenceT::GeometricRepresentationType
-        representation(BaseDifferenceT const& d)
+        static typename DifferenceType::GeometricRepresentationType
+        representation(
+            geometry::Difference<typename DifferenceType::DifferenceObjectType> const& difference)
         {
-            using State = QuantityAccessor<typename DifferenceT::StateType>;
-            return State::representation(d._difference_object);
+            using State = StateAccessor<typename DifferenceType::DifferenceObjectType>;
+            return State::representation(difference._difference_object);
         }
 
-        static DifferenceT
-        make(typename DifferenceT::GeometricRepresentationType difference_object)
+        static DifferenceType
+        make(typename DifferenceType::GeometricRepresentationType representation)
         {
-            using State = QuantityAccessor<typename DifferenceT::StateType>;
-            return DifferenceT(State::make(difference_object));
+            using State = StateAccessor<typename DifferenceType::DifferenceObjectType>;
+            return DifferenceType(State::make(representation));
         }
     };
 

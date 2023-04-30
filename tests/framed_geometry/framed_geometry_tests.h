@@ -11,14 +11,14 @@ using namespace quant;  // NOLINT
 
 TEST_CASE("testing basic constructions")
 {
-    void* d = nullptr;  // Dummy.
+    Position d;  // Dummy.
 
-    Framed<void*> const f1{d, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
+    Framed<Position> const f1{d, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
 
     CHECK(f1.name() == "TCP");
     CHECK(f1.base_frame() == "ARMAR-6::RobotRoot");
 
-    Framed<void*> const f2{d, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
+    Framed<Position> const f2{d, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
 
     CHECK(f2.name() == "CoM");
     CHECK(f2.base_frame() == "ARMAR-6::RobotRoot");

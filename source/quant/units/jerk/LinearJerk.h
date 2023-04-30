@@ -12,7 +12,7 @@
 namespace quant::units::jerk
 {
 
-    class LinearJerk : public geometry::LinearState<Domain>
+    class LinearJerk : public geometry::LinearState<LinearJerk>
     {
     public:
         static LinearJerk
@@ -29,7 +29,7 @@ namespace quant::units::jerk
                     constants::symbols::millimeters_per_second_cubed};
         }
 
-        using geometry::LinearState<Domain>::LinearState;
+        using geometry::LinearState<LinearJerk>::LinearState;
     };
 
     inline std::ostream&
