@@ -7,44 +7,52 @@
 namespace quant::geometry
 {
 
-    template <typename BaseQuantityT>
+    template <typename StateType>
     class SpatialIsometricState
     {
-        // Construct.
     public:
+        using LinearStateType = traits::linear_state_in_domain_of<StateType>;
+        using AngularStateType = traits::angular_state_in_domain_of<StateType>;
+        using LinearDifferenceType = traits::linear_difference_in_domain_of<StateType>;
+        using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
+        using GeometricType = traits::SpatialStateType;
+        using GeometricRepresentationType = Eigen::Isometry3d const&;
+
         SpatialIsometricState() : _representation(Eigen::Isometry3d::Identity())
         {
             ;
         }
 
-        static BaseQuantityT
+        SpatialIsometricState(LinearStateType linear, AngularStateType angular)
+        {
+            ;
+        }
+
+        static StateType
         zero()
         {
-            return BaseQuantityT{Eigen::Isometry3d::Identity()};
+            return StateType{Eigen::Isometry3d::Identity()};
         }
 
         // Compare.
 
         bool
-        operator==(BaseQuantityT const& rhs) const
+        operator==(StateType const& rhs) const
         {
             return _representation == rhs._representation;
         }
 
         bool
-        operator!=(BaseQuantityT const& rhs) const
+        operator!=(StateType const& rhs) const
         {
             return _representation != rhs._representation;
         }
 
         bool
-        is_approx(BaseQuantityT const& rhs, double const tolerance) const
+        is_approx(StateType const& rhs, double const tolerance) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
         }
-
-        using GeometricRepresentationType = Eigen::Isometry3d const&;
-        using GeometricType = traits::StateType;
 
     protected:
         SpatialIsometricState(Eigen::Isometry3d const& tf) : _representation(tf)
@@ -64,8 +72,8 @@ namespace quant::geometry
         }
 
         Eigen::Isometry3d _representation;
-        
-        friend class detail::StateAccessor<BaseQuantityT>;
+
+        friend class detail::StateAccessor<StateType>;
     };
 
 }  // namespace quant::geometry

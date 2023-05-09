@@ -16,31 +16,31 @@ namespace quant::geometry
      */
     struct AxisAngle
     {
-        double angle = 0;
         Vector axis{.x = 1, .y = 0, .z = 0};
+        double angle = 0;
 
         static AxisAngle
         around_x(double angle)
         {
-            return {.angle = angle, .axis = Vector::unit_x()};
+            return {.axis = Vector::unit_x(), .angle = angle};
         }
 
         static AxisAngle
         around_y(double angle)
         {
-            return {.angle = angle, .axis = Vector::unit_y()};
+            return {.axis = Vector::unit_y(), .angle = angle};
         }
 
         static AxisAngle
         around_z(double angle)
         {
-            return {.angle = angle, .axis = Vector::unit_z()};
+            return {.axis = Vector::unit_z(), .angle = angle};
         }
 
         static AxisAngle
         from_eigen(Eigen::AngleAxisd const& eigen)
         {
-            return {.angle = eigen.angle(), .axis = Vector::from_eigen(eigen.axis())};
+            return {.axis = Vector::from_eigen(eigen.axis()), .angle = eigen.angle()};
         }
 
         Eigen::AngleAxisd

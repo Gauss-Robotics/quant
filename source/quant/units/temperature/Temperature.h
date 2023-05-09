@@ -17,7 +17,7 @@ namespace quant::units::temperature
 
     public:
         static Temperature
-        degrees_celcius(geometry::Scalar celsius)
+        degrees_celsius(geometry::Scalar celsius)
         {
             return {celsius};
         }

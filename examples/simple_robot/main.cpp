@@ -6,8 +6,11 @@ int
 main(int argc, char* argv[])  // NOLINT
 {
     // Initialize robot.
-    quant::FramedSpatialDisplacement origin(quant::SpatialDisplacement::zero(),
-                                            {.name = "::Origin"});
+    quant::FramedSpatialDisplacement origin(
+        quant::SpatialDisplacement(
+            quant::Pose(quant::Position::millimeters({.x = 100}),
+                        quant::Orientation::radians({.axis = {.y = 1}, .angle = 3.}))),
+        {.name = "::Origin"});
     SimpleRobot robot{origin};
 
     // Detect an object on the table.

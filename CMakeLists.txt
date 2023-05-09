@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(quant LANGUAGES CXX)
 
-# General project settings.
+# General project settings (artifact locations, naming, C++ standard).
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -11,12 +11,11 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "lib_${CMAKE_PROJECT_NAME}_")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/source")
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    add_compile_options("-fconcepts-ts")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options("-fconcepts")
+# Export compile commands for Clang
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+    list(APPEND CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES}")
 endif()
-
 
 # Dependencies.
 find_package(Eigen3 REQUIRED)

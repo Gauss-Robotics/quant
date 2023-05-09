@@ -494,15 +494,15 @@ TEST_SUITE("temperature")
     TEST_CASE("temperatures can be trivially constructed")
     {
         Temperature const t_default;
-        CHECK(t_default == Temperature::degrees_celcius(0));
+        CHECK(t_default == Temperature::degrees_celsius(0));
 
         Temperature const t_zero = Temperature::zero();
-        CHECK(t_zero == Temperature::degrees_celcius(0));
+        CHECK(t_zero == Temperature::degrees_celsius(0));
     }
 
     TEST_CASE("temperatures can be converted to string")
     {
-        Temperature const t = Temperature::degrees_celcius(15);
+        Temperature const t = Temperature::degrees_celsius(15);
 
         // String to automatic unit.
         CHECK(t.to_string() == "15 °C");
@@ -533,7 +533,7 @@ TEST_SUITE("temperature")
 
         CHECK(zero_default.to_degrees_celsius() == 0);
 
-        Temperature const zero_degrees_celsius = Temperature::degrees_celcius(0);
+        Temperature const zero_degrees_celsius = Temperature::degrees_celsius(0);
 
         CHECK(zero_degrees_celsius.to_degrees_celsius() == 0);
 
@@ -554,7 +554,7 @@ TEST_SUITE("temperature")
 
     TEST_CASE("testing unit-specific zero constructions")
     {
-        Temperature const zero_degrees_celsius = Temperature::degrees_celcius(0);
+        Temperature const zero_degrees_celsius = Temperature::degrees_celsius(0);
 
         CHECK(zero_degrees_celsius.to_degrees_celsius() == 0);
 
@@ -576,7 +576,7 @@ TEST_SUITE("temperature")
         // Data for these unit tests taken from the comparison table from the German wikipedia:
         // https://de.wikipedia.org/wiki/Grad_Fahrenheit
 
-        Temperature const water_boiling_point = Temperature::degrees_celcius(100);
+        Temperature const water_boiling_point = Temperature::degrees_celsius(100);
 
         CHECK(water_boiling_point.to_degrees_celsius() == 100);
         CHECK(water_boiling_point.to_kelvin() == 373.15);
@@ -598,7 +598,7 @@ TEST_SUITE("temperature")
         CHECK(water_triple_point.to_degrees_fahrenheit() == Circa(32.018));
         CHECK(water_triple_point.to_degrees_rankine() == Circa(491.688));
 
-        Temperature const water_freezing_point_c = Temperature::degrees_celcius(0);
+        Temperature const water_freezing_point_c = Temperature::degrees_celsius(0);
 
         CHECK(water_freezing_point_c.to_degrees_celsius() == Circa(0));
         CHECK(water_freezing_point_c.to_kelvin() == Circa(273.15));
