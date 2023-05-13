@@ -30,6 +30,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using Difference = units::force::ForceDifference;
+        using GeometricType = LinearStateType;
     };
 
     template <>
@@ -37,6 +38,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using State = units::force::Force;
+        using GeometricType = LinearDifferenceType;
     };
 
     template <>
@@ -44,6 +46,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using Difference = units::force::TorqueDifference;
+        using GeometricType = AngularStateType;
     };
 
     template <>
@@ -51,6 +54,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using State = units::force::Torque;
+        using GeometricType = AngularDifferenceType;
     };
 
     template <>
@@ -58,6 +62,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using Difference = units::force::WrenchDifference;
+        using GeometricType = SpatialStateType;
     };
 
     template <>
@@ -65,6 +70,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using State = units::force::Wrench;
+        using GeometricType = SpatialDifferenceType;
     };
 
 }  // namespace quant::traits

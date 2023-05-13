@@ -49,7 +49,6 @@ namespace quant::geometry
         }
 
         using GeometricRepresentationType = double;
-        using GeometricType = traits::ScalarStateType;
 
     protected:
         ScalarState(Scalar scalar) : _representation{scalar}

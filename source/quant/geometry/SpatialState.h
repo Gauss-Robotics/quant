@@ -14,7 +14,6 @@ namespace quant::geometry
         using AngularStateType = traits::angular_state_in_domain_of<StateType>;
         using LinearDifferenceType = traits::linear_difference_in_domain_of<StateType>;
         using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
-        using GeometricType = traits::SpatialStateType;
 
         SpatialState(LinearStateType linear, AngularStateType angular) :
             _linear{linear}, _angular{angular}
@@ -53,7 +52,7 @@ namespace quant::geometry
         }
 
         friend StateType
-        operator+(AngularDifferenceType const& op, StateType const& rhs)
+        operator*(AngularDifferenceType const& op, StateType const& rhs)
         {
             return StateType(rhs._linear, op * rhs._angular);
         }

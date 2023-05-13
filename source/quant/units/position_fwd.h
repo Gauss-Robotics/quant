@@ -30,6 +30,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using Difference = units::position::LinearDisplacement;
+        using GeometricType = LinearStateType;
     };
 
     template <>
@@ -37,6 +38,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using State = units::position::Position;
+        using GeometricType = LinearDifferenceType;
     };
 
     template <>
@@ -44,6 +46,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using Difference = units::position::AngularDisplacement;
+        using GeometricType = AngularStateType;
     };
 
     template <>
@@ -51,6 +54,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using State = units::position::Orientation;
+        using GeometricType = AngularDifferenceType;
     };
 
     template <>
@@ -58,6 +62,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using Difference = units::position::SpatialDisplacement;
+        using GeometricType = SpatialStateType;
     };
 
     template <>
@@ -65,6 +70,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using State = units::position::Pose;
+        using GeometricType = SpatialDifferenceType;
     };
 
 }  // namespace quant::traits

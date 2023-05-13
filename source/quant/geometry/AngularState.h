@@ -60,7 +60,6 @@ namespace quant::geometry
         }
 
         using GeometricRepresentationType = Eigen::Quaterniond const&;
-        using GeometricType = traits::AngularStateType;
 
     protected:
         // Construct.

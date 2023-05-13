@@ -30,6 +30,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using Difference = units::velocity::LinearVelocityDifference;
+        using GeometricType = LinearStateType;
     };
 
     template <>
@@ -37,6 +38,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using State = units::velocity::LinearVelocity;
+        using GeometricType = LinearDifferenceType;
     };
 
     template <>
@@ -44,6 +46,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using Difference = units::velocity::AngularVelocityDifference;
+        using GeometricType = AngularStateType;
     };
 
     template <>
@@ -51,6 +54,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using State = units::velocity::AngularVelocity;
+        using GeometricType = AngularDifferenceType;
     };
 
     template <>
@@ -58,6 +62,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using Difference = units::velocity::TwistDifference;
+        using GeometricType = SpatialStateType;
     };
 
     template <>
@@ -65,6 +70,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using State = units::velocity::Twist;
+        using GeometricType = SpatialDifferenceType;
     };
 
 }  // namespace quant::traits

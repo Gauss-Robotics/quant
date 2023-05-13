@@ -30,6 +30,15 @@ namespace quant::traits
     {
         using Domain = MomentumDomain;
         using Difference = units::momentum::LinearImpulse;
+        using GeometricType = LinearStateType;
+    };
+
+    template <>
+    struct DefineTraits<units::momentum::LinearImpulse>
+    {
+        using Domain = MomentumDomain;
+        using State = units::momentum::LinearMomentum;
+        using GeometricType = LinearDifferenceType;
     };
 
 }  // namespace quant::traits

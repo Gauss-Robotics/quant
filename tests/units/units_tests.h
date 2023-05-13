@@ -277,7 +277,7 @@ TEST_SUITE("velocity")
         CHECK(t2.linear() == vel1);
 
         AngularVelocity const vel2 = AngularVelocity::radians_per_second({.angle = M_PI});
-        Twist const t3 = AngularVelocityDifference(vel2) + t1;
+        Twist const t3 = AngularVelocityDifference(vel2) * t1;
         CHECK(t3.angular() == Circa(vel2));
     }
 
@@ -461,7 +461,7 @@ TEST_SUITE("force")
 
         Torque const t = Torque::newton_meters(AxisAngle::around_y(1));
         TorqueDifference const dt(t);
-        Wrench const w3 = dt + w1;
+        Wrench const w3 = dt * w1;
 
         CHECK(w3.angular() == Circa(t));
     }

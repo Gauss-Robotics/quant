@@ -66,6 +66,22 @@ namespace quant::traits
     {
     };
 
+    struct ScalarDifferenceType : public DifferenceType
+    {
+    };
+
+    struct LinearDifferenceType : public DifferenceType
+    {
+    };
+
+    struct AngularDifferenceType : public DifferenceType
+    {
+    };
+
+    struct SpatialDifferenceType : public DifferenceType
+    {
+    };
+
     struct OneDimensionalDomainType
     {
     };
@@ -108,32 +124,34 @@ namespace quant::traits
     using traits_of = DefineTraits<Type>;
 
     template <typename Type>
-    concept state = std::derived_from<typename Type::GeometricType, StateType>;
+    concept state = std::derived_from<typename traits_of<Type>::GeometricType, StateType>;
 
     template <typename Type>
-    concept scalar_state = std::derived_from<typename Type::GeometricType, ScalarStateType>;
+    concept scalar_state =
+        std::derived_from<typename traits_of<Type>::GeometricType, ScalarStateType>;
 
     template <typename Type>
-    concept linear_state = std::derived_from<typename Type::GeometricType, LinearStateType>;
+    concept linear_state =
+        std::derived_from<typename traits_of<Type>::GeometricType, LinearStateType>;
 
     template <typename Type>
-    concept angular_state = std::derived_from<typename Type::GeometricType, AngularStateType>;
+    concept angular_state =
+        std::derived_from<typename traits_of<Type>::GeometricType, AngularStateType>;
 
     template <typename Type>
-    concept difference =
-        std::derived_from<typename Type::DifferenceObjectType::GeometricType, StateType>;
+    concept difference = std::derived_from<typename traits_of<Type>::GeometricType, DifferenceType>;
 
     template <typename Type>
     concept scalar_difference =
-        std::derived_from<typename Type::DifferenceObjectType::GeometricType, ScalarStateType>;
+        std::derived_from<typename traits_of<Type>::GeometricType, ScalarDifferenceType>;
 
     template <typename Type>
     concept linear_difference =
-        std::derived_from<typename Type::DifferenceObjectType::GeometricType, LinearStateType>;
+        std::derived_from<typename traits_of<Type>::GeometricType, LinearDifferenceType>;
 
     template <typename Type>
     concept angular_difference =
-        std::derived_from<typename Type::DifferenceObjectType::GeometricType, AngularStateType>;
+        std::derived_from<typename traits_of<Type>::GeometricType, AngularDifferenceType>;
 
     template <typename Type>
     using domain_type_of = typename traits_of<Type>::Domain;

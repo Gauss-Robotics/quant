@@ -21,6 +21,7 @@ namespace quant::traits
     {
         using Domain = TimeDomain;
         using Difference = units::time::Duration;
+        using GeometricType = ScalarStateType;
     };
 
     template <>
@@ -28,6 +29,7 @@ namespace quant::traits
     {
         using Domain = TimeDomain;
         using State = units::time::TimePoint;
+        using GeometricType = ScalarDifferenceType;
     };
 
 }  // namespace quant::traits
