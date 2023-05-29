@@ -10,6 +10,7 @@
 #include <cassert>
 #include <cstdio>
 #include <ostream>
+#include <string>
 #include <string_view>
 
 namespace quant::framed_geometry
@@ -96,6 +97,19 @@ namespace quant::framed_geometry
         base_frame() const
         {
             return _base_frame_data.data();
+        }
+
+        std::string
+        to_string() const
+        {
+            std::string named_entity{name()};
+            named_entity += " ";
+            std::string in_frame{base_frame()};  // base frame might be empty for global frame.
+            if (not in_frame.empty())
+            {
+                in_frame = " in frame " + in_frame;
+            }
+            return named_entity + _framed_object.to_string() + in_frame;
         }
 
     private:

@@ -4,6 +4,8 @@
 
 #include <Eigen/Geometry>
 
+#include <string>
+
 namespace quant::geometry
 {
 
@@ -51,6 +53,12 @@ namespace quant::geometry
         is_approx(StateType const& rhs, double const tolerance) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
+        }
+
+        std::string
+        to_string() const
+        {
+            return "TODO";
         }
 
     protected:

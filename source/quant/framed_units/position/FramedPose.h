@@ -13,4 +13,10 @@ namespace quant::framed_units::position
         using Framed<units::position::Pose>::Framed;
     };
 
+    inline std::ostream&
+    operator<<(std::ostream& os, framed_units::position::Pose const& rhs)
+    {
+        return os << rhs.to_string();
+    }
+
 }  // namespace quant::framed_units::position

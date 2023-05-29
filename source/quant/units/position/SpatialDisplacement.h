@@ -14,4 +14,10 @@ namespace quant::units::position
         using geometry::Difference<Pose>::Difference;
     };
 
+    inline std::ostream&
+    operator<<(std::ostream& os, SpatialDisplacement const& rhs)
+    {
+        return os << rhs.to_string();
+    }
+
 }  // namespace quant::units::position

@@ -5,6 +5,7 @@
 #include <quant/geometry_fwd.h>
 
 #include <concepts>
+#include <string>
 #include <type_traits>
 #include <typeinfo>
 
@@ -51,6 +52,12 @@ namespace quant::geometry
         operator!=(Difference<StateType> const& rhs) const
         {
             return _difference_object != rhs._difference_object;
+        }
+
+        std::string
+        to_string() const
+        {
+            return _difference_object.to_string();
         }
 
     protected:
