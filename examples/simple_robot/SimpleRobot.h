@@ -13,8 +13,9 @@ namespace simple_robot_example
     public:
         SimpleRobot(quant::FramedSpatialDisplacement const& origin)
         {
-            quant::FramedSpatialDisplacement const root =
-                origin.enframe(quant::SpatialDisplacement(), frames.root);
+            quant::FramedSpatialDisplacement const root = origin.enframe(
+                quant::SpatialDisplacement(quant::Pose(quant::Position::millimeters({.x = 300}))),
+                frames.root);
 
             quant::FramedSpatialDisplacement const chest =
                 root.enframe(quant::SpatialDisplacement(), frames.chest);

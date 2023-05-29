@@ -24,9 +24,21 @@ namespace quant::geometry
             ;
         }
 
-        SpatialIsometricState(LinearStateType linear, AngularStateType angular)
+        SpatialIsometricState(LinearStateType const& linear) :
+            SpatialIsometricState(linear, AngularStateType::zero())
         {
             ;
+        }
+
+        SpatialIsometricState(AngularStateType const& angular) :
+            SpatialIsometricState(LinearStateType::zero(), angular)
+        {
+            ;
+        }
+
+        SpatialIsometricState(LinearStateType const& linear, AngularStateType const& angular)
+        {
+            // TODO
         }
 
         static StateType
