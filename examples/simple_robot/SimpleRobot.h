@@ -13,27 +13,32 @@ namespace simple_robot_example
     public:
         SimpleRobot(quant::FramedSpatialDisplacement const& origin)
         {
-            quant::FramedSpatialDisplacement const root = origin.enframe(
-                quant::SpatialDisplacement(quant::Pose(quant::Position::millimeters({.x = 300}))),
+            using namespace quant;
+
+            FramedSpatialDisplacement const root = origin.enframe(
+                SpatialDisplacement(Pose(Position::millimeters({.x = 300}),
+                                         Orientation::radians(AxisAngle::around_z(2)))),
                 frames.root);
 
-            quant::FramedSpatialDisplacement const chest =
-                root.enframe(quant::SpatialDisplacement(), frames.chest);
+            this->root = root;
 
-            quant::FramedSpatialDisplacement const arm_right =
-                chest.enframe(quant::SpatialDisplacement(), frames.arm_right);
+            FramedSpatialDisplacement const chest =
+                root.enframe(SpatialDisplacement(), frames.chest);
 
-            quant::FramedSpatialDisplacement const tcp_right =
-                arm_right.enframe(quant::SpatialDisplacement(), frames.tcp_right);
+            FramedSpatialDisplacement const arm_right =
+                chest.enframe(SpatialDisplacement(), frames.arm_right);
 
-            quant::FramedSpatialDisplacement const arm_left =
-                chest.enframe(quant::SpatialDisplacement(), frames.arm_left);
+            FramedSpatialDisplacement const tcp_right =
+                arm_right.enframe(SpatialDisplacement(), frames.tcp_right);
 
-            quant::FramedSpatialDisplacement const tcp_left =
-                arm_left.enframe(quant::SpatialDisplacement(), frames.tcp_left);
+            FramedSpatialDisplacement const arm_left =
+                chest.enframe(SpatialDisplacement(), frames.arm_left);
 
-            quant::FramedSpatialDisplacement const camera =
-                chest.enframe(quant::SpatialDisplacement(), frames.camera);
+            FramedSpatialDisplacement const tcp_left =
+                arm_left.enframe(SpatialDisplacement(), frames.tcp_left);
+
+            FramedSpatialDisplacement const camera =
+                chest.enframe(SpatialDisplacement(), frames.camera);
 
             _frames[std::string(root.name())] = root;
         }
@@ -48,7 +53,7 @@ namespace simple_robot_example
         detect_object() const
         {
             quant::Pose const object_pose;
-            return quant::FramedPose(object_pose, {.name = "Object", .base_frame = frames.camera});
+            return quant::FramedPose(object_pose, {.name = "Cup", .base_frame = frames.camera});
         }
 
         void
@@ -67,6 +72,10 @@ namespace simple_robot_example
             std::string tcp_left = "Robot::LeftTCP";
             std::string camera = "Robot::Camera";
         } const frames;
+
+        quant::FramedSpatialDisplacement root = quant::FramedSpatialDisplacement(
+            quant::SpatialDisplacement(quant::Pose(quant::Position::millimeters({.x = 42}))),
+            {.name = "asdf"});
 
     private:
         std::map<std::string, quant::FramedSpatialDisplacement> _frames;

@@ -139,6 +139,10 @@ namespace quant::traits
         std::derived_from<typename traits_of<Type>::GeometricType, AngularStateType>;
 
     template <typename Type>
+    concept spatial_state =
+        std::derived_from<typename traits_of<Type>::GeometricType, SpatialStateType>;
+
+    template <typename Type>
     concept difference = std::derived_from<typename traits_of<Type>::GeometricType, DifferenceType>;
 
     template <typename Type>
@@ -152,6 +156,10 @@ namespace quant::traits
     template <typename Type>
     concept angular_difference =
         std::derived_from<typename traits_of<Type>::GeometricType, AngularDifferenceType>;
+
+    template <typename Type>
+    concept spatial_difference =
+        std::derived_from<typename traits_of<Type>::GeometricType, SpatialDifferenceType>;
 
     template <typename Type>
     using domain_type_of = typename traits_of<Type>::Domain;

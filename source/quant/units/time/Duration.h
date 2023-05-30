@@ -199,7 +199,6 @@ namespace quant::units::time
             return _difference_object.to_string(format);
         }
 
-    protected:
         using geometry::Difference<TimePoint>::Difference;
     };
 

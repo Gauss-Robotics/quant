@@ -43,6 +43,12 @@ namespace quant::geometry
             return {.axis = Vector::from_eigen(eigen.axis()), .angle = eigen.angle()};
         }
 
+        static AxisAngle
+        from_eigen(Eigen::Ref<Eigen::Matrix3d> eigen)
+        {
+            return from_eigen(Eigen::AngleAxisd(eigen));
+        }
+
         Eigen::AngleAxisd
         to_eigen() const
         {

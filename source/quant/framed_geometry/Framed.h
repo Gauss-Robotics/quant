@@ -26,8 +26,8 @@ namespace quant::framed_geometry
      */
     struct FrameData
     {
-        std::string_view name;
-        std::string_view base_frame;
+        std::string_view name = "";
+        std::string_view base_frame = "";
     };
 
     /**
@@ -78,15 +78,6 @@ namespace quant::framed_geometry
                                                 {.name = name, .base_frame = this->name()});
         }
 
-        Framed<QuantityT>&
-        operator=(Framed<QuantityT> const& t)
-        {
-            _name_data = t._name_data;
-            _base_frame_data = t._base_frame_data;
-            _framed_object = t._framed_object;
-            return *this;
-        }
-
         std::string_view
         name() const
         {
@@ -103,13 +94,16 @@ namespace quant::framed_geometry
         to_string() const
         {
             std::string named_entity{name()};
-            named_entity += " ";
             std::string in_frame{base_frame()};  // base frame might be empty for global frame.
             if (not in_frame.empty())
             {
-                in_frame = " in frame " + in_frame;
+                in_frame = "w.r.t. " + in_frame;
             }
-            return named_entity + _framed_object.to_string() + in_frame;
+            else
+            {
+                in_frame = "global";
+            }
+            return named_entity + " (" + in_frame + ") at " + _framed_object.to_string();
         }
 
     private:

@@ -30,12 +30,6 @@ namespace quant::geometry
             ;
         }
 
-        Difference&
-        operator=(Difference const& t)
-        {
-            return *this;
-        }
-
         static traits::difference_type_of<StateType>
         zero()
         {

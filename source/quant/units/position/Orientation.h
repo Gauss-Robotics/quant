@@ -22,7 +22,13 @@ namespace quant::units::position
         AxisAngle
         to_radians() const
         {
-            return {to_axis_angle(), constants::names::orientation, constants::names::radians};
+            return {to_axis_angle(), constants::names::orientation, constants::symbols::radians};
+        }
+
+        std::string
+        to_string() const
+        {
+            return to_radians().to_string();
         }
 
         using geometry::AngularState<Orientation>::AngularState;

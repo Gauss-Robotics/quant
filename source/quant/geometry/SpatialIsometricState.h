@@ -36,15 +36,40 @@ namespace quant::geometry
             ;
         }
 
-        SpatialIsometricState(LinearStateType const& linear, AngularStateType const& angular)
+        SpatialIsometricState(LinearStateType const& linear, AngularStateType const& angular) :
+            _representation{[&linear, &angular]()
+                            {
+                                using LinearState = detail::StateAccessor<LinearStateType>;
+                                using AngularState = detail::StateAccessor<AngularStateType>;
+
+                                Eigen::Isometry3d tf = Eigen::Isometry3d::Identity();
+                                tf.translation() = LinearState::representation(linear);
+                                tf.linear() =
+                                    Eigen::Matrix3d(AngularState::representation(angular));
+                                return tf;
+                            }()}
         {
-            // TODO
+            ;
         }
 
         static StateType
         zero()
         {
             return StateType{Eigen::Isometry3d::Identity()};
+        }
+
+        LinearStateType
+        linear() const
+        {
+            using State = detail::StateAccessor<LinearStateType>;
+            return State::make(_representation.translation());
+        }
+
+        AngularStateType
+        angular() const
+        {
+            using State = detail::StateAccessor<AngularStateType>;
+            return State::make(Eigen::Quaterniond(_representation.rotation()));
         }
 
         // Compare.
@@ -70,7 +95,7 @@ namespace quant::geometry
         std::string
         to_string() const
         {
-            return "TODO";
+            return linear().to_string() + ", " + angular().to_string();
         }
 
     protected:
