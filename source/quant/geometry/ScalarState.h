@@ -27,6 +27,32 @@ namespace quant::geometry
             return StateType(0);
         }
 
+        // Scale.
+
+        StateType
+        operator*(long const rhs) const
+        {
+            return StateType(_representation * rhs);
+        }
+
+        StateType
+        operator/(long const rhs) const
+        {
+            return StateType(_representation / rhs);
+        }
+
+        /**
+         * @brief Calculate the ratio of two states.
+         *
+         * @param rhs Other state.
+         * @return Ratio of the two states as double.
+         */
+        double
+        operator/(StateType const& rhs) const
+        {
+            return _representation / rhs._representation;
+        }
+
         // Compare.
 
         bool
@@ -48,6 +74,30 @@ namespace quant::geometry
             return std::abs(_representation - rhs._representation) < tolerance;
         }
 
+        bool
+        operator<(StateType const& rhs) const
+        {
+            return _representation < rhs._representation;
+        }
+
+        bool
+        operator<=(StateType const& rhs) const
+        {
+            return _representation <= rhs._representation;
+        }
+
+        bool
+        operator>(StateType const& rhs) const
+        {
+            return _representation > rhs._representation;
+        }
+
+        bool
+        operator>=(StateType const& rhs) const
+        {
+            return _representation >= rhs._representation;
+        }
+
         using GeometricRepresentationType = double;
 
     protected:
@@ -66,5 +116,21 @@ namespace quant::geometry
 
         friend class detail::StateAccessor<StateType>;
     };
+
+    template <typename StateType>
+        requires quant::traits::scalar_state<StateType>
+    StateType
+    operator*(long lhs, StateType const& rhs)
+    {
+        return rhs * lhs;
+    }
+
+    template <typename StateType>
+        requires quant::traits::scalar_state<StateType>
+    StateType
+    operator/(long lhs, StateType const& rhs)
+    {
+        return rhs / lhs;
+    }
 
 }  // namespace quant::geometry

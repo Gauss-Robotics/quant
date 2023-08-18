@@ -13,7 +13,9 @@ namespace quant::geometry
 {
 
     /**
-     * Represents the difference of two states of type `StateType`.
+     * @brief Represents the difference of two states of type StateType.
+     *
+     * @tparam StateType State used for representing the difference.
      */
     template <typename StateType>
     class Difference
@@ -91,7 +93,59 @@ namespace quant::geometry
     {
         using State = detail::StateAccessor<StateType>;
         using Difference = detail::DifferenceAccessor<DifferenceType>;
+
         return State::make(Difference::representation(lhs) + State::representation(rhs));
+    }
+
+    /**
+     * @brief Scale the difference with a given scalar.
+     *
+     * @param lhs Difference type to be scaled.
+     * @param rhs Scalar the difference should be scaled with.
+     * @return Scaled difference.
+     */
+    template <typename ScalarDifferenceType>
+        requires traits::scalar_difference<ScalarDifferenceType>
+    ScalarDifferenceType
+    operator*(ScalarDifferenceType const& lhs, long const rhs)
+    {
+        using ScalarDifference = detail::DifferenceAccessor<ScalarDifferenceType>;
+
+        return ScalarDifference::make(ScalarDifference::representation(lhs) * rhs);
+    }
+
+    /**
+     * @brief Scale the difference with a given scalar.
+     *
+     * @param lhs Scalar the difference should be scaled with.
+     * @param rhs Difference type to be scaled.
+     * @return Scaled difference.
+     */
+    template <typename ScalarDifferenceType>
+        requires traits::scalar_difference<ScalarDifferenceType>
+    ScalarDifferenceType
+    operator*(long const lhs, ScalarDifferenceType const& rhs)
+    {
+        using ScalarDifference = detail::DifferenceAccessor<ScalarDifferenceType>;
+
+        return ScalarDifference::make(ScalarDifference::representation(rhs) * lhs);
+    }
+
+    /**
+     * @brief Get the ratio between two scalar differneces.
+     *
+     * @param lhs
+     * @param rhs
+     * @return Ratio of the two differences as double.
+     */
+    template <typename ScalarDifferenceType>
+        requires traits::scalar_difference<ScalarDifferenceType>
+    double
+    operator/(ScalarDifferenceType const& lhs, ScalarDifferenceType const& rhs)
+    {
+        using ScalarDifference = detail::DifferenceAccessor<ScalarDifferenceType>;
+
+        return ScalarDifference::representation(lhs) / ScalarDifference::representation(rhs);
     }
 
     /**
