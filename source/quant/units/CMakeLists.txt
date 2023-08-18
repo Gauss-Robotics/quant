@@ -114,6 +114,7 @@ add_library(units SHARED
 set_target_properties(units
     PROPERTIES
         LINKER_LANGUAGE CXX
+        INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/source"
 )
 
 target_link_libraries(units
