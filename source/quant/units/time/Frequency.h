@@ -21,9 +21,33 @@ namespace quant::units::time
         // Construct.
     public:
         static Frequency
+        microhertz(geometry::Scalar microhertz)
+        {
+            return {microhertz};
+        }
+
+        static Frequency
+        millihertz(geometry::Scalar millihertz)
+        {
+            return {millihertz * constants::mHz2uHz};
+        }
+
+        static Frequency
         hertz(geometry::Scalar hertz)
         {
-            return {hertz};
+            return {hertz * constants::Hz2uHz};
+        }
+
+        static Frequency
+        kilohertz(geometry::Scalar kilohertz)
+        {
+            return {kilohertz * constants::kHz2uHz};
+        }
+
+        static Frequency
+        megahertz(geometry::Scalar megahertz)
+        {
+            return {megahertz * constants::MHz2uHz};
         }
 
         Scalar
@@ -35,8 +59,7 @@ namespace quant::units::time
         Duration
         to_period() const
         {
-            // TODO: Stub
-            return Duration::seconds(1);
+            return Duration::seconds(1. / to_hertz());
         }
 
         std::string

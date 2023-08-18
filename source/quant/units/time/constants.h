@@ -19,7 +19,11 @@ namespace quant::units::time::constants
         constexpr std::string_view hours = "Hours";
         constexpr std::string_view days = "Days";
 
+        constexpr std::string_view microhertz = "Microhertz";
+        constexpr std::string_view millihertz = "Millihertz";
         constexpr std::string_view hertz = "Hertz";
+        constexpr std::string_view kilohertz = "Kilohertz";
+        constexpr std::string_view megahertz = "Megahertz";
 
     }  // namespace names
 
@@ -33,7 +37,11 @@ namespace quant::units::time::constants
         constexpr std::string_view hours = "h";
         constexpr std::string_view days = "d";
 
+        constexpr std::string_view microhertz = "µHz";
+        constexpr std::string_view millihertz = "mHz";
         constexpr std::string_view hertz = "Hz";
+        constexpr std::string_view kilohertz = "kHz";
+        constexpr std::string_view megahertz = "MHz";
 
     }  // namespace symbols
 
@@ -56,5 +64,13 @@ namespace quant::units::time::constants
     constexpr double us2min = us2s * s2min;
     constexpr double us2h = us2min * min2h;
     constexpr double us2d = us2h * h2d;
+
+    constexpr double MHz2kHz = 1'000;
+    constexpr double kHz2Hz = 1'000;
+    constexpr double Hz2mHz = 1'000;
+    constexpr double mHz2uHz = 1'000;
+    constexpr double Hz2uHz = Hz2mHz * mHz2uHz;
+    constexpr double kHz2uHz = kHz2Hz * Hz2uHz;
+    constexpr double MHz2uHz = MHz2kHz * kHz2uHz;
 
 }  // namespace quant::units::time::constants
