@@ -168,7 +168,8 @@ namespace quant::units::time
 
         /**
          * @brief Tests whether the time point is zero.
-         * @return True if time point is zero, else otherwise.
+         *
+         * @return True if time point is zero, false otherwise.
          */
         bool
         is_zero() const
