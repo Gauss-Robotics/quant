@@ -11,7 +11,7 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "lib_${CMAKE_PROJECT_NAME}_")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/source")
 
-# Export compile commands for Clang
+# Export compile commands for Clang.
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if(CMAKE_EXPORT_COMPILE_COMMANDS)
     list(APPEND CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES}")
@@ -56,5 +56,11 @@ export(
     NAMESPACE
         quant::
     FILE
-        "${PROJECT_BINARY_DIR}/quantConfig.cmake"
+        "${PROJECT_BINARY_DIR}/quantConfig-autogen.cmake"
+)
+
+configure_file(
+    "${CMAKE_SOURCE_DIR}/cmake/quantConfig.template.cmake"
+    "${PROJECT_BINARY_DIR}/quantConfig.cmake"
+    @ONLY
 )
