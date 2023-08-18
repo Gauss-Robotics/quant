@@ -10,6 +10,7 @@ namespace quant::units::time::constants
 
         constexpr std::string_view time_point = "Time Point";
         constexpr std::string_view duration = "Duration";
+        constexpr std::string_view frequency = "Frequency";
 
         constexpr std::string_view microseconds = "Microseconds";
         constexpr std::string_view milliseconds = "Milliseconds";
@@ -17,6 +18,8 @@ namespace quant::units::time::constants
         constexpr std::string_view minutes = "Minutes";
         constexpr std::string_view hours = "Hours";
         constexpr std::string_view days = "Days";
+
+        constexpr std::string_view hertz = "Hertz";
 
     }  // namespace names
 
@@ -29,6 +32,8 @@ namespace quant::units::time::constants
         constexpr std::string_view minutes = "min";
         constexpr std::string_view hours = "h";
         constexpr std::string_view days = "d";
+
+        constexpr std::string_view hertz = "Hz";
 
     }  // namespace symbols
 
