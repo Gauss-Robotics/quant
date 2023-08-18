@@ -10,7 +10,7 @@
 namespace quant::geometry
 {
 
-    template <typename StateType>
+    template <typename StateType, typename RepresentationType = double>
     class ScalarState
     {
     public:
@@ -98,7 +98,7 @@ namespace quant::geometry
             return _representation >= rhs._representation;
         }
 
-        using GeometricRepresentationType = double;
+        using GeometricRepresentationType = RepresentationType;
 
     protected:
         ScalarState(Scalar scalar) : _representation{scalar}
@@ -112,7 +112,7 @@ namespace quant::geometry
             return _representation;
         }
 
-        double _representation;
+        RepresentationType _representation;
 
         friend class detail::StateAccessor<StateType>;
     };

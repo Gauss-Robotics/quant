@@ -10,7 +10,7 @@ namespace quant::geometry
     struct Vector;
     struct AxisAngle;
 
-    template <typename BaseQuantityT>
+    template <typename StateType, typename RepresentationType>
     class ScalarState;
 
     template <typename BaseQuantityT>

@@ -16,7 +16,7 @@ namespace quant::units::time
     /**
      * @brief Represents a frequency.
      */
-    class Frequency : public geometry::ScalarState<Frequency>
+    class Frequency : public geometry::ScalarState<Frequency, std::int64_t>
     {
         // Construct.
     public:
@@ -46,7 +46,7 @@ namespace quant::units::time
         }
 
     protected:
-        using geometry::ScalarState<Frequency>::ScalarState;
+        using geometry::ScalarState<Frequency, std::int64_t>::ScalarState;
     };
 
     inline std::ostream&

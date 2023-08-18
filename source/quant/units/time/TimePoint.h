@@ -5,6 +5,7 @@
 #include <quant/units/time/constants.h>
 #include <quant/units/time_fwd.h>
 
+#include <cstdint>
 #include <iomanip>
 #include <ostream>
 #include <string>
@@ -15,7 +16,7 @@ namespace quant::units::time
     /**
      * @brief Represents a time point.
      */
-    class TimePoint : public geometry::ScalarState<TimePoint>
+    class TimePoint : public geometry::ScalarState<TimePoint, std::int64_t>
     {
         // Construct.
     public:
@@ -241,7 +242,7 @@ namespace quant::units::time
         }
 
     protected:
-        using geometry::ScalarState<TimePoint>::ScalarState;
+        using geometry::ScalarState<TimePoint, std::int64_t>::ScalarState;
     };
 
     inline std::ostream&
