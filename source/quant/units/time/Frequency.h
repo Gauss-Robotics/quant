@@ -1,6 +1,10 @@
 #pragma once
 
+#include <quant/geometry/ScalarState.h>
+#include <quant/units/Scalar.h>
 #include <quant/units/time/Duration.h>
+#include <quant/units/time/constants.h>
+#include <quant/units/time_fwd.h>
 
 #include <cstdint>
 #include <ostream>
@@ -12,118 +16,43 @@ namespace quant::units::time
     /**
      * @brief Represents a frequency.
      */
-    class Frequency
+    class Frequency : public geometry::ScalarState<Frequency>
     {
-        // Public API.
+        // Construct.
     public:
-        Frequency(Duration const& cycleDuration);
-
         static Frequency
-        hertz(std::int64_t hertz);
+        hertz(geometry::Scalar hertz)
+        {
+            return {hertz};
+        }
 
-        static Frequency
-        hertzDouble(double hertz);
-
-        std::int64_t
-        toHertz() const;
-
-        double
-        toHertzDouble() const;
+        Scalar
+        to_hertz() const
+        {
+            return {_representation, constants::names::frequency, constants::symbols::hertz};
+        }
 
         Duration
-        toCycleDuration() const;
+        to_period() const
+        {
+            // TODO: Stub
+            return Duration::seconds(1);
+        }
 
         std::string
-        toFrequencyString() const;
-
-        // Operators.
-    public:
-        Frequency
-        operator+(Frequency const& rhs) const;
-
-        Frequency&
-        operator+=(Frequency const& rhs);
-
-        Frequency
-        operator-(Frequency const& rhs) const;
-
-        Frequency&
-        operator-=(Frequency const& rhs);
-
-        Frequency
-        operator*(double rhs) const;
-
-        Frequency
-        operator*(int rhs) const;
-
-        Frequency
-        operator*(std::int64_t rhs) const;
-
-        Frequency&
-        operator*=(double rhs);
-
-        Frequency&
-        operator*=(int rhs);
-
-        Frequency&
-        operator*=(std::int64_t rhs);
-
-        double
-        operator/(Frequency const& rhs) const;
-
-        Frequency
-        operator/(double rhs) const;
-
-        Frequency
-        operator/(int rhs) const;
-
-        Frequency
-        operator/(std::int64_t rhs) const;
-
-        Frequency&
-        operator/=(double rhs);
-
-        Frequency&
-        operator/=(int rhs);
-
-        Frequency&
-        operator/=(std::int64_t rhs);
-
-        bool
-        operator<(Frequency const& rhs) const;
-
-        bool
-        operator<=(Frequency const& rhs) const;
-
-        bool
-        operator==(Frequency const& rhs) const;
-
-        bool
-        operator!=(Frequency const& rhs) const;
-
-        bool
-        operator>=(Frequency const& rhs) const;
-
-        bool
-        operator>(Frequency const& rhs) const;
+        to_string() const
+        {
+            return to_hertz().to_string();
+        }
 
     protected:
-        /**
-         * @brief Current cycle duration.
-         */
-        Duration cycleDuration_;
+        using geometry::ScalarState<Frequency>::ScalarState;
     };
 
-    Frequency
-    operator/(double cyclesPerDuration, Duration const& duration);
-
-    Frequency
-    operator/(int cyclesPerDuration, Duration const& duration);
-
-    Frequency
-    operator/(std::int64_t cyclesPerDuration, Duration const& duration);
-
-    std::ostream&
-    operator<<(std::ostream& out, Frequency const& rhs);
+    inline std::ostream&
+    operator<<(std::ostream& out, Frequency const& rhs)
+    {
+        return out << rhs.to_string();
+    }
 
 }  // namespace quant::units::time
