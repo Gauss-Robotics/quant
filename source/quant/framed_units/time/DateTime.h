@@ -29,6 +29,12 @@ namespace quant::framed_units::time
         {
             return {time_point};
         }
+
+        TimePoint
+        to_time_point_since_epoch() const
+        {
+            return *this;
+        }
     };
 
     /**
