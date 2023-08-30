@@ -6,6 +6,7 @@
 
 #include <Eigen/Geometry>
 
+#include <compare>
 #include <string>
 
 namespace quant::geometry
@@ -47,6 +48,12 @@ namespace quant::geometry
         operator!=(StateType const& rhs) const
         {
             return _representation != rhs._representation;
+        }
+
+        auto
+        operator<=>(StateType const& rhs) const
+        {
+            return _representation <=> rhs._representation;
         }
 
         bool

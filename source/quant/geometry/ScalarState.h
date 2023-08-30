@@ -5,6 +5,7 @@
 #include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>
 
+#include <compare>
 #include <sstream>
 
 namespace quant::geometry
@@ -67,35 +68,17 @@ namespace quant::geometry
             return _representation != rhs._representation;
         }
 
+        std::strong_ordering
+        operator<=>(StateType const& rhs) const
+        {
+            return _representation <=> rhs._representation;
+        }
+
         bool
         is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
         {
             return std::abs(_representation - rhs._representation) < tolerance;
-        }
-
-        bool
-        operator<(StateType const& rhs) const
-        {
-            return _representation < rhs._representation;
-        }
-
-        bool
-        operator<=(StateType const& rhs) const
-        {
-            return _representation <= rhs._representation;
-        }
-
-        bool
-        operator>(StateType const& rhs) const
-        {
-            return _representation > rhs._representation;
-        }
-
-        bool
-        operator>=(StateType const& rhs) const
-        {
-            return _representation >= rhs._representation;
         }
 
         using GeometricRepresentationType = RepresentationType;

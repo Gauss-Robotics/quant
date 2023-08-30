@@ -1,16 +1,22 @@
 add_library(framed_units SHARED
     ../framed_units.h
 
-    #time.h
-    #time_fwd.h
+    time.h
+    time/forward_declarations.h
     #time/forward_declarations.h
-    #time/TimePoint.h
-    #time/TimePoint.cpp
-    #time/Duration.h
-    #time/Duration.cpp
+    time/TimePoint.h
+    time/TimePoint.cpp
+    time/Duration.h
+    time/Duration.cpp
+    time/DateTime.h
+    time/DateTime.cpp
     #time/TimeInterval.h
     #time/Frequency.h
     #time/detail/UnitConversions.h
+    time/measurement/ClockInterface.h
+    time/measurement/ClockInterface.cpp
+    time/measurement/Clock.h
+    time/measurement/Clock.cpp
 
     position.h
     position_fwd.h

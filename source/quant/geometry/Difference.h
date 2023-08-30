@@ -4,6 +4,7 @@
 #include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry_fwd.h>
 
+#include <compare>
 #include <concepts>
 #include <string>
 #include <type_traits>
@@ -48,6 +49,12 @@ namespace quant::geometry
         operator!=(Difference<StateType> const& rhs) const
         {
             return _difference_object != rhs._difference_object;
+        }
+
+        auto
+        operator<=>(Difference<StateType> const& rhs) const
+        {
+            return _difference_object <=> rhs._difference_object;
         }
 
         std::string

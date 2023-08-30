@@ -40,7 +40,7 @@ namespace simple_robot_example
             FramedSpatialDisplacement const camera =
                 chest.enframe(SpatialDisplacement(), frames.camera);
 
-            _frames[std::string(root.name())] = root;
+            _frames[std::string(root.get_name())] = root;
         }
 
         void

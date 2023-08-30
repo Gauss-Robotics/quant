@@ -72,6 +72,14 @@ namespace quant::units::time
         using geometry::ScalarState<Frequency, std::int64_t>::ScalarState;
     };
 
+    template <typename NumericType>
+        requires std::integral<NumericType> or std::floating_point<NumericType>
+    inline Frequency
+    operator/(NumericType const lhs, quant::Duration const& rhs)
+    {
+        return Frequency::hertz(static_cast<double>(lhs) / rhs.to_seconds());
+    }
+
     inline std::ostream&
     operator<<(std::ostream& out, Frequency const& rhs)
     {

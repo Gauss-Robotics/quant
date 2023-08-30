@@ -4,8 +4,6 @@
 #include <quant/framed_units/position_fwd.h>
 #include <quant/units/position/Position.h>
 
-#include <Eigen/Geometry>
-
 namespace quant::framed_units::position
 {
 

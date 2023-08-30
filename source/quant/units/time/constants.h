@@ -12,6 +12,7 @@ namespace quant::units::time::constants
         constexpr std::string_view duration = "Duration";
         constexpr std::string_view frequency = "Frequency";
 
+        constexpr std::string_view nanoseconds = "Nanoseconds";
         constexpr std::string_view microseconds = "Microseconds";
         constexpr std::string_view milliseconds = "Milliseconds";
         constexpr std::string_view seconds = "Seconds";
@@ -30,6 +31,7 @@ namespace quant::units::time::constants
     namespace symbols
     {
 
+        constexpr std::string_view nanoseconds = "ns";
         constexpr std::string_view microseconds = "µs";
         constexpr std::string_view milliseconds = "ms";
         constexpr std::string_view seconds = "s";
@@ -50,6 +52,8 @@ namespace quant::units::time::constants
     constexpr double min2s = 60;
     constexpr double s2ms = 1e3;
     constexpr double ms2us = 1e3;
+    constexpr double us2ns = 1e3;
+    constexpr double ns2us = 1. / us2ns;
     constexpr double us2ms = 1. / ms2us;
     constexpr double ms2s = 1. / s2ms;
     constexpr double s2min = 1. / min2s;
@@ -65,10 +69,10 @@ namespace quant::units::time::constants
     constexpr double us2h = us2min * min2h;
     constexpr double us2d = us2h * h2d;
 
-    constexpr double MHz2kHz = 1'000;
-    constexpr double kHz2Hz = 1'000;
-    constexpr double Hz2mHz = 1'000;
-    constexpr double mHz2uHz = 1'000;
+    constexpr double MHz2kHz = 1e3;
+    constexpr double kHz2Hz = 1e3;
+    constexpr double Hz2mHz = 1e3;
+    constexpr double mHz2uHz = 1e3;
     constexpr double Hz2uHz = Hz2mHz * mHz2uHz;
     constexpr double kHz2uHz = kHz2Hz * Hz2uHz;
     constexpr double MHz2uHz = MHz2kHz * kHz2uHz;
