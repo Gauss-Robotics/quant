@@ -11,7 +11,8 @@ add_library(framed_units SHARED
     time/DateTime.h
     time/DateTime.cpp
     #time/TimeInterval.h
-    #time/Frequency.h
+    time/Frequency.h
+    time/Frequency.cpp
     #time/detail/UnitConversions.h
     time/measurement/ClockInterface.h
     time/measurement/ClockInterface.cpp
