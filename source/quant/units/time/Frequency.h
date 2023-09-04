@@ -53,7 +53,9 @@ namespace quant::units::time
         Scalar
         to_hertz() const
         {
-            return {_representation, constants::names::frequency, constants::symbols::hertz};
+            return {_representation * constants::uHz2Hz,
+                    constants::names::frequency,
+                    constants::symbols::hertz};
         }
 
         Duration

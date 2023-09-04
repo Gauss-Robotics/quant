@@ -10,6 +10,7 @@ namespace quant::framed_units::time
     class TimePoint;
     class Duration;
     class DateTime;
+    class Frequency;
 
     namespace measurement
     {
@@ -50,6 +51,7 @@ namespace quant
 
     using framed_units::time::DateTime;
     using FramedDuration = framed_units::time::Duration;
+    using FramedFrequency = framed_units::time::Frequency;
     using FramedTimePoint = framed_units::time::TimePoint;
     using framed_units::time::measurement::Clock;
     using framed_units::time::measurement::ClockInterface;
