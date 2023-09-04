@@ -73,8 +73,16 @@ namespace quant::units::time::constants
     constexpr double kHz2Hz = 1e3;
     constexpr double Hz2mHz = 1e3;
     constexpr double mHz2uHz = 1e3;
+    constexpr double uHz2mHz = 1. / mHz2uHz;
+    constexpr double mHz2Hz = 1. / Hz2mHz;
+    constexpr double Hz2kHz = 1. / kHz2Hz;
+    constexpr double kHz2MHz = 1. / MHz2kHz;
+
     constexpr double Hz2uHz = Hz2mHz * mHz2uHz;
     constexpr double kHz2uHz = kHz2Hz * Hz2uHz;
     constexpr double MHz2uHz = MHz2kHz * kHz2uHz;
+    constexpr double uHz2Hz = uHz2mHz * mHz2Hz;
+    constexpr double uHz2kHz = uHz2Hz * Hz2kHz;
+    constexpr double uHz2MHz = uHz2kHz * kHz2MHz;
 
 }  // namespace quant::units::time::constants
