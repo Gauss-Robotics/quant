@@ -60,6 +60,9 @@ namespace quant::framed_units::time::measurement
         Duration
         wait_until(DateTime const& date_time) const override;
 
+        std::string_view
+        base_frame() const override;
+
         ~Clock() override = default;
 
     private:
