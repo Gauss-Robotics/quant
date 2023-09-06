@@ -177,7 +177,7 @@ namespace quant::framed_geometry
     std::strong_ordering
     operator<=>(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
     {
-        return rhs.get_framed_object() <=> rhs.get_framed_object();
+        return lhs.get_framed_object() <=> rhs.get_framed_object();
     }
 
     /**
