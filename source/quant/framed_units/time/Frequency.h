@@ -11,6 +11,9 @@ namespace quant::framed_units::time
     {
     public:
         using Framed<units::time::Frequency>::Framed;
+
+        FramedDuration
+        to_period() const;
     };
 
     inline std::ostream&
