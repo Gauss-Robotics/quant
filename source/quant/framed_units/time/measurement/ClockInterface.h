@@ -44,11 +44,11 @@ namespace quant::framed_units::time::measurement
         wait_until(DateTime const& date_time) const = 0;
 
         /**
-         * @brief The base frame of date times returned by now().
-         * @return The base frame of this clock.
+         * @brief Get the base frame of date times returned by now().
+         * @return Base frame of this clock.
          */
         virtual std::string_view
-        base_frame() const = 0;
+        get_base_frame() const = 0;
 
         /**
          * @brief Default destructor.

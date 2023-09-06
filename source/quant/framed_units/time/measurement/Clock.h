@@ -61,7 +61,7 @@ namespace quant::framed_units::time::measurement
         wait_until(DateTime const& date_time) const override;
 
         std::string_view
-        base_frame() const override;
+        get_base_frame() const override;
 
         ~Clock() override = default;
 

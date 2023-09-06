@@ -20,7 +20,7 @@ namespace quant::framed_units::time::measurement
     Clock::now() const
     {
         // Epoch is the frame of reference of the system clock.
-        static Duration epoch{units::time::Duration::zero(), {.name = base_frame()}};
+        static Duration epoch{units::time::Duration::zero(), {.name = get_base_frame()}};
 
         std::chrono::microseconds timestamp_usec;
 
@@ -71,7 +71,7 @@ namespace quant::framed_units::time::measurement
     }
 
     std::string_view
-    Clock::base_frame() const
+    Clock::get_base_frame() const
     {
         return _clock_type == Type::realtime ? "system_clock::epoch_realtime"
                                              : "system_clock::epoch_monotonic";
