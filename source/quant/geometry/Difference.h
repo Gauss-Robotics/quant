@@ -105,6 +105,42 @@ namespace quant::geometry
     }
 
     /**
+     * @brief Add two differences.
+     *
+     * @param lhs Left-hand-side summand difference.
+     * @param lhs Right-hand-side summand difference.
+     * @return Sum of the two differences.
+     */
+    template <typename ScalarDifferenceType>
+        requires traits::scalar_difference<ScalarDifferenceType>
+    ScalarDifferenceType
+    operator+(ScalarDifferenceType const& lhs, ScalarDifferenceType const rhs)
+    {
+        using ScalarDifference = detail::DifferenceAccessor<ScalarDifferenceType>;
+
+        return ScalarDifference::make(ScalarDifference::representation(lhs) +
+                                      ScalarDifference::representation(rhs));
+    }
+
+    /**
+     * @brief Subtract one difference from another.
+     *
+     * @param lhs Diffence to subtract rhs from.
+     * @param lhs Difference to subtract from lhs.
+     * @return Difference resulting from subtracting rhs from lhs.
+     */
+    template <typename ScalarDifferenceType>
+        requires traits::scalar_difference<ScalarDifferenceType>
+    ScalarDifferenceType
+    operator-(ScalarDifferenceType const& lhs, ScalarDifferenceType const rhs)
+    {
+        using ScalarDifference = detail::DifferenceAccessor<ScalarDifferenceType>;
+
+        return ScalarDifference::make(ScalarDifference::representation(lhs) -
+                                      ScalarDifference::representation(rhs));
+    }
+
+    /**
      * @brief Scale the difference with a given scalar.
      *
      * @param lhs Difference type to be scaled.
