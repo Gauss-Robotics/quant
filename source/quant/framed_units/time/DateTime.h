@@ -12,10 +12,37 @@ namespace quant::framed_units::time
 
     /**
      * @brief Represents a date and time.
+     *
+     * @todo Do not inherit from TimePoint?
      */
     class DateTime : public TimePoint
     {
     public:
+        /**
+         * @brief Construct an invalid date time.
+         *
+         * @todo Add DateTime::Invalid()?
+         */
+        DateTime() : TimePoint{units::time::TimePoint::microseconds(-1), {}}
+        {
+            ;
+        }
+
+        /**
+         * @brief Construct a date time from a time point in the Unix epoch.
+         * @param time_point Time point in Unix epoch.
+         */
+        DateTime(TimePoint const& time_point) : TimePoint{time_point}
+        {
+            ;
+        }
+
+        std::string
+        to_string(std::string const& format_str) const
+        {
+            return get_framed_object().to_string(format_str);
+        }
+
         /**
          * @brief Create a new date time object given a time point relative to epoch.
          *

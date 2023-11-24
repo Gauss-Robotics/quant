@@ -2,6 +2,8 @@
 
 #include <quant/framed_units/time/forward_declarations.h>
 
+#include <string_view>
+
 namespace quant::framed_units::time::measurement
 {
 
@@ -40,6 +42,13 @@ namespace quant::framed_units::time::measurement
          */
         virtual Duration
         wait_until(DateTime const& date_time) const = 0;
+
+        /**
+         * @brief Get the base frame of date times returned by now().
+         * @return Base frame of this clock.
+         */
+        virtual std::string_view
+        get_base_frame() const = 0;
 
         /**
          * @brief Default destructor.

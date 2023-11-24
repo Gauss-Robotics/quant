@@ -177,7 +177,7 @@ namespace quant::framed_geometry
     std::strong_ordering
     operator<=>(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
     {
-        return rhs.get_framed_object() <=> rhs.get_framed_object();
+        return lhs.get_framed_object() <=> rhs.get_framed_object();
     }
 
     /**
@@ -197,7 +197,7 @@ namespace quant::framed_geometry
 
         return traits::framed_type_of<traits::difference_type_of<StateType>>(
             lhs.get_framed_object() - rhs.get_framed_object(),
-            {.name = lhs.get_name(), .base_frame = rhs.get_name()});
+            {.name = lhs.get_name(), .base_frame = rhs.get_base_frame()});
     }
 
     /**
@@ -220,7 +220,7 @@ namespace quant::framed_geometry
         assert(lhs.get_base_frame() == rhs.get_base_frame());
 
         return traits::framed_type_of<StateType>(lhs.get_framed_object() + rhs.get_framed_object(),
-                                                 {.name = "", .base_frame = lhs.get_name()});
+                                                 {.name = "", .base_frame = lhs.get_base_frame()});
     }
 
 }  // namespace quant::framed_geometry
