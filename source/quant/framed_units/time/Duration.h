@@ -31,6 +31,12 @@ namespace quant::framed_units::time
         {
             return get_framed_object().to_seconds();
         }
+
+        std::string
+        to_string() const
+        {
+            return get_framed_object().to_string();
+        }
     };
 
     inline std::ostream&
