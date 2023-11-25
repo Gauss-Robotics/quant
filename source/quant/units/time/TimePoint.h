@@ -198,11 +198,10 @@ namespace quant::units::time
         }
 
         /**
-         * @brief String representation of the current time point according to given format
-         * string.
+         * @brief String representation of the current time point according to given format string.
          *
          * The format is according to https://en.cppreference.com/w/cpp/chrono/c/strftime. For
-         * milli seconds and micro seconds, special specifiers "%%msec" and "%%usec" were added
+         * milliseconds and microseconds, special specifiers "%%msec" and "%%usec" were added
          * respectively.
          *
          * Example format string for "10m 10.987s": "%Mm %S.%%msecs".
@@ -213,15 +212,13 @@ namespace quant::units::time
         std::string
         to_string(std::string const& format) const
         {
-            constexpr size_t string_buffer_size = 32;
-            /*
-                          const std::int64_t usec =
-                              static_cast<TimePointOrDuration const&>(*this).to_microseconds();
-                          const std::int64_t usec_remainder = usec % 1'000'000;
-                          auto const msec = static_cast<std::int64_t>(
-                              (static_cast<double>(usec_remainder) * us2ms) + int_rounding_offset);
-                          auto const time = static_cast<time_t>(static_cast<double>(usec) /
-                 1'000'000);
+            constexpr std::size_t string_buffer_size = 32;
+
+            std::int64_t const usec = _representation;
+            std::int64_t const usec_remainder = usec % 1'000'000;
+            std::int64_t const msec = static_cast<std::int64_t>(
+                (static_cast<double>(usec_remainder) * constants::us2ms) + 0.5);
+            time_t const time = static_cast<time_t>(static_cast<double>(usec) / 1'000'000);
 
             struct tm tr;
             localtime_r(&time, &tr);
@@ -229,9 +226,8 @@ namespace quant::units::time
             char buf[string_buffer_size];
             if (strftime(buf, sizeof(buf), format.c_str(), &tr) == 0)
             {
-              return "";
+                return "";
             }
-            */
             std::string postformat;
             // postformat = quant::alg::replace_all(postformat, "%msec", std::to_string(msec));
             // postformat =
