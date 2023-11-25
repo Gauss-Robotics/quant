@@ -181,13 +181,11 @@ namespace quant::units::time
         std::string
         to_string() const
         {
-            Scalar (TimePoint::*member_function_ptr)();
-
-            for (auto fn : {&TimePoint::to_days,
-                            &TimePoint::to_hours,
-                            &TimePoint::to_minutes,
-                            &TimePoint::to_seconds,
-                            &TimePoint::to_milliseconds})
+            for (auto& fn : {&TimePoint::to_days,
+                             &TimePoint::to_hours,
+                             &TimePoint::to_minutes,
+                             &TimePoint::to_seconds,
+                             &TimePoint::to_milliseconds})
             {
                 Scalar s = (this->*fn)();
                 if (s.value > 1)
