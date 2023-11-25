@@ -203,6 +203,25 @@ namespace quant::framed_geometry
     /**
      * @brief Translation application operator.
      *
+     * This operator drops the framed domain, since no framed guarantees can be enforced.  Use a
+     * framed difference instead if you want frame checks to be preformed.
+     *
+     * @param lhs
+     * @param rhs
+     * @return
+     */
+    template <typename DifferenceType, typename FramedStateType>
+        requires traits::scalar_difference<DifferenceType> and
+                 traits::framed_scalar_state<FramedStateType>
+    typename FramedStateType::FramedGeometricObject
+    operator+(DifferenceType const& lhs, FramedStateType const& rhs)
+    {
+        return lhs + rhs.get_framed_object();
+    }
+
+    /**
+     * @brief Translation application operator.
+     *
      * @param lhs
      * @param rhs
      * @return
