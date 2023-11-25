@@ -165,6 +165,22 @@ namespace quant::framed_geometry
         QuantityT _framed_object;
     };
 
+    template <typename StateType>
+        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
+    bool
+    operator==(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
+    {
+        return lhs.get_framed_object() == rhs.get_framed_object();
+    }
+
+    template <typename StateType>
+        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
+    bool
+    operator!=(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
+    {
+        return lhs.get_framed_object() != rhs.get_framed_object();
+    }
+
     /**
      * @brief Three-way comparison operator of framed types.
      *
