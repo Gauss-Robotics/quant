@@ -29,6 +29,16 @@ namespace quant::framed_units::time
         {
             return get_framed_object().to_microseconds();
         }
+
+        /**
+         * @brief Returns the amount of seconds.
+         * @return Amount of seconds.
+         */
+        units::Scalar
+        to_seconds() const
+        {
+            return get_framed_object().to_seconds();
+        }
     };
 
 }  // namespace quant::framed_units::time
