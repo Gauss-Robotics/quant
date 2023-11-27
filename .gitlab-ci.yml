@@ -111,12 +111,10 @@ docker-jammy:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/docker/jammy"
-      --destination "${CI_REGISTRY_IMAGE}:ci-jammy"
-      # --destination "${CI_REGISTRY_IMAGE}:latest-jammy"
+      --destination "${CI_REGISTRY_IMAGE}:latest-jammy"
 
   rules:
-    # - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "ci"
+    - if: $CI_COMMIT_BRANCH == "main"
 
 
 .test-docker-image-common:
@@ -154,12 +152,10 @@ test-docker-image-jammy:
   needs: ["docker-jammy"]
   extends: .test-docker-image-common
 
-  # image: git.h2t.iar.kit.edu:5050/sw/quant/core:latest-jammy
-  image: git.h2t.iar.kit.edu:5050/sw/quant/core:ci-jammy
+  image: git.h2t.iar.kit.edu:5050/sw/quant/core:latest-jammy
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "ci"
-    # - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "main"
 
 
 # armarx-core:
