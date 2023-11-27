@@ -111,10 +111,12 @@ docker-jammy:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/docker/jammy"
-      --destination "${CI_REGISTRY_IMAGE}:latest-jammy"
+      # --destination "${CI_REGISTRY_IMAGE}:latest-jammy"
+      --destination "${CI_REGISTRY_IMAGE}:ci-jammy"
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    # - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "ci"
 
 
 .test-docker-image-common:
@@ -141,7 +143,7 @@ docker-jammy:
 #   needs: ["docker-bionic"]
 #   extends: .test-docker-image-common
 #
-#   image: git.h2t.iar.kit.edu:5050/sw/simox/simox:latest-bionic
+#   image: git.h2t.iar.kit.edu:5050/sw/quant/core:latest-bionic
 #
 #   rules:
 #     - if: $CI_COMMIT_BRANCH == "main"
@@ -152,7 +154,8 @@ test-docker-image-jammy:
   needs: ["docker-jammy"]
   extends: .test-docker-image-common
 
-  image: git.h2t.iar.kit.edu:5050/sw/simox/simox:latest-jammy
+  # image: git.h2t.iar.kit.edu:5050/sw/quant/core:latest-jammy
+  image: git.h2t.iar.kit.edu:5050/sw/quant/core:ci-jammy
 
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
@@ -166,8 +169,6 @@ test-docker-image-jammy:
 #
 #   trigger:
 #     project: sw/armarx/armarx-core
-#     # This is optional, but we could tell ArmarX which Simox branch to use.
-#     branch: master
 
 #   rules:
 #     - if: $CI_COMMIT_BRANCH == "master"
