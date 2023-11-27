@@ -55,7 +55,7 @@ stages:
     - _axii_auto_env_refresh
 
     # Upgrade.
-    - axii workspace upgrade -m simox
+    - axii workspace upgrade
     - _axii_auto_env_refresh
 
     - ccache --show-stats
