@@ -158,7 +158,8 @@ test-docker-image-jammy:
   image: git.h2t.iar.kit.edu:5050/sw/quant/core:ci-jammy
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "ci"
+    # - if: $CI_COMMIT_BRANCH == "main"
 
 
 # armarx-core:
