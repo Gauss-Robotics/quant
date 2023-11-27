@@ -18,7 +18,7 @@ stages:
     - apt-get update
     - apt-get install ccache --yes
     - ccache --set-config=cache_dir="$CI_PROJECT_DIR/.ccache"
-    - ccache --max-size=5G
+    - axii config --global ccache_max_size 5
     - ccache --show-stats
 
     # Activate Axii.
