@@ -1,0 +1,14 @@
+{
+  "modules": {
+    "quant/core": {}
+  },
+  "global": {
+    "prepare": {
+      "cmake": {
+        "definitions": {
+          "CMAKE_BUILD_TYPE": "Release"
+        }
+      }
+    }
+  }
+}

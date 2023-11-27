@@ -1,0 +1,173 @@
+stages:
+  - build-and-test
+  - deploy
+  - post-deploy-test
+  - downstream
+
+
+.build-and-test:
+
+  cache:
+    # https://docs.gitlab.com/ee/ci/caching/#share-caches-across-jobs-in-different-branches
+    key: one-key-to-rule-them-all
+    paths:
+      - .ccache
+
+  before_script:
+    # Ccache configuration and introspection.
+    - apt-get update
+    - apt-get install ccache --yes
+    - ccache --set-config=cache_dir="$CI_PROJECT_DIR/.ccache"
+    - ccache --max-size=5G
+    - ccache --show-stats
+
+    # Activate Axii.
+    - source /axii/scripts/install_axii.sh
+
+  script:
+    # Create workspace.
+    - axii workspace create ~/workspace workspace
+    - axii workspace activate workspace
+    - _axii_auto_env_refresh
+
+    # Use workspace configuration from project.
+    - cp "$CI_PROJECT_DIR/.gitlab/ci/armarx-workspace.json" "$ARMARX_WORKSPACE/armarx-workspace.json"
+    - cat "$ARMARX_WORKSPACE/armarx-workspace.json"
+
+    - axii workspace env
+    - _axii_auto_env_refresh
+
+    - echo "Workspace information:"
+    - axii workspace list-modules
+    - axii workspace list-modules --deps
+    - axii workspace info
+
+    - export PROJECT_MODULE="quant/core"
+    - export PROJECT_PATH_IN_WORKSPACE="$quant__core__PATH"
+
+    # Symlink project directory into Axii workspace.
+    - mkdir -p "$(dirname $PROJECT_PATH_IN_WORKSPACE)"
+    - ln -s "$CI_PROJECT_DIR" "$PROJECT_PATH_IN_WORKSPACE"
+
+    # Upgrade.
+    - axii workspace system --accept-apt-install
+    - axii workspace update --prefer-https
+    - _axii_auto_env_refresh
+
+    # Upgrade.
+    - axii workspace upgrade -m simox
+    - _axii_auto_env_refresh
+
+    - ccache --show-stats
+
+    # Test.
+    # ToDo: Add and use `axii ws test -m $PROJECT_MODULE`
+    - cd "$PROJECT_PATH_IN_WORKSPACE/build"
+    # ToDo: Generate report, like: ctest --output-on-failure --output-junit "$CI_PROJECT_DIR/report.xml" .
+    - ./bin/tests/test_all
+
+
+build-and-test-bionic:
+  stage: build-and-test
+  extends: .build-and-test
+
+  image: git.h2t.iar.kit.edu:5050/sw/armarx/meta/axii:latest-bionic
+
+#  artifacts:
+#    reports:
+#      junit: report.xml
+
+
+build-and-test-jammy:
+  stage: build-and-test
+  extends: .build-and-test
+
+  image: git.h2t.iar.kit.edu:5050/sw/armarx/meta/axii:latest-jammy
+
+
+docker-bionic:
+  stage: deploy
+  needs: ["build-and-test-bionic"]
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/docker/bionic"
+      --destination "${CI_REGISTRY_IMAGE}:latest-bionic"
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+
+docker-jammy:
+  stage: deploy
+  needs: ["build-and-test-jammy"]
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/docker/jammy"
+      --destination "${CI_REGISTRY_IMAGE}:latest-jammy"
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+
+.test-docker-image-common:
+
+  before_script:
+    - source /axii/scripts/install_axii.sh
+    - _axii_auto_env_refresh
+
+  script:
+    - echo "ArmarX Workspace = '$ARMARX_WORKSPACE'"
+    - printenv
+
+    - axii workspace list-modules
+    - axii workspace list-modules --deps
+    - axii workspace info
+
+    - echo "Quant Core directory = '$quant_DIR'"
+    - cd $quant_DIR
+    - ./bin/tests/test_all
+
+
+test-docker-image-bionic:
+  stage: post-deploy-test
+  needs: ["docker-bionic"]
+  extends: .test-docker-image-common
+
+  image: git.h2t.iar.kit.edu:5050/sw/simox/simox:latest-bionic
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+
+test-docker-image-jammy:
+  stage: post-deploy-test
+  needs: ["docker-jammy"]
+  extends: .test-docker-image-common
+
+  image: git.h2t.iar.kit.edu:5050/sw/simox/simox:latest-jammy
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+
+# armarx-core:
+#   stage: downstream
+#
+#   variables:
+#     TODO_ENV_VARIABLE: "This variable will be available to the CI pipeline of ArmarXCore."
+#
+#   trigger:
+#     project: sw/armarx/armarx-core
+#     # This is optional, but we could tell ArmarX which Simox branch to use.
+#     branch: master
+
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "master"
