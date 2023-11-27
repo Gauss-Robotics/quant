@@ -67,11 +67,11 @@ stages:
     - ./bin/tests/test_all
 
 
-build-and-test-bionic:
-  stage: build-and-test
-  extends: .build-and-test
+# build-and-test-bionic:
+#   stage: build-and-test
+#   extends: .build-and-test
 
-  image: git.h2t.iar.kit.edu:5050/sw/armarx/meta/axii:latest-bionic
+#   image: git.h2t.iar.kit.edu:5050/sw/armarx/meta/axii:latest-bionic
 
 #  artifacts:
 #    reports:
@@ -85,20 +85,20 @@ build-and-test-jammy:
   image: git.h2t.iar.kit.edu:5050/sw/armarx/meta/axii:latest-jammy
 
 
-docker-bionic:
-  stage: deploy
-  needs: ["build-and-test-bionic"]
-  image:
-    name: gcr.io/kaniko-project/executor:v1.9.0-debug
-    entrypoint: [""]
-  script:
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"
-      --dockerfile "${CI_PROJECT_DIR}/docker/bionic"
-      --destination "${CI_REGISTRY_IMAGE}:latest-bionic"
+# docker-bionic:
+#   stage: deploy
+#   needs: ["build-and-test-bionic"]
+#   image:
+#     name: gcr.io/kaniko-project/executor:v1.9.0-debug
+#     entrypoint: [""]
+#   script:
+#     - /kaniko/executor
+#       --context "${CI_PROJECT_DIR}"
+#       --dockerfile "${CI_PROJECT_DIR}/docker/bionic"
+#       --destination "${CI_REGISTRY_IMAGE}:latest-bionic"
 
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main"
 
 
 docker-jammy:
@@ -136,15 +136,15 @@ docker-jammy:
     - ./bin/tests/test_all
 
 
-test-docker-image-bionic:
-  stage: post-deploy-test
-  needs: ["docker-bionic"]
-  extends: .test-docker-image-common
-
-  image: git.h2t.iar.kit.edu:5050/sw/simox/simox:latest-bionic
-
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+# test-docker-image-bionic:
+#   stage: post-deploy-test
+#   needs: ["docker-bionic"]
+#   extends: .test-docker-image-common
+#
+#   image: git.h2t.iar.kit.edu:5050/sw/simox/simox:latest-bionic
+#
+#   rules:
+#     - if: $CI_COMMIT_BRANCH == "main"
 
 
 test-docker-image-jammy:
