@@ -1,9 +1,14 @@
 {
   "modules": {
     "tools/ccache/default": {},
-    "# TODO: Add to required modules of quant/core in Axii module database": {},
-    "deps/eigen3": {},
-    "quant/core": {}
+
+    "# TODO: Add `deps/eigen3` to required modules of quant/core in Axii module database, remove overrides here.": {},
+    "quant/core": {
+      "required_modules": {
+        "deps/eigen3": {},
+        "deps/doctest": {}
+      }
+    }
   },
   "global": {
     "prepare": {
