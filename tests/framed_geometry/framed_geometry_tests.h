@@ -64,7 +64,7 @@ TEST_CASE("testing basic framed differences")
         Framed<LinearDisplacement> const ld = tcp - com;
 
         CHECK(ld.get_name() == "TCP");
-        CHECK(ld.get_base_frame() == "CoM");
+        CHECK(ld.get_base_frame() == "ARMAR-6::RobotRoot");
     }
 
     SUBCASE("testing framed difference with Orientation")
@@ -76,7 +76,8 @@ TEST_CASE("testing basic framed differences")
 
         // Framed<AngularDisplacement> const ad = tcp - com;
 
-        // CHECK(ad.baseFrame == "ARMAR-6::RobotRoot");
+        // CHECK(ad.get_name() == "TCP");
+        // CHECK(ad.get_base_frame() == "ARMAR-6::RobotRoot");
     }
 
     SUBCASE("testing framed difference with Pose")
@@ -88,6 +89,7 @@ TEST_CASE("testing basic framed differences")
 
         // Framed<SpatialDisplacement> const sd = tcp - com;
 
-        // CHECK(sd.baseFrame == "ARMAR-6::RobotRoot");
+        // CHECK(sd.get_name() == "TCP");
+        // CHECK(sd.get_base_frame() == "ARMAR-6::RobotRoot");
     }
 }
