@@ -111,8 +111,8 @@ docker-jammy:
     - /kaniko/executor
       --context "${CI_PROJECT_DIR}"
       --dockerfile "${CI_PROJECT_DIR}/docker/jammy"
-      # --destination "${CI_REGISTRY_IMAGE}:latest-jammy"
       --destination "${CI_REGISTRY_IMAGE}:ci-jammy"
+      # --destination "${CI_REGISTRY_IMAGE}:latest-jammy"
 
   rules:
     # - if: $CI_COMMIT_BRANCH == "main"
