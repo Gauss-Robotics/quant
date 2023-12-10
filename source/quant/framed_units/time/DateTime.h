@@ -38,6 +38,12 @@ namespace quant::framed_units::time
         }
 
         std::string
+        to_string() const
+        {
+            return get_framed_object().to_string("%F %T");
+        }
+
+        std::string
         to_string(std::string const& format_str) const
         {
             return get_framed_object().to_string(format_str);

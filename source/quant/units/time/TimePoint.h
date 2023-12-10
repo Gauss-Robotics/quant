@@ -201,39 +201,20 @@ namespace quant::units::time
          * @brief String representation of the current time point according to given format string.
          *
          * The format is according to https://en.cppreference.com/w/cpp/chrono/c/strftime. For
-         * milliseconds and microseconds, special specifiers "%%msec" and "%%usec" were added
-         * respectively.
+         * remainder milliseconds or remainder microseconds, special specifiers "%%msec" and
+         * "%%usec" were added respectively.
          *
-         * Example format string for "10m 10.987s": "%Mm %S.%%msecs".
+         * Examples using "%M", "%S", "%%msec", "%%usec" - note that the trailing "m" and "s" are to
+         * designate unit in the output:
+         * - `to_string("%Mm %Ss")`        = `"10m 10s"`
+         * - `to_string("%Mm %S.%%msecs")` = `"10m 10.987s"`
+         * - `to_string("%Mm %S.%%usecs")` = `"10m 10.986789s"`
          *
          * @param format Format string.
          * @return Formatted time point.
          */
         std::string
-        to_string(std::string const& format) const
-        {
-            constexpr std::size_t string_buffer_size = 32;
-
-            std::int64_t const usec = _representation;
-            std::int64_t const usec_remainder = usec % 1'000'000;
-            std::int64_t const msec = static_cast<std::int64_t>(
-                (static_cast<double>(usec_remainder) * constants::us2ms) + 0.5);
-            time_t const time = static_cast<time_t>(static_cast<double>(usec) / 1'000'000);
-
-            struct tm tr;
-            localtime_r(&time, &tr);
-
-            char buf[string_buffer_size];
-            if (strftime(buf, sizeof(buf), format.c_str(), &tr) == 0)
-            {
-                return "";
-            }
-            std::string postformat;
-            // postformat = quant::alg::replace_all(postformat, "%msec", std::to_string(msec));
-            // postformat =
-            //     quant::alg::replace_all(postformat, "%usec", std::to_string(usecRemainder));
-            return postformat;
-        }
+        to_string(std::string const& format) const;
 
     protected:
         using geometry::ScalarState<TimePoint, std::int64_t>::ScalarState;
