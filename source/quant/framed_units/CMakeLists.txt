@@ -86,6 +86,8 @@ target_link_libraries(framed_units
     PUBLIC
         quant::framed_geometry
         quant::units
+    PRIVATE
+        Boost::headers
 )
 
 add_library(quant::framed_units ALIAS framed_units)
