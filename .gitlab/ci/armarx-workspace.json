@@ -1,0 +1,24 @@
+{
+  "modules": {
+    "tools/ccache/default": {},
+
+    "# TODO: Add `deps/eigen3` to required modules of quant/core in Axii module database, remove overrides here.": {},
+    "quant/core": {
+      "required_modules": {
+        "deps/eigen3": {},
+        "deps/doctest": {}
+      }
+    }
+  },
+  "global": {
+    "prepare": {
+      "cmake": {
+        "definitions": {
+          "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+          "CMAKE_C_COMPILER_LAUNCHER": "$CCACHE",
+          "CMAKE_CXX_COMPILER_LAUNCHER": "$CCACHE"
+        }
+      }
+    }
+  }
+}

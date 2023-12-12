@@ -165,6 +165,22 @@ namespace quant::framed_geometry
         QuantityT _framed_object;
     };
 
+    template <typename StateType>
+        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
+    bool
+    operator==(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
+    {
+        return lhs.get_framed_object() == rhs.get_framed_object();
+    }
+
+    template <typename StateType>
+        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
+    bool
+    operator!=(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
+    {
+        return lhs.get_framed_object() != rhs.get_framed_object();
+    }
+
     /**
      * @brief Three-way comparison operator of framed types.
      *
@@ -177,7 +193,7 @@ namespace quant::framed_geometry
     std::strong_ordering
     operator<=>(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
     {
-        return rhs.get_framed_object() <=> rhs.get_framed_object();
+        return lhs.get_framed_object() <=> rhs.get_framed_object();
     }
 
     /**
@@ -197,7 +213,26 @@ namespace quant::framed_geometry
 
         return traits::framed_type_of<traits::difference_type_of<StateType>>(
             lhs.get_framed_object() - rhs.get_framed_object(),
-            {.name = lhs.get_name(), .base_frame = rhs.get_name()});
+            {.name = lhs.get_name(), .base_frame = rhs.get_base_frame()});
+    }
+
+    /**
+     * @brief Translation application operator.
+     *
+     * This operator drops the framed domain, since no framed guarantees can be enforced.  Use a
+     * framed difference instead if you want frame checks to be preformed.
+     *
+     * @param lhs
+     * @param rhs
+     * @return
+     */
+    template <typename DifferenceType, typename FramedStateType>
+        requires traits::scalar_difference<DifferenceType> and
+                 traits::framed_scalar_state<FramedStateType>
+    typename FramedStateType::FramedGeometricObject
+    operator+(DifferenceType const& lhs, FramedStateType const& rhs)
+    {
+        return lhs + rhs.get_framed_object();
     }
 
     /**
@@ -220,7 +255,7 @@ namespace quant::framed_geometry
         assert(lhs.get_base_frame() == rhs.get_base_frame());
 
         return traits::framed_type_of<StateType>(lhs.get_framed_object() + rhs.get_framed_object(),
-                                                 {.name = "", .base_frame = lhs.get_name()});
+                                                 {.name = "", .base_frame = lhs.get_base_frame()});
     }
 
 }  // namespace quant::framed_geometry

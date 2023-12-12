@@ -18,6 +18,7 @@ endif()
 
 # Dependencies.
 find_package(Eigen3 REQUIRED)
+find_package(Boost REQUIRED)
 find_package(doctest QUIET)
 
 # Source code.
