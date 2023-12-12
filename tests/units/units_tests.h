@@ -2,6 +2,7 @@
 
 #include <quant/geometry.h>
 #include <quant/units.h>
+#include <quant/geometry/Circa.h>
 
 #include <doctest/doctest.h>
 
