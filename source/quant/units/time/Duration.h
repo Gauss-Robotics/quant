@@ -3,7 +3,7 @@
 #include <quant/geometry/Difference.h>
 #include <quant/units/Scalar.h>
 #include <quant/units/time/TimePoint.h>
-#include <quant/units/time_fwd.h>
+#include <quant/units/time/forward_declarations.h>
 
 namespace quant::units::time
 {

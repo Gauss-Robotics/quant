@@ -3,7 +3,7 @@
 #include <quant/geometry/ScalarState.h>
 #include <quant/units/Scalar.h>
 #include <quant/units/time/constants.h>
-#include <quant/units/time_fwd.h>
+#include <quant/units/time/forward_declarations.h>
 
 #include <cstdint>
 #include <iomanip>

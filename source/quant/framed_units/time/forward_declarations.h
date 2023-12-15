@@ -2,7 +2,7 @@
 
 #include <quant/framed_geometry_fwd.h>
 #include <quant/geometry_fwd.h>
-#include <quant/units/time_fwd.h>
+#include <quant/units/time/forward_declarations.h>
 
 namespace quant::framed_units::time
 {
