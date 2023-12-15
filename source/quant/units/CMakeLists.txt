@@ -5,7 +5,7 @@ add_library(units SHARED
     AxisAngle.h
 
     time.h
-    time_fwd.h
+    time/forward_declarations.h
     time/constants.h
     time/TimePoint.h
     time/TimePoint.cpp
