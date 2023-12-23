@@ -14,6 +14,7 @@ namespace quant::framed_units::time
 
         /**
          * @brief Returns the amount of microseconds.
+         *
          * @return Amount of microseconds.
          */
         units::Scalar
@@ -23,7 +24,19 @@ namespace quant::framed_units::time
         }
 
         /**
+         * @brief Returns the amount of milliseconds.
+         *
+         * @return Amount of milliseconds.
+         */
+        units::Scalar
+        to_milliseconds() const
+        {
+            return get_framed_object().to_milliseconds();
+        }
+
+        /**
          * @brief Returns the amount of seconds.
+         *
          * @return Amount of seconds.
          */
         units::Scalar
