@@ -49,12 +49,20 @@ or an operation.
 
 #### R (1-Dimensional Space)
 
-| Geometric Concept | Position                             | Translation                                 |
-|------------------:|--------------------------------------|---------------------------------------------|
-|              Time | Time Point                           | Duration                                    |
-|          Distance | -                                    | Distance (Magnitude of Linear Displacement) |
-|             Speed | Speed (Magnitude of Linear Velocity) | -                                           |
-|              Mass | Mass                                 | -                                           |
+|      Geometric Concept | Position                             | Translation                                    |
+|-----------------------:|--------------------------------------|------------------------------------------------|
+|                  Angle | Angle                                | Angle Difference                               |
+|          Angular Speed | Angular Speed                        | Angular Speed Difference                       |
+|   Angular Acceleration | Angular Acceleration                 | Angular Acceleration Difference                |
+|                   Time | Time Point                           | Duration                                       |
+|                 Length | Length (Magniute of Position)        | Distance (Magnitude of Linear Displacement)    |
+|                  Speed | Speed (Magnitude of Linear Velocity) | Speed Difference (Magnitude of Linear velocity |
+| Acceleration Magnitude | Acceleration Magnitude               | Acceleration Magnitude Difference              |
+|                   Mass | Mass                                 | Mass Difference                                |
+|        Force Magnitude | Force Magnitude                      | Force Magnitude Difference                     |
+|       Torque Magnitude | Torque Magnitude                     | Torque Magnitude Difference                    |
+
+
 
 
 ### Units
@@ -71,14 +79,14 @@ unit.  For example, for Position:
 ```c++
 using namespace quant;
 
-Position p1_good;                                           // Ok, will be [0, 0, 0] mm.
-Position p2_good == Position::Zero();                       // Ok, will be [0, 0, 0] mm.
-Position p3_good == Position::MilliMeters(100, 200, 300);   // Ok, will be [100, 200, 300] mm.
-Position p4_good == Position::Meters(0.1, 0.2, 0.3);        // Ok, will be [100, 200, 300] mm.
-Position p5_good == Position::Meters({.y = 0.2});           // Ok, will be [0, 200, 0] mm.
-Position p6_good == Position::Meters(Vector::FromEigen(e)); // Ok, will be the Eigen vector e converted to mm.
+Position p1_good;                                            // Ok, will be [0, 0, 0] mm.
+Position p2_good == Position::zero();                        // Ok, will be [0, 0, 0] mm.
+Position p3_good == Position::millimeters(100, 200, 300);    // Ok, will be [100, 200, 300] mm.
+Position p4_good == Position::meters(0.1, 0.2, 0.3);         // Ok, will be [100, 200, 300] mm.
+Position p5_good == Position::meters({.y = 0.2});            // Ok, will be [0, 200, 0] mm.
+Position p6_good == Position::meters(Vector::from_eigen(e)); // Ok, will be the Eigen vector e converted to mm.
 
-Position p1_bad{0, 0, 0};                                   // Error, constructor not defined.  Unit unclear.
+Position p1_bad{0, 0, 0};                                    // Error, forbidden: Unit unclear.
 ```
 
 This applies to all quantities.  There will be static constructor-like functions specifying the 
@@ -90,7 +98,7 @@ unit of the passed numbers.
 Usually a quantity (e.g., a position or a velocity) is in a base frame.  For example, the position 
 of the tool center point of a robot might be given in the frame of the robot model's root.
 
-Especially in robotics, were several frames of reference have to be taken into account, logic 
+Especially in robotics, where several frames of reference have to be taken into account, logic 
 errors can quickly occur and are usually just mitigated by specific naming conventions.
 
 This library provides the concept of "Framed" states and "Frame" operations.

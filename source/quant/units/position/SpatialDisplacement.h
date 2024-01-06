@@ -2,7 +2,7 @@
 
 #include <quant/geometry/Difference.h>
 #include <quant/units/position/Pose.h>
-#include <quant/units/position_fwd.h>
+#include <quant/units/position/forward_declarations.h>
 
 namespace quant::units::position
 {

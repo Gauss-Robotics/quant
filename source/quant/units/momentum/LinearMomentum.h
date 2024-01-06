@@ -4,7 +4,7 @@
 #include <quant/units/Vector.h>
 #include <quant/units/mass/Mass.h>
 #include <quant/units/momentum/constants.h>
-#include <quant/units/momentum_fwd.h>
+#include <quant/units/momentum/forward_declarations.h>
 #include <quant/units/velocity/LinearVelocity.h>
 
 #include <Eigen/Geometry>

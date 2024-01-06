@@ -2,14 +2,12 @@
 
 #include <quant/geometry/ScalarState.h>
 #include <quant/units/Scalar.h>
-#include <quant/units/distance/constants.h>
-#include <quant/units/distance_fwd.h>
+#include <quant/units/length/constants.h>
+#include <quant/units/length/forward_declarations.h>
 
-#include <cstdint>
 #include <ostream>
-#include <string>
 
-namespace quant::units::distance
+namespace quant::units::length
 {
 
     class Distance : geometry::ScalarState<Distance>

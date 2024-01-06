@@ -2,10 +2,10 @@
 
 #include <quant/geometry/Difference.h>
 #include <quant/units/Vector.h>
-#include <quant/units/distance/Distance.h>
+#include <quant/units/length/Distance.h>
 #include <quant/units/position/Position.h>
 #include <quant/units/position/constants.h>
-#include <quant/units/position_fwd.h>
+#include <quant/units/position/forward_declarations.h>
 
 namespace quant::units::position
 {

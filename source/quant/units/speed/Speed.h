@@ -2,14 +2,13 @@
 
 #include <quant/geometry/ScalarState.h>
 #include <quant/units/Scalar.h>
-#include <quant/units/distance/Distance.h>
+#include <quant/units/length/Distance.h>
 #include <quant/units/speed/constants.h>
-#include <quant/units/speed_fwd.h>
+#include <quant/units/speed/forward_declarations.h>
 #include <quant/units/time/Duration.h>
-#include <quant/units/velocity_fwd.h>
+#include <quant/units/velocity/forward_declarations.h>
 
 #include <ostream>
-#include <string>
 
 namespace quant::units::speed
 {

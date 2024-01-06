@@ -1,8 +1,21 @@
 add_library(units SHARED
     ../units.h
+    
     Scalar.h
     Vector.h
     AxisAngle.h
+
+    angle.h
+    angle/forward_declarations.h
+    angle/constants.h
+    angle/Angle.h
+    angle/AngleDifference.h
+
+    angular_speed.h
+    angular_speed/forward_declarations.h
+    angular_speed/constants.h
+    angular_speed/AngularSpeed.h
+    angular_speed/AngularSpeedDifference.h
 
     time.h
     time/forward_declarations.h
@@ -14,8 +27,14 @@ add_library(units SHARED
     time/TimeInterval.h
     time/Frequency.h
 
+    current.h
+    current/forward_declarations.h
+    current/constants.h
+    current/Current.h
+    current/CurrentDifference.h
+
     position.h
-    position_fwd.h
+    position/forward_declarations.h
     position/constants.h
     position/Position.h
     position/Position.cpp
@@ -27,7 +46,7 @@ add_library(units SHARED
     position/SpatialDisplacement.h
 
     velocity.h
-    velocity_fwd.h
+    velocity/forward_declarations.h
     velocity/constants.h
     velocity/LinearVelocity.h
     velocity/LinearVelocity.cpp
@@ -40,7 +59,7 @@ add_library(units SHARED
     velocity/TwistDifference.h
 
     acceleration.h
-    acceleration_fwd.h
+    acceleration/forward_declarations.h
     acceleration/constants.h
     acceleration/LinearAcceleration.h
     acceleration/LinearAcceleration.cpp
@@ -52,7 +71,7 @@ add_library(units SHARED
     acceleration/SpatialAccelerationDifference.h
 
     jerk.h
-    jerk_fwd.h
+    jerk/forward_declarations.h
     jerk/constants.h
     jerk/LinearJerk.h
     jerk/LinearJerk.cpp
@@ -63,26 +82,27 @@ add_library(units SHARED
     jerk/AngularJerkDifference.h
     jerk/SpatialJerkDifference.h
 
-    distance.h
-    distance_fwd.h
-    distance/constants.h
-    distance/Distance.h
+    length.h
+    length/forward_declarations.h
+    length/constants.h
+    length/Length.h
+    length/Distance.h
 
     speed.h
-    speed_fwd.h
+    speed/forward_declarations.h
     speed/constants.h
     speed/Speed.h
     speed/Speed.cpp
     speed/SpeedDifference.h
 
     mass.h
-    mass_fwd.h
+    mass/forward_declarations.h
     mass/constants.h
     mass/Mass.h
     mass/MassDifference.h
 
     momentum.h
-    momentum_fwd.h
+    momentum/forward_declarations.h
     momentum/constants.h
     momentum/LinearMomentum.h
     momentum/AngularMomentum.h
@@ -92,7 +112,7 @@ add_library(units SHARED
     momentum/SpatialImpulse.h
 
     force.h
-    force_fwd.h
+    force/forward_declarations.h
     force/constants.h
     force/Force.h
     force/Force.cpp
@@ -105,7 +125,7 @@ add_library(units SHARED
     force/WrenchDifference.h
 
     temperature.h
-    temperature_fwd.h
+    temperature/forward_declarations.h
     temperature/constants.h
     temperature/Temperature.h
     temperature/TemperatureDifference.h

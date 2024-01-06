@@ -1,8 +1,8 @@
 #pragma once
 
-#include <quant/framed_geometry_fwd.h>
-#include <quant/geometry_fwd.h>
-#include <quant/units/position_fwd.h>
+#include <quant/framed_geometry/forward_declarations.h>
+#include <quant/geometry/forward_declarations.h>
+#include <quant/units/position/forward_declarations.h>
 
 namespace quant::framed_units::position
 {

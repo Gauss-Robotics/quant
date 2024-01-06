@@ -1,7 +1,7 @@
 #pragma once
 
 #include <quant/framed_geometry/Framed.h>
-#include <quant/framed_units/position_fwd.h>
+#include <quant/framed_units/position/forward_declarations.h>
 #include <quant/units/position/SpatialDisplacement.h>
 
 namespace quant::framed_units::position

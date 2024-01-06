@@ -1,7 +1,7 @@
 #pragma once
 
 #include <quant/geometry/SpatialIsometricState.h>
-#include <quant/units/position_fwd.h>
+#include <quant/units/position/forward_declarations.h>
 
 namespace quant::units::position
 {

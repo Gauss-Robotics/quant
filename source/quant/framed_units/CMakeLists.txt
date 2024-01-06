@@ -20,7 +20,7 @@ add_library(framed_units SHARED
     time/measurement/Clock.cpp
 
     position.h
-    position_fwd.h
+    position/forward_declarations.h
     position/FramedPosition.h
     position/FramedOrientation.h
     position/FramedPose.h

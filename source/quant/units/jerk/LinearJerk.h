@@ -3,7 +3,7 @@
 #include <quant/geometry/LinearState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/jerk/constants.h>
-#include <quant/units/jerk_fwd.h>
+#include <quant/units/jerk/forward_declarations.h>
 
 #include <Eigen/Geometry>
 

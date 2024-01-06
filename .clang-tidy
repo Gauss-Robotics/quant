@@ -58,10 +58,14 @@ CheckOptions:
     value:  lower_case
   - key:    readability-identifier-naming.ProtectedMemberPrefix
     value:  '_'
+  - key:    readability-identifier-naming.ProtectedMemberSuffix
+    value:  ''
   - key:    readability-identifier-naming.PrivateMemberCase
     value:  lower_case
   - key:    readability-identifier-naming.PrivateMemberPrefix
     value:  '_'
+  - key:    readability-identifier-naming.PrivateMemberSuffix
+    value:  ''
   - key:    readability-identifier-naming.FunctionCase
     value:  lower_case
   - key:    readability-identifier-naming.MethodCase

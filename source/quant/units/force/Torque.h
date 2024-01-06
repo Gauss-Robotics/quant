@@ -3,7 +3,7 @@
 #include <quant/geometry/AngularState.h>
 #include <quant/units/AxisAngle.h>
 #include <quant/units/force/constants.h>
-#include <quant/units/force_fwd.h>
+#include <quant/units/force/forward_declarations.h>
 
 #include <Eigen/Geometry>
 

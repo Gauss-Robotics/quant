@@ -1,8 +1,8 @@
 add_library(geometry SHARED
     ../geometry.h
     ../geometry.cpp
-    ../geometry_fwd.h
-    ../geometry_fwd.cpp
+    forward_declarations.h
+    forward_declarations.cpp
     constants.h
     constants.cpp
 

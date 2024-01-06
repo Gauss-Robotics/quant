@@ -3,7 +3,7 @@
 #include <quant/geometry/AxisAngle.h>
 #include <quant/geometry/constants.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
-#include <quant/geometry_fwd.h>
+#include <quant/geometry/forward_declarations.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>

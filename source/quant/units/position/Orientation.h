@@ -3,7 +3,7 @@
 #include <quant/geometry/AngularState.h>
 #include <quant/units/AxisAngle.h>
 #include <quant/units/position/constants.h>
-#include <quant/units/position_fwd.h>
+#include <quant/units/position/forward_declarations.h>
 
 #include <ostream>
 

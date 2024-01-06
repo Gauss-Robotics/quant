@@ -4,7 +4,7 @@
 #include <quant/units/Vector.h>
 #include <quant/units/acceleration/LinearAcceleration.h>
 #include <quant/units/force/constants.h>
-#include <quant/units/force_fwd.h>
+#include <quant/units/force/forward_declarations.h>
 #include <quant/units/mass/Mass.h>
 #include <quant/units/momentum/LinearImpulse.h>
 #include <quant/units/time/Duration.h>

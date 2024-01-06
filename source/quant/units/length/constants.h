@@ -2,7 +2,7 @@
 
 #include <string_view>
 
-namespace quant::units::distance::constants
+namespace quant::units::length::constants
 {
 
     namespace names

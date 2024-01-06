@@ -1,7 +1,7 @@
 #pragma once
 
 #include <quant/geometry/Difference.h>
-#include <quant/geometry_fwd.h>
+#include <quant/geometry/forward_declarations.h>
 
 namespace quant::geometry
 {

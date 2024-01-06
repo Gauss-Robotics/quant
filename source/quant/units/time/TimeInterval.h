@@ -1,8 +1,6 @@
 #pragma once
 
-#include <cstdint>
 #include <ostream>
-#include <string>
 
 namespace quant::units::time
 {

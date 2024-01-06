@@ -3,7 +3,7 @@
 #include <quant/geometry/ScalarState.h>
 #include <quant/units/Scalar.h>
 #include <quant/units/temperature/constants.h>
-#include <quant/units/temperature_fwd.h>
+#include <quant/units/temperature/forward_declarations.h>
 
 #include <cstdint>
 #include <ostream>

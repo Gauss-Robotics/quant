@@ -2,7 +2,7 @@
 
 #include <quant/geometry/detail/DifferenceAccessor.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
-#include <quant/geometry_fwd.h>
+#include <quant/geometry/forward_declarations.h>
 
 #include <compare>
 #include <concepts>

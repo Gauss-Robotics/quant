@@ -2,7 +2,7 @@
 
 #include <quant/geometry/Difference.h>
 #include <quant/units/momentum/LinearMomentum.h>
-#include <quant/units/momentum_fwd.h>
+#include <quant/units/momentum/forward_declarations.h>
 
 namespace quant::units::momentum
 {

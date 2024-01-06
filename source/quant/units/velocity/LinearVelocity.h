@@ -2,11 +2,11 @@
 
 #include <quant/geometry/LinearState.h>
 #include <quant/units/Vector.h>
-#include <quant/units/position_fwd.h>
+#include <quant/units/position/forward_declarations.h>
 #include <quant/units/speed/Speed.h>
 #include <quant/units/time/Duration.h>
 #include <quant/units/velocity/constants.h>
-#include <quant/units/velocity_fwd.h>
+#include <quant/units/velocity/forward_declarations.h>
 
 #include <Eigen/Geometry>
 

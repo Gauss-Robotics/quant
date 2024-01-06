@@ -3,7 +3,7 @@
 #include <quant/geometry/LinearState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/position/constants.h>
-#include <quant/units/position_fwd.h>
+#include <quant/units/position/forward_declarations.h>
 
 #include <ostream>
 

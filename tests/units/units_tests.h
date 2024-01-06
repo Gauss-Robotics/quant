@@ -1,8 +1,8 @@
 #pragma once
 
 #include <quant/geometry.h>
-#include <quant/units.h>
 #include <quant/geometry/Circa.h>
+#include <quant/units.h>
 
 #include <doctest/doctest.h>
 
@@ -10,10 +10,30 @@
 #include <Eigen/Geometry>
 
 #include <iostream>
+#include <numbers>
 
 using namespace quant;  // NOLINT
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+
+TEST_SUITE("angle")
+{
+    TEST_CASE("angles can be trivially constructed")
+    {
+        Angle const angle;
+        CHECK(angle == Angle::radians(0));
+
+        Angle const angle_zero;
+        CHECK(angle == Angle::zero());
+    }
+
+    TEST_CASE("angles can be converted to other units")
+    {
+        CHECK(Angle::radians(0).to_degrees() == 0);
+        CHECK(Angle::radians(std::numbers::pi).to_degrees() == 180);
+        CHECK(Angle::degrees(360).to_radians() == 2 * std::numbers::pi);
+    }
+}
 
 TEST_SUITE("time")
 {

@@ -3,10 +3,10 @@
 #include <quant/geometry/Scalar.h>
 #include <quant/geometry/constants.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
-#include <quant/geometry_fwd.h>
+#include <quant/geometry/forward_declarations.h>
 
 #include <compare>
-#include <sstream>
+#include <cstdint>
 
 namespace quant::geometry
 {
@@ -31,13 +31,13 @@ namespace quant::geometry
         // Scale.
 
         StateType
-        operator*(long const rhs) const
+        operator*(std::int64_t const rhs) const
         {
             return StateType(_representation * rhs);
         }
 
         StateType
-        operator/(long const rhs) const
+        operator/(std::int64_t const rhs) const
         {
             return StateType(_representation / rhs);
         }
@@ -103,7 +103,7 @@ namespace quant::geometry
     template <typename StateType>
         requires quant::traits::scalar_state<StateType>
     StateType
-    operator*(long lhs, StateType const& rhs)
+    operator*(std::int64_t lhs, StateType const& rhs)
     {
         return rhs * lhs;
     }
@@ -111,7 +111,7 @@ namespace quant::geometry
     template <typename StateType>
         requires quant::traits::scalar_state<StateType>
     StateType
-    operator/(long lhs, StateType const& rhs)
+    operator/(std::int64_t lhs, StateType const& rhs)
     {
         return rhs / lhs;
     }

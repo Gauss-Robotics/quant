@@ -2,7 +2,7 @@
 
 #include <quant/geometry/Difference.h>
 #include <quant/units/velocity/LinearVelocity.h>
-#include <quant/units/velocity_fwd.h>
+#include <quant/units/velocity/forward_declarations.h>
 
 namespace quant::units::velocity
 {
