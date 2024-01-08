@@ -37,5 +37,6 @@ namespace quant
 {
 
     using units::angle::Angle;
+    using units::angle::AngleDifference;
 
 }  // namespace quant
