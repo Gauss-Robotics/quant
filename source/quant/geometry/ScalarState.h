@@ -25,10 +25,16 @@ namespace quant::geometry
         static StateType
         zero()
         {
-            return StateType(0);
+            return StateType{0};
         }
 
         // Scale.
+
+        StateType
+        operator-() const
+        {
+            return StateType{-_representation};
+        }
 
         StateType
         operator*(std::int64_t const rhs) const

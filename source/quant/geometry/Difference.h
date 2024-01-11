@@ -140,6 +140,16 @@ namespace quant::geometry
                                       ScalarDifference::representation(rhs));
     }
 
+    template <typename ScalarDifferenceType>
+        requires traits::scalar_difference<ScalarDifferenceType>
+    ScalarDifferenceType
+    operator-(ScalarDifferenceType const& object)
+    {
+        using ScalarDifference = detail::DifferenceAccessor<ScalarDifferenceType>;
+
+        return ScalarDifference::make(-ScalarDifference::representation(object));
+    }
+
     /**
      * @brief Scale the difference with a given scalar.
      *

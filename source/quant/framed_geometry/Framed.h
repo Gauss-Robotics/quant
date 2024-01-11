@@ -10,7 +10,6 @@
 #include <cassert>
 #include <compare>
 #include <cstdio>
-#include <ostream>
 #include <string>
 #include <string_view>
 
@@ -197,6 +196,36 @@ namespace quant::framed_geometry
     }
 
     /**
+     * @brief Three-way comparison operator of framed type and corresponding unframed type.
+     *
+     * @param lhs
+     * @param rhs
+     * @return
+     */
+    template <typename StateType>
+        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
+    std::strong_ordering
+    operator<=>(Framed<StateType> const& lhs, StateType const& rhs)
+    {
+        return lhs.get_framed_object() <=> rhs;
+    }
+
+    /**
+     * @brief Three-way comparison operator of unframed type and corresponding framed type.
+     *
+     * @param lhs
+     * @param rhs
+     * @return
+     */
+    template <typename StateType>
+        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
+    std::strong_ordering
+    operator<=>(StateType const& lhs, Framed<StateType> const& rhs)
+    {
+        return lhs <=> rhs.get_framed_object();
+    }
+
+    /**
      * @brief State difference operator.
      *
      * @param lhs
@@ -220,7 +249,7 @@ namespace quant::framed_geometry
      * @brief Translation application operator.
      *
      * This operator drops the framed domain, since no framed guarantees can be enforced.  Use a
-     * framed difference instead if you want frame checks to be preformed.
+     * framed difference instead if you want frame checks to be performed.
      *
      * @param lhs
      * @param rhs
@@ -256,6 +285,16 @@ namespace quant::framed_geometry
 
         return traits::framed_type_of<StateType>(lhs.get_framed_object() + rhs.get_framed_object(),
                                                  {.name = "", .base_frame = lhs.get_base_frame()});
+    }
+
+    template <typename FramedDifferenceType>
+        requires traits::framed_scalar_difference<FramedDifferenceType>
+    FramedDifferenceType
+    operator-(FramedDifferenceType const& object)
+    {
+        return FramedDifferenceType{
+            -object.get_framed_object(),
+            FrameData{.name = object.get_name(), .base_frame = object.get_base_frame()}};
     }
 
 }  // namespace quant::framed_geometry
