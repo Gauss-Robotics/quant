@@ -27,12 +27,6 @@ add_library(units SHARED
     time/TimeInterval.h
     time/Frequency.h
 
-    current.h
-    current/forward_declarations.h
-    current/constants.h
-    current/Current.h
-    current/CurrentDifference.h
-
     position.h
     position/forward_declarations.h
     position/constants.h
@@ -129,6 +123,12 @@ add_library(units SHARED
     temperature/constants.h
     temperature/Temperature.h
     temperature/TemperatureDifference.h
+
+    electric_current.h
+    electric_current/forward_declarations.h
+    electric_current/constants.h
+    electric_current/Current.h
+    electric_current/CurrentDifference.h
 )
 
 set_target_properties(units

@@ -4,7 +4,7 @@
 #include <quant/units/angle.h>
 #include <quant/units/angular_acceleration.h>
 #include <quant/units/angular_speed.h>
-#include <quant/units/current.h>
+#include <quant/units/electric_current.h>
 #include <quant/units/force.h>
 #include <quant/units/jerk.h>
 #include <quant/units/length.h>
