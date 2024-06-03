@@ -665,4 +665,66 @@ TEST_SUITE("temperature")
     }
 }
 
+TEST_SUITE("electric_current")
+{
+    TEST_CASE("currents can be trivially/zero constructed")
+    {
+        Current const i_default;
+        CHECK(i_default == Current::ampere(0));
+
+        Current const i_zero = Current::zero();
+        CHECK(i_zero == Current::ampere(0));
+    }
+
+    TEST_CASE("currents can be converted to string")
+    {
+        Current const i_small = Current::ampere(0.15);
+        Current const i_large = Current::ampere(15);
+
+        // String to automatic unit.
+        CHECK(i_small.to_string() == "150 mA");
+        CHECK(i_large.to_string() == "15 A");
+
+        SUBCASE("currents can be streamed as automatic unit")
+        {
+            std::stringstream ss_small;
+            ss_small << i_small;
+            CHECK(ss_small.str() == "150 mA");
+
+            std::stringstream ss_large;
+            ss_large << i_large;
+            CHECK(ss_large.str() == "15 A");
+        }
+
+        // String in specific unit.
+        CHECK(i_large.to_milliampere().to_string() == "15000 mA");
+
+        SUBCASE("currents can be streamed as specific unit")
+        {
+            std::stringstream ss;
+            ss << i_large.to_milliampere();
+
+            CHECK(ss.str() == "15000 mA");
+        }
+    }
+
+    TEST_CASE("basic constructions")
+    {
+        Current i1 = Current::ampere(15);
+        CHECK(i1.to_ampere() == 15);
+
+        Current i2 = Current::milliampere(15000);
+        CHECK(i2.to_milliampere() == 15000);
+    }
+
+    TEST_CASE("unit converting constructions")
+    {
+        Current i1 = Current::ampere(15);
+        CHECK(i1.to_milliampere() == 15000);
+
+        Current i2 = Current::milliampere(15000);
+        CHECK(i2.to_ampere() == 15);
+    }
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

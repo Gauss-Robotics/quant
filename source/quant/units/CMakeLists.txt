@@ -129,6 +129,12 @@ add_library(units SHARED
     temperature/constants.h
     temperature/Temperature.h
     temperature/TemperatureDifference.h
+
+    electric_current.h
+    electric_current/forward_declarations.h
+    electric_current/constants.h
+    electric_current/Current.h
+    electric_current/CurrentDifference.h
 )
 
 set_target_properties(units
