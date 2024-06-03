@@ -27,12 +27,6 @@ add_library(units SHARED
     time/TimeInterval.h
     time/Frequency.h
 
-    current.h
-    current/forward_declarations.h
-    current/constants.h
-    current/Current.h
-    current/CurrentDifference.h
-
     position.h
     position/forward_declarations.h
     position/constants.h
