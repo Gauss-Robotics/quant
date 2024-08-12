@@ -9,7 +9,7 @@ add_library(units SHARED
     angle/forward_declarations.h
     angle/constants.h
     angle/Angle.h
-    angle/AngleDifference.h
+    angle/AngularDifference.h
 
     angular_speed.h
     angular_speed/forward_declarations.h

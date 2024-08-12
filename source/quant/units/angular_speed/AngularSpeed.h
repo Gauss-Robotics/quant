@@ -6,6 +6,8 @@
 #include <quant/units/angular_speed/constants.h>
 #include <quant/units/angular_speed/forward_declarations.h>
 
+#include <ostream>
+
 namespace quant::units::angular_speed
 {
 
@@ -22,6 +24,12 @@ namespace quant::units::angular_speed
         radians_per_second(geometry::Scalar radians_per_second)
         {
             return {radians_per_second};
+        }
+
+        std::string
+        to_string() const
+        {
+            return to_radians_per_second().to_string();
         }
 
         Scalar
@@ -43,5 +51,11 @@ namespace quant::units::angular_speed
     protected:
         using geometry::ScalarState<AngularSpeed>::ScalarState;
     };
+
+    inline std::ostream&
+    operator<<(std::ostream& out, AngularSpeed const& rhs)
+    {
+        return out << rhs.to_string();
+    }
 
 }  // namespace quant::units::angular_speed

@@ -5,7 +5,6 @@
 #include <quant/units/electric_current/constants.h>
 #include <quant/units/electric_current/forward_declarations.h>
 
-#include <cstdint>
 #include <ostream>
 #include <string>
 
