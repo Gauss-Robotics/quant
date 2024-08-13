@@ -6,6 +6,8 @@
 #include <quant/units/angle/constants.h>
 #include <quant/units/angle/forward_declarations.h>
 
+#include <string>
+
 namespace quant::units::angle
 {
 
@@ -22,6 +24,12 @@ namespace quant::units::angle
         degrees(geometry::Scalar degrees)
         {
             return {degrees * constants::deg2rad};
+        }
+
+        std::string
+        to_string() const
+        {
+            return to_radians().to_string();
         }
 
         Scalar
@@ -41,5 +49,11 @@ namespace quant::units::angle
     protected:
         using geometry::ScalarState<Angle>::ScalarState;
     };
+
+    inline std::ostream&
+    operator<<(std::ostream& out, Angle const& rhs)
+    {
+        return out << rhs.to_string();
+    }
 
 }  // namespace quant::units::angle
