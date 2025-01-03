@@ -122,4 +122,22 @@ namespace quant::geometry
         return rhs / lhs;
     }
 
+    /**
+     * @brief Add two scalar states.
+     *
+     * @param lhs Left-hand-side summand scalar state.
+     * @param lhs Right-hand-side summand scalar state.
+     * @return Sum of the two scalar states.
+     */
+    template <typename ScalarStateType>
+        requires traits::scalar_state<ScalarStateType>
+    ScalarStateType
+    operator+(ScalarStateType const& lhs, ScalarStateType const rhs)
+    {
+        using ScalarState = detail::StateAccessor<ScalarStateType>;
+
+        return ScalarState::make(ScalarState::representation(lhs) +
+                                      ScalarState::representation(rhs));
+    }
+
 }  // namespace quant::geometry

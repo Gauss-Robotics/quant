@@ -185,7 +185,24 @@ namespace quant::geometry
     }
 
     /**
-     * @brief Get the ratio between two scalar differneces.
+     * @brief Scale the difference with a given scalar.
+     *
+     * @param lhs Difference type to be scaled.
+     * @param rhs Scalar the difference should be scaled with.
+     * @return Scaled difference.
+     */
+    template <typename ScalarDifferenceType>
+        requires traits::scalar_difference<ScalarDifferenceType>
+    ScalarDifferenceType
+    operator/(ScalarDifferenceType const& lhs, long const rhs)
+    {
+        using ScalarDifference = detail::DifferenceAccessor<ScalarDifferenceType>;
+
+        return ScalarDifference::make(ScalarDifference::representation(lhs) / rhs);
+    }
+
+    /**
+     * @brief Get the ratio between two scalar differences.
      *
      * @param lhs
      * @param rhs

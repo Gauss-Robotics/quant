@@ -176,16 +176,16 @@ namespace quant::traits
     concept same_domain = std::same_as<domain_type_of<Type1>, domain_type_of<Type2>>;
 
     template <typename Type>
-    using linear_state_in_domain_of = domain_type_of<Type>::LinearState;
+    using linear_state_in_domain_of = typename domain_type_of<Type>::LinearState;
 
     template <typename Type>
-    using angular_state_in_domain_of = domain_type_of<Type>::AngularState;
+    using angular_state_in_domain_of = typename domain_type_of<Type>::AngularState;
 
     template <typename Type>
-    using linear_difference_in_domain_of = domain_type_of<Type>::LinearDifference;
+    using linear_difference_in_domain_of = typename domain_type_of<Type>::LinearDifference;
 
     template <typename Type>
-    using angular_difference_in_domain_of = domain_type_of<Type>::AngularDifference;
+    using angular_difference_in_domain_of = typename domain_type_of<Type>::AngularDifference;
 
 }  // namespace quant::traits
 

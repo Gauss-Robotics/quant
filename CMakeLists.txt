@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 
 project(quant LANGUAGES CXX)
 
@@ -20,6 +20,9 @@ endif()
 find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
 find_package(doctest QUIET)
+
+find_package(Python QUIET COMPONENTS Interpreter Development.Module)
+find_package(pybind11 CONFIG QUIET)
 
 # Source code.
 add_subdirectory(source)
@@ -64,3 +67,9 @@ configure_file(
     "${PROJECT_BINARY_DIR}/quantConfig.cmake"
     @ONLY
 )
+
+if (pybind11_FOUND AND Python_FOUND)
+    # The install directory is the output (wheel) directory
+    install(TARGETS quantpy
+            DESTINATION quantpy)
+endif (pybind11_FOUND AND Python_FOUND)
