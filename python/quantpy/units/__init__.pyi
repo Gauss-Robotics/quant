@@ -1,6 +1,27 @@
 from __future__ import annotations
+import numpy
+import typing
+from . import acceleration
 from . import angle
-__all__ = ['Scalar', 'angle']
+__all__ = ['AxisAngle', 'Scalar', 'Vector', 'acceleration', 'angle']
+class AxisAngle:
+    angle: float
+    axis: numpy.ndarray[tuple[typing.Literal[3], typing.Literal[1]], numpy.dtype[numpy.float64]]
+    @staticmethod
+    def _pybind11_conduit_v1_(*args, **kwargs):
+        ...
+    def __init__(self, angle: float, axis: numpy.ndarray[tuple[typing.Literal[3], typing.Literal[1]], numpy.dtype[numpy.float64]], quantity_name: str, unit_symbol: str) -> None:
+        ...
+    def __repr__(self) -> str:
+        ...
+    def __str__(self) -> str:
+        ...
+    @property
+    def quantity_name(self) -> str:
+        ...
+    @property
+    def unit_symbol(self) -> str:
+        ...
 class Scalar:
     value: float
     @staticmethod
@@ -23,4 +44,32 @@ class Scalar:
         ...
     @property
     def unit_symbol(self) -> str:
+        ...
+class Vector:
+    x: float
+    y: float
+    z: float
+    @staticmethod
+    def _pybind11_conduit_v1_(*args, **kwargs):
+        ...
+    @staticmethod
+    def unit_x(arg0: str, arg1: str) -> Vector:
+        ...
+    @staticmethod
+    def unit_y(arg0: str, arg1: str) -> Vector:
+        ...
+    @staticmethod
+    def unit_z(arg0: str, arg1: str) -> Vector:
+        ...
+    def __init__(self, vector: numpy.ndarray[tuple[typing.Literal[3], typing.Literal[1]], numpy.dtype[numpy.float64]], quantity_name: str, unit_symbol: str) -> None:
+        ...
+    def __mul__(self, arg0: float) -> Vector:
+        ...
+    def __repr__(self) -> str:
+        ...
+    def __str__(self) -> str:
+        ...
+    def __truediv__(self, arg0: float) -> Vector:
+        ...
+    def norm(self) -> float:
         ...

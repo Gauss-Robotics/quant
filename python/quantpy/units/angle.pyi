@@ -35,7 +35,7 @@ class Angle:
         ...
     def to_radians(self) -> quantpy.quantpy.units.Scalar:
         ...
-class AngularDifference(_base_AngularDifference):
+class AngularDifference:
     __hash__: typing.ClassVar[None] = None
     @staticmethod
     def _pybind11_conduit_v1_(*args, **kwargs):
@@ -65,8 +65,4 @@ class AngularDifference(_base_AngularDifference):
     def __truediv__(self, arg0: int) -> AngularDifference:
         ...
     def to_radians(self) -> quantpy.quantpy.units.Scalar:
-        ...
-class _base_AngularDifference:
-    @staticmethod
-    def _pybind11_conduit_v1_(*args, **kwargs):
         ...
