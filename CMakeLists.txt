@@ -26,7 +26,7 @@ find_package(pybind11 CONFIG QUIET)
 
 # Source code.
 add_subdirectory(source)
-add_subdirectory(tests)
+add_subdirectory(tests/quant)
 add_subdirectory(examples)
 
 export(
