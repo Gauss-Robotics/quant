@@ -1,23 +1,23 @@
 add_library(framed_units SHARED
     ../framed_units.h
 
-    time.h
-    time/forward_declarations.h
+        #time.h
     #time/forward_declarations.h
-    time/TimePoint.h
-    time/TimePoint.cpp
-    time/Duration.h
-    time/Duration.cpp
-    time/DateTime.h
-    time/DateTime.cpp
+        #time/forward_declarations.h
+        #time/TimePoint.h
+        #time/TimePoint.cpp
+        #time/Duration.h
+        #time/Duration.cpp
+        #time/DateTime.h
+        #time/DateTime.cpp
     #time/TimeInterval.h
-    time/Frequency.h
-    time/Frequency.cpp
+        #time/Frequency.h
+        #time/Frequency.cpp
     #time/detail/UnitConversions.h
-    time/measurement/ClockInterface.h
-    time/measurement/ClockInterface.cpp
-    time/measurement/Clock.h
-    time/measurement/Clock.cpp
+        #time/measurement/ClockInterface.h
+        #time/measurement/ClockInterface.cpp
+        #time/measurement/Clock.h
+        #time/measurement/Clock.cpp
 
     position.h
     position/forward_declarations.h
@@ -28,7 +28,7 @@ add_library(framed_units SHARED
     position/FramedAngularDisplacement.h
     position/FramedSpatialDisplacement.h
 
-    #velocity.h
+        #velocity.h
     #velocity_fwd.h
     #velocity/LinearVelocity.h
     #velocity/LinearVelocity.cpp

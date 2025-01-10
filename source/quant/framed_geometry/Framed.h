@@ -1,5 +1,6 @@
 #pragma once
 
+#include <quant/framed_geometry/Difference.h>
 #include <quant/framed_geometry/forward_declarations.h>
 #include <quant/geometry/Difference.h>
 #include <quant/geometry/forward_declarations.h>
@@ -15,11 +16,6 @@
 
 namespace quant::framed_geometry
 {
-
-    /**
-     * @brief Maximum number of characters or byte used for a frame identifier (name or base_frame).
-     */
-    constexpr std::uint32_t frame_data_max_string_size = 128;
 
     /**
      * @brief Uniquely identifies a frame.
@@ -41,18 +37,11 @@ namespace quant::framed_geometry
      * @tparam QuantityT Geometric State or difference object type.
      */
     template <typename QuantityT>
+        requires traits::is_frameable<QuantityT>
     class Framed
     {
     public:
         using FramedGeometricObject = QuantityT;
-
-        /**
-         * @brief Default constructs a framed geometric object.
-         */
-        Framed() : Framed(QuantityT::zero(), {.name = "::", .base_frame = "::"})
-        {
-            ;
-        }
 
         /**
          * @brief Constructs a framed geometric object given a geometric object and a frame header
@@ -71,6 +60,17 @@ namespace quant::framed_geometry
                           "%s",
                           frame_data.base_frame.data());
             // NOLINTEND(cppcoreguidelines-pro-type-vararg)
+        }
+
+        template <typename OtherQuantityT>
+        Framed
+        in_frame_of(Framed<OtherQuantityT> const& other, Difference const& difference) const
+        {
+            // TODO: Custom exception etc.
+            assert(get_base_frame() == other.get_base_frame());
+            return Framed{
+                FrameConversion<QuantityT>::convert(_framed_object, difference.transformation),
+                {.name = get_name(), .base_frame = other.get_name()}};
         }
 
         /**
@@ -145,6 +145,18 @@ namespace quant::framed_geometry
             }
 
             return named_entity + " (" + in_frame + ") at " + _framed_object.to_string();
+        }
+
+    protected:
+        /**
+         * @brief Default constructs a framed geometric object.
+         */
+        Framed() :
+            Framed(QuantityT::zero(),
+                   {.name = "::",
+                    .base_frame = "::"})  // prohibits the creation of Base objects, which is UB
+        {
+            ;
         }
 
     private:

@@ -46,6 +46,7 @@ set_target_properties(geometry
 target_link_libraries(geometry
     PUBLIC
         Eigen3::Eigen
+        Boost::headers
 )
 
 add_library(quant::geometry ALIAS geometry)

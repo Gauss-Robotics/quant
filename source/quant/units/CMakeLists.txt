@@ -129,6 +129,7 @@ add_library(units SHARED
     electric_current/constants.h
     electric_current/Current.h
     electric_current/CurrentDifference.h
+        forward_declarations.h
 )
 
 set_target_properties(units

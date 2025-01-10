@@ -15,16 +15,6 @@ namespace quant::framed_units::position
     class AngularDisplacement;
     class SpatialDisplacement;
 
-    struct Domain
-    {
-        using LinearState = Position;
-        using AngularState = Orientation;
-        using SpatialState = Pose;
-        using LinearDifference = LinearDisplacement;
-        using AngularDifference = AngularDisplacement;
-        using SpatialDifference = SpatialDisplacement;
-    };
-
 }  // namespace quant::framed_units::position
 
 namespace quant::traits

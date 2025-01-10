@@ -113,6 +113,9 @@ namespace quant::traits
         using LinearDifference = LinearDifferenceType;
         using AngularDifference = AngularDifferenceType;
         using SpatialDifference = SpatialDifferenceType;
+        using R3 = Define1DDomain<LinearStateType, LinearDifferenceType>;
+        using SO3 = Define1DDomain<AngularStateType, AngularDifferenceType>;
+        using SE3 = Define1DDomain<SpatialStateType, SpatialDifferenceType>;
     };
 
     template <typename Type>
@@ -186,6 +189,23 @@ namespace quant::traits
 
     template <typename Type>
     using angular_difference_in_domain_of = domain_type_of<Type>::AngularDifference;
+
+    template <typename Type>
+    using r3_in_domain_of = domain_type_of<Type>::R3;
+
+    template <typename Type>
+    using so3_in_domain_of = domain_type_of<Type>::SO3;
+
+    template <typename Type>
+    using se3_in_domain_of = domain_type_of<Type>::SE3;
+
+    template <typename Type>
+    concept three_dimensional_domain =
+        std::same_as<typename domain_type_of<Type>::DomainType, ThreeDimensionalDomainType>;
+
+    template <typename Type>
+    concept one_dimensional_domain =
+        std::same_as<typename domain_type_of<Type>::DomainType, OneDimensionalDomainType>;
 
 }  // namespace quant::traits
 

@@ -4,6 +4,20 @@
 #include <quant/framed_units/position/forward_declarations.h>
 #include <quant/units/position/SpatialDisplacement.h>
 
+namespace quant::framed_geometry
+{
+    template <>
+    struct FrameConversion<units::position::SpatialDisplacement>
+    {
+        static units::position::SpatialDisplacement&
+        convert(units::position::SpatialDisplacement& unit,
+                units::position::SpatialDisplacement const& /*transform*/)
+        {
+            return unit;
+        }
+    };
+}  // namespace quant::framed_geometry
+
 namespace quant::framed_units::position
 {
 
