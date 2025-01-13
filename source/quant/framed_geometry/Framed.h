@@ -276,7 +276,7 @@ namespace quant::framed_geometry
                  traits::framed_scalar_state<FramedStateType> and
                  traits::same_framed_domain<FramedDifferenceType, FramedStateType>
     FramedStateType
-    operator+(FramedDifferenceType const& lhs, FramedStateType const& rhs)
+    operator+(FramedStateType const& lhs, FramedDifferenceType const& rhs)
     {
         using StateType = typename FramedStateType::FramedGeometricObject;
 

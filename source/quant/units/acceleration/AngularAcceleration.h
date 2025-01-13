@@ -21,6 +21,12 @@ namespace quant::units::acceleration
             return {aa};
         }
 
+        static AngularAcceleration
+        radians_per_second_squared(Eigen::Quaterniond const& quaternion)
+        {
+            return {quaternion};
+        }
+
         AxisAngle
         to_radians_per_second_squared() const
         {

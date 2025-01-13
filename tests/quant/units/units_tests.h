@@ -152,7 +152,7 @@ TEST_SUITE("time")
 
     TEST_CASE("durations can be used to shift time points")
     {
-        TimePoint const t1 = Duration::milliseconds(100) + TimePoint::seconds(1);
+        TimePoint const t1 = TimePoint::seconds(1) + Duration::milliseconds(100);
         TimePoint const t1_target = TimePoint::milliseconds(1'100);
         CHECK(t1 == t1_target);
     }
@@ -224,7 +224,7 @@ TEST_SUITE("position")
         CHECK(x_disturbed.is_approx(x));
     }
 
-    TEST_CASE("positions can be accessed for individiual components and unit symbols")
+    TEST_CASE("positions can be accessed for individual components and unit symbols")
     {
         Position const x = Position::millimeters({.x = 100, .y = 200, .z = 300});
         CHECK(x.to_millimeters().x == 100);

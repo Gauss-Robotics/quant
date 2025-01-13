@@ -4,6 +4,8 @@
 #include <quant/units/angle/Angle.h>
 #include <quant/units/angle/AngularDifference.h>
 
+#include <format>
+
 #include "../geometry/difference.h"
 #include "../geometry/scalar_state.h"
 #include <pybind11/operators.h>
@@ -15,6 +17,15 @@ namespace quantpy::units::angle
     namespace units = quant::units::angle;
     namespace geometry = quant::geometry;
 
+    std::string make_angle_repr(const units::Angle& a)
+    {
+        return std::format("Angle({})", a.to_degrees().to_string());
+    }
+
+    void angle_inplace_add(units::Angle& a, units::AngularDifference const& d)
+    {
+        a += d;
+    }
     void
     angle(py::module& m)
     {
@@ -23,9 +34,8 @@ namespace quantpy::units::angle
             .def_static("degrees", [](double d) { return units::Angle::degrees(d); })
             .def("to_radians", &units::Angle::to_radians)
             .def("to_degrees", &units::Angle::to_degrees)
-            .def("__float__",
-                 [](units::Angle const& a) { return static_cast<double>(a.to_radians()); })
-            .def("__repr__", &units::Angle::to_string)
+            // .def("__iadd__", &units::Angle::operator+=)
+            .def("__repr__", &make_angle_repr)
             .def("__str__", &units::Angle::to_string);
     }
 
@@ -34,7 +44,9 @@ namespace quantpy::units::angle
     {
         quantpy::geometry::registerDifference<units::AngularDifference>(m, "AngularDifference")
             .def_static("radians", [](double d) { return units::AngularDifference::radians(d); })
+            .def_static("degrees", [](double d) { return units::AngularDifference::degrees(d); })
             .def("to_radians", &units::AngularDifference::to_radians)
+            .def("to_degrees", &units::AngularDifference::to_degrees)
             .def("__float__",
                  [](units::AngularDifference const& a) { return static_cast<double>(a.to_radians()); });
     }

@@ -3,6 +3,9 @@
 #include <quant/units/acceleration/AngularAcceleration.h>
 #include <quant/units/acceleration/LinearAcceleration.h>
 
+#include <quantpy/geometry/angular_state.h>
+#include <quantpy/geometry/linear_state.h>
+
 namespace quantpy::units::acceleration
 {
     namespace units = quant::units::acceleration;
@@ -11,12 +14,13 @@ namespace quantpy::units::acceleration
     void
     linear_acceleration(py::module& m)
     {
-        py::class_<units::LinearAcceleration, geometry::LinearState<units::LinearAcceleration>>(
-            m, "LinearAcceleration")
+        quantpy::geometry::registerLinearState<units::LinearAcceleration>(m, "LinearAcceleration")
             .def_static("millimeters_per_second_squared",
-                        &units::LinearAcceleration::millimeters_per_second_squared)
+                        static_cast<units::LinearAcceleration (*)(Eigen::Vector3d const&)>(
+                            &units::LinearAcceleration::millimeters_per_second_squared))
             .def_static("meters_per_second_squared",
-                        &units::LinearAcceleration::meters_per_second_squared)
+                        static_cast<units::LinearAcceleration (*)(Eigen::Vector3d const&)>(
+                            &units::LinearAcceleration::meters_per_second_squared))
             .def("to_millimeters_per_second_squared",
                  &units::LinearAcceleration::to_millimeters_per_second_squared)
             .def("to_meters_per_second_squared",
@@ -39,10 +43,14 @@ namespace quantpy::units::acceleration
     void
     angular_acceleration(py::module& m)
     {
-        py::class_<units::AngularAcceleration, geometry::AngularState<units::AngularAcceleration>>(
-            m, "AngularAcceleration")
+        quantpy::geometry::registerAngularState<units::AngularAcceleration>(m,
+                                                                            "AngularAcceleration")
             .def_static("radians_per_second_squared",
-                        &units::AngularAcceleration::radians_per_second_squared)
+                        [](Eigen::Vector4d const& quaternion)
+                        {
+                            return units::AngularAcceleration::radians_per_second_squared(
+                                Eigen::Quaterniond(quaternion).normalized());
+                        })
             .def("to_radians_per_second_squared",
                  &units::AngularAcceleration::to_radians_per_second_squared);
     }

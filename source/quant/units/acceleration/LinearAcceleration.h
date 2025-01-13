@@ -16,13 +16,25 @@ namespace quant::units::acceleration
     {
     public:
         static LinearAcceleration
-        millimeters_per_second_squared(geometry::Vector xyz)
+        millimeters_per_second_squared(const geometry::Vector& xyz)
         {
             return {xyz};
         }
 
         static LinearAcceleration
-        meters_per_second_squared(geometry::Vector xyz)
+        millimeters_per_second_squared(const Eigen::Vector3d& xyz)
+        {
+            return {xyz};
+        }
+
+        static LinearAcceleration
+        meters_per_second_squared(const geometry::Vector& xyz)
+        {
+            return {xyz * constants::mpss2mmpss};
+        }
+
+        static LinearAcceleration
+        meters_per_second_squared(const Eigen::Vector3d& xyz)
         {
             return {xyz * constants::mpss2mmpss};
         }

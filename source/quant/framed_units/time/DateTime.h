@@ -79,11 +79,11 @@ namespace quant::framed_units::time
      * @return Translated date time.
      */
     inline DateTime
-    operator+(quant::Duration const& lhs, DateTime const& rhs)
+    operator+(DateTime const& lhs, quant::Duration const& rhs)
     {
-        Duration const lhs_framed{lhs, {.name = rhs.get_base_frame()}};
-        TimePoint const rhs_tp = rhs;
-        return DateTime::time_point_since_epoch(lhs_framed + rhs_tp);
+        TimePoint const lhs_tp = lhs;
+        Duration const rhs_framed{rhs, {.name = lhs.get_base_frame()}};
+        return DateTime::time_point_since_epoch(lhs_tp + rhs_framed);
     }
 
 }  // namespace quant::framed_units::time
