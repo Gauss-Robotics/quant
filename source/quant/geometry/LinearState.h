@@ -117,7 +117,7 @@ namespace quant::geometry
             return StateType{_representation.cwiseQuotient(rhs._representation)};
         }
 
-        using GeometricRepresentationType = Eigen::Ref<Eigen::Vector3d const>;
+        using GeometricRepresentationType = Eigen::Vector3d;
 
     protected:
         // Construct.

@@ -1,6 +1,9 @@
 #pragma once
 
 #include <quant/units/position.h>
+#include <quant/units/velocity.h>
+#include <quant/units/acceleration.h>
+#include <quant/units/time.h>
 
 #include <doctest/doctest.h>
 
@@ -163,12 +166,183 @@ namespace quant::traits::arithmetics
         template <typename T, typename U>
         inline constexpr bool is_possible_inplace_v = is_possible_inplace<T, U>::value;
     }  // namespace division
+
+    template <typename StateT, typename DifferenceT>
+    void check_arithmetics()
+    {
+        SUBCASE("math operators are defined for State vs State")
+        {
+            // State with State
+            static_assert(not addition::is_possible_v<StateT, StateT>,
+                          "State types should not be addable");
+            static_assert(not addition::is_possible_inplace_v<StateT, StateT>,
+                          "State types should not be addable inplace");
+            static_assert(subtraction::is_possible_v<StateT, StateT>,
+                          "State types should not be subtractable");
+            static_assert(not subtraction::is_possible_inplace_v<StateT, StateT>,
+                          "State types should not be subtractable inplace");
+            static_assert(not multiplication::is_possible_v<StateT, StateT>,
+                          "State types should not be multiplicative");
+            static_assert(not multiplication::is_possible_inplace_v<StateT, StateT>,
+                          "State types should not be multiplicative inplace");
+            // static_assert(division::is_possible_v<StateT, StateT>,
+            //               "State types should be dividable");
+            static_assert(not division::is_possible_inplace_v<StateT, StateT>,
+                          "State types should not be dividable inplace");
+        }
+        SUBCASE("math operators are defined for State vs Difference")
+        {
+            // State with Difference
+            static_assert(addition::is_possible_v<StateT, DifferenceT>,
+                          "State and Difference types should be addable");
+            static_assert(addition::is_possible_inplace_v<StateT, DifferenceT>,
+                          "State and Difference types should be addable inplace");
+            static_assert(subtraction::is_possible_v<StateT, DifferenceT>,
+                          "State and Difference types should be subtractable");
+            static_assert(subtraction::is_possible_inplace_v<StateT, DifferenceT>,
+                          "State and Difference types should be subtractable inplace");
+            static_assert(not multiplication::is_possible_v<StateT, DifferenceT>,
+                          "State and Difference types should not be multiplicative");
+            static_assert(
+                not multiplication::is_possible_inplace_v<StateT, DifferenceT>,
+                "State and Difference types should not be multiplicative inplace");
+            static_assert(not division::is_possible_v<StateT, DifferenceT>,
+                          "State and Difference types should not be dividable");
+            static_assert(not division::is_possible_inplace_v<StateT, DifferenceT>,
+                          "State and Difference types should not be dividable inplace");
+        }
+        SUBCASE("math operators are defined for Difference vs State")
+        {
+            // Difference with State
+            static_assert(not addition::is_possible_v<DifferenceT, StateT>,
+                          "Difference and State types should not be addable");
+            static_assert(not addition::is_possible_inplace_v<DifferenceT, StateT>,
+                          "Difference and State types should not be addable inplace");
+            static_assert(not subtraction::is_possible_v<DifferenceT, StateT>,
+                          "Difference and State types should not be subtractable");
+            static_assert(
+                not subtraction::is_possible_inplace_v<DifferenceT, StateT>,
+                "Difference and State types should not be subtractable inplace");
+            static_assert(not multiplication::is_possible_v<DifferenceT, StateT>,
+                          "Difference and State types should not be multiplicative");
+            static_assert(
+                not multiplication::is_possible_inplace_v<DifferenceT, StateT>,
+                "Difference and State types should not be multiplicative inplace");
+            static_assert(not division::is_possible_v<DifferenceT, StateT>,
+                          "Difference and State types should not be dividable");
+            static_assert(not division::is_possible_inplace_v<DifferenceT, StateT>,
+                          "Difference and State types should not be dividable inplace");
+        }
+        SUBCASE("math operators are defined for Difference vs Difference")
+        {
+            // Difference with Difference
+            static_assert(addition::is_possible_v<DifferenceT, DifferenceT>,
+                          "Difference and Difference types should be addable");
+            static_assert(
+                addition::is_possible_inplace_v<DifferenceT, DifferenceT>,
+                "Difference and Difference types should be addable inplace");
+            static_assert(
+                subtraction::is_possible_v<DifferenceT, DifferenceT>,
+                "Difference and Difference types should be subtractable");
+            static_assert(
+                subtraction::is_possible_inplace_v<DifferenceT, DifferenceT>,
+                "Difference and Difference types should be subtractable inplace");
+            static_assert(
+                not multiplication::is_possible_v<DifferenceT, DifferenceT>,
+                "Difference and Difference types should not be multiplicative");
+            static_assert(not multiplication::is_possible_inplace_v<DifferenceT,
+                                                                            DifferenceT>,
+                          "Difference and Difference types should not be multiplicative inplace");
+            // static_assert(division::is_possible_v<DifferenceT, DifferenceT>,
+            //               "Difference and Difference types should be dividable"); TODO: this should only be possible partially (e.g. not for poses or orientations)
+            static_assert(
+                not division::is_possible_inplace_v<DifferenceT, DifferenceT>,
+                "Difference and Difference types should not be dividable inplace");
+        }
+        auto state = StateT();
+        auto diff = DifferenceT();
+        state - state;
+        state += diff;
+        state -= diff;
+        state + diff;
+        state - diff;
+
+        diff + diff;
+        diff += diff;
+        diff - diff;
+        diff -= diff;
+
+    }
+
+    template <typename Quantity1, typename Quantity2>
+    void check_differing_domains()
+    {
+        static_assert(not addition::is_possible_v<Quantity1, Quantity2>,
+                          "Different domains should not be addable");
+        static_assert(not
+            addition::is_possible_inplace_v<Quantity1, Quantity2>,
+            "Different domains should not be addable inplace");
+        static_assert(not
+            subtraction::is_possible_v<Quantity1, Quantity2>,
+            "Different domains should not be subtractable");
+        static_assert(not
+            subtraction::is_possible_inplace_v<Quantity1, Quantity2>,
+            "Different domains should not be subtractable inplace");
+        static_assert(
+            not multiplication::is_possible_v<Quantity1, Quantity2>,
+            "Different domains should not be multiplicative");
+        static_assert(not multiplication::is_possible_inplace_v<Quantity1,
+                                                                        Quantity2>,
+                      "Different domains should not be multiplicative inplace");
+        static_assert(not division::is_possible_v<Quantity1, Quantity2>,
+                      "Different domains should not be dividable");
+        static_assert(
+            not division::is_possible_inplace_v<Quantity1, Quantity2>,
+            "Different domains should not be dividable inplace");
+    }
 }  // namespace quant::traits::arithmetics
+
 
 using namespace quant;
 
 TEST_SUITE("concrete instantiation using position")
 {
+    TEST_CASE("check arithmetics for TimePoint and Duration -- R1")
+    {
+        traits::arithmetics::check_arithmetics<TimePoint, Duration>();
+    }
+    TEST_CASE("check arithmetics for Position and LinearDisplacement -- R3")
+    {
+        traits::arithmetics::check_arithmetics<Position, LinearDisplacement>();
+    }
+    TEST_CASE("check arithmetics for Orientation and AngularDisplacement -- SO3")
+    {
+        traits::arithmetics::check_arithmetics<Orientation, AngularDisplacement>();
+    }
+    TEST_CASE("check arithmetics for Pose and SpatialDisplacement -- SE3")
+    {
+        traits::arithmetics::check_arithmetics<Pose, SpatialDisplacement>();
+    }
+    TEST_CASE("check different domains cannot interact")
+    {
+        traits::arithmetics::check_differing_domains<Position, Orientation>();
+        traits::arithmetics::check_differing_domains<Position, Pose>();
+        traits::arithmetics::check_differing_domains<Position, AngularDisplacement>();
+        traits::arithmetics::check_differing_domains<Position, SpatialDisplacement>();
+
+        traits::arithmetics::check_differing_domains<Orientation, Pose>();
+        traits::arithmetics::check_differing_domains<Orientation, LinearDisplacement>();
+        traits::arithmetics::check_differing_domains<Orientation, SpatialDisplacement>();
+
+        traits::arithmetics::check_differing_domains<Pose, LinearDisplacement>();
+        traits::arithmetics::check_differing_domains<Pose, AngularDisplacement>();
+
+        traits::arithmetics::check_differing_domains<Position, LinearVelocity>();
+        traits::arithmetics::check_differing_domains<Position, AngularVelocity>();
+        traits::arithmetics::check_differing_domains<Position, LinearAcceleration>();
+        traits::arithmetics::check_differing_domains<Position, AngularAcceleration>();
+
+    }
     TEST_CASE("geometric objects are copy-assignable")
     {
         Position p1 = Position::millimeters({.x = 1, .y = 2, .z = 3});
@@ -216,95 +390,6 @@ TEST_SUITE("concrete instantiation using position")
         Position const p2 = Position::millimeters({.x = 42, .y = 42, .z = 42});
 
         namespace traits = traits::arithmetics;
-        SUBCASE("math operators are defined for State vs State")
-        {
-            // State with State
-            static_assert(not traits::addition::is_possible_v<Position, Position>,
-                          "Position types should not be addable");
-            static_assert(not traits::addition::is_possible_inplace_v<Position, Position>,
-                          "Position types should not be addable inplace");
-            static_assert(traits::subtraction::is_possible_v<Position, Position>,
-                          "Position types should not be subtractable");
-            static_assert(not traits::subtraction::is_possible_inplace_v<Position, Position>,
-                          "Position types should not be subtractable inplace");
-            static_assert(not traits::multiplication::is_possible_v<Position, Position>,
-                          "Position types should not be multiplicative");
-            static_assert(not traits::multiplication::is_possible_inplace_v<Position, Position>,
-                          "Position types should not be multiplicative inplace");
-            static_assert(traits::division::is_possible_v<Position, Position>,
-                          "Position types should be dividable");
-            static_assert(not traits::division::is_possible_inplace_v<Position, Position>,
-                          "Position types should be dividable inplace");
-        }
-        SUBCASE("math operators are defined for State vs Difference")
-        {
-            // State with Difference
-            static_assert(traits::addition::is_possible_v<Position, LinearDisplacement>,
-                          "State and Difference types should be addable");
-            static_assert(traits::addition::is_possible_inplace_v<Position, LinearDisplacement>,
-                          "State and Difference types should be addable inplace");
-            static_assert(traits::subtraction::is_possible_v<Position, LinearDisplacement>,
-                          "State and Difference types should be subtractable");
-            static_assert(traits::subtraction::is_possible_inplace_v<Position, LinearDisplacement>,
-                          "State and Difference types should be subtractable inplace");
-            static_assert(not traits::multiplication::is_possible_v<Position, LinearDisplacement>,
-                          "State and Difference types should not be multiplicative");
-            static_assert(
-                not traits::multiplication::is_possible_inplace_v<Position, LinearDisplacement>,
-                "State and Difference types should not be multiplicative inplace");
-            static_assert(not traits::division::is_possible_v<Position, LinearDisplacement>,
-                          "State and Difference types should not be dividable");
-            static_assert(not traits::division::is_possible_inplace_v<Position, LinearDisplacement>,
-                          "State and Difference types should not be dividable inplace");
-        }
-        SUBCASE("math operators are defined for Difference vs State")
-        {
-            // Difference with State
-            static_assert(not traits::addition::is_possible_v<LinearDisplacement, Position>,
-                          "Difference and State types should not be addable");
-            static_assert(not traits::addition::is_possible_inplace_v<LinearDisplacement, Position>,
-                          "Difference and State types should not be addable inplace");
-            static_assert(not traits::subtraction::is_possible_v<LinearDisplacement, Position>,
-                          "Difference and State types should not be subtractable");
-            static_assert(
-                not traits::subtraction::is_possible_inplace_v<LinearDisplacement, Position>,
-                "Difference and State types should not be subtractable inplace");
-            static_assert(not traits::multiplication::is_possible_v<LinearDisplacement, Position>,
-                          "Difference and State types should not be multiplicative");
-            static_assert(
-                not traits::multiplication::is_possible_inplace_v<LinearDisplacement, Position>,
-                "Difference and State types should not be multiplicative inplace");
-            static_assert(not traits::division::is_possible_v<LinearDisplacement, Position>,
-                          "Difference and State types should not be dividable");
-            static_assert(not traits::division::is_possible_inplace_v<LinearDisplacement, Position>,
-                          "Difference and State types should not be dividable inplace");
-        }
-        SUBCASE("math operators are defined for Difference vs Difference")
-        {
-            // Difference with Difference
-            static_assert(traits::addition::is_possible_v<LinearDisplacement, LinearDisplacement>,
-                          "Difference and State types should be addable");
-            static_assert(
-                traits::addition::is_possible_inplace_v<LinearDisplacement, LinearDisplacement>,
-                "Difference and State types should be addable inplace");
-            static_assert(
-                traits::subtraction::is_possible_v<LinearDisplacement, LinearDisplacement>,
-                "Difference and State types should be subtractable");
-            static_assert(
-                traits::subtraction::is_possible_inplace_v<LinearDisplacement, LinearDisplacement>,
-                "Difference and State types should be subtractable inplace");
-            static_assert(
-                not traits::multiplication::is_possible_v<LinearDisplacement, LinearDisplacement>,
-                "Difference and State types should not be multiplicative");
-            static_assert(not traits::multiplication::is_possible_inplace_v<LinearDisplacement,
-                                                                            LinearDisplacement>,
-                          "Difference and State types should not be multiplicative inplace");
-            static_assert(traits::division::is_possible_v<LinearDisplacement, LinearDisplacement>,
-                          "Difference and State types should be dividable");
-            static_assert(
-                traits::division::is_possible_inplace_v<LinearDisplacement, LinearDisplacement>,
-                "Difference and State types should be dividable inplace");
-        }
 
         // TODO: Tests for scaling with float, double, long double, int, long, long long
         // TODO: Tests for Position + Velocity, Position + Acceleration, Position + Force, etc.
@@ -319,10 +404,10 @@ TEST_SUITE("concrete instantiation using position")
 
         auto p5 = p2 - diff;
         // const auto p6 = diff - p1; << This should not compile
-        CHECK(p5 == -p1);
+        CHECK(p5 == p1);
         p5 += diff;
         CHECK(p5 == p2);
         p5 -= diff;
-        CHECK(p5 == -p1);
+        CHECK(p5 == p1);
     }
 }

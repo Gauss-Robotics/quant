@@ -17,7 +17,7 @@ namespace quant::geometry
         using AngularStateType = traits::angular_state_in_domain_of<StateType>;
         using LinearDifferenceType = traits::linear_difference_in_domain_of<StateType>;
         using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
-        using GeometricRepresentationType = Eigen::Isometry3d const&;
+        using GeometricRepresentationType = Eigen::Isometry3d;
 
         SpatialIsometricState() : _representation(Eigen::Isometry3d::Identity())
         {

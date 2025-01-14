@@ -26,7 +26,7 @@ namespace quant::traits
 {
 
     using FramedTimeDomain =
-        Define1DDomain<framed_units::time::TimePoint, framed_units::time::Duration>;
+        Define1DDomain<framed_units::time::TimePoint, framed_units::time::Duration, R1Type>;
 
     template <>
     struct DefineFramedTraits<units::time::TimePoint> : public traits_of<units::time::TimePoint>

@@ -59,7 +59,12 @@ namespace quant::geometry
             return _representation.isApprox(rhs._representation, tolerance);
         }
 
-        using GeometricRepresentationType = Eigen::Quaterniond const&;
+        Eigen::Quaterniond operator/(StateType const& rhs) const
+        {
+            return _representation / rhs._representation;
+        }
+
+        using GeometricRepresentationType = Eigen::Quaterniond;
 
     protected:
         // Construct.
