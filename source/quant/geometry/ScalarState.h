@@ -15,13 +15,6 @@ namespace quant::geometry
     class ScalarState
     {
     public:
-        // Construct.
-
-        ScalarState() : _representation{0}
-        {
-            ;
-        }
-
         static StateType
         zero()
         {
@@ -90,6 +83,13 @@ namespace quant::geometry
         using GeometricRepresentationType = RepresentationType;
 
     protected:
+        // Construct.
+
+        ScalarState() : _representation{0}
+        {
+            ;
+        }
+
         ScalarState(Scalar scalar) : _representation{scalar}
         {
             ;

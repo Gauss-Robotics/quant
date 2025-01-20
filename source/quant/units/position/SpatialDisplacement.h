@@ -12,6 +12,13 @@ namespace quant::units::position
 
     public:
         using geometry::Difference<Pose>::Difference;
+        SpatialDisplacement(const LinearDisplacement& linear, const AngularDisplacement& angular) :
+            geometry::Difference<Pose>(Pose(
+                static_cast<Position const>(linear), static_cast<Orientation const>(
+                    angular)))
+        {
+            ;
+        }
     };
 
     inline std::ostream&

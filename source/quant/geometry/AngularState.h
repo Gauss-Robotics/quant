@@ -39,27 +39,31 @@ namespace quant::geometry
         bool
         operator==(StateType const& rhs) const
         {
+            // TODO: This holds only for the state NOT for the difference
             // TODO(dreher): Eigen >= 3.4
             // return _representation == rhs._representation;
-            return _representation.coeffs() == rhs._representation.coeffs();
+            return _representation.coeffs() == rhs._representation.coeffs() or
+                   _representation.coeffs() == -rhs._representation.coeffs();
         }
 
         bool
         operator!=(StateType const& rhs) const
         {
             // TODO(dreher): Eigen >= 3.4
-            // return _representation == rhs._representation;
-            return _representation.coeffs() != rhs._representation.coeffs();
+            return _representation.coeffs() != rhs._representation.coeffs() and
+                   _representation.coeffs() != -rhs._representation.coeffs();
         }
 
         bool
         is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
         {
-            return _representation.isApprox(rhs._representation, tolerance);
+            return _representation.coeffs().isApprox(rhs._representation.coeffs(), tolerance) or
+                   _representation.coeffs().isApprox(-rhs._representation.coeffs(), tolerance);
         }
 
-        Eigen::Quaterniond operator/(StateType const& rhs) const
+        Eigen::Quaterniond
+        operator/(StateType const& rhs) const
         {
             return _representation / rhs._representation;
         }

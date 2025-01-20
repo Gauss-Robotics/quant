@@ -62,6 +62,18 @@ namespace quant::geometry
             ss << angle << " around axis " << axis.to_string();
             return ss.str();
         }
+
+        AxisAngle&
+        operator*=(double const rhs)
+        {
+            angle *= rhs;
+            return *this;
+        }
+
+        AxisAngle operator*(double const rhs) const
+        {
+            return AxisAngle{.axis = axis, .angle = angle * rhs};
+        }
     };
 
     inline std::ostream&

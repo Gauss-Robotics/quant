@@ -24,6 +24,12 @@ find_package(doctest QUIET)
 find_package(Python QUIET COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG QUIET)
 
+option(QUANT_ALLOW_DIFFERENCE_ADDITION "Allow the addition and subtraction of difference" ON)
+if (QUANT_ALLOW_DIFFERENCE_ADDITION)
+    message(WARNING "Difference addition is enabled. This may lead to unexpected results.")
+    add_compile_definitions(QUANT_ALLOW_DIFFERENCE_ADDITION)
+endif ()
+
 # Source code.
 add_subdirectory(source)
 add_subdirectory(tests/quant)

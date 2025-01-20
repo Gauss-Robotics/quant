@@ -157,6 +157,7 @@ TEST_SUITE("time")
         CHECK(t1 == t1_target);
     }
 
+#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
     TEST_CASE("duration can be added to another duration")
     {
         Duration const d1 = Duration::microseconds(1'000);
@@ -172,6 +173,7 @@ TEST_SUITE("time")
         Duration const d3 = d1 - d2;
         CHECK(d3 == Duration::microseconds(800));
     }
+#endif
 }
 
 TEST_SUITE("position")

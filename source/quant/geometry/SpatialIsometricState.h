@@ -73,21 +73,8 @@ namespace quant::geometry
         }
 
         // Compare.
-
         bool
-        operator==(StateType const& rhs) const
-        {
-            return _representation == rhs._representation;
-        }
-
-        bool
-        operator!=(StateType const& rhs) const
-        {
-            return _representation != rhs._representation;
-        }
-
-        bool
-        is_approx(StateType const& rhs, double const tolerance) const
+        is_approx(StateType const& rhs, double const tolerance = Eigen::NumTraits<double>::dummy_precision()) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
         }

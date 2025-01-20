@@ -260,7 +260,7 @@ namespace quant::traits
                       std::same_as<typename domain_type_of<Type>::SpatialDifference, Type>);
 
     template <typename Type>
-    concept in_linear_space = in_r1<Type> or in_r3<Type>;
+    concept in_flat_space = in_r1<Type> or in_r3<Type>;
 
     template <typename Type>
     concept in_curved_space = in_so3<Type> or in_se3<Type>; // or in_s1<Type>;

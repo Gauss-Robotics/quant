@@ -4,6 +4,8 @@
 #include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry/forward_declarations.h>
 
+#include <Eigen/Core>
+
 #include <compare>
 #include <concepts>
 #include <string>
@@ -42,6 +44,17 @@ namespace quant::geometry
         }
 
         /**
+         * @brief Conversion operator to cast Difference to its StateType.
+         *
+         * @return The state representing the difference.
+         */
+        explicit
+        operator StateType() const
+        {
+            return _difference_object;
+        }
+
+        /**
          * @brief Returns a zero-initialized difference object.
          *
          * @return A zero-initialized difference object.
@@ -74,6 +87,13 @@ namespace quant::geometry
         operator!=(Difference<StateType> const& rhs) const
         {
             return _difference_object != rhs._difference_object;
+        }
+
+        bool
+        is_approx(Difference<StateType> const& rhs,
+                  double const tolerance = Eigen::NumTraits<double>::dummy_precision()) const
+        {
+            return _difference_object.is_approx(rhs._difference_object, tolerance);
         }
 
         /**
@@ -123,7 +143,7 @@ namespace quant::geometry
      * @return The difference between the two states.
      */
     template <typename StateType>
-        requires traits::state<StateType> and traits::in_linear_space<StateType>
+        requires traits::state<StateType> and traits::in_flat_space<StateType>
     traits::difference_type_of<StateType>
     operator-(StateType const& lhs, StateType const& rhs)
     {
@@ -155,7 +175,7 @@ namespace quant::geometry
         requires traits::difference<DifferenceType> and traits::state<StateType> and
                  traits::same_domain<DifferenceType, StateType> and
                  traits::same_group<StateType, DifferenceType> and
-                 traits::in_linear_space<StateType>
+                 traits::in_flat_space<StateType>
     StateType
     operator-(StateType const& lhs, DifferenceType const& rhs)
     {
@@ -166,17 +186,17 @@ namespace quant::geometry
     }
 
     template <typename StateType, typename DifferenceType>
-    requires traits::difference<DifferenceType> and traits::state<StateType> and
-             traits::same_domain<DifferenceType, StateType> and
-             traits::same_group<StateType, DifferenceType> and
-             traits::in_curved_space<StateType>
+        requires traits::difference<DifferenceType> and traits::state<StateType> and
+                 traits::same_domain<DifferenceType, StateType> and
+                 traits::same_group<StateType, DifferenceType> and
+                 traits::in_curved_space<StateType>
     StateType
     operator-(StateType const& lhs, DifferenceType const& rhs)
     {
         using State = detail::StateAccessor<StateType>;
         using Difference = detail::DifferenceAccessor<DifferenceType>;
 
-        return State::make(Difference::representation(rhs).inverse() * State::representation(lhs));
+        return State::make(State::representation(lhs) * Difference::representation(rhs).inverse());
     }
 
     /**
@@ -191,10 +211,10 @@ namespace quant::geometry
      * @return The resulting state after addition.
      */
     template <typename StateType, typename DifferenceType>
-    requires traits::difference<DifferenceType> and traits::state<StateType> and
-             traits::same_domain<DifferenceType, StateType> and
-             traits::same_group<StateType, DifferenceType> and
-             traits::in_linear_space<StateType>
+        requires traits::difference<DifferenceType> and traits::state<StateType> and
+                 traits::same_domain<DifferenceType, StateType> and
+                 traits::same_group<StateType, DifferenceType> and
+                 traits::in_flat_space<StateType>
     StateType
     operator+(StateType const& lhs, DifferenceType const& rhs)
     {
@@ -205,17 +225,18 @@ namespace quant::geometry
     }
 
     template <typename StateType, typename DifferenceType>
-    requires traits::difference<DifferenceType> and traits::state<StateType> and
-             traits::same_domain<DifferenceType, StateType> and
-             traits::same_group<StateType, DifferenceType> and
-             traits::in_curved_space<StateType>
+        requires traits::difference<DifferenceType> and traits::state<StateType> and
+                 traits::same_domain<DifferenceType, StateType> and
+                 traits::same_group<StateType, DifferenceType> and
+                 traits::in_curved_space<StateType>
     StateType
     operator+(StateType const& lhs, DifferenceType const& rhs)
     {
         using State = detail::StateAccessor<StateType>;
         using Difference = detail::DifferenceAccessor<DifferenceType>;
 
-        return State::make(Difference::representation(rhs) * State::representation(lhs));
+        // Manifold Right Plus
+        return State::make(State::representation(lhs) * Difference::representation(rhs));
     }
 
     /**
@@ -230,10 +251,10 @@ namespace quant::geometry
      * @return A reference to the modified state.
      */
     template <typename DifferenceType, typename StateType>
-    requires traits::difference<DifferenceType> and traits::state<StateType> and
-             traits::same_domain<DifferenceType, StateType> and
-             traits::same_group<StateType, DifferenceType> and
-             traits::in_linear_space<StateType>
+        requires traits::difference<DifferenceType> and traits::state<StateType> and
+                 traits::same_domain<DifferenceType, StateType> and
+                 traits::same_group<StateType, DifferenceType> and
+                 traits::in_flat_space<StateType>
     StateType&
     operator+=(StateType& lhs, DifferenceType const& rhs)
     {
@@ -245,18 +266,17 @@ namespace quant::geometry
     }
 
     template <typename DifferenceType, typename StateType>
-    requires traits::difference<DifferenceType> and traits::state<StateType> and
-             traits::same_domain<DifferenceType, StateType> and
-             traits::same_group<StateType, DifferenceType> and
-             traits::in_curved_space<StateType>
+        requires traits::difference<DifferenceType> and traits::state<StateType> and
+                 traits::same_domain<DifferenceType, StateType> and
+                 traits::same_group<StateType, DifferenceType> and
+                 traits::in_curved_space<StateType>
     StateType&
     operator+=(StateType& lhs, DifferenceType const& rhs)
     {
         using State = detail::StateAccessor<StateType>;
         using Difference = detail::DifferenceAccessor<DifferenceType>;
         // TODO: test if this is correct
-        State::representation(lhs) =
-            Difference::representation(rhs).inverse() * State::representation(lhs);
+        State::representation(lhs) = State::representation(lhs) * Difference::representation(rhs);
 
         return lhs;
     }
@@ -273,10 +293,10 @@ namespace quant::geometry
      * @return A reference to the modified state.
      */
     template <typename DifferenceType, typename StateType>
-    requires traits::difference<DifferenceType> and traits::state<StateType> and
-             traits::same_domain<DifferenceType, StateType> and
-             traits::same_group<StateType, DifferenceType> and
-             traits::in_linear_space<StateType>
+        requires traits::difference<DifferenceType> and traits::state<StateType> and
+                 traits::same_domain<DifferenceType, StateType> and
+                 traits::same_group<StateType, DifferenceType> and
+                 traits::in_flat_space<StateType>
     StateType&
     operator-=(StateType& lhs, DifferenceType const& rhs)
     {
@@ -288,20 +308,22 @@ namespace quant::geometry
     }
 
     template <typename DifferenceType, typename StateType>
-    requires traits::difference<DifferenceType> and traits::state<StateType> and
-             traits::same_domain<DifferenceType, StateType> and
-             traits::same_group<StateType, DifferenceType> and
-             traits::in_curved_space<StateType>
+        requires traits::difference<DifferenceType> and traits::state<StateType> and
+                 traits::same_domain<DifferenceType, StateType> and
+                 traits::same_group<StateType, DifferenceType> and
+                 traits::in_curved_space<StateType>
     StateType&
     operator-=(StateType& lhs, DifferenceType const& rhs)
     {
         using State = detail::StateAccessor<StateType>;
         using Difference = detail::DifferenceAccessor<DifferenceType>;
-        State::representation(lhs) = Difference::representation(rhs) * State::representation(lhs);
+        State::representation(lhs) =
+            State::representation(lhs) * Difference::representation(rhs).inverse();
 
         return lhs;
     }
 
+#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
     /**
      * @brief Adds two differences.
      *
@@ -312,7 +334,7 @@ namespace quant::geometry
      * @return The sum of the two differences.
      */
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_linear_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::in_flat_space<DifferenceType>
     DifferenceType
     operator+(DifferenceType const& lhs, DifferenceType const rhs)
     {
@@ -329,8 +351,10 @@ namespace quant::geometry
         using Difference = detail::DifferenceAccessor<DifferenceType>;
 
         // TODO: Test this
-        return Difference::make(Difference::representation(rhs) * Difference::representation(lhs));
+        // TODO: Check if this makes sense on a manifold
+        return Difference::make(Difference::representation(lhs) * Difference::representation(rhs));
     }
+
     /**
      * @brief Inplace addition of two differences.
      *
@@ -342,7 +366,7 @@ namespace quant::geometry
      * @return A reference to the modified left-hand-side difference.
      */
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_linear_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::in_flat_space<DifferenceType>
     DifferenceType&
     operator+=(DifferenceType& lhs, DifferenceType const& rhs)
     {
@@ -360,7 +384,7 @@ namespace quant::geometry
         using Difference = detail::DifferenceAccessor<DifferenceType>;
 
         Difference::representation(lhs) =
-            Difference::representation(rhs) * Difference::representation(lhs);
+            Difference::representation(lhs) * Difference::representation(rhs);
         return lhs;
     }
 
@@ -372,7 +396,7 @@ namespace quant::geometry
      * @return Difference resulting from subtracting rhs from lhs.
      */
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_linear_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::in_flat_space<DifferenceType>
     DifferenceType
     operator-(DifferenceType const& lhs, DifferenceType const rhs)
     {
@@ -388,8 +412,8 @@ namespace quant::geometry
     {
         using Difference = detail::DifferenceAccessor<DifferenceType>;
 
-        return Difference::make(Difference::representation(rhs).inverse() *
-                                Difference::representation(lhs));
+        return Difference::make(Difference::representation(lhs) *
+                                Difference::representation(rhs).inverse());
     }
 
     /**
@@ -404,7 +428,7 @@ namespace quant::geometry
      * @return A reference to the modified left-hand-side difference.
      */
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_linear_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::in_flat_space<DifferenceType>
     DifferenceType&
     operator-=(DifferenceType& lhs, DifferenceType const& rhs)
     {
@@ -421,10 +445,11 @@ namespace quant::geometry
     {
         using ScalarDifference = detail::DifferenceAccessor<DifferenceType>;
 
-        ScalarDifference::representation(lhs) = ScalarDifference::representation(rhs).inverse() *
-                                                ScalarDifference::representation(lhs);
+        ScalarDifference::representation(lhs) =
+            ScalarDifference::representation(lhs) * ScalarDifference::representation(rhs).inverse();
         return lhs;
     }
+#endif
 
     /**
      * @brief Negates a scalar difference.
@@ -436,7 +461,7 @@ namespace quant::geometry
      * @return The negated scalar difference.
      */
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_linear_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::in_flat_space<DifferenceType>
     DifferenceType
     operator-(DifferenceType const& object)
     {
