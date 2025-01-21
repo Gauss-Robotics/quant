@@ -19,6 +19,24 @@ namespace quant::units::position
             return AngularDisplacement{Orientation::radians(aa)};
         }
 
+        static AngularDisplacement
+        degrees(geometry::AxisAngle const& aa)
+        {
+            return AngularDisplacement{Orientation::degrees(aa)};
+        }
+
+        static AngularDisplacement
+        radians(Eigen::Quaterniond const& q)
+        {
+            return AngularDisplacement{Orientation::radians(q)};
+        }
+
+        static AngularDisplacement
+        degrees(Eigen::Quaterniond const& q)
+        {
+            return AngularDisplacement{Orientation::degrees(q)};
+        }
+
         using geometry::Difference<Orientation>::Difference;
     };
 

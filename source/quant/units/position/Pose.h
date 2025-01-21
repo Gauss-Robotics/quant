@@ -8,8 +8,8 @@ namespace quant::units::position
 
     class Pose : public geometry::SpatialIsometricState<Pose>
     {
-        // Construct.
     public:
+        // Construct.
         using geometry::SpatialIsometricState<Pose>::SpatialIsometricState;
     };
 

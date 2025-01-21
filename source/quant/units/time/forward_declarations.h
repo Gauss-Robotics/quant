@@ -14,7 +14,8 @@ namespace quant::units::time
 namespace quant::traits
 {
 
-    using TimeDomain = Define1DDomain<units::time::TimePoint, units::time::Duration>;
+    using TimeDomain =
+        Define1DDomain<units::time::TimePoint, units::time::Duration, R1Type>;
 
     template <>
     struct DefineTraits<units::time::TimePoint>

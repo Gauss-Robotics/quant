@@ -40,27 +40,27 @@ namespace quant::geometry
         }
 
         friend StateType
-        operator+(LinearDifferenceType const& op, StateType const& rhs)
+        operator+(StateType const& lhs, LinearDifferenceType const& op)
         {
-            return StateType(op + rhs._linear, rhs._angular);
+            return StateType(lhs._linear + op, lhs._angular);
         }
 
         friend StateType
-        operator-(LinearStateType const& op, StateType const& rhs)
+        operator-(StateType const& lhs, LinearStateType const& op)
         {
-            return StateType(rhs._linear - op, rhs._angular);
+            return StateType(lhs._linear - op, lhs._angular);
         }
 
         friend StateType
-        operator*(AngularDifferenceType const& op, StateType const& rhs)
+        operator+(StateType const& lhs, AngularDifferenceType const& op)
         {
-            return StateType(rhs._linear, op * rhs._angular);
+            return StateType(lhs._linear, lhs._angular + op);
         }
 
         friend StateType
-        operator-(AngularStateType const& op, StateType const& rhs)
+        operator-(StateType const& lhs, AngularStateType const& op)
         {
-            return StateType(rhs._linear, rhs._angular - op);
+            return StateType(lhs._linear, lhs._angular - op);
         }
 
     protected:

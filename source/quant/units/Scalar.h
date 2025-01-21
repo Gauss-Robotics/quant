@@ -26,6 +26,18 @@ namespace quant::units
             ;
         }
 
+        Scalar
+        operator*(double rhs) const
+        {
+            return {value * rhs, quantity_name, unit_symbol};
+        }
+
+        Scalar
+        operator/(double rhs) const
+        {
+            return {value / rhs, quantity_name, unit_symbol};
+        }
+
         std::string
         to_string() const
         {
