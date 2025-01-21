@@ -20,7 +20,7 @@ namespace quant::framed_geometry
     /**
      * @brief Uniquely identifies a frame.
      */
-    struct FrameData
+    struct FrameIdentifier
     {
         std::string_view name = "";
         std::string_view base_frame = "";
@@ -50,7 +50,7 @@ namespace quant::framed_geometry
          * @param object_to_frame Geometric object to frame.
          * @param frame_data Frame header.
          */
-        Framed(QuantityT const& object_to_frame, FrameData const& frame_data) :
+        Framed(QuantityT const& object_to_frame, FrameIdentifier const& frame_data) :
             _framed_object{object_to_frame}
         {
             // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
@@ -306,7 +306,7 @@ namespace quant::framed_geometry
     {
         return FramedDifferenceType{
             -object.get_framed_object(),
-            FrameData{.name = object.get_name(), .base_frame = object.get_base_frame()}};
+            FrameIdentifier{.name = object.get_name(), .base_frame = object.get_base_frame()}};
     }
 
 }  // namespace quant::framed_geometry

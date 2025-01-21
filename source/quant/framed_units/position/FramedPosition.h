@@ -27,7 +27,7 @@ namespace quant::framed_units::position
     {
 
     public:
-        Position(units::position::Position const& p, FrameData const& frame) :
+        Position(units::position::Position const& p, FrameIdentifier const& frame) :
             Framed<units::position::Position>(p, frame)
         {
             ;

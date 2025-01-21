@@ -1,7 +1,7 @@
 #pragma once
 
 #include <quant/geometry/AngularState.h>
-#include <quant/geometry/SpatialIsometricState.h>
+#include <quant/geometry/SpatialState.h>
 #include <quant/units/acceleration/forward_declarations.h>
 
 #include <Eigen/Geometry>
@@ -11,16 +11,11 @@
 namespace quant::units::acceleration
 {
 
-    class SpatialAcceleration : public geometry::SpatialIsometricState<SpatialAcceleration>
+    class SpatialAcceleration : public geometry::SpatialState<SpatialAcceleration>
     {
     public:
-        SpatialAcceleration(LinearAcceleration const& linear, AngularAcceleration const& angular) :
-            SpatialIsometricState(linear, angular)
-        {
-            ;
-        }
 
-        using geometry::SpatialIsometricState<SpatialAcceleration>::SpatialIsometricState;
+        using geometry::SpatialState<SpatialAcceleration>::SpatialState;
     };
 
     inline std::ostream&

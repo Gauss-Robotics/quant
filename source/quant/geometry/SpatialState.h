@@ -14,6 +14,7 @@ namespace quant::geometry
         using AngularStateType = traits::angular_state_in_domain_of<StateType>;
         using LinearDifferenceType = traits::linear_difference_in_domain_of<StateType>;
         using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
+        using GeometricRepresentationType = Eigen::Affine3d;
 
         SpatialState(LinearStateType linear, AngularStateType angular) :
             _linear{linear}, _angular{angular}
@@ -63,7 +64,13 @@ namespace quant::geometry
             return StateType(lhs._linear, lhs._angular - op);
         }
 
+        std::string to_string() const
+        {
+            return "[" + _linear.to_string() + ", " + _angular.to_string() + "]";
+        }
+
     protected:
+        // GeometricRepresentationType _representation; TODO: do we need this?
         LinearStateType _linear;
         AngularStateType _angular;
     };

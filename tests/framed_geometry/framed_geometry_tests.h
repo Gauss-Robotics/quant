@@ -15,7 +15,8 @@ namespace quant
 {
     struct Test;
     struct TestDiff;
-    using TestDomain = traits::Define3DDomain<Test, TestDiff, Test, TestDiff, Test, TestDiff>;
+    struct DummyStateAndDiff;
+    using TestDomain = traits::Define3DDomain<Test, TestDiff, DummyStateAndDiff, DummyStateAndDiff, DummyStateAndDiff, DummyStateAndDiff>;
     template <>
     struct traits::DefineTraits<Test>
     {
@@ -34,12 +35,12 @@ namespace quant
 
     struct Test : geometry::LinearState<Test>
     {
+        using LinearState<Test>::LinearState;
     };
 
     struct TestDiff : geometry::Difference<Test>
     {
-        TestDiff() = default;
-        TestDiff(Test t){};
+        using geometry::Difference<Test>::Difference;
     };
 
     namespace framed_geometry

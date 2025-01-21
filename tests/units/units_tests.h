@@ -152,11 +152,12 @@ TEST_SUITE("time")
 
     TEST_CASE("durations can be used to shift time points")
     {
-        TimePoint const t1 = Duration::milliseconds(100) + TimePoint::seconds(1);
+        TimePoint const t1 = TimePoint::seconds(1) + Duration::milliseconds(100);
         TimePoint const t1_target = TimePoint::milliseconds(1'100);
         CHECK(t1 == t1_target);
     }
 
+#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
     TEST_CASE("duration can be added to another duration")
     {
         Duration const d1 = Duration::microseconds(1'000);
@@ -172,6 +173,7 @@ TEST_SUITE("time")
         Duration const d3 = d1 - d2;
         CHECK(d3 == Duration::microseconds(800));
     }
+#endif
 }
 
 TEST_SUITE("position")
@@ -217,14 +219,14 @@ TEST_SUITE("position")
         Position const x = Position::millimeters({.x = 100, .y = 200, .z = 300});
         LinearDisplacement const disturbance =
             LinearDisplacement::millimeters({.x = 1e-14, .z = 1e-15});
-        Position const x_disturbed = disturbance + x;
+        Position const x_disturbed = x + disturbance;
 
         CHECK(x_disturbed != x);
         CHECK(x_disturbed == Circa(x));
         CHECK(x_disturbed.is_approx(x));
     }
 
-    TEST_CASE("positions can be accessed for individiual components and unit symbols")
+    TEST_CASE("positions can be accessed for individual components and unit symbols")
     {
         Position const x = Position::millimeters({.x = 100, .y = 200, .z = 300});
         CHECK(x.to_millimeters().x == 100);
@@ -237,24 +239,10 @@ TEST_SUITE("position")
     {
         AngularDisplacement const rot = AngularDisplacement::radians(AxisAngle::around_y(M_PI));
         Position const pos1 = Position::millimeters({.y = 100, .z = 200});
-        Position const rot_pos = rot * pos1;
-        CHECK(rot_pos.to_millimeters().x == Circa(0));
-        CHECK(rot_pos.to_millimeters().y == Circa(100));
-        CHECK(rot_pos.to_millimeters().z == Circa(-200));
 
         LinearDisplacement const trans = LinearDisplacement::millimeters({.x = 5, .z = 100});
-        Position const trans_pos = trans + pos1;
+        Position const trans_pos = pos1 + trans;
         CHECK(trans_pos == Position::millimeters({.x = 5, .y = 100, .z = 300}));
-
-        LinearDisplacement const rot_trans = rot * trans;
-        CHECK(rot_trans.to_millimeters().x == Circa(-5));
-        CHECK(rot_trans.to_millimeters().y == Circa(0));
-        CHECK(rot_trans.to_millimeters().z == Circa(-100));
-
-        Position const rot_trans_pos = rot_trans + pos1;
-        CHECK(rot_trans_pos.to_millimeters().x == Circa(-5));
-        CHECK(rot_trans_pos.to_millimeters().y == Circa(100));
-        CHECK(rot_trans_pos.to_millimeters().z == Circa(100));
     }
 }
 
@@ -310,11 +298,11 @@ TEST_SUITE("velocity")
     {
         Twist const t1 = Twist::zero();
         LinearVelocity const vel1 = LinearVelocity::millimeters_per_second({.y = 100});
-        Twist const t2 = LinearVelocityDifference(vel1) + t1;
+        Twist const t2 = t1 + LinearVelocityDifference(vel1);
         CHECK(t2.linear() == vel1);
 
         AngularVelocity const vel2 = AngularVelocity::radians_per_second({.angle = M_PI});
-        Twist const t3 = AngularVelocityDifference(vel2) * t1;
+        Twist const t3 = t1 + AngularVelocityDifference(vel2);
         CHECK(t3.angular() == Circa(vel2));
     }
 
@@ -493,12 +481,12 @@ TEST_SUITE("force")
         Force const f = Force::newton(Vector({.y = 100}));
         ForceDifference const df{f};
         Wrench const w1 = Wrench::zero();
-        Wrench const w2 = df + w1;
+        Wrench const w2 = w1 + df;
         CHECK(w2.linear() == f);
 
         Torque const t = Torque::newton_meters(AxisAngle::around_y(1));
         TorqueDifference const dt(t);
-        Wrench const w3 = dt * w1;
+        Wrench const w3 = w1 + dt;
 
         CHECK(w3.angular() == Circa(t));
     }

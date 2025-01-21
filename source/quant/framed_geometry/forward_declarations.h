@@ -14,7 +14,7 @@ namespace quant::framed_geometry
      */
     constexpr std::uint32_t frame_data_max_string_size = 128;
 
-    struct FrameData;
+    struct FrameIdentifier;
 
     struct Difference;
 
@@ -83,7 +83,7 @@ namespace quant
 {
 
     using framed_geometry::Framed;
-    using framed_geometry::FrameData;
+    using framed_geometry::FrameIdentifier;
 
 }  // namespace quant
 
