@@ -82,11 +82,15 @@ namespace quant::traits
     {
     };
 
-    struct OneDimensionalDomainType
+    struct DomainType
     {
     };
 
-    struct ThreeDimensionalDomainType
+    struct OneDimensionalDomainType : DomainType
+    {
+    };
+
+    struct ThreeDimensionalDomainType : DomainType
     {
     };
 
@@ -98,7 +102,7 @@ namespace quant::traits
     {
     };
 
-    struct S1Type: ManifoldType
+    struct S1Type : ManifoldType
     {
     };
 
@@ -110,7 +114,7 @@ namespace quant::traits
     {
     };
 
-    struct SE3Type: ManifoldType
+    struct SE3Type : ManifoldType
     {
     };
 
@@ -158,6 +162,21 @@ namespace quant::traits
     };
 
     template <typename Type>
+    concept state_structure = requires {
+        typename DefineTraits<Type>::Domain;
+        typename DefineTraits<Type>::Difference;
+        typename DefineTraits<Type>::GeometricType;
+    } and std::derived_from<typename DefineTraits<Type>::GeometricType, StateType>;
+
+    template <typename Type>
+    concept difference_structure = requires {
+        typename DefineTraits<Type>::Domain;
+        typename DefineTraits<Type>::State;
+        typename DefineTraits<Type>::GeometricType;
+    } and std::derived_from<typename DefineTraits<Type>::GeometricType, DifferenceType>;
+
+    template <typename Type>
+        requires state_structure<Type> or difference_structure<Type>
     using traits_of = DefineTraits<Type>;
 
     template <typename Type>
@@ -263,7 +282,7 @@ namespace quant::traits
     concept in_flat_space = in_r1<Type> or in_r3<Type>;
 
     template <typename Type>
-    concept in_curved_space = in_so3<Type> or in_se3<Type>; // or in_s1<Type>;
+    concept in_curved_space = in_so3<Type> or in_se3<Type>;  // or in_s1<Type>;
 
 }  // namespace quant::traits
 

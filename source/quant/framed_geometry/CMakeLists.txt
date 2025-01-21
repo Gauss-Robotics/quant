@@ -3,7 +3,7 @@ add_library(framed_geometry SHARED
         forward_declarations.h
 
         Framed.h
-        Difference.h
+        BaseChange.h
 )
 
 set_target_properties(framed_geometry

@@ -21,6 +21,13 @@ find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
 find_package(doctest QUIET)
 
+# Compile Options
+option(QUANT_ALLOW_DIFFERENCE_ADDITION "Allow addition and subtraction of difference types" ON)
+if (QUANT_ALLOW_DIFFERENCE_ADDITION)
+    message(WARNING "Difference addition is enabled. This may lead to unexpected results.")
+    add_compile_definitions(QUANT_ALLOW_DIFFERENCE_ADDITION)
+endif()
+
 # Source code.
 add_subdirectory(source)
 add_subdirectory(tests)

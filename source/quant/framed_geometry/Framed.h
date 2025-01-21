@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/framed_geometry/Difference.h>
+#include <quant/framed_geometry/BaseChange.h>
 #include <quant/framed_geometry/forward_declarations.h>
 #include <quant/geometry/Difference.h>
 #include <quant/geometry/forward_declarations.h>
@@ -54,23 +54,12 @@ namespace quant::framed_geometry
             _framed_object{object_to_frame}
         {
             // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
-            std::snprintf(_name_data.data(), _name_data.size(), "%s", frame_data.name.data());
-            std::snprintf(_base_frame_data.data(),
-                          _base_frame_data.size(),
+            std::snprintf(_frame_name.data(), _frame_name.size(), "%s", frame_data.name.data());
+            std::snprintf(_base_frame_name.data(),
+                          _base_frame_name.size(),
                           "%s",
                           frame_data.base_frame.data());
             // NOLINTEND(cppcoreguidelines-pro-type-vararg)
-        }
-
-        template <typename OtherQuantityT>
-        Framed
-        in_frame_of(Framed<OtherQuantityT> const& other, Difference const& difference) const
-        {
-            // TODO: Custom exception etc.
-            assert(get_base_frame() == other.get_base_frame());
-            return Framed{
-                FrameConversion<QuantityT>::convert(_framed_object, difference.transformation),
-                {.name = get_name(), .base_frame = other.get_name()}};
         }
 
         /**
@@ -114,13 +103,13 @@ namespace quant::framed_geometry
         std::string_view
         get_name() const
         {
-            return _name_data.data();
+            return _frame_name.data();
         }
 
         std::string_view
         get_base_frame() const
         {
-            return _base_frame_data.data();
+            return _base_frame_name.data();
         }
 
         QuantityT const&
@@ -163,18 +152,28 @@ namespace quant::framed_geometry
         /**
          * @brief Name of the held geometric object.
          */
-        std::array<char, frame_data_max_string_size> _name_data;
+        const_size_string _frame_name;
 
         /**
          * @brief Name of the base frame of the held geometric object.
          */
-        std::array<char, frame_data_max_string_size> _base_frame_data;
+        const_size_string _base_frame_name;
 
         /**
          * @brief Framed geometric object.
          */
         QuantityT _framed_object;
     };
+
+    template <typename FramedT>
+        requires traits::framed<FramedT>
+    FramedT
+    operator*(BaseChange const& transform, FramedT const& quantity)
+    {
+        assert(transform.from_frame.data() == quantity.get_base_frame());
+        return FramedT{transform * quantity.get_framed_object(),
+                       {.name = quantity.get_name(), .base_frame = transform.to_frame.data()}};
+    }
 
     template <typename StateType>
         requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>

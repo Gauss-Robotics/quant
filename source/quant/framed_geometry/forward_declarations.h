@@ -5,23 +5,12 @@
 
 #include <concepts>
 #include <cstdint>
+#include <functional>
 
 namespace quant::framed_geometry
 {
-
-    /**
-     * @brief Maximum number of characters or byte used for a frame identifier (name or base_frame).
-     */
-    constexpr std::uint32_t frame_data_max_string_size = 128;
-
-    struct FrameIdentifier;
-
-    struct Difference;
-
-    template <typename QuantityT>
-    struct FrameConversion;
-
-}  // namespace quant::framed_geometry
+    struct BaseChange;
+}
 
 namespace quant::traits
 {
@@ -32,18 +21,22 @@ namespace quant::traits
     };
 
     template <typename Type>
-    using framed_traits_of = DefineFramedTraits<Type>;
-
-    template <typename QuantityT>
-    concept has_frame_conversion =
-        requires(QuantityT& pose, units::position::SpatialDisplacement const& transform) {
-            {
-                framed_geometry::FrameConversion<QuantityT>::convert(pose, transform)
-            } -> std::same_as<QuantityT&>;
-        };
+    concept framed_state_structure = requires {
+            typename DefineFramedTraits<Type>::FramedDomain;
+            typename DefineFramedTraits<Type>::Framed;
+            typename DefineFramedTraits<Type>::FramedDifference;
+    };
+    // TODO: should there be two different trait structures?
+    template <typename Type>
+    concept framed_difference_structure = requires {
+        typename DefineFramedTraits<Type>::FramedDomain;
+        typename DefineFramedTraits<Type>::Framed;
+        typename DefineFramedTraits<Type>::FramedState;
+    };
 
     template <typename Type>
-    concept is_frameable = has_frame_conversion<Type> && three_dimensional_domain<Type>;
+        requires framed_state_structure<Type> or framed_difference_structure<Type>
+    using framed_traits_of = DefineFramedTraits<Type>;
 
     /**
      * @brief Concept of a framed type.
@@ -70,10 +63,34 @@ namespace quant::traits
     concept same_framed_domain =
         std::same_as<framed_domain_type_of<Type1>, framed_domain_type_of<Type2>>;
 
+    template <typename Type>
+    using framed_type_of = typename framed_traits_of<Type>::Framed;
+
+    template <typename QuantityT>
+    concept has_frame_conversion =
+        requires(framed_geometry::BaseChange const& transform, const QuantityT& quantity) {
+        {
+            transform * quantity
+        } -> std::same_as<QuantityT>;
+        };
+
+    template <typename Type>
+    concept is_frameable = three_dimensional_domain<Type>;
+
 }  // namespace quant::traits
 
 namespace quant::framed_geometry
 {
+
+    /**
+     * @brief Maximum number of characters or byte used for a frame identifier (name or base_frame).
+     */
+    constexpr std::uint32_t frame_data_max_string_size = 128;
+
+    using const_size_string = std::array<char, frame_data_max_string_size>;
+
+    struct FrameIdentifier;
+
     template <typename T>
         requires traits::is_frameable<T>
     class Framed;
@@ -86,26 +103,3 @@ namespace quant
     using framed_geometry::FrameIdentifier;
 
 }  // namespace quant
-
-namespace quant::traits
-{
-    namespace detail
-    {
-
-        template <typename Type, typename = void>
-        struct evaluate_framed_type
-        {
-            using FramedType = framed_geometry::Framed<Type>;
-        };
-
-        template <typename Type>
-        struct evaluate_framed_type<Type, std::void_t<typename framed_traits_of<Type>::Framed>>
-        {
-            using FramedType = typename framed_traits_of<Type>::Framed;
-        };
-
-    }  // namespace detail
-
-    template <typename Type>
-    using framed_type_of = typename detail::evaluate_framed_type<Type>::FramedType;
-}  // namespace quant::traits

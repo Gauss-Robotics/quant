@@ -21,6 +21,16 @@ namespace quant::units::position
         {
             ;
         }
+
+        LinearDisplacement linear() const
+        {
+            return LinearDisplacement(_difference_object.linear());
+        }
+
+        AngularDisplacement angular() const
+        {
+            return AngularDisplacement(_difference_object.angular());
+        }
     };
 
     inline std::ostream&

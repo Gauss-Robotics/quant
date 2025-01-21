@@ -22,6 +22,7 @@ add_library(framed_units SHARED
     position.h
     position/forward_declarations.h
     position/FramedPosition.h
+    position/FramedPosition.cpp
     position/FramedOrientation.h
     position/FramedPose.h
     position/FramedLinearDisplacement.h

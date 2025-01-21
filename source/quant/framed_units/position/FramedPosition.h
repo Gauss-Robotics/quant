@@ -5,20 +5,6 @@
 #include <quant/units/position/Position.h>
 #include <quant/units/position/SpatialDisplacement.h>
 
-namespace quant::framed_geometry
-{
-    template <>
-    struct FrameConversion<units::position::Position>
-    {
-        static units::position::Position&
-        convert(units::position::Position& pose,
-                units::position::SpatialDisplacement const& /*transform*/)
-        {
-            // TODO: implement
-            return pose;
-        }
-    };
-}  // namespace quant::framed_geometry
 
 namespace quant::framed_units::position
 {
@@ -27,11 +13,22 @@ namespace quant::framed_units::position
     {
 
     public:
-        Position(units::position::Position const& p, FrameIdentifier const& frame) :
-            Framed<units::position::Position>(p, frame)
-        {
-            ;
-        }
+        using Framed<units::position::Position>::Framed;
     };
 
+
 }  // namespace quant::framed_units::position
+
+namespace quant::framed_geometry
+{
+    inline units::position::Position
+    operator*(framed_geometry::BaseChange const& transform, units::position::Position const& rhs)
+    {
+        return geometry::detail::StateAccessor<units::position::Position>::make(
+            geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>::representation(
+                transform.transformation.angular()) *
+                geometry::detail::StateAccessor<units::position::Position>::representation(rhs) +
+            geometry::detail::DifferenceAccessor<units::position::LinearDisplacement>::representation(
+                transform.transformation.linear()));
+    }
+}
