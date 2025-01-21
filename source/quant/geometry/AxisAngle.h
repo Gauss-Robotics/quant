@@ -44,6 +44,12 @@ namespace quant::geometry
         }
 
         static AxisAngle
+        from_eigen(Eigen::Quaterniond const& eigen)
+        {
+            return AxisAngle::from_eigen(Eigen::AngleAxisd(eigen));
+        }
+
+        static AxisAngle
         from_eigen(Eigen::Ref<Eigen::Matrix3d> eigen)
         {
             return from_eigen(Eigen::AngleAxisd(eigen));
@@ -70,9 +76,20 @@ namespace quant::geometry
             return *this;
         }
 
-        AxisAngle operator*(double const rhs) const
+        template <typename NumericType>
+            requires std::is_arithmetic_v<NumericType>
+        AxisAngle
+        operator*(NumericType const rhs) const
         {
             return AxisAngle{.axis = axis, .angle = angle * rhs};
+        }
+
+        template <typename NumericType>
+            requires std::is_arithmetic_v<NumericType>
+        AxisAngle
+        operator/(NumericType const rhs) const
+        {
+            return AxisAngle{.axis = axis, .angle = angle / rhs};
         }
     };
 

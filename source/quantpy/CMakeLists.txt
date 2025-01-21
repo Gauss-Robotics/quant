@@ -7,8 +7,7 @@ pybind11_add_module(quantpy
 #        geometry/angle_axis.cpp
 
 
-        geometry/scalar_state.h
-        geometry/linear_state.h
+        geometry/state.h
         geometry/difference.h
 
         units/scalar.h

@@ -14,16 +14,27 @@ namespace quantpy::geometry
     {
         using DifferenceT = quant::geometry::Difference<quant::traits::state_type_of<DerivedT>>;
 
-        return py::class_<DerivedT>(m, name.c_str())
+        auto py_class = py::class_<DerivedT>(m, name.c_str())
             .def("__repr__", &DifferenceT::to_string)
             .def("__str__", &DifferenceT::to_string)
             .def_static("zero", &DifferenceT::zero)
             .def(py::self == py::self)
             .def(py::self != py::self)
-            .def(py::self + py::self)
-            .def(py::self / int())
-            .def(py::self * int())
-
             .def(-py::self);
+#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
+            py_class.def(py::self + py::self)
+            .def(py::self += py::self)
+            .def(py::self - py::self)
+            .def(py::self -= py::self);
+#endif
+        if constexpr (not quant::traits::spatial_difference<DerivedT>)
+        {
+            // TODO: This is not super nice, but scaling with a scalar for spatial differences
+            //  doesn't make sense
+            py_class.def(py::self / int())
+            .def(py::self * int())
+            .def(py::self / double())
+            .def(py::self * double());
+        }
     }
 }  // namespace quantpy::geometry

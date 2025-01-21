@@ -85,6 +85,32 @@ namespace quant::geometry
             return linear().to_string() + ", " + angular().to_string();
         }
 
+        bool
+        operator==(StateType const& rhs) const
+        {
+            return _representation.linear() == rhs._representation.linear() and
+                   _representation.translation() == rhs._representation.translation();
+        }
+
+        bool
+        operator!=(StateType const& rhs) const
+        {
+
+            return _representation.linear() != rhs._representation.linear() or
+                   _representation.translation() != rhs._representation.translation();
+        }
+
+        /**
+         * @brief Unary minus operator.
+         *
+         * @return The negated state.
+         */
+        StateType
+        operator-() const
+        {
+            return StateType{_representation.inverse()};
+        }
+
     protected:
         SpatialIsometricState(Eigen::Isometry3d const& tf) : _representation(tf)
         {

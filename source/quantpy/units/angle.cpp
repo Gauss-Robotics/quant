@@ -6,8 +6,8 @@
 
 #include <format>
 
-#include "../geometry/difference.h"
-#include "../geometry/scalar_state.h"
+#include <quantpy/geometry/difference.h>
+#include <quantpy/geometry/state.h>
 #include <pybind11/operators.h>
 
 namespace py = pybind11;
@@ -29,7 +29,7 @@ namespace quantpy::units::angle
     void
     angle(py::module& m)
     {
-        quantpy::geometry::registerScalarState<units::Angle>(m, "Angle")
+        quantpy::geometry::registerState<units::Angle>(m, "Angle")
             .def_static("radians", [](double d) { return units::Angle::radians(d); })
             .def_static("degrees", [](double d) { return units::Angle::degrees(d); })
             .def("to_radians", &units::Angle::to_radians)

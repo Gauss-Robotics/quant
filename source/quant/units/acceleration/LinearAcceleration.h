@@ -55,6 +55,11 @@ namespace quant::units::acceleration
                     constants::symbols::meters_per_second_squared};
         }
 
+        std::string to_string() const
+        {
+            return to_millimeters_per_second_squared().to_string();
+        }
+
         using geometry::LinearState<LinearAcceleration>::LinearState;
     };
 

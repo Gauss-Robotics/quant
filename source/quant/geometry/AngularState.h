@@ -54,6 +54,17 @@ namespace quant::geometry
                    _representation.coeffs() != -rhs._representation.coeffs();
         }
 
+        /**
+         * @brief Unary minus operator.
+         *
+         * @return The negated state.
+         */
+        StateType
+        operator-() const
+        {
+            return StateType{_representation.conjugate()};
+        }
+
         bool
         is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
