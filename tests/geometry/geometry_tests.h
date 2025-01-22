@@ -9,6 +9,8 @@
 
 #include <type_traits>
 
+#include "quant/geometry/Circa.h"
+
 namespace quant::traits::arithmetics
 {
     namespace addition
@@ -442,17 +444,17 @@ TEST_SUITE("subtraction state from state")
             Orientation o2 = Orientation::degrees(b);
             AngularDisplacement const dori = o2 - o1;
             AngularDisplacement const target_dori = AngularDisplacement::degrees(difference);
-            CHECK_MESSAGE(dori.is_approx(target_dori),
+            CHECK_MESSAGE(dori == Circa(target_dori),
                           o1.to_string(),
                           o2.to_string(),
                           dori.to_string(),
                           target_dori.to_string());
-            CHECK_MESSAGE((o1 + dori).is_approx(o2),
+            CHECK_MESSAGE((o1 + dori) == Circa(o2),
                           o1.to_string(),
                           o2.to_string(),
                           (o1 + dori).to_string(),
                           dori.to_string());
-            CHECK_MESSAGE((o2 - dori).is_approx(o1),
+            CHECK_MESSAGE((o2 - dori) == Circa(o1),
                           o1.to_string(),
                           o2.to_string(),
                           (o2 - dori).to_string(),
@@ -465,17 +467,17 @@ TEST_SUITE("subtraction state from state")
             Orientation o1 = Orientation::degrees(a);
             Orientation o2 = Orientation::degrees(b);
             AngularDisplacement const dori = o2 - o1;
-            CHECK_MESSAGE(dori.is_approx(AngularDisplacement::degrees(difference)),
+            CHECK_MESSAGE(dori == Circa(AngularDisplacement::degrees(difference)),
                           o1.to_string(),
                           o2.to_string(),
                           dori.to_string(),
                           AngularDisplacement::degrees(difference).to_string());
-            CHECK_MESSAGE((o1 + dori).is_approx(o2),
+            CHECK_MESSAGE((o1 + dori) == Circa(o2),
                           o1.to_string(),
                           o2.to_string(),
                           (o1 + dori).to_string(),
                           dori.to_string());
-            CHECK_MESSAGE((o2 - dori).is_approx(o1),
+            CHECK_MESSAGE((o2 - dori) == Circa(o1),
                           o1.to_string(),
                           o2.to_string(),
                           (o2 - dori).to_string(),
@@ -524,9 +526,9 @@ TEST_SUITE("subtraction state from state")
                 SpatialDisplacement(LinearDisplacement::meters({.x = 0, .y = 0, .z = 0}),
                                     AngularDisplacement::degrees(difference));
             CHECK_MESSAGE(
-                dpose.is_approx(target_dpose), dpose.to_string(), target_dpose.to_string());
-            CHECK((pose1 + dpose).is_approx(pose2));
-            CHECK((pose2 - dpose).is_approx(pose1));
+                dpose == Circa(target_dpose), dpose.to_string(), target_dpose.to_string());
+            CHECK((pose1 + dpose) == Circa(pose2));
+            CHECK((pose2 - dpose) == Circa(pose1));
         };
         test_spatial_aa({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0},
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0},
@@ -553,9 +555,9 @@ TEST_SUITE("subtraction state from state")
                 SpatialDisplacement(LinearDisplacement::meters(difference),
                                     AngularDisplacement::degrees(Eigen::Quaterniond::Identity()));
             CHECK_MESSAGE(
-                dpose.is_approx(target_dpose), dpose.to_string(), target_dpose.to_string());
-            CHECK((pose1 + dpose).is_approx(pose2));
-            CHECK((pose2 - dpose).is_approx(pose1));
+                dpose == Circa(target_dpose), dpose.to_string(), target_dpose.to_string());
+            CHECK((pose1 + dpose) == Circa(pose2));
+            CHECK((pose2 - dpose) == Circa(pose1));
         };
 
         test_spatial_v3(
@@ -575,9 +577,9 @@ TEST_SUITE("subtraction state from state")
             LinearDisplacement::meters({.x = 3, .y = 3, .z = -3}),
             AngularDisplacement::degrees(
                 {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)}, .angle = 120}));
-        CHECK_MESSAGE(dpose.is_approx(target_dpose), dpose.to_string(), target_dpose.to_string());
-        CHECK((pose1 + dpose).is_approx(pose2));
-        CHECK((pose2 - dpose).is_approx(pose1));
+        CHECK_MESSAGE(dpose == Circa(target_dpose), dpose.to_string(), target_dpose.to_string());
+        CHECK((pose1 + dpose) == Circa(pose2));
+        CHECK((pose2 - dpose) == Circa(pose1));
     }
     TEST_CASE("state from itself is identity")
     {
@@ -585,7 +587,7 @@ TEST_SUITE("subtraction state from state")
         {
             using StateT = std::decay_t<decltype(state)>;
             using DiffT = traits::difference_type_of<StateT>;
-            CHECK((state - state).is_approx(DiffT::zero()));
+            CHECK((state - state) == Circa(DiffT::zero()));
         };
         TimePoint::zero();
         test(TimePoint::seconds(1));
@@ -631,8 +633,8 @@ TEST_SUITE("inplace subtraction of state and difference")
             AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 35});
         o1 -= dori;
         o2 -= dori2;
-        CHECK(o1.is_approx(Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 135})));
-        CHECK(o2.is_approx(Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10})));
+        CHECK(o1 == Circa(Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 135})));
+        CHECK(o2 == Circa(Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10})));
     }
 
     TEST_CASE("spatial state and difference")
@@ -649,20 +651,20 @@ TEST_SUITE("inplace subtraction of state and difference")
             AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 50}));
         pose1 -= dpose;
         pose2 -= dpose2;
-        CHECK_MESSAGE(pose1.is_approx(Pose(
+        CHECK_MESSAGE(pose1 == Circa(Pose(
                           Position::meters({.x = -2, .y = -1, .z = 0}),
                           Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))),
                       pose1.to_string());
-        CHECK_MESSAGE(pose2.is_approx(Pose(
+        CHECK_MESSAGE(pose2 == Circa(Pose(
                           Position::meters({.x = 4, .y = 5, .z = 6}),
                           Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = -40}))),
                       pose2.to_string());
         CHECK((pose1 + dpose)
-                  .is_approx(
+                   == Circa(
                       Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
                            Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
         CHECK((pose2 + dpose2)
-                  .is_approx(
+                   == Circa(
                       Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
                            Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
     }
@@ -693,9 +695,9 @@ TEST_SUITE("addition of difference and difference")
         auto const ad2 =
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
         auto const adsum = ad1 + ad2;
-        CHECK(adsum.is_approx(AngularDisplacement::degrees(
+        CHECK(adsum == Circa(AngularDisplacement::degrees(
             {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120})));
-        CHECK((adsum - ad2).is_approx(ad1));
+        CHECK((adsum - ad2) == Circa(ad1));
     }
     TEST_CASE("spatial difference and difference")
     {
@@ -706,13 +708,13 @@ TEST_SUITE("addition of difference and difference")
             LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}),
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         auto const sdsum = sd1 + sd2;
-        CHECK_MESSAGE(sdsum.is_approx(SpatialDisplacement(
+        CHECK_MESSAGE(sdsum == Circa(SpatialDisplacement(
                           LinearDisplacement::meters({.x = 5, .y = -4, .z = 8}),
                           AngularDisplacement::degrees(
                               {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)},
                                .angle = 120}))),
                       sdsum.to_string());
-        CHECK((sdsum-sd2).is_approx(sd1));
+        CHECK((sdsum-sd2) == Circa(sd1));
     }
     TEST_CASE(
         "addition of difference added to state is the same as the difference added separately")
@@ -725,24 +727,24 @@ TEST_SUITE("addition of difference and difference")
             auto const diff2_plus_diff1 = diff2 + diff1;
             auto const state12 = state_plus_diff1 + diff2;
             auto const state21 = state_plus_diff2 + diff1;
-            CHECK_MESSAGE((state12).is_approx(state + diff1_plus_diff2),
+            CHECK_MESSAGE((state12) == Circa(state + diff1_plus_diff2),
                           state.to_string(),
                           diff1.to_string(),
                           diff2.to_string());
-            CHECK_MESSAGE((state21).is_approx(state + diff2_plus_diff1),
+            CHECK_MESSAGE((state21) == Circa(state + diff2_plus_diff1),
                           state.to_string(),
                           diff1.to_string(),
                           diff2.to_string());
-            CHECK(((state + diff1_plus_diff2) - diff2).is_approx(state_plus_diff1));
-            CHECK(((state + diff2_plus_diff1) - diff1).is_approx(state_plus_diff2));
-            // CHECK_MESSAGE((state - diff1_plus_diff2).is_approx((state - diff1) - diff2),
+            CHECK(((state + diff1_plus_diff2) - diff2) == Circa(state_plus_diff1));
+            CHECK(((state + diff2_plus_diff1) - diff1) == Circa(state_plus_diff2));
+            // CHECK_MESSAGE((state - diff1_plus_diff2) == Circa((state - diff1) - diff2),
             //               state.to_string(),
             //               diff1.to_string(),
             //               diff2.to_string(),
             //               diff1_plus_diff2.to_string(),
             //               (state - diff1).to_string(),
             //               diff2.to_string());
-            // CHECK_MESSAGE((state - diff2_plus_diff1).is_approx((state - diff2) - diff1),
+            // CHECK_MESSAGE((state - diff2_plus_diff1) == Circa((state - diff2) - diff1),
             //               state.to_string(),
             //               diff1.to_string(),
             //               diff2.to_string(),
@@ -750,7 +752,7 @@ TEST_SUITE("addition of difference and difference")
             //               (state - diff2).to_string(),
             //               diff1.to_string());
             INFO("Addition of Difference is commutattive: ",
-                 (state + diff1_plus_diff2).is_approx(state + diff2_plus_diff1));
+                 (state + diff1_plus_diff2) == Circa(state + diff2_plus_diff1));
         };
         test(TimePoint::seconds(1), Duration::seconds(1), Duration::seconds(2));
         test(Position::meters({.x = 1, .y = 2, .z = 3}),
@@ -774,10 +776,10 @@ TEST_SUITE("addition of difference and difference")
         {
             auto const state_plus_diff = state + diff;
             auto const state_minus_diff = state - diff;
-            CHECK_MESSAGE((state_plus_diff - diff).is_approx(state), state.to_string(), diff.to_string());
-            CHECK_MESSAGE((state_minus_diff + diff).is_approx(state), state.to_string(), diff.to_string());
-            CHECK_MESSAGE((state + diff - diff).is_approx(state), state.to_string(), diff.to_string());
-            CHECK_MESSAGE((state - diff + diff).is_approx(state), state.to_string(), diff.to_string());
+            CHECK_MESSAGE((state_plus_diff - diff) == Circa(state), state.to_string(), diff.to_string());
+            CHECK_MESSAGE((state_minus_diff + diff) == Circa(state), state.to_string(), diff.to_string());
+            CHECK_MESSAGE((state + diff - diff) == Circa(state), state.to_string(), diff.to_string());
+            CHECK_MESSAGE((state - diff + diff) == Circa(state), state.to_string(), diff.to_string());
         };
     }
 }
@@ -789,18 +791,18 @@ TEST_SUITE("inplace addition of difference and difference")
         auto d1 = Duration::seconds(1);
         auto const d2 = Duration::seconds(2);
         d1 += d2;
-        CHECK(d1.is_approx(Duration::seconds(3)));
+        CHECK(d1 == Circa(Duration::seconds(3)));
         d1 -= d2;
-        CHECK(d1.is_approx(Duration::seconds(1)));
+        CHECK(d1 == Circa(Duration::seconds(1)));
     }
     TEST_CASE("linear difference and difference")
     {
         auto ld1 = LinearDisplacement::meters({.x = 1, .y = 2, .z = 3});
         auto const ld2 = LinearDisplacement::meters({.x = 4, .y = 5, .z = 6});
         ld1 += ld2;
-        CHECK(ld1.is_approx(LinearDisplacement::meters({.x = 5, .y = 7, .z = 9})));
+        CHECK(ld1 == Circa(LinearDisplacement::meters({.x = 5, .y = 7, .z = 9})));
         ld1 -= ld2;
-        CHECK(ld1.is_approx(LinearDisplacement::meters({.x = 1, .y = 2, .z = 3})));
+        CHECK(ld1 == Circa(LinearDisplacement::meters({.x = 1, .y = 2, .z = 3})));
     }
     TEST_CASE("angular difference and difference")
     {
@@ -808,10 +810,10 @@ TEST_SUITE("inplace addition of difference and difference")
         auto const ad2 =
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
         ad1 += ad2;
-        CHECK(ad1.is_approx(AngularDisplacement::degrees(
+        CHECK(ad1 == Circa(AngularDisplacement::degrees(
             {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120})));
         ad1 -= ad2;
-        CHECK(ad1.is_approx(AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
+        CHECK(ad1 == Circa(AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
     }
     TEST_CASE("spatial difference and difference")
     {
@@ -822,12 +824,12 @@ TEST_SUITE("inplace addition of difference and difference")
             LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}),
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         sd1 += sd2;
-        CHECK(sd1.is_approx(SpatialDisplacement(
+        CHECK(sd1 == Circa(SpatialDisplacement(
             LinearDisplacement::meters({.x = 5, .y = -4, .z = 8}),
             AngularDisplacement::degrees(
                 {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120}))));
         sd1 -= sd2;
-        CHECK(sd1.is_approx(SpatialDisplacement(
+        CHECK(sd1 == Circa(SpatialDisplacement(
             LinearDisplacement::meters({.x = 1, .y = 2, .z = 3}),
             AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
 
@@ -841,14 +843,14 @@ TEST_SUITE("subtraction of difference and difference")
         Duration const d1 = Duration::seconds(1);
         Duration const d2 = Duration::seconds(2);
         Duration const dsub = d2 - d1;
-        CHECK(dsub.is_approx(Duration::seconds(1)));
+        CHECK(dsub == Circa(Duration::seconds(1)));
     }
     TEST_CASE("linear difference and difference")
     {
         LinearDisplacement const ld1 = LinearDisplacement::meters({.x = 1, .y = 2, .z = 3});
         LinearDisplacement const ld2 = LinearDisplacement::meters({.x = 4, .y = 5, .z = 6});
         LinearDisplacement const ldsub = ld2 - ld1;
-        CHECK(ldsub.is_approx(LinearDisplacement::meters({.x = 3, .y = 3, .z = 3})));
+        CHECK(ldsub == Circa(LinearDisplacement::meters({.x = 3, .y = 3, .z = 3})));
     }
     TEST_CASE("angular difference and difference")
     {
@@ -857,7 +859,7 @@ TEST_SUITE("subtraction of difference and difference")
         AngularDisplacement const ad2 =
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
         AngularDisplacement const adsub = ad1 - ad2;
-        CHECK(adsub.is_approx(
+        CHECK(adsub == Circa(
             AngularDisplacement::degrees({.axis = {.x = 1/sqrt(3), .y = -1/sqrt(3), .z = -1/sqrt(3)}, .angle = 120})));
     }
     TEST_CASE("spatial difference and difference")
@@ -869,7 +871,7 @@ TEST_SUITE("subtraction of difference and difference")
             LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}),
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         SpatialDisplacement const sdsub = sd1 - sd2;
-        CHECK(sdsub.is_approx(SpatialDisplacement(
+        CHECK(sdsub == Circa(SpatialDisplacement(
             LinearDisplacement::meters({.x = 7, .y = 6, .z = -2}),
             AngularDisplacement::degrees({.axis = {.x = 1/sqrt(3), .y = -1/sqrt(3), .z = -1/sqrt(3)}, .angle = 120}))));
     }
@@ -885,20 +887,20 @@ TEST_SUITE("subtraction of difference and difference")
     //         auto const diff2_minus_diff1 = diff2 - diff1;
     //         auto const state12 = state_minus_diff1 + diff2;
     //         auto const state21 = state_minus_diff2 + diff1;
-    //         CHECK_MESSAGE((state12).is_approx(state - diff1_minus_diff2),
+    //         CHECK_MESSAGE((state12) == Circa(state - diff1_minus_diff2),
     //                       state.to_string(),
     //                       state12.to_string(),
     //                       (state - diff1_minus_diff2).to_string());
-    //         CHECK_MESSAGE((state21).is_approx(state - diff2_minus_diff1),
+    //         CHECK_MESSAGE((state21) == Circa(state - diff2_minus_diff1),
     //                       state.to_string(),
     //                       state21.to_string(),
     //                       (state - diff2_minus_diff1).to_string());
-    //         CHECK(((state - diff1_minus_diff2) - diff2).is_approx(state_minus_diff1));
-    //         CHECK(((state - diff2_minus_diff1) - diff1).is_approx(state_minus_diff2));
-    //         CHECK((state - diff1_minus_diff2).is_approx(state - diff1 + diff2));
-    //         CHECK((state - diff2_minus_diff1).is_approx(state - diff2 + diff1));
+    //         CHECK(((state - diff1_minus_diff2) - diff2) == Circa(state_minus_diff1));
+    //         CHECK(((state - diff2_minus_diff1) - diff1) == Circa(state_minus_diff2));
+    //         CHECK((state - diff1_minus_diff2) == Circa(state - diff1 + diff2));
+    //         CHECK((state - diff2_minus_diff1) == Circa(state - diff2 + diff1));
     //         INFO("Subtraction of Difference is commutattive: ",
-    //              (state - diff1_minus_diff2).is_approx(state - diff2_minus_diff1));
+    //              (state - diff1_minus_diff2) == Circa(state - diff2_minus_diff1));
     //     };
     //     test(TimePoint::seconds(1), Duration::seconds(1), Duration::seconds(2));
     //     test(Position::meters({.x = 1, .y = 2, .z = 3}),
@@ -925,7 +927,7 @@ TEST_SUITE("inplace subtraction of difference and difference")
         Duration d1 = Duration::seconds(1);
         Duration const d2 = Duration::seconds(2);
         d1 -= d2;
-        CHECK(d1.is_approx(Duration::seconds(-1)));
+        CHECK(d1 == Circa(Duration::seconds(-1)));
     }
 
     TEST_CASE("linear difference and difference")
@@ -933,7 +935,7 @@ TEST_SUITE("inplace subtraction of difference and difference")
         LinearDisplacement ld1 = LinearDisplacement::meters({.x = 1, .y = 2, .z = 3});
         LinearDisplacement const ld2 = LinearDisplacement::meters({.x = 4, .y = 5, .z = 6});
         ld1 -= ld2;
-        CHECK(ld1.is_approx(LinearDisplacement::meters({.x = -3, .y = -3, .z = -3})));
+        CHECK(ld1 == Circa(LinearDisplacement::meters({.x = -3, .y = -3, .z = -3})));
     }
 
     TEST_CASE("angular difference and difference")
@@ -943,7 +945,7 @@ TEST_SUITE("inplace subtraction of difference and difference")
         AngularDisplacement const ad2 =
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
         ad1 -= ad2;
-        CHECK(ad1.is_approx(
+        CHECK(ad1 == Circa(
             AngularDisplacement::degrees({.axis = {.x = 1/sqrt(3), .y = -1/sqrt(3), .z = -1/sqrt(3)}, .angle = 120})));
     }
     TEST_CASE("spatial difference and difference")
@@ -955,7 +957,7 @@ TEST_SUITE("inplace subtraction of difference and difference")
             LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}),
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         sd1 -= sd2;
-        CHECK(sd1.is_approx(SpatialDisplacement(
+        CHECK(sd1 == Circa(SpatialDisplacement(
             LinearDisplacement::meters({.x = 7, .y = 6, .z = -2}),
             AngularDisplacement::degrees({.axis = {.x = 1/sqrt(3), .y = -1/sqrt(3), .z = -1/sqrt(3)}, .angle = 120}))));
     }

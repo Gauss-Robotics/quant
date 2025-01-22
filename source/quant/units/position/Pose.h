@@ -15,4 +15,10 @@ namespace quant::units::position
         using geometry::SpatialIsometricState<Pose>::SpatialIsometricState;
     };
 
+    inline std::ostream&
+    operator<<(std::ostream& os, Pose const& rhs)
+    {
+        return os << rhs.to_string();
+    }
+
 }  // namespace quant::units::position

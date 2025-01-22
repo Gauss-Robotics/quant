@@ -37,7 +37,24 @@ namespace quant::units::position
             return AngularDisplacement{Orientation::degrees(q)};
         }
 
+        units::AxisAngle
+        to_radians() const
+        {
+            return _difference_object.to_radians();
+        }
+
+        units::AxisAngle
+        to_degrees() const
+        {
+            return _difference_object.to_degrees();
+        }
         using geometry::Difference<Orientation>::Difference;
     };
+
+    inline std::ostream&
+    operator<<(std::ostream& os, AngularDisplacement const& rhs)
+    {
+        return os << rhs.to_degrees();
+    }
 
 }  // namespace quant::units::position
