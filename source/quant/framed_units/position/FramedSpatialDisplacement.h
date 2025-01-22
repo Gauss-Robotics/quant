@@ -6,6 +6,17 @@
 
 namespace quant::framed_units::position
 {
+    inline units::position::SpatialDisplacement
+    sd_basis_change(units::position::SpatialDisplacement const& sd,
+                    framed_geometry::BaseChange const& transform)
+    {
+        // Corresponds to the left + operator and is NOT the same as sd + transform, because here
+        // the transform is in the "global" or base frame
+        using TransformAccessor = geometry::detail::DifferenceAccessor<units::position::SpatialDisplacement>;
+        return TransformAccessor::make(
+            TransformAccessor::representation(transform.transformation) *
+            TransformAccessor::representation(sd));
+    }
 
     class SpatialDisplacement : public Framed<units::position::SpatialDisplacement>
     {

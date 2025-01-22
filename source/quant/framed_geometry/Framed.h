@@ -175,8 +175,7 @@ namespace quant::framed_geometry
 #ifdef QUANT_ENABLE_EXCEPTIONS
         if (transform.from_frame != quantity.get_base_frame())
         {
-            throw FrameMismatchException(transform.from_frame,
-                                         quantity.get_base_frame());
+            throw FrameMismatchException(transform.from_frame, quantity.get_base_frame());
         }
 #endif
 
@@ -257,8 +256,12 @@ namespace quant::framed_geometry
     traits::framed_type_of<traits::difference_type_of<StateType>>
     operator-(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
     {
-        // TODO: Custom exception etc.
-        assert(lhs.get_base_frame() == rhs.get_base_frame());
+#ifdef QUANT_ENABLE_EXCEPTIONS
+        if (lhs.get_base_frame() != rhs.get_base_frame())
+        {
+            throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
+        }
+#endif
 
         return traits::framed_type_of<traits::difference_type_of<StateType>>(
             lhs.get_framed_object() - rhs.get_framed_object(),
@@ -268,43 +271,28 @@ namespace quant::framed_geometry
     /**
      * @brief Translation application operator.
      *
-     * This operator drops the framed domain, since no framed guarantees can be enforced.  Use a
-     * framed difference instead if you want frame checks to be performed.
-     *
-     * @param lhs
-     * @param rhs
-     * @return
-     */
-    template <typename DifferenceType, typename FramedStateType>
-        requires traits::scalar_difference<DifferenceType> and
-                 traits::framed_scalar_state<FramedStateType>
-    typename FramedStateType::FramedGeometricObject
-    operator+(DifferenceType const& lhs, FramedStateType const& rhs)
-    {
-        return lhs + rhs.get_framed_object();
-    }
-
-    /**
-     * @brief Translation application operator.
-     *
-     * @param lhs
-     * @param rhs
+     * @param state
+     * @param difference
      * @return
      */
     template <typename FramedDifferenceType, typename FramedStateType>
-        requires traits::framed_scalar_difference<FramedDifferenceType> and
-                 traits::framed_scalar_state<FramedStateType> and
+        requires traits::framed_difference<FramedDifferenceType> and
+                 traits::framed_state<FramedStateType> and
                  traits::same_framed_domain<FramedDifferenceType, FramedStateType>
     FramedStateType
-    operator+(FramedDifferenceType const& lhs, FramedStateType const& rhs)
+    operator+(FramedStateType const& state, FramedDifferenceType const& difference)
     {
         using StateType = typename FramedStateType::FramedGeometricObject;
 
-        // TODO: Custom exception etc.
-        assert(lhs.get_base_frame() == rhs.get_base_frame());
-
-        return traits::framed_type_of<StateType>(lhs.get_framed_object() + rhs.get_framed_object(),
-                                                 {.name = "", .base_frame = lhs.get_base_frame()});
+#ifdef QUANT_ENABLE_EXCEPTIONS
+        if (state.get_base_frame() != difference.get_base_frame())
+        {
+            throw FrameMismatchException(state.get_base_frame(), difference.get_base_frame());
+        }
+#endif
+        return traits::framed_type_of<StateType>(
+            state.get_framed_object() + difference.get_framed_object(),
+            {.name = state.get_name(), .base_frame = state.get_base_frame()});
     }
 
     template <typename FramedDifferenceType>
