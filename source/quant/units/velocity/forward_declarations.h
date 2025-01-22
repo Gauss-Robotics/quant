@@ -29,6 +29,7 @@ namespace quant::traits
     struct DefineTraits<units::velocity::LinearVelocity>
     {
         using Domain = VelocityDomain;
+        using State = units::velocity::LinearVelocity;
         using Difference = units::velocity::LinearVelocityDifference;
         using GeometricType = LinearStateType;
     };
@@ -38,6 +39,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using State = units::velocity::LinearVelocity;
+        using Difference = units::velocity::LinearVelocityDifference;
         using GeometricType = LinearDifferenceType;
     };
 
@@ -45,6 +47,7 @@ namespace quant::traits
     struct DefineTraits<units::velocity::AngularVelocity>
     {
         using Domain = VelocityDomain;
+        using State = units::velocity::AngularVelocity;
         using Difference = units::velocity::AngularVelocityDifference;
         using GeometricType = AngularStateType;
     };
@@ -54,6 +57,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using State = units::velocity::AngularVelocity;
+        using Difference = units::velocity::AngularVelocityDifference;
         using GeometricType = AngularDifferenceType;
     };
 
@@ -61,6 +65,7 @@ namespace quant::traits
     struct DefineTraits<units::velocity::Twist>
     {
         using Domain = VelocityDomain;
+        using State = units::velocity::Twist;
         using Difference = units::velocity::TwistDifference;
         using GeometricType = SpatialStateType;
     };
@@ -70,6 +75,7 @@ namespace quant::traits
     {
         using Domain = VelocityDomain;
         using State = units::velocity::Twist;
+        using Difference = units::velocity::TwistDifference;
         using GeometricType = SpatialDifferenceType;
     };
 

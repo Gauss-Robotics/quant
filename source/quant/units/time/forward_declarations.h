@@ -22,6 +22,7 @@ namespace quant::traits
     {
         using Domain = TimeDomain;
         using Difference = units::time::Duration;
+        using State = units::time::TimePoint;
         using GeometricType = ScalarStateType;
     };
 
@@ -29,6 +30,7 @@ namespace quant::traits
     struct DefineTraits<units::time::Duration>
     {
         using Domain = TimeDomain;
+        using Difference = units::time::Duration;
         using State = units::time::TimePoint;
         using GeometricType = ScalarDifferenceType;
     };

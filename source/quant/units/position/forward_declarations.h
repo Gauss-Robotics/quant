@@ -29,6 +29,7 @@ namespace quant::traits
     struct DefineTraits<units::position::Position>
     {
         using Domain = PositionDomain;
+        using State = units::position::Position;
         using Difference = units::position::LinearDisplacement;
         using GeometricType = LinearStateType;
     };
@@ -38,6 +39,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using State = units::position::Position;
+        using Difference = units::position::LinearDisplacement;
         using GeometricType = LinearDifferenceType;
     };
 
@@ -45,6 +47,7 @@ namespace quant::traits
     struct DefineTraits<units::position::Orientation>
     {
         using Domain = PositionDomain;
+        using State = units::position::Orientation;
         using Difference = units::position::AngularDisplacement;
         using GeometricType = AngularStateType;
     };
@@ -54,6 +57,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using State = units::position::Orientation;
+        using Difference = units::position::AngularDisplacement;
         using GeometricType = AngularDifferenceType;
     };
 
@@ -61,6 +65,7 @@ namespace quant::traits
     struct DefineTraits<units::position::Pose>
     {
         using Domain = PositionDomain;
+        using State = units::position::Pose;
         using Difference = units::position::SpatialDisplacement;
         using GeometricType = SpatialStateType;
     };
@@ -70,6 +75,7 @@ namespace quant::traits
     {
         using Domain = PositionDomain;
         using State = units::position::Pose;
+        using Difference = units::position::SpatialDisplacement;
         using GeometricType = SpatialDifferenceType;
     };
 

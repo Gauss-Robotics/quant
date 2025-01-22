@@ -170,8 +170,9 @@ namespace quant::framed_geometry
     FramedT
     operator*(BaseChange const& transform, FramedT const& quantity)
     {
+        using Traits = traits::framed_traits_of<traits::unframed_type_of<FramedT>>;
         assert(transform.from_frame.data() == quantity.get_base_frame());
-        return FramedT{transform * quantity.get_framed_object(),
+        return FramedT{Traits::basis_change_function(quantity.get_framed_object(), transform),
                        {.name = quantity.get_name(), .base_frame = transform.to_frame.data()}};
     }
 

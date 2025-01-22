@@ -21,21 +21,14 @@ namespace quant::traits
     };
 
     template <typename Type>
-    concept framed_state_structure = requires {
-            typename DefineFramedTraits<Type>::FramedDomain;
-            typename DefineFramedTraits<Type>::Framed;
-            typename DefineFramedTraits<Type>::FramedDifference;
-    };
-    // TODO: should there be two different trait structures?
-    template <typename Type>
-    concept framed_difference_structure = requires {
+    concept framed_traits_structure = requires {
         typename DefineFramedTraits<Type>::FramedDomain;
-        typename DefineFramedTraits<Type>::Framed;
         typename DefineFramedTraits<Type>::FramedState;
-    };
+        typename DefineFramedTraits<Type>::FramedDifference;
+    } and traits_structure<Type>;
 
     template <typename Type>
-        requires framed_state_structure<Type> or framed_difference_structure<Type>
+        requires framed_traits_structure<Type>
     using framed_traits_of = DefineFramedTraits<Type>;
 
     /**
@@ -64,14 +57,18 @@ namespace quant::traits
         std::same_as<framed_domain_type_of<Type1>, framed_domain_type_of<Type2>>;
 
     template <typename Type>
-    using framed_type_of = typename framed_traits_of<Type>::Framed;
+        requires state<Type> or difference<Type>
+    using framed_type_of = std::conditional_t<state<Type>,
+                                              typename framed_traits_of<Type>::FramedState,
+                                              typename framed_traits_of<Type>::FramedDifference>;
+    template <typename Type>
+        requires framed<Type>
+    using unframed_type_of = typename Type::FramedGeometricObject;
 
     template <typename QuantityT>
     concept has_frame_conversion =
-        requires(framed_geometry::BaseChange const& transform, const QuantityT& quantity) {
-        {
-            transform * quantity
-        } -> std::same_as<QuantityT>;
+        requires(QuantityT const& quantity, framed_geometry::BaseChange const& transform) {
+            { framed_traits_of<QuantityT>::basis_change_function(quantity, transform) } -> std::same_as<QuantityT>;
         };
 
     template <typename Type>
@@ -94,7 +91,7 @@ namespace quant::framed_geometry
     template <typename T>
         requires traits::is_frameable<T>
     class Framed;
-}
+}  // namespace quant::framed_geometry
 
 namespace quant
 {

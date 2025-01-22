@@ -37,6 +37,7 @@ namespace quant
         struct DefineTraits<DummyLinearState>
         {
             using Domain = DummyDomain;
+            using State = DummyLinearState;
             using Difference = DummyLinearDiff;
             using GeometricType = LinearStateType;
         };
@@ -46,6 +47,7 @@ namespace quant
         {
             using Domain = DummyDomain;
             using State = DummyLinearState;
+            using Difference = DummyLinearDiff;
             using GeometricType = LinearDifferenceType;
         };
 
@@ -53,6 +55,7 @@ namespace quant
         struct DefineTraits<DummyAngularState>
         {
             using Domain = DummyDomain;
+            using State = DummyAngularState;
             using Difference = DummyAngularDiff;
             using GeometricType = AngularStateType;
         };
@@ -62,6 +65,7 @@ namespace quant
         {
             using Domain = DummyDomain;
             using State = DummyAngularState;
+            using Difference = DummyAngularDiff;
             using GeometricType = AngularDifferenceType;
         };
 
@@ -69,6 +73,7 @@ namespace quant
         struct DefineTraits<DummySpatialState>
         {
             using Domain = DummyDomain;
+            using State = DummySpatialState;
             using Difference = DummySpatialDiff;
             using GeometricType = SpatialStateType;
         };
@@ -78,6 +83,7 @@ namespace quant
         {
             using Domain = DummyDomain;
             using State = DummySpatialState;
+            using Difference = DummySpatialDiff;
             using GeometricType = SpatialDifferenceType;
         };
     }  // namespace traits
@@ -139,68 +145,68 @@ namespace quant
                                                  FramedDummySpatialDiff>;
 
         template <>
-        struct DefineFramedTraits<DummyLinearState>
+        struct DefineFramedTraits<DummyLinearState> : traits_of<DummyLinearState>
         {
             using FramedDomain = FramedDummyDomain;
             using FramedDifference = FramedDummyLinearDiff;
-            using Framed = FramedDummyLinearState;
+            using FramedState = FramedDummyLinearState;
             static constexpr auto basis_change_function =
-                [](DummyLinearState const&, units::position::SpatialDisplacement const&)
+                [](DummyLinearState const&, framed_geometry::BaseChange const&)
             { return DummyLinearState{}; };
         };
 
         template <>
-        struct DefineFramedTraits<DummyLinearDiff>
+        struct DefineFramedTraits<DummyLinearDiff> : traits_of<DummyLinearDiff>
         {
             using FramedDomain = FramedDummyDomain;
             using FramedState = FramedDummyLinearState;
-            using Framed = FramedDummyLinearDiff;
+            using FramedDifference = FramedDummyLinearDiff;
             static constexpr auto basis_change_function =
-                [](DummyLinearDiff const&, units::position::SpatialDisplacement const&)
+                [](DummyLinearDiff const&, framed_geometry::BaseChange const&)
             { return DummyLinearDiff{}; };
         };
 
         template <>
-        struct DefineFramedTraits<DummyAngularState>
+        struct DefineFramedTraits<DummyAngularState> : traits_of<DummyAngularState>
         {
             using FramedDomain = FramedDummyDomain;
             using FramedDifference = FramedDummyAngularDiff;
-            using Framed = FramedDummyAngularState;
+            using FramedState = FramedDummyAngularState;
             static constexpr auto basis_change_function =
-                [](DummyAngularState const&, units::position::SpatialDisplacement const&)
+                [](DummyAngularState const&, framed_geometry::BaseChange const&)
             { return DummyAngularState{}; };
         };
 
         template <>
-        struct DefineFramedTraits<DummyAngularDiff>
+        struct DefineFramedTraits<DummyAngularDiff> : traits_of<DummyAngularDiff>
         {
             using FramedDomain = FramedDummyDomain;
             using FramedState = FramedDummyAngularState;
-            using Framed = FramedDummyAngularDiff;
+            using FramedDifference = FramedDummyAngularDiff;
             static constexpr auto basis_change_function =
-                [](DummyAngularDiff const&, units::position::SpatialDisplacement const&)
+                [](DummyAngularDiff const&, framed_geometry::BaseChange const&)
             { return DummyAngularDiff{}; };
         };
 
         template <>
-        struct DefineFramedTraits<DummySpatialState>
+        struct DefineFramedTraits<DummySpatialState> : traits_of<DummySpatialState>
         {
             using FramedDomain = FramedDummyDomain;
             using FramedDifference = FramedDummySpatialDiff;
-            using Framed = FramedDummySpatialState;
+            using FramedState = FramedDummySpatialState;
             static constexpr auto basis_change_function =
-                [](DummySpatialState const&, units::position::SpatialDisplacement const&)
+                [](DummySpatialState const&, framed_geometry::BaseChange const&)
             { return DummySpatialState::zero(); };
         };
 
         template <>
-        struct DefineFramedTraits<DummySpatialDiff>
+        struct DefineFramedTraits<DummySpatialDiff> : traits_of<DummySpatialDiff>
         {
             using FramedDomain = FramedDummyDomain;
             using FramedState = FramedDummySpatialState;
-            using Framed = FramedDummySpatialDiff;
+            using FramedDifference = FramedDummySpatialDiff;
             static constexpr auto basis_change_function =
-                [](DummySpatialDiff const&, units::position::SpatialDisplacement const&)
+                [](DummySpatialDiff const&, framed_geometry::BaseChange const&)
             { return DummySpatialDiff{}; };
         };
     }  // namespace traits

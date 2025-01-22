@@ -16,7 +16,20 @@ namespace quant::framed_units::position
         using Framed<units::position::Position>::Framed;
     };
 
-
+    inline units::position::Position
+    position_basis_change(units::position::Position const& pos,
+                          framed_geometry::BaseChange const& transform)
+    {
+        using PositionAccessor = geometry::detail::StateAccessor<units::position::Position>;
+        using AngularAccessor =
+            geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>;
+        using LinearAccessor =
+            geometry::detail::DifferenceAccessor<units::position::LinearDisplacement>;
+        return PositionAccessor::make(
+            AngularAccessor::representation(transform.transformation.angular()) *
+                PositionAccessor::representation(pos) +
+            LinearAccessor::representation(transform.transformation.linear()));
+    }
 }  // namespace quant::framed_units::position
 
 namespace quant::framed_geometry

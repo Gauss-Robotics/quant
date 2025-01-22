@@ -162,21 +162,15 @@ namespace quant::traits
     };
 
     template <typename Type>
-    concept state_structure = requires {
-        typename DefineTraits<Type>::Domain;
-        typename DefineTraits<Type>::Difference;
-        typename DefineTraits<Type>::GeometricType;
-    } and std::derived_from<typename DefineTraits<Type>::GeometricType, StateType>;
-
-    template <typename Type>
-    concept difference_structure = requires {
+    concept traits_structure = requires {
         typename DefineTraits<Type>::Domain;
         typename DefineTraits<Type>::State;
+        typename DefineTraits<Type>::Difference;
         typename DefineTraits<Type>::GeometricType;
-    } and std::derived_from<typename DefineTraits<Type>::GeometricType, DifferenceType>;
+    };
 
     template <typename Type>
-        requires state_structure<Type> or difference_structure<Type>
+        requires traits_structure<Type>
     using traits_of = DefineTraits<Type>;
 
     template <typename Type>

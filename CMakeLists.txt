@@ -26,6 +26,7 @@ option(QUANT_ALLOW_DIFFERENCE_ADDITION "Allow addition and subtraction of differ
 if (QUANT_ALLOW_DIFFERENCE_ADDITION)
     message(WARNING "Difference addition is enabled. This may lead to unexpected results.")
     add_compile_definitions(QUANT_ALLOW_DIFFERENCE_ADDITION)
+    add_compile_options(-fconcepts-diagnostics-depth=5)
 endif()
 
 # Source code.

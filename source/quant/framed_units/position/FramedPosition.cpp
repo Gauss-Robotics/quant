@@ -1,38 +1,22 @@
 #include <quant/framed_units/position/FramedPosition.h>
 #include <quant/geometry/detail/DifferenceAccessor.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
-#include <quant/units/position/LinearDisplacement.h>
 #include <quant/units/position/AngularDisplacement.h>
-
-
-namespace quant::framed_geometry
-{
-    units::position::Position
-    operator*(framed_geometry::BaseChange const& transform, units::position::Position const& rhs)
-    {
-        return geometry::detail::StateAccessor<units::position::Position>::make(
-            geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>::representation(
-                transform.transformation.angular()) *
-                geometry::detail::StateAccessor<units::position::Position>::representation(rhs) +
-            geometry::detail::DifferenceAccessor<units::position::LinearDisplacement>::representation(
-                transform.transformation.linear()));
-    }
-
-}
+#include <quant/units/position/LinearDisplacement.h>
 
 namespace quant::framed_units::position
 {
 
-
-
-    void test()
+    void
+    test()
     {
-        framed_geometry::BaseChange const transform{
-            .from_frame = "from_frame",
-            .to_frame = "to_frame"
-        };
+        framed_geometry::BaseChange const transform{.from_frame = "from_frame",
+                                                    .to_frame = "to_frame"};
         framed_units::position::Position const position{};
-        auto const result =  transform * position;
-
+        auto const result = transform * position;
+        traits::framed_traits_of<units::position::Position>::basis_change_function(
+            position.get_framed_object(), transform);
     }
+
+
 }  // namespace quant::framed_units::position

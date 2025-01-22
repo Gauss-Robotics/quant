@@ -29,6 +29,7 @@ namespace quant::traits
     struct DefineTraits<units::momentum::LinearMomentum>
     {
         using Domain = MomentumDomain;
+        using State = units::momentum::LinearMomentum;
         using Difference = units::momentum::LinearImpulse;
         using GeometricType = LinearStateType;
     };
@@ -38,6 +39,7 @@ namespace quant::traits
     {
         using Domain = MomentumDomain;
         using State = units::momentum::LinearMomentum;
+        using Difference = units::momentum::LinearImpulse;
         using GeometricType = LinearDifferenceType;
     };
 

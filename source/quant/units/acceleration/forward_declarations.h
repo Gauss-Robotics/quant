@@ -40,6 +40,7 @@ namespace quant::traits
     struct DefineTraits<LinearAcceleration>
     {
         using Domain = LinearAccelerationDomain;
+        using State = LinearAcceleration;
         using Difference = LinearAccelerationDifference;
         using GeometricType = LinearStateType;
     };
@@ -49,6 +50,7 @@ namespace quant::traits
     {
         using Domain = LinearAccelerationDomain;
         using State = LinearAcceleration;
+        using Difference = LinearAccelerationDifference;
         using GeometricType = LinearDifferenceType;
     };
 
@@ -56,6 +58,7 @@ namespace quant::traits
     struct DefineTraits<AngularAcceleration>
     {
         using Domain = LinearAccelerationDomain;
+        using State = AngularAcceleration;
         using Difference = AngularAccelerationDifference;
         using GeometricType = AngularStateType;
     };
@@ -65,6 +68,7 @@ namespace quant::traits
     {
         using Domain = LinearAccelerationDomain;
         using State = AngularAcceleration;
+        using Difference = AngularAccelerationDifference;
         using GeometricType = AngularDifferenceType;
     };
 
@@ -72,6 +76,7 @@ namespace quant::traits
     struct DefineTraits<SpatialAcceleration>
     {
         using Domain = LinearAccelerationDomain;
+        using State = SpatialAcceleration;
         using Difference = SpatialAccelerationDifference;
         using GeometricType = SpatialStateType;
     };
@@ -81,6 +86,7 @@ namespace quant::traits
     {
         using Domain = LinearAccelerationDomain;
         using State = SpatialAcceleration;
+        using Difference = SpatialAccelerationDifference;
         using GeometricType = SpatialDifferenceType;
     };
 

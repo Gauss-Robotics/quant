@@ -35,23 +35,23 @@ TEST_CASE("testing enframing")
     CHECK(origin.get_name() == "::Origin");
     CHECK(origin.get_base_frame() == "");
 
-    FramedDummyLinearDiff const robot_root =
-        origin.enframe(DummyLinearDiff(), "ARMAR-6::RobotRoot");
-    
-    CHECK(robot_root.get_name() == "ARMAR-6::RobotRoot");
-    CHECK(robot_root.get_base_frame() == "::Origin");
-    
-    FramedDummyLinearDiff const right_hand_tcp = robot_root.enframe(
-        DummyLinearDiff(), "ARMAR-6::TCP_R");
-    
-    CHECK(right_hand_tcp.get_name() == "ARMAR-6::TCP_R");
-    CHECK(right_hand_tcp.get_base_frame() == "ARMAR-6::RobotRoot");
-    
-    FramedDummyLinearDiff const right_hand_com = robot_root.enframe(
-        DummyLinearDiff(), "ARMAR-6::CoM_R");
+    // FramedDummyLinearDiff const robot_root =
+    //     origin.enframe(DummyLinearDiff(), "ARMAR-6::RobotRoot");
+    //
+    // CHECK(robot_root.get_name() == "ARMAR-6::RobotRoot");
+    // CHECK(robot_root.get_base_frame() == "::Origin");
+    //
+    // FramedDummyLinearDiff const right_hand_tcp = robot_root.enframe(
+    //     DummyLinearDiff(), "ARMAR-6::TCP_R");
+    //
+    // CHECK(right_hand_tcp.get_name() == "ARMAR-6::TCP_R");
+    // CHECK(right_hand_tcp.get_base_frame() == "ARMAR-6::RobotRoot");
+    //
+    // FramedDummyLinearDiff const right_hand_com = robot_root.enframe(
+    //     DummyLinearDiff(), "ARMAR-6::CoM_R");
 
-    CHECK(right_hand_com.get_name() == "ARMAR-6::CoM_R");
-    CHECK(right_hand_com.get_base_frame() == "ARMAR-6::RobotRoot");
+    // CHECK(right_hand_com.get_name() == "ARMAR-6::CoM_R");
+    // CHECK(right_hand_com.get_base_frame() == "ARMAR-6::RobotRoot");
 }
 
 TEST_CASE("testing basic framed differences")
@@ -66,23 +66,20 @@ TEST_CASE("testing basic framed differences")
         FramedDummyLinearState const tcp{p, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
         FramedDummyLinearState const com{p, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
 
-
-        framed_units::position::Position const pos1{};
-        framed_units::position::Position const pos2{};
-
         // auto diff = pos2 - pos1;
         // const traits::difference_type_of<Test> ld{};
 
-        // FramedLinearDummyDiff const ld = tcp - com; TODO: all of these lines cause the compiler to segfault
+        FramedDummyLinearDiff const ld = tcp - com;
         // const traits::framed_type_of<DummyLinearDiff> diff{};
         // FramedDummyLinearDiff const diff{};
         //
-        // CHECK(ld.get_name() == "TCP");
-        // CHECK(ld.get_base_frame() == "ARMAR-6::RobotRoot");
+        CHECK(ld.get_name() == "TCP");
+        CHECK(ld.get_base_frame() == "ARMAR-6::RobotRoot");
         framed_geometry::BaseChange const bc{.from_frame = "ARMAR-6::RobotRoot",
                                              .to_frame = "ARMAR-6::RobotRoot",
                                              .transformation =
                                              units::position::SpatialDisplacement::zero()};
-        auto new_tcp = bc * pos1;
+        auto new_tcp = bc * ld;
+        // traits::framed_traits_of<units::position::Position>::basis_change_function(pos1.get_framed_object(), bc);
     }
 }

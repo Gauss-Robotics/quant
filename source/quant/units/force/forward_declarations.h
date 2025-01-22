@@ -29,6 +29,7 @@ namespace quant::traits
     struct DefineTraits<units::force::Force>
     {
         using Domain = ForceDomain;
+        using State = units::force::Force;
         using Difference = units::force::ForceDifference;
         using GeometricType = LinearStateType;
     };
@@ -38,6 +39,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using State = units::force::Force;
+        using Difference = units::force::ForceDifference;
         using GeometricType = LinearDifferenceType;
     };
 
@@ -45,6 +47,7 @@ namespace quant::traits
     struct DefineTraits<units::force::Torque>
     {
         using Domain = ForceDomain;
+        using State = units::force::Torque;
         using Difference = units::force::TorqueDifference;
         using GeometricType = AngularStateType;
     };
@@ -54,6 +57,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using State = units::force::Torque;
+        using Difference = units::force::TorqueDifference;
         using GeometricType = AngularDifferenceType;
     };
 
@@ -61,6 +65,7 @@ namespace quant::traits
     struct DefineTraits<units::force::Wrench>
     {
         using Domain = ForceDomain;
+        using State = units::force::Wrench;
         using Difference = units::force::WrenchDifference;
         using GeometricType = SpatialStateType;
     };
@@ -70,6 +75,7 @@ namespace quant::traits
     {
         using Domain = ForceDomain;
         using State = units::force::Wrench;
+        using Difference = units::force::WrenchDifference;
         using GeometricType = SpatialDifferenceType;
     };
 
