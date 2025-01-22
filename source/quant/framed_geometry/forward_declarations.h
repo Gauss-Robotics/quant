@@ -92,14 +92,18 @@ namespace quant::framed_geometry
     struct FrameIdentifier;
 
     template <typename T>
-        requires traits::is_frameable<T>
-    class Framed;
+        requires traits::is_frameable<T> and traits::state<T>
+    class FramedState;
+    template <typename T>
+        requires traits::is_frameable<T> and traits::difference<T>
+    class FramedDifference;
 }  // namespace quant::framed_geometry
 
 namespace quant
 {
 
-    using framed_geometry::Framed;
+    using framed_geometry::FramedDifference;
+    using framed_geometry::FramedState;
     using framed_geometry::FrameIdentifier;
 
 }  // namespace quant

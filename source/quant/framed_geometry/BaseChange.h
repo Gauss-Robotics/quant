@@ -1,4 +1,4 @@
-
+#pragma once
 #include <quant/framed_geometry/forward_declarations.h>
 #include <quant/units/position/SpatialDisplacement.h>
 

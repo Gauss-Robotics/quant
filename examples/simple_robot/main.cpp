@@ -10,7 +10,7 @@ main(int argc, char* argv[])  // NOLINT
     using namespace quant;
 
     // Initialize robot.
-    FramedSpatialDisplacement origin(SpatialDisplacement(), {.name = "Origin"});
+    FramedPose origin(Pose(), {.name = "Origin"});
 
     std::cout << "Info: " << origin << std::endl;
 

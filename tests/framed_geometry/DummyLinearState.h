@@ -1,5 +1,6 @@
 #pragma once
-#include <quant/framed_geometry/Framed.h>
+#include <quant/framed_geometry/FramedState.h>
+#include <quant/framed_geometry/FramedDifference.h>
 #include <quant/framed_geometry/forward_declarations.h>
 #include <quant/geometry/AngularState.h>
 #include <quant/geometry/Difference.h>
@@ -211,16 +212,16 @@ namespace quant
         };
     }  // namespace traits
 
-    class FramedDummyLinearState : public Framed<DummyLinearState>
+    class FramedDummyLinearState : public framed_geometry::FramedState<DummyLinearState>
     {
     public:
-        using Framed<DummyLinearState>::Framed;
+        using FramedState<DummyLinearState>::FramedState;
     };
 
-    class FramedDummyLinearDiff : public Framed<DummyLinearDiff>
+    class FramedDummyLinearDiff : public framed_geometry::FramedDifference<DummyLinearDiff>
     {
     public:
-        using Framed<DummyLinearDiff>::Framed;
+        using FramedDifference<DummyLinearDiff>::FramedDifference;
     };
 
     inline std::ostream&
@@ -229,28 +230,28 @@ namespace quant
         return os << rhs.to_string();
     }
 
-    class FramedDummyAngularState : public Framed<DummyAngularState>
+    class FramedDummyAngularState : public framed_geometry::FramedState<DummyAngularState>
     {
     public:
-        using Framed<DummyAngularState>::Framed;
+        using FramedState<DummyAngularState>::FramedState;
     };
 
-    class FramedDummyAngularDiff : public Framed<DummyAngularDiff>
+    class FramedDummyAngularDiff : public framed_geometry::FramedDifference<DummyAngularDiff>
     {
     public:
-        using Framed::Framed;
+        using FramedDifference::FramedDifference;
     };
 
-    class FramedDummySpatialState : public Framed<DummySpatialState>
+    class FramedDummySpatialState : public framed_geometry::FramedState<DummySpatialState>
     {
     public:
-        using Framed::Framed;
+        using FramedState::FramedState;
     };
 
-    class FramedDummySpatialDiff : public Framed<DummySpatialDiff>
+    class FramedDummySpatialDiff : public framed_geometry::FramedDifference<DummySpatialDiff>
     {
     public:
-        using Framed::Framed;
+        using FramedDifference::FramedDifference;
     };
 
 }  // namespace quant

@@ -38,12 +38,11 @@ namespace quant::framed_geometry
      * @tparam QuantityT Geometric State or difference object type.
      */
     template <typename QuantityT>
-        requires traits::is_frameable<QuantityT>
-    class Framed
+        requires traits::is_frameable<QuantityT> and traits::state<QuantityT>
+    class FramedState
     {
     public:
         using FramedGeometricObject = QuantityT;
-
         /**
          * @brief Constructs a framed geometric object given a geometric object and a frame header
          * consisting of a base frame and name.
@@ -51,7 +50,7 @@ namespace quant::framed_geometry
          * @param object_to_frame Geometric object to frame.
          * @param frame_data Frame header.
          */
-        Framed(QuantityT const& object_to_frame, FrameIdentifier const& frame_data) :
+        FramedState(QuantityT const& object_to_frame, FrameIdentifier const& frame_data) :
             _framed_object{object_to_frame}
         {
             // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
@@ -74,12 +73,12 @@ namespace quant::framed_geometry
          * @param object_to_frame Object that should be framed in this object.
          * @return Framed type of object_to_frame.
          */
-        template <typename StateType>
-            requires traits::difference<QuantityT> and traits::state<StateType>
-        traits::framed_type_of<StateType>
-        enframe(StateType const& object_to_frame) const
+        template <typename DifferenceT>
+            requires traits::difference<DifferenceT>
+        traits::framed_type_of<DifferenceT>
+        enframe(DifferenceT const& object_to_frame) const
         {
-            return enframe(object_to_frame, "");
+            return {object_to_frame, get_name()};
         }
 
         /**
@@ -93,7 +92,7 @@ namespace quant::framed_geometry
          * @return Framed type of object_to_frame.
          */
         template <typename Type>
-            requires traits::difference<QuantityT>
+            requires traits::state<Type>
         traits::framed_type_of<Type>
         enframe(Type const& object_to_frame, std::string_view name) const
         {
@@ -141,8 +140,8 @@ namespace quant::framed_geometry
         /**
          * @brief Default constructs a framed geometric object.
          */
-        Framed() :
-            Framed(QuantityT::zero(),
+        FramedState() :
+            FramedState(QuantityT::zero(),
                    {.name = "::",
                     .base_frame = "::"})  // prohibits the creation of Base objects, which is UB
         {
@@ -167,7 +166,7 @@ namespace quant::framed_geometry
     };
 
     template <typename FramedT>
-        requires traits::framed<FramedT>
+        requires traits::framed_state<FramedT>
     FramedT
     operator*(BaseChange const& transform, FramedT const& quantity)
     {
@@ -183,66 +182,6 @@ namespace quant::framed_geometry
                        {.name = quantity.get_name(), .base_frame = transform.to_frame}};
     }
 
-    template <typename StateType>
-        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
-    bool
-    operator==(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
-    {
-        return lhs.get_framed_object() == rhs.get_framed_object();
-    }
-
-    template <typename StateType>
-        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
-    bool
-    operator!=(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
-    {
-        return lhs.get_framed_object() != rhs.get_framed_object();
-    }
-
-    /**
-     * @brief Three-way comparison operator of framed types.
-     *
-     * @param lhs
-     * @param rhs
-     * @return
-     */
-    template <typename StateType>
-        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
-    std::strong_ordering
-    operator<=>(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
-    {
-        return lhs.get_framed_object() <=> rhs.get_framed_object();
-    }
-
-    /**
-     * @brief Three-way comparison operator of framed type and corresponding unframed type.
-     *
-     * @param lhs
-     * @param rhs
-     * @return
-     */
-    template <typename StateType>
-        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
-    std::strong_ordering
-    operator<=>(Framed<StateType> const& lhs, StateType const& rhs)
-    {
-        return lhs.get_framed_object() <=> rhs;
-    }
-
-    /**
-     * @brief Three-way comparison operator of unframed type and corresponding framed type.
-     *
-     * @param lhs
-     * @param rhs
-     * @return
-     */
-    template <typename StateType>
-        requires traits::scalar_state<StateType> or traits::scalar_difference<StateType>
-    std::strong_ordering
-    operator<=>(StateType const& lhs, Framed<StateType> const& rhs)
-    {
-        return lhs <=> rhs.get_framed_object();
-    }
 
     /**
      * @brief State difference operator.
@@ -254,7 +193,7 @@ namespace quant::framed_geometry
     template <typename StateType>
         requires traits::state<StateType>
     traits::framed_type_of<traits::difference_type_of<StateType>>
-    operator-(Framed<StateType> const& lhs, Framed<StateType> const& rhs)
+    operator-(FramedState<StateType> const& lhs, FramedState<StateType> const& rhs)
     {
 #ifdef QUANT_ENABLE_EXCEPTIONS
         if (lhs.get_base_frame() != rhs.get_base_frame())
@@ -264,8 +203,7 @@ namespace quant::framed_geometry
 #endif
 
         return traits::framed_type_of<traits::difference_type_of<StateType>>(
-            lhs.get_framed_object() - rhs.get_framed_object(),
-            {.name = lhs.get_name(), .base_frame = rhs.get_base_frame()});
+            lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_base_frame());
     }
 
     /**
@@ -294,15 +232,4 @@ namespace quant::framed_geometry
             state.get_framed_object() + difference.get_framed_object(),
             {.name = state.get_name(), .base_frame = state.get_base_frame()});
     }
-
-    template <typename FramedDifferenceType>
-        requires traits::framed_scalar_difference<FramedDifferenceType>
-    FramedDifferenceType
-    operator-(FramedDifferenceType const& object)
-    {
-        return FramedDifferenceType{
-            -object.get_framed_object(),
-            FrameIdentifier{.name = object.get_name(), .base_frame = object.get_base_frame()}};
-    }
-
 }  // namespace quant::framed_geometry

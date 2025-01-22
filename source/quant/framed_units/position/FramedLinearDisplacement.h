@@ -1,34 +1,32 @@
 #pragma once
 
-#include <quant/framed_geometry/Framed.h>
+#include <quant/framed_geometry/FramedDifference.h>
 #include <quant/units/position/LinearDisplacement.h>
 #include <quant/units/position/forward_declarations.h>
 
 namespace quant::framed_units::position
 {
 
-    inline units::position::LinearDisplacement
-    ld_basis_change(units::position::LinearDisplacement const& ld,
+    inline LinearDisplacement
+    ld_basis_change(LinearDisplacement const& ld,
                     framed_geometry::BaseChange const& transform)
     {
-        using LDAccessor = geometry::detail::DifferenceAccessor<units::position::LinearDisplacement>;
+        using LDAccessor = geometry::detail::DifferenceAccessor<LinearDisplacement>;
         using AngularAccessor =
-            geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>;
-        using LinearAccessor =
-            geometry::detail::DifferenceAccessor<units::position::LinearDisplacement>;
+            geometry::detail::DifferenceAccessor<AngularDisplacement>;
         return LDAccessor::make(
             AngularAccessor::representation(transform.transformation.angular()) *
             LDAccessor::representation(ld));
     }
 
-    class LinearDisplacement : public Framed<units::position::LinearDisplacement>
+    class LinearDisplacement : public FramedDifference<units::position::LinearDisplacement>
     {
     public:
-        using Framed<units::position::LinearDisplacement>::Framed;
+        using FramedDifference::FramedDifference;
     };
 
     inline std::ostream&
-    operator<<(std::ostream& os, framed_units::position::LinearDisplacement const& rhs)
+    operator<<(std::ostream& os, LinearDisplacement const& rhs)
     {
         return os << rhs.to_string();
     }

@@ -2,7 +2,8 @@ add_library(framed_geometry SHARED
         ../framed_geometry.h
         forward_declarations.h
 
-        Framed.h
+        FramedDifference.h
+        FramedState.h
         BaseChange.h
         FrameMismatch.h
 )

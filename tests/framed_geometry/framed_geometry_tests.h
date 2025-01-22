@@ -25,30 +25,29 @@ TEST_CASE("testing basic constructions")
 
 TEST_CASE("testing enframing")
 {
-    DummyLinearDiff const p{};
+    DummyLinearState const p{};
 
-    FramedDummyLinearDiff const origin{p, {.name = "::Origin", .base_frame = ""}};
+    FramedDummyLinearState const origin{p, {.name = "::Origin", .base_frame = ""}};
 
     CHECK(origin.get_name() == "::Origin");
     CHECK(origin.get_base_frame() == "");
 
     FramedDummyLinearDiff const robot_root =
-        origin.enframe(DummyLinearDiff(), "ARMAR-6::RobotRoot");
+        origin.enframe(DummyLinearDiff());
 
-    CHECK(robot_root.get_name() == "ARMAR-6::RobotRoot");
     CHECK(robot_root.get_base_frame() == "::Origin");
 
-    FramedDummyLinearDiff const right_hand_tcp = robot_root.enframe(
-        DummyLinearDiff(), "ARMAR-6::TCP_R");
+    FramedDummyLinearState const right_hand_tcp = origin.enframe(
+        DummyLinearState(), "ARMAR-6::TCP_R");
 
     CHECK(right_hand_tcp.get_name() == "ARMAR-6::TCP_R");
-    CHECK(right_hand_tcp.get_base_frame() == "ARMAR-6::RobotRoot");
+    CHECK(right_hand_tcp.get_base_frame() == "::Origin");
 
-    FramedDummyLinearDiff const right_hand_com = robot_root.enframe(
-        DummyLinearDiff(), "ARMAR-6::CoM_R");
+    FramedDummySpatialState const right_hand_com = right_hand_tcp.enframe(
+        DummySpatialState(), "ARMAR-6::CoM_R");
 
     CHECK(right_hand_com.get_name() == "ARMAR-6::CoM_R");
-    CHECK(right_hand_com.get_base_frame() == "ARMAR-6::RobotRoot");
+    CHECK(right_hand_com.get_base_frame() == "ARMAR-6::TCP_R");
 }
 
 TEST_CASE("testing basic framed differences")
@@ -70,7 +69,6 @@ TEST_CASE("testing basic framed differences")
         // const traits::framed_type_of<DummyLinearDiff> diff{};
         // FramedDummyLinearDiff const diff{};
         //
-        CHECK(ld.get_name() == "TCP");
         CHECK(ld.get_base_frame() == "ARMAR-6::RobotRoot");
         framed_geometry::BaseChange const bc{.from_frame = "ARMAR-6::RobotRoot",
                                              .to_frame = "ARMAR-6::PlatformBase",
@@ -78,7 +76,6 @@ TEST_CASE("testing basic framed differences")
                                              units::position::SpatialDisplacement::zero()};
         auto new_tcp = bc * ld;
         CHECK(new_tcp.get_base_frame() == bc.to_frame.data());
-        CHECK(new_tcp.get_name() == ld.get_name());
         // traits::framed_traits_of<units::position::Position>::basis_change_function(pos1.get_framed_object(), bc);
     }
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/framed_geometry/Framed.h>
+#include <quant/framed_geometry/FramedState.h>
 #include <quant/framed_units/position/forward_declarations.h>
 #include <quant/units/position/Pose.h>
 #include <quant/units/position/SpatialDisplacement.h>
@@ -21,14 +21,14 @@ namespace quant::framed_units::position
             PoseAccessor::representation(pose));
     }
 
-    class Pose : public Framed<units::position::Pose>
+    class Pose : public FramedState<units::position::Pose>
     {
     public:
-        using Framed<units::position::Pose>::Framed;
+        using FramedState::FramedState;
     };
 
     inline std::ostream&
-    operator<<(std::ostream& os, framed_units::position::Pose const& rhs)
+    operator<<(std::ostream& os, Pose const& rhs)
     {
         return os << rhs.to_string();
     }

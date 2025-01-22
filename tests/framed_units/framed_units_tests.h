@@ -42,7 +42,6 @@ TEST_SUITE("testing framed position domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_name() == "TCP");
             CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(LinearDisplacement::millimeters({.x = 3, .y = 3, .z = 3})));
@@ -141,21 +140,17 @@ TEST_SUITE("testing framed position domain")
         SUBCASE("construction")
         {
             quant::FramedLinearDisplacement const f1{
-                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}),
-                {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
+                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}),"ARMAR-6::RobotRoot"};
             quant::FramedLinearDisplacement const f2{};
             quant::FramedLinearDisplacement const f3{f1};
 
-            CHECK(f1.get_name() == "TCP");
             CHECK(f1.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(f1.get_framed_object() ==
                   Circa(LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3})));
 
-            CHECK(f2.get_name() == "::");
             CHECK(f2.get_base_frame() == "::");
             CHECK(f2.get_framed_object() == Circa(LinearDisplacement::zero()));
 
-            CHECK(f3.get_name() == "TCP");
             CHECK(f3.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(f3.get_framed_object() ==
                   Circa(LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3})));
@@ -167,11 +162,9 @@ TEST_SUITE("testing framed position domain")
                 Position::millimeters({.x = 1, .y = 2, .z = 3}),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
             FramedLinearDisplacement ld{
-                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),  "ARMAR-6::RobotRoot"};
             FramedLinearDisplacement ld_wrong_frame{
-                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                {.name = "TCP", .base_frame = "ARMAR-6::PlatformBase"}};
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}), "ARMAR-6::PlatformBase"};
 
 
             auto const new_position = position + ld;
@@ -191,8 +184,7 @@ TEST_SUITE("testing framed position domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             std::string const name = "TCP";
             quant::FramedLinearDisplacement const f1{
-                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}),
-                {.name = name, .base_frame = from_frame}};
+                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}), from_frame};
 
             framed_geometry::BaseChange const bc{
                 .from_frame = from_frame,
@@ -203,7 +195,6 @@ TEST_SUITE("testing framed position domain")
             auto new_displacement = bc * f1;
 
             CHECK(new_displacement.get_base_frame() == to_frame);
-            CHECK(new_displacement.get_name() == name);
             CHECK(new_displacement.get_framed_object() ==
                   Circa(LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3})));
         }
@@ -214,8 +205,7 @@ TEST_SUITE("testing framed position domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             std::string const name = "TCP";
             quant::FramedLinearDisplacement const f1{
-                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}),
-                {.name = name, .base_frame = from_frame}};
+                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}) ,from_frame};
 
             framed_geometry::BaseChange const bc{
                 .from_frame = from_frame,
@@ -226,7 +216,6 @@ TEST_SUITE("testing framed position domain")
             auto new_displacement = bc * f1;
 
             CHECK(new_displacement.get_base_frame() == to_frame);
-            CHECK(new_displacement.get_name() == name);
             CHECK(new_displacement.get_framed_object() ==
                   Circa(LinearDisplacement::millimeters({.x = 1, .y = -3, .z = 2})));
         }
@@ -237,8 +226,7 @@ TEST_SUITE("testing framed position domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             std::string const name = "TCP";
             quant::FramedLinearDisplacement const f1{
-                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}),
-                {.name = name, .base_frame = from_frame}};
+                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}), from_frame};
 
             framed_geometry::BaseChange const bc{
                 .from_frame = from_frame,
@@ -249,7 +237,6 @@ TEST_SUITE("testing framed position domain")
             auto new_displacement = bc * f1;
 
             CHECK(new_displacement.get_base_frame() == to_frame);
-            CHECK(new_displacement.get_name() == name);
             CHECK(new_displacement.get_framed_object() ==
                   Circa(LinearDisplacement::millimeters({.x = 1, .y = -3, .z = 2})));
         }
@@ -260,8 +247,7 @@ TEST_SUITE("testing framed position domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             std::string const name = "TCP";
             quant::FramedLinearDisplacement const f1{
-                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}),
-                {.name = name, .base_frame = from_frame}};
+                LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}), from_frame};
 
             framed_geometry::BaseChange const bc{
                 .from_frame = "something else",
