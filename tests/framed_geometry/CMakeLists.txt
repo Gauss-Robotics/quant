@@ -8,6 +8,4 @@ target_link_libraries(test_framed_geometry
     PUBLIC
         doctest::doctest
         quant::framed_geometry
-        quant::framed_units
-        quant::units
 )
