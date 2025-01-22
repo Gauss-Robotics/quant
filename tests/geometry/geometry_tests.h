@@ -238,7 +238,7 @@ namespace quant::traits::arithmetics
         SUBCASE("math operators are defined for Difference vs Difference")
         {
             // Difference with Difference
-#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
+#ifdef QUANT_ENABLE_DIFFERENCE_ADDITION
             static_assert(addition::is_possible_v<DifferenceT, DifferenceT>,
                           "Difference and Difference types should be addable");
             static_assert(addition::is_possible_inplace_v<DifferenceT, DifferenceT>,
@@ -274,7 +274,7 @@ namespace quant::traits::arithmetics
         state + diff;
         state - diff;
 
-#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
+#ifdef QUANT_ENABLE_DIFFERENCE_ADDITION
         diff + diff;
         diff += diff;
         diff - diff;
@@ -667,7 +667,7 @@ TEST_SUITE("inplace subtraction of state and difference")
                            Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
     }
 }
-#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
+#ifdef QUANT_ENABLE_DIFFERENCE_ADDITION
 TEST_SUITE("addition of difference and difference")
 {
     TEST_CASE("scalar difference and difference")

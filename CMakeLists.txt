@@ -22,11 +22,15 @@ find_package(Boost REQUIRED)
 find_package(doctest QUIET)
 
 # Compile Options
-option(QUANT_ALLOW_DIFFERENCE_ADDITION "Allow addition and subtraction of difference types" ON)
-if (QUANT_ALLOW_DIFFERENCE_ADDITION)
+option(QUANT_ENABLE_DIFFERENCE_ADDITION "Allow addition and subtraction of difference types" ON)
+if (QUANT_ENABLE_DIFFERENCE_ADDITION)
     message(WARNING "Difference addition is enabled. This may lead to unexpected results.")
-    add_compile_definitions(QUANT_ALLOW_DIFFERENCE_ADDITION)
-    add_compile_options(-fconcepts-diagnostics-depth=5)
+    add_compile_definitions(QUANT_ENABLE_DIFFERENCE_ADDITION)
+endif()
+
+option(QUANT_ENABLE_EXCEPTIONS "Allow throwing of exceptions" ON)
+if (QUANT_ENABLE_EXCEPTIONS)
+    add_compile_definitions(QUANT_ENABLE_EXCEPTIONS)
 endif()
 
 # Source code.

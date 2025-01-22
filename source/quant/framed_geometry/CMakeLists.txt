@@ -4,6 +4,7 @@ add_library(framed_geometry SHARED
 
         Framed.h
         BaseChange.h
+        FrameMismatch.h
 )
 
 set_target_properties(framed_geometry

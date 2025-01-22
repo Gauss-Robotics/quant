@@ -15,8 +15,8 @@ namespace quant::framed_geometry
          * unit in a way that is unique to each unit, and thereby changes the reference/base
          * frame of the framed unit.
          */
-        std::array<char, frame_data_max_string_size> from_frame;
-        std::array<char, frame_data_max_string_size> to_frame;
+        std::string_view from_frame;
+        std::string_view to_frame;
         units::position::SpatialDisplacement transformation;
     };
 

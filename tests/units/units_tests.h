@@ -157,7 +157,7 @@ TEST_SUITE("time")
         CHECK(t1 == t1_target);
     }
 
-#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
+#ifdef QUANT_ENABLE_DIFFERENCE_ADDITION
     TEST_CASE("duration can be added to another duration")
     {
         Duration const d1 = Duration::microseconds(1'000);

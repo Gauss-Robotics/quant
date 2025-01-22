@@ -320,7 +320,7 @@ namespace quant::geometry
         return lhs;
     }
 
-#ifdef QUANT_ALLOW_DIFFERENCE_ADDITION
+#ifdef QUANT_ENABLE_DIFFERENCE_ADDITION
     /**
      * @brief Adds two differences.
      *
