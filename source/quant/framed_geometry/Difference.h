@@ -30,7 +30,7 @@ namespace quant::framed_geometry
      */
     template <typename QuantityT>
         requires traits::is_frameable<QuantityT> and traits::difference<QuantityT>
-    class FramedDifference
+    class Difference
     {
     public:
         using FramedGeometricObject = QuantityT;
@@ -42,7 +42,7 @@ namespace quant::framed_geometry
          * @param object_to_frame Geometric object to frame.
          * @param base_frame_name name of the frame this difference is sítuated in.
          */
-        FramedDifference(QuantityT const& object_to_frame,
+        Difference(QuantityT const& object_to_frame,
                          std::string_view const& base_frame_name) :
             _framed_object{object_to_frame}
         {
@@ -85,8 +85,8 @@ namespace quant::framed_geometry
         /**
          * @brief Default constructs a framed geometric object.
          */
-        FramedDifference() :
-            FramedDifference(QuantityT::zero(),
+        Difference() :
+            Difference(QuantityT::zero(),
                              "::")  // prohibits the creation of Base objects, which is UB
         {
             ;

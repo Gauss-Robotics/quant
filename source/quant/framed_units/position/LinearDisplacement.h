@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/framed_geometry/FramedDifference.h>
+#include <quant/framed_geometry/Difference.h>
 #include <quant/units/position/LinearDisplacement.h>
 #include <quant/units/position/forward_declarations.h>
 
@@ -22,7 +22,7 @@ namespace quant::framed_units::position
     class LinearDisplacement : public FramedDifference<units::position::LinearDisplacement>
     {
     public:
-        using FramedDifference::FramedDifference;
+        using Difference::Difference;
     };
 
     inline std::ostream&

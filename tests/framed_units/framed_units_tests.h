@@ -1,6 +1,6 @@
 #pragma once
 #include <quant/framed_units.h>
-#include <quant/framed_units/position/FramedPosition.h>
+#include <quant/framed_units/position/Position.h>
 #include <quant/geometry/Circa.h>
 
 #include <doctest/doctest.h>

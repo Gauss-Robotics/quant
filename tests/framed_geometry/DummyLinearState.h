@@ -1,6 +1,6 @@
 #pragma once
-#include <quant/framed_geometry/FramedState.h>
-#include <quant/framed_geometry/FramedDifference.h>
+#include <quant/framed_geometry/Difference.h>
+#include <quant/framed_geometry/State.h>
 #include <quant/framed_geometry/forward_declarations.h>
 #include <quant/geometry/AngularState.h>
 #include <quant/geometry/Difference.h>
@@ -212,16 +212,16 @@ namespace quant
         };
     }  // namespace traits
 
-    class FramedDummyLinearState : public framed_geometry::FramedState<DummyLinearState>
+    class FramedDummyLinearState : public framed_geometry::State<DummyLinearState>
     {
     public:
-        using FramedState<DummyLinearState>::FramedState;
+        using State<DummyLinearState>::State;
     };
 
-    class FramedDummyLinearDiff : public framed_geometry::FramedDifference<DummyLinearDiff>
+    class FramedDummyLinearDiff : public framed_geometry::Difference<DummyLinearDiff>
     {
     public:
-        using FramedDifference<DummyLinearDiff>::FramedDifference;
+        using Difference<DummyLinearDiff>::Difference;
     };
 
     inline std::ostream&
@@ -230,28 +230,28 @@ namespace quant
         return os << rhs.to_string();
     }
 
-    class FramedDummyAngularState : public framed_geometry::FramedState<DummyAngularState>
+    class FramedDummyAngularState : public framed_geometry::State<DummyAngularState>
     {
     public:
-        using FramedState<DummyAngularState>::FramedState;
+        using State<DummyAngularState>::State;
     };
 
-    class FramedDummyAngularDiff : public framed_geometry::FramedDifference<DummyAngularDiff>
+    class FramedDummyAngularDiff : public framed_geometry::Difference<DummyAngularDiff>
     {
     public:
-        using FramedDifference::FramedDifference;
+        using Difference::Difference;
     };
 
-    class FramedDummySpatialState : public framed_geometry::FramedState<DummySpatialState>
+    class FramedDummySpatialState : public framed_geometry::State<DummySpatialState>
     {
     public:
-        using FramedState::FramedState;
+        using State::State;
     };
 
-    class FramedDummySpatialDiff : public framed_geometry::FramedDifference<DummySpatialDiff>
+    class FramedDummySpatialDiff : public framed_geometry::Difference<DummySpatialDiff>
     {
     public:
-        using FramedDifference::FramedDifference;
+        using Difference::Difference;
     };
 
 }  // namespace quant

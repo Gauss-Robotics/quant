@@ -39,7 +39,7 @@ namespace quant::framed_geometry
      */
     template <typename QuantityT>
         requires traits::is_frameable<QuantityT> and traits::state<QuantityT>
-    class FramedState
+    class State
     {
     public:
         using FramedGeometricObject = QuantityT;
@@ -50,7 +50,7 @@ namespace quant::framed_geometry
          * @param object_to_frame Geometric object to frame.
          * @param frame_data Frame header.
          */
-        FramedState(QuantityT const& object_to_frame, FrameIdentifier const& frame_data) :
+        State(QuantityT const& object_to_frame, FrameIdentifier const& frame_data) :
             _framed_object{object_to_frame}
         {
             // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
@@ -140,8 +140,8 @@ namespace quant::framed_geometry
         /**
          * @brief Default constructs a framed geometric object.
          */
-        FramedState() :
-            FramedState(QuantityT::zero(),
+        State() :
+            State(QuantityT::zero(),
                    {.name = "::",
                     .base_frame = "::"})  // prohibits the creation of Base objects, which is UB
         {
@@ -193,7 +193,7 @@ namespace quant::framed_geometry
     template <typename StateType>
         requires traits::state<StateType>
     traits::framed_type_of<traits::difference_type_of<StateType>>
-    operator-(FramedState<StateType> const& lhs, FramedState<StateType> const& rhs)
+    operator-(State<StateType> const& lhs, State<StateType> const& rhs)
     {
 #ifdef QUANT_ENABLE_EXCEPTIONS
         if (lhs.get_base_frame() != rhs.get_base_frame())

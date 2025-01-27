@@ -21,13 +21,13 @@ add_library(framed_units SHARED
 
     position.h
     position/forward_declarations.h
-    position/FramedPosition.h
-    position/FramedPosition.cpp
-    position/FramedOrientation.h
-    position/FramedPose.h
-    position/FramedLinearDisplacement.h
-    position/FramedAngularDisplacement.h
-    position/FramedSpatialDisplacement.h
+        position/Position.h
+        position/Position.cpp
+        position/Orientation.h
+        position/Pose.h
+        position/LinearDisplacement.h
+        position/AngularDisplacement.h
+        position/SpatialDisplacement.h
 
         #velocity.h
     #velocity_fwd.h

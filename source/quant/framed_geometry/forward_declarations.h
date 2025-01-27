@@ -93,17 +93,19 @@ namespace quant::framed_geometry
 
     template <typename T>
         requires traits::is_frameable<T> and traits::state<T>
-    class FramedState;
+    class State;
     template <typename T>
         requires traits::is_frameable<T> and traits::difference<T>
-    class FramedDifference;
+    class Difference;
 }  // namespace quant::framed_geometry
 
 namespace quant
 {
 
-    using framed_geometry::FramedDifference;
-    using framed_geometry::FramedState;
+    template <typename T>
+    using FramedDifference = framed_geometry::Difference<T>;
+    template <typename T>
+    using FramedState = framed_geometry::State<T>;
     using framed_geometry::FrameIdentifier;
 
 }  // namespace quant

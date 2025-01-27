@@ -1,19 +1,18 @@
 #pragma once
 
+#include <quant/framed_geometry/State.h>
 #include <quant/framed_units/position/forward_declarations.h>
 #include <quant/units/position/Position.h>
 #include <quant/units/position/SpatialDisplacement.h>
 
-#include <quant/framed_geometry/FramedState.h>
-
 namespace quant::framed_units::position
 {
 
-    class Position : public framed_geometry::FramedState<units::position::Position>
+    class Position : public FramedState<units::position::Position>
     {
 
     public:
-        using FramedState<units::position::Position>::FramedState;
+        using State::State;
     };
 
     inline units::position::Position

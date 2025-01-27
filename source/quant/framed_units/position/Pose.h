@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/framed_geometry/FramedState.h>
+#include <quant/framed_geometry/State.h>
 #include <quant/framed_units/position/forward_declarations.h>
 #include <quant/units/position/Pose.h>
 #include <quant/units/position/SpatialDisplacement.h>
@@ -24,7 +24,7 @@ namespace quant::framed_units::position
     class Pose : public FramedState<units::position::Pose>
     {
     public:
-        using FramedState::FramedState;
+        using State::State;
     };
 
     inline std::ostream&
