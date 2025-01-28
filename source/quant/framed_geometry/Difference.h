@@ -4,6 +4,7 @@
 #include <quant/framed_geometry/FrameMismatch.h>
 #include <quant/framed_geometry/forward_declarations.h>
 #include <quant/geometry/Difference.h>
+#include <quant/geometry/constants.h>
 #include <quant/geometry/forward_declarations.h>
 
 #include <Eigen/Core>
@@ -42,8 +43,7 @@ namespace quant::framed_geometry
          * @param object_to_frame Geometric object to frame.
          * @param base_frame_name name of the frame this difference is sítuated in.
          */
-        Difference(QuantityT const& object_to_frame,
-                         std::string_view const& base_frame_name) :
+        Difference(QuantityT const& object_to_frame, std::string_view const& base_frame_name) :
             _framed_object{object_to_frame}
         {
             // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
@@ -64,6 +64,16 @@ namespace quant::framed_geometry
             return _framed_object;
         }
 
+        bool
+        is_approx(Difference const& rhs,
+                  double const tolerance = geometry::constants::floating_point_tolerance) const
+        {
+            std::string const lhs_base_frame{get_base_frame()};
+            std::string const rhs_base_frame{rhs.get_base_frame()};
+            return lhs_base_frame == rhs_base_frame and
+                   _framed_object.is_approx(rhs._framed_object, tolerance);
+        }
+
         std::string
         to_string() const
         {
@@ -78,7 +88,7 @@ namespace quant::framed_geometry
                 in_frame = "global";
             }
 
-            return  "(" + in_frame + ") at " + _framed_object.to_string();
+            return "(" + in_frame + ") at " + _framed_object.to_string();
         }
 
     protected:
@@ -87,7 +97,7 @@ namespace quant::framed_geometry
          */
         Difference() :
             Difference(QuantityT::zero(),
-                             "::")  // prohibits the creation of Base objects, which is UB
+                       "::")  // prohibits the creation of Base objects, which is UB
         {
             ;
         }

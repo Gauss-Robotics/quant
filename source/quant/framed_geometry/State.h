@@ -136,6 +136,17 @@ namespace quant::framed_geometry
             return named_entity + " (" + in_frame + ") at " + _framed_object.to_string();
         }
 
+        bool
+        is_approx(State const& rhs,
+                  double const tolerance = geometry::constants::floating_point_tolerance) const
+        {
+            std::string const lhs_base_frame{get_base_frame()};
+            std::string const rhs_base_frame{rhs.get_base_frame()};
+            // TODO: should the name also be the same?
+            return lhs_base_frame == rhs_base_frame and
+                   _framed_object.is_approx(rhs._framed_object, tolerance);
+        }
+
     protected:
         /**
          * @brief Default constructs a framed geometric object.

@@ -10,7 +10,6 @@ namespace quant::framed_units::position
 
     class Position : public FramedState<units::position::Position>
     {
-
     public:
         using State::State;
     };
@@ -24,9 +23,9 @@ namespace quant::framed_units::position
             geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>;
         using LinearAccessor =
             geometry::detail::DifferenceAccessor<units::position::LinearDisplacement>;
-        return PositionAccessor::make(
-            AngularAccessor::representation(transform.transformation.angular()) *
-                PositionAccessor::representation(pos) +
-            LinearAccessor::representation(transform.transformation.linear()));
+        auto const R = AngularAccessor::representation(transform.transformation.angular());
+        auto const t = LinearAccessor::representation(transform.transformation.linear());
+        auto const p = PositionAccessor::representation(pos);
+        return PositionAccessor::make(R.inverse() * (p - t));
     }
 }  // namespace quant::framed_units::position

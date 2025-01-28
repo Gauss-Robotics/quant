@@ -55,13 +55,13 @@ namespace quant::units::position
             return to_degrees().to_string();
         }
 
-        using geometry::AngularState<Orientation>::AngularState;
+        using AngularState::AngularState;
     };
 
     inline std::ostream&
     operator<<(std::ostream& out, Orientation const& rhs)
     {
-        return out << rhs.to_radians();
+        return out << rhs.to_degrees();
     }
 
 }  // namespace quant::units::position

@@ -107,5 +107,6 @@ namespace quant
     template <typename T>
     using FramedState = framed_geometry::State<T>;
     using framed_geometry::FrameIdentifier;
+    using framed_geometry::BaseChange;
 
 }  // namespace quant

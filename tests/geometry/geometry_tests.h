@@ -519,8 +519,10 @@ TEST_SUITE("subtraction state from state")
         auto test_spatial_aa =
             [](AxisAngle const& a, AxisAngle const& b, AxisAngle const& difference)
         {
-            Pose const pose1 = Pose(Position::meters({.x = 0, .y = 0, .z = 0}), Orientation::degrees(a));
-            Pose const pose2 = Pose(Position::meters({.x = 0, .y = 0, .z = 0}), Orientation::degrees(b));
+            Pose const pose1 =
+                Pose(Position::meters({.x = 0, .y = 0, .z = 0}), Orientation::degrees(a));
+            Pose const pose2 =
+                Pose(Position::meters({.x = 0, .y = 0, .z = 0}), Orientation::degrees(b));
             SpatialDisplacement const dpose = pose2 - pose1;
             SpatialDisplacement const target_dpose =
                 SpatialDisplacement(LinearDisplacement::meters({.x = 0, .y = 0, .z = 0}),
@@ -546,9 +548,9 @@ TEST_SUITE("subtraction state from state")
 
         auto test_spatial_v3 = [](Vector const& a, Vector const& b, Vector const& difference)
         {
-            const Pose pose1 =
+            Pose const pose1 =
                 Pose(Position::meters(a), Orientation::degrees(Eigen::Quaterniond::Identity()));
-            const Pose pose2 =
+            Pose const pose2 =
                 Pose(Position::meters(b), Orientation::degrees(Eigen::Quaterniond::Identity()));
             SpatialDisplacement const dpose = pose2 - pose1;
             SpatialDisplacement const target_dpose =
@@ -583,7 +585,7 @@ TEST_SUITE("subtraction state from state")
     }
     TEST_CASE("state from itself is identity")
     {
-        auto test = [](const auto& state)
+        auto test = [](auto const& state)
         {
             using StateT = std::decay_t<decltype(state)>;
             using DiffT = traits::difference_type_of<StateT>;
@@ -595,6 +597,110 @@ TEST_SUITE("subtraction state from state")
         test(Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
         test(Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
                   Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
+    }
+}
+
+TEST_SUITE("addition of difference to state")
+{
+    TEST_CASE("scalar state and difference")
+    {
+        TimePoint t1 = TimePoint::seconds(1);
+        Duration const dt = Duration::seconds(1);
+        TimePoint const t2 = t1 + dt;
+        t1 += dt;
+        CHECK(t1 == TimePoint::seconds(2));
+        CHECK(t1 == Circa(t2));
+    }
+
+    TEST_CASE("linear state and difference")
+    {
+        Position p1 = Position::meters({.x = 1, .y = 2, .z = 3});
+        LinearDisplacement const dp = LinearDisplacement::meters({.x = 3, .y = 3, .z = 3});
+        Position const p2 = p1 + dp;
+        p1 += dp;
+        CHECK(p1 == Position::meters({.x = 4, .y = 5, .z = 6}));
+        CHECK(p1 == Circa(p2));
+    }
+
+    TEST_CASE("angular state and difference")
+    {
+        Orientation o1 = Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90});
+        AngularDisplacement const dori =
+            AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
+        Orientation const o2 = o1 + dori;
+        o1 += dori;
+        CHECK(o1 ==
+              Circa(Orientation::degrees(
+                  {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120})));
+        CHECK(o1 == Circa(o2));
+    }
+
+    TEST_CASE("spatial state and difference")
+    {
+        Pose pose1 = Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
+                          Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}));
+        SpatialDisplacement const dpose = SpatialDisplacement(
+            LinearDisplacement::meters({.x = 3, .y = 3, .z = 3}),
+            AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
+        Pose const pose2 = pose1 + dpose;
+        pose1 += dpose;
+        CHECK(pose1 ==
+              Circa(Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
+                         Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))));
+        CHECK(pose1 == Circa(pose2));
+    }
+}
+
+TEST_SUITE("subtraction of difference from state")
+{
+    TEST_CASE("scalar state and difference")
+    {
+        TimePoint t1 = TimePoint::seconds(2);
+        Duration const dt = Duration::seconds(1);
+        TimePoint const t2 = t1 - dt;
+        t1 -= dt;
+        CHECK(t1 == TimePoint::seconds(1));
+        CHECK(t1 == Circa(t2));
+    }
+
+    TEST_CASE("linear state and difference")
+    {
+        Position p1 = Position::meters({.x = 4, .y = 5, .z = 6});
+        LinearDisplacement const dp = LinearDisplacement::meters({.x = 3, .y = 3, .z = 3});
+        Position const p2 = p1 - dp;
+        p1 -= dp;
+        CHECK(p1 == Position::meters({.x = 1, .y = 2, .z = 3}));
+        CHECK(p1 == Circa(p2));
+    }
+
+    TEST_CASE("angular state and difference")
+    {
+        Orientation o1 = Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90});
+        AngularDisplacement const dori =
+            AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
+        Orientation const o2 = o1 - dori;
+        o1 -= dori;
+        CHECK(o1 == Circa(Orientation::degrees(
+                        {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = -1 / sqrt(3)},
+                         .angle = 120})));
+        CHECK(o1 == Circa(o2));
+    }
+
+    TEST_CASE("spatial state and difference")
+    {
+        Pose pose1 = Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
+                          Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
+        SpatialDisplacement const dpose = SpatialDisplacement(
+            LinearDisplacement::meters({.x = 3, .y = 3, .z = 3}),
+            AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
+        Pose const pose2 = pose1 - dpose;
+        pose1 -= dpose;
+        CHECK(pose1 ==
+              Circa(Pose(Position::meters({.x = 7, .y = 8, .z = 3}),
+                         Orientation::degrees(
+                             {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = -1 / sqrt(3)},
+                              .angle = 120}))));
+        CHECK(pose1 == Circa(pose2));
     }
 }
 
@@ -651,22 +757,20 @@ TEST_SUITE("inplace subtraction of state and difference")
             AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 50}));
         pose1 -= dpose;
         pose2 -= dpose2;
-        CHECK_MESSAGE(pose1 == Circa(Pose(
-                          Position::meters({.x = -2, .y = -1, .z = 0}),
-                          Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))),
+        CHECK_MESSAGE(pose1 == Circa(Pose(Position::meters({.x = -2, .y = -1, .z = 0}),
+                                          Orientation::degrees(
+                                              {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))),
                       pose1.to_string());
-        CHECK_MESSAGE(pose2 == Circa(Pose(
-                          Position::meters({.x = 4, .y = 5, .z = 6}),
-                          Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = -40}))),
+        CHECK_MESSAGE(pose2 == Circa(Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
+                                          Orientation::degrees(
+                                              {.axis = {.x = 1, .y = 0, .z = 0}, .angle = -40}))),
                       pose2.to_string());
-        CHECK((pose1 + dpose)
-                   == Circa(
-                      Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
-                           Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
-        CHECK((pose2 + dpose2)
-                   == Circa(
-                      Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
-                           Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
+        CHECK((pose1 + dpose) ==
+              Circa(Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
+        CHECK((pose2 + dpose2) ==
+              Circa(Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
     }
 }
 #ifdef QUANT_ENABLE_DIFFERENCE_ADDITION
@@ -695,8 +799,9 @@ TEST_SUITE("addition of difference and difference")
         auto const ad2 =
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
         auto const adsum = ad1 + ad2;
-        CHECK(adsum == Circa(AngularDisplacement::degrees(
-            {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120})));
+        CHECK(adsum ==
+              Circa(AngularDisplacement::degrees(
+                  {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120})));
         CHECK((adsum - ad2) == Circa(ad1));
     }
     TEST_CASE("spatial difference and difference")
@@ -708,13 +813,14 @@ TEST_SUITE("addition of difference and difference")
             LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}),
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         auto const sdsum = sd1 + sd2;
-        CHECK_MESSAGE(sdsum == Circa(SpatialDisplacement(
-                          LinearDisplacement::meters({.x = 5, .y = -4, .z = 8}),
-                          AngularDisplacement::degrees(
-                              {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)},
-                               .angle = 120}))),
+        CHECK_MESSAGE(sdsum ==
+                          Circa(SpatialDisplacement(
+                              LinearDisplacement::meters({.x = 5, .y = -4, .z = 8}),
+                              AngularDisplacement::degrees(
+                                  {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)},
+                                   .angle = 120}))),
                       sdsum.to_string());
-        CHECK((sdsum-sd2) == Circa(sd1));
+        CHECK((sdsum - sd2) == Circa(sd1));
     }
     TEST_CASE(
         "addition of difference added to state is the same as the difference added separately")
@@ -772,14 +878,18 @@ TEST_SUITE("addition of difference and difference")
     }
     TEST_CASE("addition is opposite of subtraction")
     {
-        auto test = [](const auto& state, const auto& diff)
+        auto test = [](auto const& state, auto const& diff)
         {
             auto const state_plus_diff = state + diff;
             auto const state_minus_diff = state - diff;
-            CHECK_MESSAGE((state_plus_diff - diff) == Circa(state), state.to_string(), diff.to_string());
-            CHECK_MESSAGE((state_minus_diff + diff) == Circa(state), state.to_string(), diff.to_string());
-            CHECK_MESSAGE((state + diff - diff) == Circa(state), state.to_string(), diff.to_string());
-            CHECK_MESSAGE((state - diff + diff) == Circa(state), state.to_string(), diff.to_string());
+            CHECK_MESSAGE(
+                (state_plus_diff - diff) == Circa(state), state.to_string(), diff.to_string());
+            CHECK_MESSAGE(
+                (state_minus_diff + diff) == Circa(state), state.to_string(), diff.to_string());
+            CHECK_MESSAGE(
+                (state + diff - diff) == Circa(state), state.to_string(), diff.to_string());
+            CHECK_MESSAGE(
+                (state - diff + diff) == Circa(state), state.to_string(), diff.to_string());
         };
     }
 }
@@ -810,10 +920,12 @@ TEST_SUITE("inplace addition of difference and difference")
         auto const ad2 =
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
         ad1 += ad2;
-        CHECK(ad1 == Circa(AngularDisplacement::degrees(
-            {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120})));
+        CHECK(ad1 ==
+              Circa(AngularDisplacement::degrees(
+                  {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120})));
         ad1 -= ad2;
-        CHECK(ad1 == Circa(AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
+        CHECK(ad1 ==
+              Circa(AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
     }
     TEST_CASE("spatial difference and difference")
     {
@@ -825,14 +937,15 @@ TEST_SUITE("inplace addition of difference and difference")
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         sd1 += sd2;
         CHECK(sd1 == Circa(SpatialDisplacement(
-            LinearDisplacement::meters({.x = 5, .y = -4, .z = 8}),
-            AngularDisplacement::degrees(
-                {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120}))));
+                         LinearDisplacement::meters({.x = 5, .y = -4, .z = 8}),
+                         AngularDisplacement::degrees(
+                             {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)},
+                              .angle = 120}))));
         sd1 -= sd2;
-        CHECK(sd1 == Circa(SpatialDisplacement(
-            LinearDisplacement::meters({.x = 1, .y = 2, .z = 3}),
-            AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
-
+        CHECK(sd1 ==
+              Circa(SpatialDisplacement(
+                  LinearDisplacement::meters({.x = 1, .y = 2, .z = 3}),
+                  AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
     }
 }
 
@@ -859,8 +972,9 @@ TEST_SUITE("subtraction of difference and difference")
         AngularDisplacement const ad2 =
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
         AngularDisplacement const adsub = ad1 - ad2;
-        CHECK(adsub == Circa(
-            AngularDisplacement::degrees({.axis = {.x = 1/sqrt(3), .y = -1/sqrt(3), .z = -1/sqrt(3)}, .angle = 120})));
+        CHECK(adsub == Circa(AngularDisplacement::degrees(
+                           {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = -1 / sqrt(3)},
+                            .angle = 120})));
     }
     TEST_CASE("spatial difference and difference")
     {
@@ -872,11 +986,14 @@ TEST_SUITE("subtraction of difference and difference")
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         SpatialDisplacement const sdsub = sd1 - sd2;
         CHECK(sdsub == Circa(SpatialDisplacement(
-            LinearDisplacement::meters({.x = 7, .y = 6, .z = -2}),
-            AngularDisplacement::degrees({.axis = {.x = 1/sqrt(3), .y = -1/sqrt(3), .z = -1/sqrt(3)}, .angle = 120}))));
+                           LinearDisplacement::meters({.x = 7, .y = 6, .z = -2}),
+                           AngularDisplacement::degrees(
+                               {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = -1 / sqrt(3)},
+                                .angle = 120}))));
     }
     // TODO: This doesn't work as I would expect it to
-    // TEST_CASE("subtraction of difference subtracted from state is the same as the difference added "
+    // TEST_CASE("subtraction of difference subtracted from state is the same as the difference
+    // added "
     //           "separately")
     // {
     //     auto test = [](auto const& state, auto const& diff1, auto const& diff2)
@@ -945,8 +1062,9 @@ TEST_SUITE("inplace subtraction of difference and difference")
         AngularDisplacement const ad2 =
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90});
         ad1 -= ad2;
-        CHECK(ad1 == Circa(
-            AngularDisplacement::degrees({.axis = {.x = 1/sqrt(3), .y = -1/sqrt(3), .z = -1/sqrt(3)}, .angle = 120})));
+        CHECK(ad1 == Circa(AngularDisplacement::degrees(
+                         {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = -1 / sqrt(3)},
+                          .angle = 120})));
     }
     TEST_CASE("spatial difference and difference")
     {
@@ -958,8 +1076,10 @@ TEST_SUITE("inplace subtraction of difference and difference")
             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         sd1 -= sd2;
         CHECK(sd1 == Circa(SpatialDisplacement(
-            LinearDisplacement::meters({.x = 7, .y = 6, .z = -2}),
-            AngularDisplacement::degrees({.axis = {.x = 1/sqrt(3), .y = -1/sqrt(3), .z = -1/sqrt(3)}, .angle = 120}))));
+                         LinearDisplacement::meters({.x = 7, .y = 6, .z = -2}),
+                         AngularDisplacement::degrees(
+                             {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = -1 / sqrt(3)},
+                              .angle = 120}))));
     }
 }
 #endif

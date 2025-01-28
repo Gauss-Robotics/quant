@@ -8,15 +8,14 @@ namespace quant::framed_units::position
 {
 
     inline LinearDisplacement
-    ld_basis_change(LinearDisplacement const& ld,
-                    framed_geometry::BaseChange const& transform)
+    ld_basis_change(LinearDisplacement const& ld, framed_geometry::BaseChange const& transform)
     {
         using LDAccessor = geometry::detail::DifferenceAccessor<LinearDisplacement>;
         using AngularAccessor =
-            geometry::detail::DifferenceAccessor<AngularDisplacement>;
-        return LDAccessor::make(
-            AngularAccessor::representation(transform.transformation.angular()) *
-            LDAccessor::representation(ld));
+            geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>;
+        auto const R = AngularAccessor::representation(transform.transformation.angular());
+        auto const d = LDAccessor::representation(ld);
+        return LDAccessor::make(R.inverse() * d);
     }
 
     class LinearDisplacement : public FramedDifference<units::position::LinearDisplacement>

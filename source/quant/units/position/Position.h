@@ -60,7 +60,7 @@ namespace quant::units::position
             return to_millimeters().to_string();
         }
 
-        using geometry::LinearState<Position>::LinearState;
+        using LinearState::LinearState;
     };
 
     inline std::ostream&
