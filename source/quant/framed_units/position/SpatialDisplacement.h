@@ -12,10 +12,11 @@ namespace quant::framed_units::position
     {
         // Corresponds to the left + operator and is NOT the same as sd + transform, because here
         // the transform is in the "global" or base frame
-        using TransformAccessor = geometry::detail::DifferenceAccessor<units::position::SpatialDisplacement>;
-        return TransformAccessor::make(
-            TransformAccessor::representation(transform.transformation) *
-            TransformAccessor::representation(sd));
+        using TransformAccessor =
+            geometry::detail::DifferenceAccessor<units::position::SpatialDisplacement>;
+        auto const T = TransformAccessor::representation(transform.transformation);
+        auto const dP = TransformAccessor::representation(sd);
+        return TransformAccessor::make(T.inverse() * dP);
     }
 
     class SpatialDisplacement : public FramedDifference<units::position::SpatialDisplacement>

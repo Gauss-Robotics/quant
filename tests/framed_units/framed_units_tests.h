@@ -84,7 +84,8 @@ TEST_SUITE("testing framed position domain")
 
             CHECK(f2.get_name() == name);
             CHECK(f2.get_base_frame() == to_frame);
-            CHECK(f2.get_framed_object() == Circa(Position::millimeters({.x = -2, .y = 0, .z = 2})));
+            CHECK(f2.get_framed_object() ==
+                  Circa(Position::millimeters({.x = -2, .y = 0, .z = 2})));
         }
 
         SUBCASE("base change - rotation")
@@ -159,8 +160,8 @@ TEST_SUITE("testing framed position domain")
         {
             FramedPosition const position{Position::millimeters({.x = 1, .y = 2, .z = 3}),
                                           {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedLinearDisplacement const ld{LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                                        "ARMAR-6::RobotRoot"};
+            FramedLinearDisplacement const ld{
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}), "ARMAR-6::RobotRoot"};
             FramedLinearDisplacement const ld_wrong_frame{
                 LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}), "ARMAR-6::PlatformBase"};
 
@@ -367,18 +368,25 @@ TEST_SUITE("testing framed position domain")
             //           {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)},
             //            .angle = 120})));
 
-            auto r1 = FramedOrientation(Orientation::radians(Eigen::Quaterniond(1, 0, 0, 0)), {.name = name, .base_frame = from_frame});
-            auto r2 = FramedOrientation(Orientation::radians(Eigen::Quaterniond(sqrt(2) / 2, sqrt(2) / 2, 0, 0)), {.name = name, .base_frame = from_frame});
-            auto r1_p = FramedOrientation(Orientation::radians(Eigen::Quaterniond(- sqrt(2) / 2, 0, 0, sqrt(2) / 2)), {.name = name, .base_frame = to_frame});
-            auto r2_p = FramedOrientation(Orientation::radians(Eigen::Quaterniond(0.5, 0.5, -0.5, -0.5)), {.name = name, .base_frame = to_frame});
-            BaseChange const trans{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::radians(Eigen::Quaterniond(sqrt(2) / 2, 0, 0, sqrt(2) / 2)))};
-            CHECK(trans*r1 == Circa(r1_p));
-            CHECK(trans*r2 == Circa(r2_p));
+            auto r1 = FramedOrientation(Orientation::radians(Eigen::Quaterniond(1, 0, 0, 0)),
+                                        {.name = name, .base_frame = from_frame});
+            auto r2 = FramedOrientation(
+                Orientation::radians(Eigen::Quaterniond(sqrt(2) / 2, sqrt(2) / 2, 0, 0)),
+                {.name = name, .base_frame = from_frame});
+            auto r1_p = FramedOrientation(
+                Orientation::radians(Eigen::Quaterniond(-sqrt(2) / 2, 0, 0, sqrt(2) / 2)),
+                {.name = name, .base_frame = to_frame});
+            auto r2_p =
+                FramedOrientation(Orientation::radians(Eigen::Quaterniond(0.5, 0.5, -0.5, -0.5)),
+                                  {.name = name, .base_frame = to_frame});
+            BaseChange const trans{.from_frame = from_frame,
+                                   .to_frame = to_frame,
+                                   .transformation = SpatialDisplacement(
+                                       LinearDisplacement::zero(),
+                                       AngularDisplacement::radians(
+                                           Eigen::Quaterniond(sqrt(2) / 2, 0, 0, sqrt(2) / 2)))};
+            CHECK(trans * r1 == Circa(r1_p));
+            CHECK(trans * r2 == Circa(r2_p));
         }
     }
 
@@ -534,13 +542,163 @@ TEST_SUITE("testing framed position domain")
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
                     AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}))};
-            const auto o1_new = bc * o1;
-            const auto o2_new = bc * o2;
-            const auto ad_new = o2_new - o1_new;
+            auto const o1_new = bc * o1;
+            auto const o2_new = bc * o2;
+            auto const ad_new = o2_new - o1_new;
             INFO("o1: ", o1, " o2: ", o2, " ad: ", ad);
             INFO("o1': ", o1_new, " o2': ", o2_new, " ad': ", ad_new);
             CHECK((bc * ad) == Circa(ad_new));
             CHECK(o1_new + (bc * ad) == Circa(o2_new));
         }
+    }
+}
+
+TEST_CASE("testing framed poses")
+{
+    SUBCASE("construction")
+    {
+        FramedPose const f1{
+            Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                 Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+            {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
+        FramedPose const f2{};
+        FramedPose const f3{f1};
+
+        CHECK(f1.get_name() == "TCP");
+        CHECK(f1.get_base_frame() == "ARMAR-6::RobotRoot");
+        CHECK(f1.get_framed_object() ==
+              Circa(Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
+
+        CHECK(f2.get_name() == "::");
+        CHECK(f2.get_base_frame() == "::");
+        CHECK(f2.get_framed_object() == Circa(Pose::zero()));
+
+        CHECK(f3.get_name() == "TCP");
+        CHECK(f3.get_base_frame() == "ARMAR-6::RobotRoot");
+        CHECK(f3.get_framed_object() ==
+              Circa(Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
+    }
+
+    SUBCASE("subtraction")
+    {
+        FramedPose const f1{
+            Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                 Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+            {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
+        FramedPose const f2{
+            Pose(Position::millimeters({.x = 4, .y = 5, .z = 6}),
+                 Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90})),
+            {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
+
+        auto const diff = f2 - f1;
+
+        CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+        CHECK(diff.get_framed_object() ==
+              Circa(SpatialDisplacement(
+                  LinearDisplacement::millimeters({.x = 3, .y = 3, .z = -3}),
+                  AngularDisplacement::degrees(
+                      {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)},
+                       .angle = 120}))));
+    }
+
+    SUBCASE("base change - wrong frames")
+    {
+        std::string const from_frame = "ARMAR-6::RobotRoot";
+        std::string const to_frame = "ARMAR-6::TCP_R";
+        std::string const name = "TCP";
+        FramedPose const f1{
+            Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                 Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+            {.name = name, .base_frame = from_frame}};
+
+        BaseChange const bc{
+            .from_frame = "something else",
+            .to_frame = to_frame,
+            .transformation = SpatialDisplacement(
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+        std::string const exception_message =
+            "Frame mismatch: something else vs " + std::string(from_frame);
+        CHECK_THROWS_WITH(bc * f1, exception_message.c_str());
+    }
+
+    SUBCASE("base change - linear")
+    {
+        std::string const from_frame = "ARMAR-6::RobotRoot";
+        std::string const to_frame = "ARMAR-6::TCP_R";
+        std::string const name = "TCP";
+        FramedPose const f1{
+            Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                 Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+            {.name = name, .base_frame = from_frame}};
+
+        BaseChange const bc{
+            .from_frame = from_frame,
+            .to_frame = to_frame,
+            .transformation = SpatialDisplacement(
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+
+        auto f2 = bc * f1;
+
+        CHECK(f2.get_name() == name);
+        CHECK(f2.get_base_frame() == to_frame);
+        CHECK(f2.get_framed_object() ==
+              Circa(Pose(Position::millimeters({.x = -2, .y = 0, .z = 2}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
+    }
+
+    SUBCASE("base change - rotation")
+    {
+        std::string const from_frame = "ARMAR-6::RobotRoot";
+        std::string const to_frame = "ARMAR-6::TCP_R";
+        std::string const name = "TCP";
+        FramedPose const f1{
+            Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                 Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+            {.name = name, .base_frame = from_frame}};
+
+        BaseChange const bc{
+            .from_frame = from_frame,
+            .to_frame = to_frame,
+            .transformation = SpatialDisplacement(
+                LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+
+        auto f2 = bc * f1;
+
+        CHECK(f2.get_name() == name);
+        CHECK(f2.get_base_frame() == to_frame);
+        CHECK(f2.get_framed_object() ==
+              Circa(Pose(Position::millimeters({.x = 1, .y = 3, .z = -2}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))));
+    }
+
+    SUBCASE("base change - transform")
+    {
+        std::string const from_frame = "ARMAR-6::RobotRoot";
+        std::string const to_frame = "ARMAR-6::TCP_R";
+        std::string const name = "TCP";
+        FramedPose const f1{
+            Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                 Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+            {.name = name, .base_frame = from_frame}};
+
+        BaseChange const bc{
+            .from_frame = from_frame,
+            .to_frame = to_frame,
+            .transformation = SpatialDisplacement(
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+
+        auto f2 = bc * f1;
+
+        CHECK(f2.get_name() == name);
+        CHECK(f2.get_base_frame() == to_frame);
+        CHECK(f2.get_framed_object() ==
+              Circa(Pose(Position::millimeters({.x = -2, .y = 2, .z = 0}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))));
     }
 }
