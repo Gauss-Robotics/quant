@@ -197,10 +197,13 @@ namespace quant::framed_geometry
     /**
      * @brief State difference operator.
      *
+     * Note that this behaves inconsistent between flat and curved space. In flat space,
+     *
      * @param lhs
      * @param rhs
      * @return
      */
+
     template <typename StateType>
         requires traits::state<StateType>
     traits::framed_type_of<traits::difference_type_of<StateType>>
@@ -212,7 +215,18 @@ namespace quant::framed_geometry
             throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
         }
 #endif
-
+        /**
+         * This is actually not entirely true: The difference of two states (at least in curved space) is always
+         * expressed in the local frame of the state that is subtracted (i.e., rhs). This is due to the convention of
+         * using the right plus and minus operators.
+         *
+         * However, the base frame of a difference is not the same "type of frame" as mentioned above. It is simply a
+         * check, whether a state and difference can be combined. For orientations and poses, this doesn't matter
+         * because the difference does not change with a frame change, however, for positions it does indeed change.
+         *
+         * Therefore, here we go with the conservative approach and only allow differences to be added to states, if
+         * they are in the same frame (in the sense of the base frame name).
+         **/
         return traits::framed_type_of<traits::difference_type_of<StateType>>(
             lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_base_frame());
     }
@@ -242,5 +256,13 @@ namespace quant::framed_geometry
         return traits::framed_type_of<StateType>(
             state.get_framed_object() + difference.get_framed_object(),
             {.name = state.get_name(), .base_frame = state.get_base_frame()});
+    }
+
+    template <typename FramedT>
+        requires traits::framed_state<FramedT>
+    std::ostream&
+    operator<<(std::ostream& os, FramedT const& rhs)
+    {
+        return os << rhs.to_string();
     }
 }  // namespace quant::framed_geometry

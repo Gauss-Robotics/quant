@@ -105,6 +105,10 @@ namespace quant::framed_geometry
     private:
         /**
          * @brief Name of the base frame of the held geometric object.
+         *
+         * This is not the same thing as a tangent space at a point in a manifold, but rather the frame in which
+         * two states have been subtracted. It is only used to ascertain that a difference is allowed to be added to
+         * a certain framed state.
          */
         const_size_string _base_frame_name;
 
