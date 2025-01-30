@@ -3,8 +3,10 @@
 #include <quant/geometry/Vector.h>
 #include <quant/geometry/forward_declarations.h>
 
+#include <Eigen/Core>
 #include <Eigen/Geometry>
 
+#include <cmath>
 #include <sstream>
 #include <string>
 
@@ -58,7 +60,7 @@ namespace quant::geometry
         Eigen::AngleAxisd
         to_eigen() const
         {
-            return {angle, axis.to_eigen()};
+            return {angle, axis.to_eigen().normalized()};
         }
 
         std::string

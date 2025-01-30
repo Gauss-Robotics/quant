@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/AngularState.h>
+#include <quant/geometry/AngularIsometricState.h>
 #include <quant/geometry/SpatialState.h>
 #include <quant/units/acceleration/forward_declarations.h>
 

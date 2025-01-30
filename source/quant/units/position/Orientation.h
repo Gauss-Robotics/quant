@@ -1,9 +1,9 @@
 #pragma once
 
-#include <quant/geometry/AngularState.h>
+#include <quant/geometry/AngularIsometricState.h>
 #include <quant/units/AxisAngle.h>
-#include <quant/units/position/constants.h>
 #include <quant/units/angle/constants.h>
+#include <quant/units/position/constants.h>
 #include <quant/units/position/forward_declarations.h>
 
 #include <ostream>
@@ -11,57 +11,31 @@
 namespace quant::units::position
 {
 
-    class Orientation : public geometry::AngularState<Orientation>
+    class Orientation : public geometry::AngularIsometricState<Orientation>
     {
     public:
         static Orientation
-        radians(geometry::AxisAngle const& aa)
-        {
-            return {aa};
-        }
+        radians(geometry::AxisAngle const& aa);
         static Orientation
-        radians(Eigen::Quaterniond const& q)
-        {
-            return {q};
-        }
+        radians(Eigen::Quaterniond const& q);
         static Orientation
-        degrees(geometry::AxisAngle const& aa)
-        {
-            return radians(aa * angle::constants::deg2rad);
-        }
+        degrees(geometry::AxisAngle const& aa);
         static Orientation
-        degrees(Eigen::Quaterniond const& q)
-        {
-            return radians(q);
-        }
+        degrees(Eigen::Quaterniond const& q);
 
         AxisAngle
-        to_radians() const
-        {
-            return {to_axis_angle(), constants::names::orientation, constants::symbols::radians};
-        }
+        to_radians() const;
 
         AxisAngle
-        to_degrees() const
-        {
-            return {to_axis_angle() * angle::constants::rad2deg,
-                    constants::names::orientation,
-                    constants::symbols::degrees};
-        }
+        to_degrees() const;
 
         std::string
-        to_string() const
-        {
-            return to_degrees().to_string();
-        }
+        to_string() const;
 
-        using AngularState::AngularState;
+        using AngularIsometricState::AngularIsometricState;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& out, Orientation const& rhs)
-    {
-        return out << rhs.to_degrees();
-    }
+    std::ostream&
+    operator<<(std::ostream& out, Orientation const& rhs);
 
 }  // namespace quant::units::position

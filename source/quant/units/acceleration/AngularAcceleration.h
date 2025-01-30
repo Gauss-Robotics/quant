@@ -57,7 +57,7 @@ namespace quant::units::acceleration
             return to_degrees_per_second_squared().to_string();
         }
 
-        using geometry::AngularState<AngularAcceleration>::AngularState;
+        using AngularState::AngularState;
     };
 
     inline std::ostream&

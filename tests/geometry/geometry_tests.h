@@ -1083,3 +1083,49 @@ TEST_SUITE("inplace subtraction of difference and difference")
     }
 }
 #endif
+
+TEST_SUITE("Test angular state and its difference for SO3 and others")
+{
+    TEST_CASE("orientations can only have an angle between 0 and 360 degrees")
+    {
+        auto test = [](double angle)
+        {
+            auto const aa = AxisAngle{.axis = Vector::from_eigen(Eigen::Vector3d::Random() * 2000 -
+                                                                 Eigen::Vector3d::Constant(1000)),
+                                      .angle = angle};
+            auto const eigen = aa.to_eigen();
+            auto const ori = Orientation::degrees(aa);
+            CHECK(ori.to_degrees().angle >= 0);
+            CHECK(ori.to_degrees().angle < 360);
+            CHECK(ori.to_degrees().axis.norm() == doctest::Approx(1));
+        };
+        test(0);
+        test(90);
+        test(360);
+        test(720);
+        test(-360);
+        test(-720);
+    }
+
+    TEST_CASE("angular differences can have more than 360 degrees")
+    {
+        auto test = [](double angle)
+        {
+            auto const aa = AxisAngle{.axis = Vector::from_eigen(Eigen::Vector3d::Random() * 2000 -
+                                                                 Eigen::Vector3d::Constant(1000)),
+                                      .angle = angle};
+            auto const ad = AngularDisplacement::degrees(aa);
+            auto const avd = AngularVelocityDifference::degrees_per_second(aa);
+            CHECK(ad.to_degrees().angle == doctest::Approx(angle));
+            CHECK(ad.to_degrees().axis.norm() == doctest::Approx(1));
+            CHECK(avd.to_degrees_per_second().angle == doctest::Approx(angle));
+            CHECK(avd.to_degrees_per_second().axis.norm() == doctest::Approx(1));
+        };
+        test(0);
+        test(90);
+        test(360);
+        test(720);
+        test(-360);
+        test(-720);
+    }
+}

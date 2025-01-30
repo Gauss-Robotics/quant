@@ -12,7 +12,24 @@ namespace quant::units::velocity
     {
 
     public:
-        using geometry::Difference<AngularVelocity>::Difference;
+        static AngularVelocityDifference
+        radians_per_second(geometry::AxisAngle const& aa);
+
+        static AngularVelocityDifference
+        degrees_per_second(geometry::AxisAngle const& aa);
+
+        AxisAngle
+        to_radians_per_second() const;
+
+        AxisAngle
+        to_degrees_per_second() const;
+
+        std::string to_string() const;
+
+        using Difference::Difference;
     };
+
+    std::ostream&
+    operator<<(std::ostream& os, AngularVelocityDifference const& rhs);
 
 }  // namespace quant::units::velocity

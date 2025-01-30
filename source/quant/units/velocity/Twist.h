@@ -14,7 +14,10 @@ namespace quant::units::velocity
     class Twist : public geometry::SpatialState<Twist>
     {
     public:
-        using geometry::SpatialState<Twist>::SpatialState;
+        using SpatialState::SpatialState;
     };
+
+    std::ostream&
+    operator<<(std::ostream& os, Twist const& rhs);
 
 }  // namespace quant::units::velocity

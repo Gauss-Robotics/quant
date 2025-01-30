@@ -235,7 +235,8 @@ namespace quant::geometry
         using Difference = detail::DifferenceAccessor<DifferenceType>;
 
         // Manifold Right Plus
-        return State::make(State::representation(lhs) * Difference::representation(rhs));
+        return State::make(static_cast<typename StateType::GeometricRepresentationType>(
+            State::representation(lhs) * Difference::representation(rhs)));
     }
 
     /**

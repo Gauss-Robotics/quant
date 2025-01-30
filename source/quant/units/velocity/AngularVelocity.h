@@ -2,12 +2,15 @@
 
 #include <quant/geometry/AngularState.h>
 #include <quant/units/AxisAngle.h>
+#include <quant/units/angle/constants.h>
 #include <quant/units/velocity/constants.h>
 #include <quant/units/velocity/forward_declarations.h>
 
 #include <Eigen/Geometry>
 
 #include <ostream>
+
+#include "quant/units/angular_speed/AngularSpeed.h"
 
 namespace quant::units::velocity
 {
@@ -16,28 +19,29 @@ namespace quant::units::velocity
     {
     public:
         static AngularVelocity
-        radians_per_second(geometry::AxisAngle const& aa)
-        {
-            return {aa};
-        }
+        radians_per_second(geometry::AxisAngle const& aa);
+
+        static AngularVelocity
+        degrees_per_second(geometry::AxisAngle const& aa);
 
         // Convert.
 
         AxisAngle
-        to_radians_per_second() const
-        {
-            return {to_axis_angle(),
-                    constants::names::angular_velocity,
-                    constants::symbols::radians_per_second};
-        }
+        to_radians_per_second() const;
 
-        using geometry::AngularState<AngularVelocity>::AngularState;
+        AxisAngle
+        to_degrees_per_second() const;
+
+        AngularSpeed
+        to_angular_speed() const;
+
+        std::string
+        to_string() const;
+
+        using AngularState::AngularState;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& out, AngularVelocity const& rhs)
-    {
-        return out << rhs.to_radians_per_second();
-    }
+    std::ostream&
+    operator<<(std::ostream& out, AngularVelocity const& rhs);
 
 }  // namespace quant::units::velocity

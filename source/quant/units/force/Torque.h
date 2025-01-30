@@ -28,7 +28,7 @@ namespace quant::units::force
             return {to_axis_angle(), constants::names::torque, constants::symbols::newton_meters};
         }
 
-        using geometry::AngularState<Torque>::AngularState;
+        using AngularState::AngularState;
     };
 
     inline std::ostream&

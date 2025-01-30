@@ -1,6 +1,7 @@
 #pragma once
 
 #include <concepts>
+#include <cstdint>
 #include <type_traits>
 
 namespace quant::geometry
@@ -15,6 +16,9 @@ namespace quant::geometry
 
     template <typename BaseQuantityT>
     class LinearState;
+
+    template <typename BaseQuantityT>
+    class AngularIsometricState;
 
     template <typename BaseQuantityT>
     class AngularState;

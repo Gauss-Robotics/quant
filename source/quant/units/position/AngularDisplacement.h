@@ -14,47 +14,26 @@ namespace quant::units::position
 
     public:
         static AngularDisplacement
-        radians(geometry::AxisAngle const& aa)
-        {
-            return AngularDisplacement{Orientation::radians(aa)};
-        }
+        radians(geometry::AxisAngle const& aa);
 
         static AngularDisplacement
-        degrees(geometry::AxisAngle const& aa)
-        {
-            return AngularDisplacement{Orientation::degrees(aa)};
-        }
+        degrees(geometry::AxisAngle const& aa);
 
         static AngularDisplacement
-        radians(Eigen::Quaterniond const& q)
-        {
-            return AngularDisplacement{Orientation::radians(q)};
-        }
+        radians(Eigen::Quaterniond const& q);
 
         static AngularDisplacement
-        degrees(Eigen::Quaterniond const& q)
-        {
-            return AngularDisplacement{Orientation::degrees(q)};
-        }
+        degrees(Eigen::Quaterniond const& q);
 
-        units::AxisAngle
-        to_radians() const
-        {
-            return _difference_object.to_radians();
-        }
+        AxisAngle
+        to_radians() const;
 
-        units::AxisAngle
-        to_degrees() const
-        {
-            return _difference_object.to_degrees();
-        }
-        using geometry::Difference<Orientation>::Difference;
+        AxisAngle
+        to_degrees() const;
+        using Difference::Difference;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& os, AngularDisplacement const& rhs)
-    {
-        return os << rhs.to_degrees();
-    }
+    std::ostream&
+    operator<<(std::ostream& os, AngularDisplacement const& rhs);
 
 }  // namespace quant::units::position

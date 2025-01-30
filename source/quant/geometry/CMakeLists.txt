@@ -19,8 +19,8 @@ add_library(geometry SHARED
     ScalarState.cpp
     LinearState.h
     LinearState.cpp
-    AngularState.h
-    AngularState.cpp
+        AngularIsometricState.h
+        AngularIsometricState.cpp
     SpatialState.h
     SpatialState.cpp
     SpatialIsometricState.h

@@ -33,11 +33,15 @@ add_library(units SHARED
     position/Position.h
     position/Position.cpp
     position/Orientation.h
+    position/Orientation.cpp
     position/Pose.h
     position/Pose.cpp
     position/LinearDisplacement.h
+    position/LinearDisplacement.cpp
     position/AngularDisplacement.h
+    position/AngularDisplacement.cpp
     position/SpatialDisplacement.h
+    position/SpatialDisplacement.cpp
 
     velocity.h
     velocity/forward_declarations.h
@@ -49,8 +53,11 @@ add_library(units SHARED
     velocity/Twist.h
     velocity/Twist.cpp
     velocity/LinearVelocityDifference.h
+    velocity/LinearVelocityDifference.cpp
     velocity/AngularVelocityDifference.h
+    velocity/AngularVelocityDifference.cpp
     velocity/TwistDifference.h
+    velocity/TwistDifference.cpp
 
     acceleration.h
     acceleration/forward_declarations.h
@@ -88,6 +95,7 @@ add_library(units SHARED
     speed/Speed.h
     speed/Speed.cpp
     speed/SpeedDifference.h
+    speed/SpeedDifference.cpp
 
     mass.h
     mass/forward_declarations.h
