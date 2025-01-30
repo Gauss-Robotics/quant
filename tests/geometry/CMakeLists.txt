@@ -7,4 +7,5 @@ target_link_libraries(test_geometry
     PUBLIC
         doctest::doctest
         quant::geometry
+        quant::units
 )

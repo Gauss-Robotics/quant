@@ -29,14 +29,20 @@ add_library(framed_units SHARED
         position/AngularDisplacement.h
         position/SpatialDisplacement.h
 
-        #velocity.h
-    #velocity_fwd.h
-    #velocity/LinearVelocity.h
-    #velocity/LinearVelocity.cpp
-    #velocity/AngularVelocity.h
-    #velocity/AngularVelocity.cpp
-    #velocity/Twist.h
-    #velocity/Twist.cpp
+        velocity.h
+        velocity/forward_declarations.h
+        velocity/LinearVelocity.h
+        velocity/LinearVelocity.cpp
+        velocity/AngularVelocity.h
+        velocity/AngularVelocity.cpp
+        velocity/Twist.h
+        velocity/Twist.cpp
+        velocity/LinearVelocityDifference.h
+        velocity/LinearVelocityDifference.cpp
+        velocity/AngularVelocityDifference.h
+        velocity/AngularVelocityDifference.cpp
+        velocity/TwistDifference.h
+        velocity/TwistDifference.cpp
 
     #acceleration.h
     #acceleration_fwd.h
