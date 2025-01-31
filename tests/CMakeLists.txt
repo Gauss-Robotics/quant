@@ -10,7 +10,8 @@ add_executable(test_all
     geometry/geometry_tests.h
     units/units_tests.h
     framed_geometry/framed_geometry_tests.h
-    framed_units/framed_units_tests.h
+    framed_units/framed_position_tests.h
+    framed_units/framed_velocity_tests.h
 )
 
 target_link_libraries(test_all

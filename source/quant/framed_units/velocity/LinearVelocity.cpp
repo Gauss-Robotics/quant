@@ -13,9 +13,12 @@ namespace quant::framed_units::velocity
 
     units::velocity::LinearVelocity
     base_change::linear_velocity(units::velocity::LinearVelocity const& av,
-                                  framed_geometry::BaseChange const&)
+                                 framed_geometry::BaseChange const& bc)
     {
-        return av;
+        using Angular = geometry::detail::DifferenceAccessor<AngularDisplacement>;
+        using Linear = geometry::detail::StateAccessor<units::velocity::LinearVelocity>;
+        auto const R = Angular::representation(bc.transformation.angular());
+        return Linear::make(R.inverse() * Linear::representation(av));
     }
 
 }  // namespace quant::framed_units::velocity

@@ -162,7 +162,8 @@ namespace quant::geometry
         using State = detail::StateAccessor<StateType>;
         using Difference = detail::DifferenceAccessor<traits::difference_type_of<StateType>>;
 
-        return Difference::make(State::representation(rhs).inverse() * State::representation(lhs));
+        return Difference::make(static_cast<typename StateType::GeometricRepresentationType>(
+            State::representation(rhs).inverse() * State::representation(lhs)));
     }
 
     /**

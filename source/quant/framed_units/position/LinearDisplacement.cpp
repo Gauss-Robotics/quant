@@ -1,12 +1,17 @@
 #include "LinearDisplacement.h"
+
 #include <quant/framed_geometry/BaseChange.h>
+#include <quant/geometry/detail/DifferenceAccessor.h>
+#include <quant/units/position/AngularDisplacement.h>
 #include <quant/units/position/LinearDisplacement.h>
+
+#include <ostream>
 
 namespace quant::framed_units::position
 {
 
-    quant::LinearDisplacement
-    ld_basis_change(quant::LinearDisplacement const& ld,
+    units::position::LinearDisplacement
+    ld_basis_change(units::position::LinearDisplacement const& ld,
                     framed_geometry::BaseChange const& transform)
     {
         using LDAccessor =

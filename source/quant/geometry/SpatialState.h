@@ -69,6 +69,13 @@ namespace quant::geometry
             return "[" + _linear.to_string() + ", " + _angular.to_string() + "]";
         }
 
+        bool is_approx(StateType const& rhs,
+                       double const tolerance = Eigen::NumTraits<double>::dummy_precision()) const
+        {
+            return _linear.is_approx(rhs._linear, tolerance) &&
+                   _angular.is_approx(rhs._angular, tolerance);
+        }
+
     protected:
         // GeometricRepresentationType _representation; TODO: do we need this?
         LinearStateType _linear;
