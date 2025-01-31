@@ -19,4 +19,5 @@ target_link_libraries(test_all
         quant::geometry
         quant::units
         quant::framed_geometry
+        quant::framed_units
 )

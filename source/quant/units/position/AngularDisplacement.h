@@ -11,7 +11,6 @@ namespace quant::units::position
 
     class AngularDisplacement : public geometry::Difference<Orientation>
     {
-
     public:
         static AngularDisplacement
         radians(geometry::AxisAngle const& aa);
@@ -30,6 +29,7 @@ namespace quant::units::position
 
         AxisAngle
         to_degrees() const;
+
         using Difference::Difference;
     };
 

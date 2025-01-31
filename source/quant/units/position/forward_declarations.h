@@ -1,6 +1,7 @@
 #pragma once
 
 #include <quant/geometry/forward_declarations.h>
+#include <quant/units/position/forward_declarations.h>
 
 namespace quant::units::position
 {

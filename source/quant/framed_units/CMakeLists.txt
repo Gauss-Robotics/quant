@@ -20,16 +20,20 @@ add_library(framed_units SHARED
         #time/measurement/Clock.cpp
 
     position.h
-    position/forward_declarations.h
-        position/Position.h
-        position/Position.cpp
-        position/Orientation.h
-        position/Pose.h
-        position/LinearDisplacement.h
+        position/forward_declarations.h
+        position/AngularDisplacement.cpp
         position/AngularDisplacement.h
-        position/SpatialDisplacement.h
+        position/LinearDisplacement.cpp
+        position/LinearDisplacement.h
+        position/Orientation.cpp
+        position/Orientation.h
+        position/Pose.cpp
+        position/Pose.h
+        position/Position.cpp
+        position/Position.h
+        position/SpatialDisplacement.cpp
 
-        velocity.h
+    velocity.h
         velocity/forward_declarations.h
         velocity/LinearVelocity.h
         velocity/LinearVelocity.cpp

@@ -16,10 +16,13 @@ namespace quant::units::position
     public:
         static Orientation
         radians(geometry::AxisAngle const& aa);
+
         static Orientation
         radians(Eigen::Quaterniond const& q);
+
         static Orientation
         degrees(geometry::AxisAngle const& aa);
+
         static Orientation
         degrees(Eigen::Quaterniond const& q);
 
