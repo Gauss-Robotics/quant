@@ -1,8 +1,8 @@
 #pragma once
 
-#include <quant/geometry/AngularIsometricState.h>
 #include <quant/geometry/SpatialState.h>
-#include <quant/units/acceleration/forward_declarations.h>
+#include <quant/units/acceleration/AngularAcceleration.h>
+#include <quant/units/acceleration/LinearAcceleration.h>
 
 #include <Eigen/Geometry>
 
@@ -18,10 +18,7 @@ namespace quant::units::acceleration
         using geometry::SpatialState<SpatialAcceleration>::SpatialState;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& out, SpatialAcceleration const& rhs)
-    {
-        return out << rhs.to_string();
-    }
+    std::ostream&
+    operator<<(std::ostream& out, SpatialAcceleration const& rhs);
 
 }  // namespace quant::units::acceleration

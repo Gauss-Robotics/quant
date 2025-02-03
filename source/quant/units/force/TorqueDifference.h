@@ -13,12 +13,12 @@ namespace quant::units::force
 
     public:
         static TorqueDifference
-        newton_meters(AxisAngle const& aa)
-        {
-            return TorqueDifference{Torque::newton_meters(aa)};
-        }
+        newton_meters(AxisAngle const& aa);
 
-        using geometry::Difference<Torque>::Difference;
+        using Difference::Difference;
     };
+
+    std::ostream&
+    operator<<(std::ostream& out, TorqueDifference const& rhs);
 
 }  // namespace quant::units::force

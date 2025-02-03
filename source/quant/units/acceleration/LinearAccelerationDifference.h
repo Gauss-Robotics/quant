@@ -1,9 +1,8 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/Difference.h>
 #include <quant/units/Vector.h>
-#include <quant/units/acceleration/constants.h>
-#include <quant/units/acceleration/forward_declarations.h>
+#include <quant/units/acceleration/LinearAcceleration.h>
 
 #include <Eigen/Geometry>
 
@@ -16,48 +15,27 @@ namespace quant::units::acceleration
     {
     public:
         static LinearAccelerationDifference
-        millimeters_per_second_squared(const geometry::Vector& xyz)
-        {
-            return LinearAccelerationDifference{LinearAcceleration::millimeters_per_second_squared(xyz)};
-        }
+        millimeters_per_second_squared(geometry::Vector const& xyz);
 
         static LinearAccelerationDifference
-        millimeters_per_second_squared(const Eigen::Vector3d& xyz)
-        {
-            return LinearAccelerationDifference{LinearAcceleration::millimeters_per_second_squared(xyz)};
-        }
+        millimeters_per_second_squared(Eigen::Vector3d const& xyz);
 
         static LinearAccelerationDifference
-        meters_per_second_squared(const geometry::Vector& xyz)
-        {
-            return LinearAccelerationDifference{LinearAcceleration::meters_per_second_squared(xyz)};
-        }
+        meters_per_second_squared(geometry::Vector const& xyz);
 
         static LinearAccelerationDifference
-        meters_per_second_squared(const Eigen::Vector3d& xyz)
-        {
-            return LinearAccelerationDifference{LinearAcceleration::meters_per_second_squared(xyz)};
-        }
+        meters_per_second_squared(Eigen::Vector3d const& xyz);
 
         Vector
-        to_millimeters_per_second_squared() const
-        {
-            return _difference_object.to_millimeters_per_second_squared();
-        }
+        to_millimeters_per_second_squared() const;
 
         Vector
-        to_meters_per_second_squared() const
-        {
-            return _difference_object.to_meters_per_second_squared();
-        }
+        to_meters_per_second_squared() const;
 
-        using geometry::Difference<LinearAcceleration>::Difference;
+        using Difference::Difference;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& os, LinearAccelerationDifference const& rhs)
-    {
-        return os << rhs.to_millimeters_per_second_squared();
-    }
+    std::ostream&
+    operator<<(std::ostream& os, LinearAccelerationDifference const& rhs);
 
 }  // namespace quant::units::acceleration

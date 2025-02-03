@@ -67,9 +67,13 @@ add_library(units SHARED
     acceleration/AngularAcceleration.h
     acceleration/AngularAcceleration.cpp
     acceleration/SpatialAcceleration.h
+    acceleration/SpatialAcceleration.cpp
     acceleration/LinearAccelerationDifference.h
+    acceleration/LinearAccelerationDifference.cpp
     acceleration/AngularAccelerationDifference.h
+    acceleration/AngularAccelerationDifference.cpp
     acceleration/SpatialAccelerationDifference.h
+    acceleration/SpatialAccelerationDifference.cpp
 
     jerk.h
     jerk/forward_declarations.h
@@ -123,8 +127,11 @@ add_library(units SHARED
     force/Wrench.h
     force/Wrench.cpp
     force/ForceDifference.h
+    force/ForceDifference.cpp
     force/TorqueDifference.h
+    force/TorqueDifference.cpp
     force/WrenchDifference.h
+    force/WrenchDifference.cpp
 
     temperature.h
     temperature/forward_declarations.h

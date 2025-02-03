@@ -18,52 +18,27 @@ namespace quant::units::acceleration
     {
     public:
         static AngularAcceleration
-        radians_per_second_squared(geometry::AxisAngle aa)
-        {
-            return {aa};
-        }
+        radians_per_second_squared(geometry::AxisAngle aa);
 
         static AngularAcceleration
-        radians_per_second_squared(Eigen::Quaterniond const& quaternion)
-        {
-            return {quaternion};
-        }
+        radians_per_second_squared(Eigen::Quaterniond const& quaternion);
 
         AxisAngle
-        to_radians_per_second_squared() const
-        {
-            return {to_axis_angle(),
-                    constants::names::angular_acceleration,
-                    constants::symbols::radians_per_second_squared};
-        }
+        to_radians_per_second_squared() const;
 
         static AngularAcceleration
-        degrees_per_second_squared(geometry::AxisAngle aa)
-        {
-            return {aa * angle::constants::deg2rad};
-        }
+        degrees_per_second_squared(geometry::AxisAngle aa);
 
         AxisAngle
-        to_degrees_per_second_squared() const
-        {
-            return {to_axis_angle() * angle::constants::rad2deg,
-                    constants::names::angular_acceleration,
-                    constants::symbols::radians_per_second_squared};
-        }
+        to_degrees_per_second_squared() const;
 
         std::string
-        to_string() const
-        {
-            return to_degrees_per_second_squared().to_string();
-        }
+        to_string() const;
 
         using AngularState::AngularState;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& out, AngularAcceleration const& rhs)
-    {
-        return out << rhs.to_radians_per_second_squared();
-    }
+    std::ostream&
+    operator<<(std::ostream& out, AngularAcceleration const& rhs);
 
 }  // namespace quant::units::acceleration

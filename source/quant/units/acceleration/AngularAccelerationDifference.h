@@ -10,44 +10,23 @@ namespace quant::units::acceleration
     {
     public:
         static AngularAccelerationDifference
-        radians_per_second_squared(geometry::AxisAngle aa)
-        {
-            return AngularAccelerationDifference{
-                AngularAcceleration::radians_per_second_squared(aa)};
-        }
+        radians_per_second_squared(geometry::AxisAngle aa);
 
         static AngularAccelerationDifference
-        radians_per_second_squared(Eigen::Quaterniond const& quaternion)
-        {
-            return AngularAccelerationDifference{
-                AngularAcceleration::radians_per_second_squared(quaternion)};
-        }
+        radians_per_second_squared(Eigen::Quaterniond const& quaternion);
 
         AxisAngle
-        to_radians_per_second_squared() const
-        {
-            return _difference_object.to_radians_per_second_squared();
-        }
+        to_radians_per_second_squared() const;
 
         static AngularAccelerationDifference
-        degrees_per_second_squared(geometry::AxisAngle aa)
-        {
-            return AngularAccelerationDifference{
-                AngularAcceleration::degrees_per_second_squared(aa)};
-        }
+        degrees_per_second_squared(geometry::AxisAngle aa);
 
         AxisAngle
-        to_degrees_per_second_squared() const
-        {
-            return _difference_object.to_degrees_per_second_squared();
-        }
+        to_degrees_per_second_squared() const;
 
         using geometry::Difference<AngularAcceleration>::Difference;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& out, AngularAccelerationDifference const& rhs)
-    {
-        return out << rhs.to_radians_per_second_squared();
-    }
+    std::ostream&
+    operator<<(std::ostream& out, AngularAccelerationDifference const& rhs);
 }  // namespace quant::units::acceleration

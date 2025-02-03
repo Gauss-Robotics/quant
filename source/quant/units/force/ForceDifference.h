@@ -11,7 +11,10 @@ namespace quant::units::force
     {
 
     public:
-        using geometry::Difference<Force>::Difference;
+        using Difference::Difference;
     };
+
+    std::ostream&
+    operator<<(std::ostream& os, ForceDifference const& rhs);
 
 }  // namespace quant::units::force

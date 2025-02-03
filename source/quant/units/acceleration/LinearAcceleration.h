@@ -16,57 +16,30 @@ namespace quant::units::acceleration
     {
     public:
         static LinearAcceleration
-        millimeters_per_second_squared(const geometry::Vector& xyz)
-        {
-            return {xyz};
-        }
+        millimeters_per_second_squared(geometry::Vector const& xyz);
 
         static LinearAcceleration
-        millimeters_per_second_squared(const Eigen::Vector3d& xyz)
-        {
-            return {xyz};
-        }
+        millimeters_per_second_squared(Eigen::Vector3d const& xyz);
 
         static LinearAcceleration
-        meters_per_second_squared(const geometry::Vector& xyz)
-        {
-            return {xyz * constants::mpss2mmpss};
-        }
+        meters_per_second_squared(geometry::Vector const& xyz);
 
         static LinearAcceleration
-        meters_per_second_squared(const Eigen::Vector3d& xyz)
-        {
-            return {xyz * constants::mpss2mmpss};
-        }
+        meters_per_second_squared(Eigen::Vector3d const& xyz);
 
         Vector
-        to_millimeters_per_second_squared() const
-        {
-            return {to_vector(),
-                    constants::names::linear_acceleration,
-                    constants::symbols::meters_per_second_squared};
-        }
+        to_millimeters_per_second_squared() const;
 
         Vector
-        to_meters_per_second_squared() const
-        {
-            return {to_vector() * constants::mmpss2mpss,
-                    constants::names::linear_acceleration,
-                    constants::symbols::meters_per_second_squared};
-        }
+        to_meters_per_second_squared() const;
 
-        std::string to_string() const
-        {
-            return to_millimeters_per_second_squared().to_string();
-        }
+        std::string
+        to_string() const;
 
         using geometry::LinearState<LinearAcceleration>::LinearState;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& os, LinearAcceleration const& rhs)
-    {
-        return os << rhs.to_millimeters_per_second_squared();
-    }
+    std::ostream&
+    operator<<(std::ostream& os, LinearAcceleration const& rhs);
 
 }  // namespace quant::units::acceleration
