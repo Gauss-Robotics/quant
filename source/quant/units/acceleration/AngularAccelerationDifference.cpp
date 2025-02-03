@@ -9,13 +9,6 @@ namespace quant::units::acceleration
         return AngularAccelerationDifference{AngularAcceleration::radians_per_second_squared(aa)};
     }
 
-    AngularAccelerationDifference
-    AngularAccelerationDifference::radians_per_second_squared(Eigen::Quaterniond const& quaternion)
-    {
-        return AngularAccelerationDifference{
-            AngularAcceleration::radians_per_second_squared(quaternion)};
-    }
-
     AxisAngle
     AngularAccelerationDifference::to_radians_per_second_squared() const
     {

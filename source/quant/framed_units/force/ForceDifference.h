@@ -2,6 +2,7 @@
 
 #include <quant/framed_geometry/Difference.h>
 #include <quant/units/force/ForceDifference.h>
+#include <quant/framed_units/force/forward_declarations.h>
 
 namespace quant::framed_units::force
 {

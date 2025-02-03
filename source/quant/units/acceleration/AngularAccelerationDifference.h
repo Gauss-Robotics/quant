@@ -12,9 +12,6 @@ namespace quant::units::acceleration
         static AngularAccelerationDifference
         radians_per_second_squared(geometry::AxisAngle aa);
 
-        static AngularAccelerationDifference
-        radians_per_second_squared(Eigen::Quaterniond const& quaternion);
-
         AxisAngle
         to_radians_per_second_squared() const;
 

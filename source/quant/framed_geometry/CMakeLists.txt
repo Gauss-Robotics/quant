@@ -6,6 +6,8 @@ add_library(framed_geometry SHARED
         State.h
         BaseChange.h
         FrameMismatch.h
+        Adjoint.h
+        Adjoint.cpp
 )
 
 set_target_properties(framed_geometry

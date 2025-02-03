@@ -19,6 +19,9 @@ namespace quant::units::force
         static Torque
         newton_meters(geometry::AxisAngle aa);
 
+        static Torque
+        newton_meters(geometry::Vector vector);
+
         AxisAngle
         to_newton_meters() const;
 

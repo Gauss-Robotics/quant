@@ -8,19 +8,19 @@ namespace quant::units::velocity
     LinearVelocity
     LinearVelocity::millimeters_per_second(geometry::Vector xyz)
     {
-        return {xyz};
+        return {xyz * constants::mmps2mps};
     }
 
     LinearVelocity
     LinearVelocity::meters_per_second(geometry::Vector xyz)
     {
-        return {xyz * constants::mps2mmps};
+        return {xyz};
     }
 
     Vector
     LinearVelocity::to_millimeters_per_second() const
     {
-        return {to_vector(),
+        return {to_vector() * constants::mps2mmps,
                 constants::names::linear_velocity,
                 constants::symbols::millimeters_per_second};
     }
@@ -28,7 +28,7 @@ namespace quant::units::velocity
     Vector
     LinearVelocity::to_meters_per_second() const
     {
-        return {to_vector() * constants::mmps2mps,
+        return {to_vector(),
                 constants::names::linear_velocity,
                 constants::symbols::meters_per_second};
     }
@@ -36,7 +36,7 @@ namespace quant::units::velocity
     Speed
     LinearVelocity::to_speed() const
     {
-        return Speed::millimeters_per_second(_representation.norm());
+        return Speed::meters_per_second(_representation.norm());
     }
 
     std::string

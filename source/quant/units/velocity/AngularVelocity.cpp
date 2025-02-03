@@ -9,9 +9,23 @@ namespace quant::units::velocity
     }
 
     AngularVelocity
+    AngularVelocity::radians_per_second(geometry::Vector const& vector)
+    {
+        const auto norm = vector.norm();
+        return radians_per_second({.axis = vector / norm, .angle = norm});
+    }
+
+    AngularVelocity
     AngularVelocity::degrees_per_second(geometry::AxisAngle const& aa)
     {
         return {aa * angle::constants::deg2rad};
+    }
+
+    AngularVelocity
+    AngularVelocity::degrees_per_second(geometry::Vector const& vector)
+    {
+        const auto norm = vector.norm();
+        return degrees_per_second({.axis = vector / norm, .angle = norm});
     }
 
     AxisAngle

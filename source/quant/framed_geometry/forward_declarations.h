@@ -64,6 +64,15 @@ namespace quant::traits
     using framed_type_of = std::conditional_t<state<Type>,
                                               typename framed_traits_of<Type>::FramedState,
                                               typename framed_traits_of<Type>::FramedDifference>;
+
+    template <typename Type>
+        requires framed_difference<Type>
+    using framed_state_of = typename framed_traits_of<Type>::FramedState;
+
+    template <typename Type>
+        requires framed_state<Type>
+    using framed_difference_of = typename framed_traits_of<Type>::FramedDifference;
+
     template <typename Type>
         requires framed<Type>
     using unframed_type_of = typename Type::FramedGeometricObject;
@@ -71,7 +80,9 @@ namespace quant::traits
     template <typename QuantityT>
     concept has_frame_conversion =
         requires(QuantityT const& quantity, framed_geometry::BaseChange const& transform) {
-            { framed_traits_of<QuantityT>::basis_change_function(quantity, transform) } -> std::same_as<QuantityT>;
+            {
+                framed_traits_of<QuantityT>::basis_change_function(quantity, transform)
+            } -> std::same_as<QuantityT>;
         };
 
     template <typename Type>
@@ -106,7 +117,7 @@ namespace quant
     using FramedDifference = framed_geometry::Difference<T>;
     template <typename T>
     using FramedState = framed_geometry::State<T>;
-    using framed_geometry::FrameIdentifier;
     using framed_geometry::BaseChange;
+    using framed_geometry::FrameIdentifier;
 
 }  // namespace quant

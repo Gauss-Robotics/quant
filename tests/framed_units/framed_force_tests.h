@@ -284,9 +284,8 @@ TEST_SUITE("testing framed force domain")
 
             CHECK(t1.get_name() == "TCP");
             CHECK(t1.get_base_frame() == "ARMAR-6::RobotRoot");
-            CHECK(
-                t1.get_framed_object() ==
-                Circa(Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
+            CHECK(t1.get_framed_object() ==
+                  Circa(Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
 
             CHECK(t2.get_name() == "::");
             CHECK(t2.get_base_frame() == "::");
@@ -294,9 +293,8 @@ TEST_SUITE("testing framed force domain")
 
             CHECK(t3.get_name() == "TCP");
             CHECK(t3.get_base_frame() == "ARMAR-6::RobotRoot");
-            CHECK(
-                t3.get_framed_object() ==
-                Circa(Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
+            CHECK(t3.get_framed_object() ==
+                  Circa(Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})));
         }
 
         SUBCASE("subtraction")
@@ -336,9 +334,8 @@ TEST_SUITE("testing framed force domain")
 
             CHECK(t2.get_name() == name);
             CHECK(t2.get_base_frame() == to_frame);
-            CHECK(
-                t2.get_framed_object() ==
-                Circa(Torque::newton_meters({.axis = {.x = 0, .y = 0, .z = -1}, .angle = 90})));
+            CHECK(t2.get_framed_object() ==
+                  Circa(Torque::newton_meters({.axis = {.x = 0, .y = 0, .z = -1}, .angle = 90})));
         }
     }
 
@@ -823,5 +820,22 @@ TEST_SUITE("testing framed force domain")
     //         }
     //     }
     // }
-    //
+
+    TEST_CASE("Example 3.28 Modern Robotics")
+    {
+        FramedWrench const F_h{Wrench(Force::newtons({.x = 0, .y = -5, .z = 0}), Torque::zero()),
+                               {.name = "F_h", .base_frame = "H"}};
+        FramedWrench const F_a{Wrench(Force::newtons({.x = 0, .y = 0, .z = 1}), Torque::zero()),
+                               {.name = "F_a", .base_frame = "A"}};
+        SpatialDisplacement const T_hf{LinearDisplacement::meters({-.1, 0, 0}),
+                                       AngularDisplacement::zero()};
+        SpatialDisplacement const T_af{
+            LinearDisplacement::meters({-0.25, 0, .1}),
+            AngularDisplacement::degrees({.axis = {1, 0, 0}, .angle = 180})};
+
+        const auto from_H_to_F = BaseChange{"H", "F", T_hf};
+        const auto from_A_to_F = BaseChange{"A", "F", T_af};
+        const auto diff = FramedWrenchDifference(from_A_to_F * F_a);
+        // const auto F_f = from_H_to_F * F_h + diff;
+    }
 }

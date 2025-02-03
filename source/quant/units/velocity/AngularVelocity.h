@@ -22,7 +22,13 @@ namespace quant::units::velocity
         radians_per_second(geometry::AxisAngle const& aa);
 
         static AngularVelocity
+        radians_per_second(geometry::Vector const& vector);
+
+        static AngularVelocity
         degrees_per_second(geometry::AxisAngle const& aa);
+
+        static AngularVelocity
+        degrees_per_second(geometry::Vector const& vector);
 
         // Convert.
 

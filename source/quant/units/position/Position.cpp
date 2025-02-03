@@ -8,26 +8,26 @@ namespace quant::units::position
     Position
     Position::millimeters(geometry::Vector xyz)
     {
-        return {xyz};
+        return {xyz * constants::mm2m};
     }
 
     Position
     Position::meters(geometry::Vector xyz)
     {
-        return {xyz * constants::m2mm};
+        return {xyz};
     }
 
     Vector
     Position::to_millimeters() const
     {
-        return {to_vector(), constants::names::position, constants::symbols::millimeters};
+        return {to_vector() * constants::m2mm, constants::names::position, constants::symbols::millimeters};
     }
 
     Vector
     Position::to_meters() const
     {
         return {
-            to_vector() * constants::mm2m, constants::names::position, constants::symbols::meters};
+            to_vector(), constants::names::position, constants::symbols::meters};
     }
 
     std::string

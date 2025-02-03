@@ -155,9 +155,6 @@ namespace quant::traits
         using LinearDifference = LinearDifferenceType;
         using AngularDifference = AngularDifferenceType;
         using SpatialDifference = SpatialDifferenceType;
-        using R3 = Define3DSubDomain<LinearStateType, LinearDifferenceType, R3Type>;
-        using SO3 = Define3DSubDomain<AngularStateType, AngularDifferenceType, SO3Type>;
-        using SE3 = Define3DSubDomain<SpatialStateType, SpatialDifferenceType, SE3Type>;
     };
 
     template <typename Type>

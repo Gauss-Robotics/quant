@@ -20,9 +20,6 @@ namespace quant::units::acceleration
         static AngularAcceleration
         radians_per_second_squared(geometry::AxisAngle aa);
 
-        static AngularAcceleration
-        radians_per_second_squared(Eigen::Quaterniond const& quaternion);
-
         AxisAngle
         to_radians_per_second_squared() const;
 

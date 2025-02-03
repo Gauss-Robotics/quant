@@ -2,7 +2,7 @@
 
 #include <quant/framed_geometry/Difference.h>
 #include <quant/units/position/AngularDisplacement.h>
-#include <quant/units/position/forward_declarations.h>
+#include <quant/framed_units/position/forward_declarations.h>
 
 namespace quant::framed_units::position
 {

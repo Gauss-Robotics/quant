@@ -519,7 +519,7 @@ TEST_SUITE("testing framed acceleration domain")
     //         }
     //     }
     //
-    TEST_CASE("testing framed twists")
+    TEST_CASE("testing framed spatial accelerations")
     {
         SUBCASE("construction")
         {

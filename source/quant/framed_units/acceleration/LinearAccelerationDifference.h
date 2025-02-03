@@ -2,6 +2,7 @@
 
 #include <quant/framed_geometry/Difference.h>
 #include <quant/units/acceleration/LinearAccelerationDifference.h>
+#include <quant/framed_units/acceleration/forward_declarations.h>
 
 #include <ostream>
 
