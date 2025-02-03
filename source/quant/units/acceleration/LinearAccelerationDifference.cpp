@@ -13,20 +13,7 @@ namespace quant::units::acceleration
     }
 
     LinearAccelerationDifference
-    LinearAccelerationDifference::millimeters_per_second_squared(Eigen::Vector3d const& xyz)
-    {
-        return LinearAccelerationDifference{
-            LinearAcceleration::millimeters_per_second_squared(xyz)};
-    }
-
-    LinearAccelerationDifference
     LinearAccelerationDifference::meters_per_second_squared(geometry::Vector const& xyz)
-    {
-        return LinearAccelerationDifference{LinearAcceleration::meters_per_second_squared(xyz)};
-    }
-
-    LinearAccelerationDifference
-    LinearAccelerationDifference::meters_per_second_squared(Eigen::Vector3d const& xyz)
     {
         return LinearAccelerationDifference{LinearAcceleration::meters_per_second_squared(xyz)};
     }

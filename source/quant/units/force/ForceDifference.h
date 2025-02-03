@@ -9,8 +9,16 @@ namespace quant::units::force
 
     class ForceDifference : public geometry::Difference<Force>
     {
-
     public:
+        static ForceDifference
+        newtons(geometry::Vector xyz);
+
+        Vector
+        to_newtons() const;
+
+        std::string
+        to_string() const;
+
         using Difference::Difference;
     };
 

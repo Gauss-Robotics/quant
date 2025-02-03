@@ -454,15 +454,15 @@ TEST_SUITE("force")
     TEST_CASE("forces can be trivially constructed")
     {
         Force const f_default;
-        CHECK(f_default == Force::newton({.x = 0, .y = 0, .z = 0}));
+        CHECK(f_default == Force::newtons({.x = 0, .y = 0, .z = 0}));
 
         Force const f_zero = Force::zero();
-        CHECK(f_zero == Force::newton({.x = 0, .y = 0, .z = 0}));
+        CHECK(f_zero == Force::newtons({.x = 0, .y = 0, .z = 0}));
     }
 
     TEST_CASE("forces can be converted to string")
     {
-        Force const f = Force::newton({.x = 0.1, .y = 0.3, .z = 0});
+        Force const f = Force::newtons({.x = 0.1, .y = 0.3, .z = 0});
 
         // String to automatic unit.
         CHECK(f.to_string() == "[0.1 0.3 0] N");
@@ -478,7 +478,7 @@ TEST_SUITE("force")
 
     TEST_CASE("basic constructions")
     {
-        Force const f = Force::newton(Vector({.y = 100}));
+        Force const f = Force::newtons(Vector({.y = 100}));
         ForceDifference const df{f};
         Wrench const w1 = Wrench::zero();
         Wrench const w2 = w1 + df;
@@ -498,7 +498,7 @@ TEST_SUITE("force")
 
         Force const f = m * a;
 
-        Force const f_target = Force::newton({.x = 4.6});
+        Force const f_target = Force::newtons({.x = 4.6});
         CHECK(f == Circa(f_target));
     }
 
@@ -509,7 +509,7 @@ TEST_SUITE("force")
 
         Force const f = dp / dt;
 
-        Force const f_target = Force::newton({.z = 21.25});
+        Force const f_target = Force::newtons({.z = 21.25});
         CHECK(f == Circa(f_target));
     }
 }

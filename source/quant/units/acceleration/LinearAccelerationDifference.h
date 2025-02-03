@@ -18,13 +18,7 @@ namespace quant::units::acceleration
         millimeters_per_second_squared(geometry::Vector const& xyz);
 
         static LinearAccelerationDifference
-        millimeters_per_second_squared(Eigen::Vector3d const& xyz);
-
-        static LinearAccelerationDifference
         meters_per_second_squared(geometry::Vector const& xyz);
-
-        static LinearAccelerationDifference
-        meters_per_second_squared(Eigen::Vector3d const& xyz);
 
         Vector
         to_millimeters_per_second_squared() const;

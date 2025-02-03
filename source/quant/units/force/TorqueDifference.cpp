@@ -3,7 +3,7 @@
 namespace quant::units::force
 {
     TorqueDifference
-    TorqueDifference::newton_meters(AxisAngle const& aa)
+    TorqueDifference::newton_meters(geometry::AxisAngle const& aa)
     {
         return TorqueDifference{Torque::newton_meters(aa)};
     }

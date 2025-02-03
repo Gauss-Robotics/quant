@@ -13,7 +13,7 @@ namespace quant::units::force
 
     public:
         static TorqueDifference
-        newton_meters(AxisAngle const& aa);
+        newton_meters(geometry::AxisAngle const& aa);
 
         using Difference::Difference;
     };

@@ -10,19 +10,7 @@ namespace quant::units::acceleration
     }
 
     LinearAcceleration
-    LinearAcceleration::millimeters_per_second_squared(Eigen::Vector3d const& xyz)
-    {
-        return {xyz};
-    }
-
-    LinearAcceleration
     LinearAcceleration::meters_per_second_squared(geometry::Vector const& xyz)
-    {
-        return {xyz * constants::mpss2mmpss};
-    }
-
-    LinearAcceleration
-    LinearAcceleration::meters_per_second_squared(Eigen::Vector3d const& xyz)
     {
         return {xyz * constants::mpss2mmpss};
     }

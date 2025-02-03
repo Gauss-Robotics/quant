@@ -4,13 +4,13 @@ namespace quant::units::force
 {
 
     Force
-    Force::newton(geometry::Vector xyz)
+    Force::newtons(geometry::Vector xyz)
     {
         return {xyz};
     }
 
     Vector
-    Force::to_newton() const
+    Force::to_newtons() const
     {
         return {to_vector(), constants::names::force, constants::symbols::newton};
     }
@@ -18,7 +18,7 @@ namespace quant::units::force
     std::string
     Force::to_string() const
     {
-        return to_newton().to_string();
+        return to_newtons().to_string();
     }
 
     std::ostream&

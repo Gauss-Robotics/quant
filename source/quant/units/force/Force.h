@@ -20,10 +20,10 @@ namespace quant::units::force
     {
     public:
         static Force
-        newton(geometry::Vector xyz);
+        newtons(geometry::Vector xyz);
 
         Vector
-        to_newton() const;
+        to_newtons() const;
 
         std::string
         to_string() const;
@@ -42,13 +42,13 @@ namespace quant
     inline Force
     operator*(Mass const& lhs, LinearAcceleration const& rhs)
     {
-        return Force::newton(rhs.to_meters_per_second_squared() * lhs.to_kilograms());
+        return Force::newtons(rhs.to_meters_per_second_squared() * lhs.to_kilograms());
     }
 
     inline Force
     operator/(LinearImpulse const& lhs, Duration const& rhs)
     {
-        return Force::newton(lhs.to_newton_seconds() / rhs.to_seconds());
+        return Force::newtons(lhs.to_newton_seconds() / rhs.to_seconds());
     }
 
 }  // namespace quant
