@@ -587,12 +587,11 @@ TEST_SUITE("testing framed velocity domain")
                           {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::zero())};
+            BaseChange const bc{.from_frame = from_frame,
+                                .to_frame = to_frame,
+                                .transformation = SpatialDisplacement(
+                                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                                    AngularDisplacement::zero())};
 
             auto t2 = bc * t1;
 
@@ -838,113 +837,77 @@ TEST_SUITE("testing framed velocity domain")
     //     }
     // }
     //
-    // TEST_SUITE("end to end test (see coordinate system visualization)")
-    // {
-    //     using PoseAccessor = geometry::detail::StateAccessor<Pose>;
-    //     auto const origin =
-    //         FramedPose(Pose(Position::zero(), Orientation::zero()), {"global", "global"});
-    //     auto const F1 = FramedPose(
-    //         PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 0, 0, -1, 3, 0, 1, 0, 3, 1, 0, 0, 0, 0, 0, 0,
-    //             1).finished())),
-    //         {"F1", "global"});
-    //     auto const F2 = FramedPose(
-    //         PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 0, -1, 0, 13, 1, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0,
-    //             1).finished())),
-    //         {"F2", "global"});
-    //     auto const O1 = FramedPose(
-    //         PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 1, 0, 0, 5, 0, 1, 0, 5, 0, 0, 1, 0, 0, 0, 0,
-    //             1).finished())),
-    //         {"O1", "global"});
-    //     auto const O2 = FramedPose(
-    //         PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 0, 0, -1, 9, -1, 0, 0, 6, 0, 1, 0, 0, 0, 0, 0,
-    //             1).finished())),
-    //         {"O2", "global"});
-    //
-    //     auto const O1_in_F1 = FramedPose(
-    //         PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 0, 0, 1, 0, 0, 1, 0, 2, -1, 0, 0, -2, 0, 0, 0,
-    //             1).finished())),
-    //         {"O1_in_F1", "F1"});
-    //     auto const O2_in_F1 = FramedPose(
-    //         PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 0, 1, 0, 0, -1, 0, 0, 3, 0, 0, 1, -6, 0, 0, 0,
-    //             1).finished())),
-    //         {"O2_in_F1", "F1"});
-    //     auto const O1_in_F2 = FramedPose(
-    //         PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 0, 1, 0, 2, -1, 0, 0, 8, 0, 0, 1, 0, 0, 0, 0,
-    //             1).finished())),
-    //         {"O1_in_F2", "F2"});
-    //     auto const O2_in_F2 = FramedPose(
-    //         PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << -1, 0, 0, 3, 0, 0, 1, 4, 0, 1, 0, 0, 0, 0, 0,
-    //             1).finished())),
-    //         {"O2_in_F2", "F2"});
-    //
-    //     auto const F1_to_F2 = SpatialDisplacement(PoseAccessor::make(Eigen::Isometry3d(
-    //         (Eigen::Matrix4d() << 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, -10, 0, 0, 0,
-    //         1).finished())));
-    //     auto const base_change = BaseChange("F1", "F2", F1_to_F2);
-    //
-    //     auto const p1 = FramedPosition(Position::millimeters({4, 4, 0}), {"p1", "global"});
-    //     auto const p2 = FramedPosition(Position::millimeters({5, 4, 0}), {"p2", "global"});
-    //     auto const p1_in_F1 = FramedPosition(Position::millimeters({0, 1, -1}), {"p1", "F1"});
-    //     auto const p2_in_F1 = FramedPosition(Position::millimeters({0, 1, -2}), {"p2", "F1"});
-    //     auto const p1_in_F2 = FramedPosition(Position::millimeters({1, 9, 0}), {"p1", "F2"});
-    //     auto const p2_in_F2 = FramedPosition(Position::millimeters({1, 8, 0}), {"p2", "F2"});
-    //
-    //     TEST_CASE("difference of F1 and F2 is F1_to_F2")
-    //     {
-    //         CHECK(F1_to_F2 == Circa((F2 - F1).get_framed_object()));
-    //     }
-    //
-    //     TEST_CASE("poses and positions transform correctly")
-    //     {
-    //         auto make_base_change = [](FramedPose const& from, FramedPose const& to)
-    //         { return BaseChange(from.get_name(), to.get_name(), (to - from).get_framed_object());
-    //         }; auto const origin_to_F1 = make_base_change(origin, F1); auto const origin_to_F2 =
-    //         make_base_change(origin, F2); CHECK(base_change * O1_in_F1 == Circa(O1_in_F2));
-    //         CHECK(base_change * O2_in_F1 == Circa(O2_in_F2));
-    //         CHECK(origin_to_F1 * O1 == Circa(O1_in_F1));
-    //         CHECK(origin_to_F1 * O2 == Circa(O2_in_F1));
-    //         CHECK(origin_to_F2 * O1 == Circa(O1_in_F2));
-    //         CHECK(origin_to_F2 * O2 == Circa(O2_in_F2));
-    //         CHECK(origin_to_F1 * p1 == Circa(p1_in_F1));
-    //         CHECK(origin_to_F1 * p2 == Circa(p2_in_F1));
-    //         CHECK(origin_to_F2 * p1 == Circa(p1_in_F2));
-    //         CHECK(origin_to_F2 * p2 == Circa(p2_in_F2));
-    //     }
-    //
-    //     TEST_CASE("differences of O1 and O2 do not change under base change")
-    //     {
-    //         auto temp_pose = PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 0., 0., -1., 4., -1., 0., 0., 1., 0., 1., 0., 0., 0., 0.,
-    //             0., 1.)
-    //                 .finished()));
-    //         auto const delta_o12_in_F1 =
-    //             FramedSpatialDisplacement(SpatialDisplacement(temp_pose), "F1");
-    //         temp_pose = PoseAccessor::make(Eigen::Isometry3d(
-    //             (Eigen::Matrix4d() << 0., 0., -1., 4., -1., 0., 0., 1., 0., 1., 0., 0., 0., 0.,
-    //             0., 1.)
-    //                 .finished()));
-    //         auto const delta_o12_in_F2 =
-    //             FramedSpatialDisplacement(SpatialDisplacement(temp_pose), "F2");
-    //         CHECK((O2_in_F1 - O1_in_F1).get_framed_object() ==
-    //               Circa((base_change * (O2_in_F1 - O1_in_F1)).get_framed_object()));
-    //         CHECK((O2_in_F1 - O1_in_F1).get_framed_object() ==
-    //               Circa((O2_in_F2 - O1_in_F2).get_framed_object()));
-    //         CHECK(delta_o12_in_F1 == Circa((O2_in_F1 - O1_in_F1)));
-    //         CHECK(delta_o12_in_F2 == Circa(O2_in_F2 - O1_in_F2));
-    //     }
-    //
-    //     TEST_CASE("positions do not behave as poses/orientations")
-    //     {
-    //         auto const delta_p12_in_F1 = p2_in_F1 - p1_in_F1;
-    //         auto const delta_p12_in_F2 = p2_in_F2 - p1_in_F2;
-    //         CHECK(delta_p12_in_F1 != Circa(delta_p12_in_F2));
-    //     }
+    TEST_SUITE("end to end test (see coordinate system visualization)")
+    {
+        using PoseAccessor = geometry::detail::StateAccessor<Pose>;
+        auto const origin =
+            FramedPose(Pose(Position::zero(), Orientation::zero()), {"global", "global"});
+        auto const F1 = FramedPose(
+            PoseAccessor::make(Eigen::Isometry3d(
+                (Eigen::Matrix4d() << 0, 0, -1, 3, 0, 1, 0, 3, 1, 0, 0, 0, 0, 0, 0, 1).finished())),
+            {"F1", "global"});
+        auto const F2 =
+            FramedPose(PoseAccessor::make(Eigen::Isometry3d(
+                           (Eigen::Matrix4d() << 0, -1, 0, 13, 1, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0, 1)
+                               .finished())),
+                       {"F2", "global"});
+        auto const T1 = FramedTwist(
+            Twist(LinearVelocity::millimeters_per_second({1, 1, 0}),
+                  AngularVelocity::degrees_per_second({.axis = {1, 0, 0}, .angle = 180})),
+            {"T1", "global"});
+        auto const T2 =
+            FramedTwist(Twist(LinearVelocity::millimeters_per_second({-1, 0, 1}),
+                              AngularVelocity::degrees_per_second(
+                                  {.axis = {0, 1 / sqrt(2), 1 / sqrt(2)}, .angle = 180})),
+                        {"T1", "global"});
+
+        // These values are obtained from "intuition", i.e., they do not correspond to the
+        // mathematically correct values. For an explanation, see the coordinate system and
+        // Modern Robotics, Chapter 3.
+        auto const T1_in_F1 = FramedTwist(
+            Twist(LinearVelocity::millimeters_per_second({0, 1, -1}),
+                  AngularVelocity::degrees_per_second({.axis = {0, 0, -1}, .angle = 180})),
+            {"T1", "F1"});
+        auto const T2_in_F1 =
+            FramedTwist(Twist(LinearVelocity::millimeters_per_second({1, 0, 1}),
+                              AngularVelocity::degrees_per_second(
+                                  {.axis = {1 / sqrt(2), 1 / sqrt(2), 0}, .angle = 180})),
+                        {"T1", "F1"});
+
+        auto const T1_in_F2 = FramedTwist(
+            Twist(LinearVelocity::millimeters_per_second({1, -1, 0}),
+                  AngularVelocity::degrees_per_second({.axis = {0, -1, 0}, .angle = 180})),
+            {"T1", "F2"});
+        auto const T2_in_F2 =
+            FramedTwist(Twist(LinearVelocity::millimeters_per_second({0, 1, 1}),
+                              AngularVelocity::degrees_per_second(
+                                  {.axis = {1 / sqrt(2), 0, 1 / sqrt(2)}, .angle = 180})),
+                        {"T1", "F2"});
+
+        auto const F1_to_F2 = SpatialDisplacement(PoseAccessor::make(Eigen::Isometry3d(
+            (Eigen::Matrix4d() << 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, -10, 0, 0, 0, 1).finished())));
+        auto const base_change = BaseChange("F1", "F2", F1_to_F2);
+
+        TEST_CASE("poses and positions transform correctly")
+        {
+            auto make_base_change = [](FramedPose const& from, FramedPose const& to)
+            { return BaseChange(from.get_name(), to.get_name(), (to - from).get_framed_object()); };
+            auto const origin_to_F1 = make_base_change(origin, F1);
+            auto const origin_to_F2 = make_base_change(origin, F2);
+            auto test = [](BaseChange const& bc, FramedTwist const& from, FramedTwist const& to)
+            {
+                auto const from_in_to = bc * from;
+                auto const lv_from_in_to = bc * from.linear();
+                CHECK(from_in_to.get_framed_object().angular() ==
+                      Circa(to.get_framed_object().angular()));
+                CHECK(lv_from_in_to.get_framed_object() == Circa(to.get_framed_object().linear()));
+            };
+            test(origin_to_F1, T1, T1_in_F1);
+            test(origin_to_F1, T2, T2_in_F1);
+            test(origin_to_F2, T1, T1_in_F2);
+            test(origin_to_F2, T2, T2_in_F2);
+            test(base_change, T1_in_F1, T1_in_F2);
+            test(base_change, T2_in_F1, T2_in_F2);
+        }
+    }
 }
