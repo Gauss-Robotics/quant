@@ -48,12 +48,19 @@ add_library(framed_units SHARED
         velocity/TwistDifference.h
         velocity/TwistDifference.cpp
 
-    #acceleration.h
-    #acceleration_fwd.h
-    #acceleration/LinearAcceleration.h
-    #acceleration/LinearAcceleration.cpp
-    #acceleration/AngularAcceleration.h
-    #acceleration/AngularAcceleration.cpp
+    acceleration.h
+        acceleration/LinearAcceleration.h
+        acceleration/LinearAcceleration.cpp
+        acceleration/AngularAcceleration.h
+        acceleration/AngularAcceleration.cpp
+        acceleration/SpatialAcceleration.h
+        acceleration/SpatialAcceleration.cpp
+        acceleration/LinearAccelerationDifference.h
+        acceleration/LinearAccelerationDifference.cpp
+        acceleration/AngularAccelerationDifference.h
+        acceleration/AngularAccelerationDifference.cpp
+        acceleration/SpatialAccelerationDifference.h
+        acceleration/SpatialAccelerationDifference.cpp
 
     #jerk.h
     #jerk_fwd.h
@@ -74,14 +81,19 @@ add_library(framed_units SHARED
     #mass_fwd.h
     #mass/Mass.h
 
-    #force.h
-    #force_fwd.h
-    #force/Force.h
-    #force/Force.cpp
-    #force/Torque.h
-    #force/Torque.cpp
-    #force/Wrench.h
-    #force/Wrench.cpp
+    force.h
+        force/Force.h
+        force/Force.cpp
+        force/Torque.h
+        force/Torque.cpp
+        force/Wrench.h
+        force/Wrench.cpp
+        force/ForceDifference.h
+        force/ForceDifference.cpp
+        force/TorqueDifference.h
+        force/TorqueDifference.cpp
+        force/WrenchDifference.h
+        force/WrenchDifference.cpp
 
     #temperature.h
     #temperature_fwd.h
