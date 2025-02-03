@@ -520,7 +520,7 @@ TEST_SUITE("testing framed velocity domain")
     //         }
     //     }
     //
-    TEST_CASE("testing framed poses")
+    TEST_CASE("testing framed twists")
     {
         SUBCASE("construction")
         {
@@ -599,7 +599,7 @@ TEST_SUITE("testing framed velocity domain")
             CHECK(t2.get_name() == name);
             CHECK(t2.get_base_frame() == to_frame);
             CHECK(t2.get_framed_object() ==
-                  Circa(Twist(LinearVelocity::millimeters_per_second({.x = 1, .y = 2, .z = 3}),
+                  Circa(Twist(LinearVelocity::millimeters_per_second({.x = 4, .y = 1, .z = 5}),
                               AngularVelocity::degrees_per_second(
                                   {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
         }
@@ -655,7 +655,7 @@ TEST_SUITE("testing framed velocity domain")
             CHECK(t2.get_name() == name);
             CHECK(t2.get_base_frame() == to_frame);
             CHECK(t2.get_framed_object() ==
-                  Circa(Twist(LinearVelocity::millimeters_per_second({.x = 1, .y = 3, .z = -2}),
+                  Circa(Twist(LinearVelocity::millimeters_per_second({.x = 4, .y = 5, .z = -1}),
                               AngularVelocity::degrees_per_second(
                                   {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
         }
