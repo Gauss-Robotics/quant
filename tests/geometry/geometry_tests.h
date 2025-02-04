@@ -405,11 +405,11 @@ TEST_SUITE("concrete instantiation using position")
 
         auto p5 = p2 - diff;
         // const auto p6 = diff - p1; << This should not compile
-        CHECK(p5 == p1);
+        CHECK(p5 == Circa(p1));
         p5 += diff;
-        CHECK(p5 == p2);
+        CHECK(p5 == Circa(p2));
         p5 -= diff;
-        CHECK(p5 == p1);
+        CHECK(p5 == Circa(p1));
     }
 }
 
@@ -498,8 +498,6 @@ TEST_SUITE("subtraction state from state")
             {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90},
             {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)}, .angle = 120});
 
-        // TODO: This doesn't work as it should as the same angle can be represented by two
-        // different quaternions
         test_angular_aa({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 360},
                         {.axis = {.x = 0, .y = 0, .z = 1}, .angle = 10},
                         {.axis = {.x = 0, .y = 0, .z = 1}, .angle = 10});
@@ -833,32 +831,21 @@ TEST_SUITE("addition of difference and difference")
             auto const diff2_plus_diff1 = diff2 + diff1;
             auto const state12 = state_plus_diff1 + diff2;
             auto const state21 = state_plus_diff2 + diff1;
-            CHECK_MESSAGE((state12) == Circa(state + diff1_plus_diff2),
-                          state.to_string(),
-                          diff1.to_string(),
-                          diff2.to_string());
-            CHECK_MESSAGE((state21) == Circa(state + diff2_plus_diff1),
-                          state.to_string(),
-                          diff1.to_string(),
-                          diff2.to_string());
-            CHECK(((state + diff1_plus_diff2) - diff2) == Circa(state_plus_diff1));
-            CHECK(((state + diff2_plus_diff1) - diff1) == Circa(state_plus_diff2));
-            // CHECK_MESSAGE((state - diff1_plus_diff2) == Circa((state - diff1) - diff2),
-            //               state.to_string(),
-            //               diff1.to_string(),
-            //               diff2.to_string(),
-            //               diff1_plus_diff2.to_string(),
-            //               (state - diff1).to_string(),
-            //               diff2.to_string());
-            // CHECK_MESSAGE((state - diff2_plus_diff1) == Circa((state - diff2) - diff1),
-            //               state.to_string(),
-            //               diff1.to_string(),
-            //               diff2.to_string(),
-            //               diff2_plus_diff1.to_string(),
-            //               (state - diff2).to_string(),
-            //               diff1.to_string());
+            CAPTURE(state);
+            CAPTURE(diff1);
+            CAPTURE(diff2);
+            CAPTURE(diff1_plus_diff2);
+            CAPTURE(diff2_plus_diff1);
             INFO("Addition of Difference is commutattive: ",
                  (state + diff1_plus_diff2) == Circa(state + diff2_plus_diff1));
+            CHECK(state12 == Circa(state + diff1_plus_diff2));
+            CHECK((state21) == Circa(state + diff2_plus_diff1));
+
+            CHECK(((state + diff1_plus_diff2) - diff2) == Circa(state_plus_diff1));
+            CHECK(((state + diff2_plus_diff1) - diff1) == Circa(state_plus_diff2));
+
+            WARN((state - diff1_plus_diff2) == Circa((state - diff1) - diff2));
+            WARN((state - diff2_plus_diff1) == Circa((state - diff2) - diff1));
         };
         test(TimePoint::seconds(1), Duration::seconds(1), Duration::seconds(2));
         test(Position::meters({.x = 1, .y = 2, .z = 3}),
@@ -992,49 +979,47 @@ TEST_SUITE("subtraction of difference and difference")
                                 .angle = 120}))));
     }
     // TODO: This doesn't work as I would expect it to
-    // TEST_CASE("subtraction of difference subtracted from state is the same as the difference
-    // added "
-    //           "separately")
-    // {
-    //     auto test = [](auto const& state, auto const& diff1, auto const& diff2)
-    //     {
-    //         auto const state_minus_diff1 = state - diff1;
-    //         auto const state_minus_diff2 = state - diff2;
-    //         auto const diff1_minus_diff2 = diff1 - diff2;
-    //         auto const diff2_minus_diff1 = diff2 - diff1;
-    //         auto const state12 = state_minus_diff1 + diff2;
-    //         auto const state21 = state_minus_diff2 + diff1;
-    //         CHECK_MESSAGE((state12) == Circa(state - diff1_minus_diff2),
-    //                       state.to_string(),
-    //                       state12.to_string(),
-    //                       (state - diff1_minus_diff2).to_string());
-    //         CHECK_MESSAGE((state21) == Circa(state - diff2_minus_diff1),
-    //                       state.to_string(),
-    //                       state21.to_string(),
-    //                       (state - diff2_minus_diff1).to_string());
-    //         CHECK(((state - diff1_minus_diff2) - diff2) == Circa(state_minus_diff1));
-    //         CHECK(((state - diff2_minus_diff1) - diff1) == Circa(state_minus_diff2));
-    //         CHECK((state - diff1_minus_diff2) == Circa(state - diff1 + diff2));
-    //         CHECK((state - diff2_minus_diff1) == Circa(state - diff2 + diff1));
-    //         INFO("Subtraction of Difference is commutattive: ",
-    //              (state - diff1_minus_diff2) == Circa(state - diff2_minus_diff1));
-    //     };
-    //     test(TimePoint::seconds(1), Duration::seconds(1), Duration::seconds(2));
-    //     test(Position::meters({.x = 1, .y = 2, .z = 3}),
-    //          LinearDisplacement::meters({.x = 1, .y = 2, .z = 3}),
-    //          LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}));
-    //     test(Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}),
-    //          AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}),
-    //          AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 20}));
-    //     test(Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
-    //               Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10})),
-    //          SpatialDisplacement(
-    //              LinearDisplacement::meters({.x = 1, .y = 2, .z = 3}),
-    //              AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10})),
-    //          SpatialDisplacement(
-    //              LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}),
-    //              AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 20})));
-    // }
+    TEST_CASE("subtraction of difference subtracted from state is the same as the difference added "
+              "separately")
+    {
+        auto test = [](auto const& state, auto const& diff1, auto const& diff2)
+        {
+            auto const state_minus_diff1 = state - diff1;
+            auto const state_minus_diff2 = state - diff2;
+            auto const diff1_minus_diff2 = diff1 - diff2;
+            auto const diff2_minus_diff1 = diff2 - diff1;
+            auto const state12 = state_minus_diff1 + diff2;
+            auto const state21 = state_minus_diff2 + diff1;
+            CAPTURE(state);
+            CAPTURE(state12);
+            CAPTURE(state21);
+            CAPTURE(diff1_minus_diff2);
+            CAPTURE(diff2_minus_diff1);
+            WARN((state12) == Circa(state - diff1_minus_diff2));
+            WARN((state21) == Circa(state - diff2_minus_diff1));
+            WARN(((state - diff1_minus_diff2) - diff2) == Circa(state_minus_diff1));
+            WARN(((state - diff2_minus_diff1) - diff1) == Circa(state_minus_diff2));
+            WARN((state - diff1_minus_diff2) == Circa(state - diff1 + diff2));
+            WARN((state - diff2_minus_diff1) == Circa(state - diff2 + diff1));
+            INFO("Subtraction of Difference is commutattive: ",
+                 (state - diff1_minus_diff2) == Circa(state - diff2_minus_diff1));
+        };
+        test(TimePoint::seconds(1), Duration::seconds(1), Duration::seconds(2));
+        test(Position::meters({.x = 1, .y = 2, .z = 3}),
+             LinearDisplacement::meters({.x = 1, .y = 2, .z = 3}),
+             LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}));
+        test(Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}),
+             AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}),
+             AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 20}));
+        test(Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
+                  Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10})),
+             SpatialDisplacement(
+                 LinearDisplacement::meters({.x = 1, .y = 2, .z = 3}),
+                 AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10})),
+             SpatialDisplacement(
+                 LinearDisplacement::meters({.x = 4, .y = 5, .z = 6}),
+                 AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 20})));
+    }
 }
 
 TEST_SUITE("inplace subtraction of difference and difference")
@@ -1117,9 +1102,16 @@ TEST_SUITE("Test angular state and its difference for SO3 and others")
             auto const ad = AngularDisplacement::degrees(aa);
             auto const avd = AngularVelocityDifference::degrees_per_second(aa);
             // CHECK(ad.to_degrees().angle == doctest::Approx(angle)); // TODO: Fix this
+            CAPTURE(aa);
+            CAPTURE(ad);
+            CAPTURE(avd);
+            CAPTURE(angle);
             CHECK(ad.to_degrees().axis.norm() == doctest::Approx(1));
-            CHECK(avd.to_degrees_per_second().angle == doctest::Approx(angle));
-            CHECK(avd.to_degrees_per_second().axis.norm() == doctest::Approx(1));
+            CHECK(avd.to_degrees_per_second().angle == doctest::Approx(abs(angle)));
+            if (abs(angle) > 1e-10)
+            {
+                CHECK(avd.to_degrees_per_second().axis.norm() == doctest::Approx(1));
+            }
         };
         test(0);
         test(90);

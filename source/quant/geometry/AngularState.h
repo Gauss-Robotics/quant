@@ -72,7 +72,7 @@ namespace quant::geometry
     protected:
         // Construct.
 
-        AngularState(AxisAngle const& aa) : _representation{aa.axis.to_eigen() * aa.angle}
+        AngularState(AxisAngle const& aa) : _representation{aa.axis.to_eigen().normalized() * aa.angle}
         {
             ;
         }

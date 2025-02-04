@@ -39,9 +39,6 @@ namespace quant::geometry
         bool
         operator==(StateType const& rhs) const
         {
-            // TODO: This holds only for the state NOT for the difference
-            // TODO(dreher): Eigen >= 3.4
-            // return _representation == rhs._representation;
             return _representation.coeffs() == rhs._representation.coeffs() or
                    _representation.coeffs() == -rhs._representation.coeffs();
         }
@@ -49,7 +46,6 @@ namespace quant::geometry
         bool
         operator!=(StateType const& rhs) const
         {
-            // TODO(dreher): Eigen >= 3.4
             return _representation.coeffs() != rhs._representation.coeffs() and
                    _representation.coeffs() != -rhs._representation.coeffs();
         }

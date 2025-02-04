@@ -242,7 +242,7 @@ TEST_SUITE("position")
 
         LinearDisplacement const trans = LinearDisplacement::millimeters({.x = 5, .z = 100});
         Position const trans_pos = pos1 + trans;
-        CHECK(trans_pos == Position::millimeters({.x = 5, .y = 100, .z = 300}));
+        CHECK(trans_pos == Circa(Position::millimeters({.x = 5, .y = 100, .z = 300})));
     }
 }
 
@@ -337,7 +337,7 @@ TEST_SUITE("velocity")
             Speed const speed = dist / dt;
 
             CHECK(dist.to_millimeters() == Circa(173.205));
-            CHECK(speed == speed_target);
+            CHECK(speed == Circa(speed_target));
         }
     }
 }

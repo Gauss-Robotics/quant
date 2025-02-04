@@ -275,7 +275,6 @@ namespace quant::geometry
     {
         using State = detail::StateAccessor<StateType>;
         using Difference = detail::DifferenceAccessor<DifferenceType>;
-        // TODO: test if this is correct
         State::representation(lhs) = State::representation(lhs) * Difference::representation(rhs);
 
         return lhs;
@@ -349,8 +348,10 @@ namespace quant::geometry
     {
         using Difference = detail::DifferenceAccessor<DifferenceType>;
 
-        // TODO: Test this
-        // TODO: Check if this makes sense on a manifold
+        // TODO: Does this make sense on a manifold? This would add a tangent vector to another
+        //       tangent vector in the same tangent space. This also leads to weird behaviors
+        //       (see the test case "subtraction of difference subtracted from state is the same as the difference added
+        //       separately" in geometry_tests.h)
         return Difference::make(Difference::representation(lhs) * Difference::representation(rhs));
     }
 
