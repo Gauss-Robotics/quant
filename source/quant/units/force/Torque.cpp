@@ -11,8 +11,7 @@ namespace quant::units::force
     Torque
     Torque::newton_meters(geometry::Vector vector)
     {
-        const auto norm = vector.norm();
-        return newton_meters({.axis = vector / norm, .angle = norm});
+        return {vector.to_eigen()};
     }
 
     AxisAngle

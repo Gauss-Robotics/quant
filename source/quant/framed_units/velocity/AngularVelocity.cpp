@@ -20,11 +20,9 @@ namespace quant::framed_units::velocity
     {
         using Position = geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>;
         using Velocity = geometry::detail::StateAccessor<units::velocity::AngularVelocity>;
-        const auto R = Position::representation(bc.transformation.angular());
-        const auto omega = Velocity::representation(av);
-        // TODO: this discards angles greater 360 degrees
-        return Velocity::make(static_cast<Eigen::AngleAxisd>(
-             R.inverse() * omega * R));
+        auto const R = Position::representation(bc.transformation.angular());
+        auto const omega = Velocity::representation(av);
+        return Velocity::make(R.inverse() * omega);
     }
 
 }  // namespace quant::framed_units::velocity

@@ -48,6 +48,10 @@ namespace quant::traits
         framed<Type> and scalar_state<typename Type::FramedGeometricObject>;
 
     template <typename Type>
+    concept framed_spatial_state =
+        framed<Type> and spatial_state<typename Type::FramedGeometricObject>;
+
+    template <typename Type>
     concept framed_scalar_difference =
         framed<Type> and scalar_difference<typename Type::FramedGeometricObject>;
 

@@ -27,6 +27,7 @@ namespace quant::units::velocity::constants
         constexpr std::string_view millimeters_per_second = "mm/s";
         constexpr std::string_view meters_per_second = "m/s";
         constexpr std::string_view radians_per_second = "rad/s";
+        constexpr std::string_view degrees_per_second = "°/s";
 
     }  // namespace symbols
 

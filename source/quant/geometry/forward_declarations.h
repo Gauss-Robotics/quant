@@ -114,6 +114,10 @@ namespace quant::traits
     {
     };
 
+    struct R6Type : ManifoldType
+    {
+    };
+
     struct SO3Type : ManifoldType
     {
     };
@@ -140,21 +144,15 @@ namespace quant::traits
         using Manifold = ManifoldType;
     };
 
-    template <typename LinearStateType,
-              typename AngularStateType,
-              typename SpatialStateType,
-              typename LinearDifferenceType,
-              typename AngularDifferenceType,
-              typename SpatialDifferenceType>
+    template <typename LinearSubDomainType,
+              typename AngularSubDomainType,
+              typename SpatialSubDomainType>
     struct Define3DDomain
     {
         using DomainType = ThreeDimensionalDomainType;
-        using LinearState = LinearStateType;
-        using AngularState = AngularStateType;
-        using SpatialState = SpatialStateType;
-        using LinearDifference = LinearDifferenceType;
-        using AngularDifference = AngularDifferenceType;
-        using SpatialDifference = SpatialDifferenceType;
+        using LinearSubDomain = LinearSubDomainType;
+        using AngularSubDomain = AngularSubDomainType;
+        using SpatialSubDomain = SpatialSubDomainType;
     };
 
     template <typename Type>
@@ -239,42 +237,64 @@ namespace quant::traits
                          std::same_as<DifferenceT, difference_type_of<StateT>>;
 
     template <typename Type>
-    using linear_state_in_domain_of = typename domain_type_of<Type>::LinearState;
+    using linear_state_in_domain_of = typename domain_type_of<Type>::LinearSubDomain::State;
 
     template <typename Type>
-    using angular_state_in_domain_of = typename domain_type_of<Type>::AngularState;
+    using angular_state_in_domain_of = typename domain_type_of<Type>::AngularSubDomain::State;
 
     template <typename Type>
-    using linear_difference_in_domain_of = typename domain_type_of<Type>::LinearDifference;
+    using spatial_state_in_domain_of = typename domain_type_of<Type>::SpatialSubDomain::State;
 
     template <typename Type>
-    using angular_difference_in_domain_of = typename domain_type_of<Type>::AngularDifference;
+        requires three_dimensional_domain<Type>
+    using linear_difference_in_domain_of =
+        typename domain_type_of<Type>::LinearSubDomain::Difference;
+
+    template <typename Type>
+        requires three_dimensional_domain<Type>
+    using angular_difference_in_domain_of =
+        typename domain_type_of<Type>::AngularSubDomain::Difference;
+
+    template <typename Type>
+        requires three_dimensional_domain<Type>
+    using spatial_difference_in_domain_of =
+        typename domain_type_of<Type>::SpatialSubDomain::Difference;
+
+    template <typename Type>
+        requires three_dimensional_domain<Type>
+    using subdomain_type_of =
+        std::conditional_t<linear_state<Type> || linear_difference<Type>,
+                           typename domain_type_of<Type>::LinearSubDomain,
+                           std::conditional_t<angular_state<Type> || angular_difference<Type>,
+                                              typename domain_type_of<Type>::AngularSubDomain,
+                                              typename domain_type_of<Type>::SpatialSubDomain>>;
 
     template <typename Type>
     concept in_r1 = one_dimensional_domain<Type> and
-                    std::same_as<typename domain_type_of<Type>::Manifold, R1Type>;
+                    std::same_as<typename traits_of<Type>::Domain::Manifold, R1Type>;
 
     template <typename Type>
     concept in_s1 = one_dimensional_domain<Type> and
-                    std::same_as<typename domain_type_of<Type>::Manifold, S1Type>;
+                    std::same_as<typename subdomain_type_of<Type>::Manifold, S1Type>;
 
     template <typename Type>
     concept in_r3 = three_dimensional_domain<Type> and
-                    (std::same_as<linear_state_in_domain_of<Type>, Type> or
-                     std::same_as<linear_difference_in_domain_of<Type>, Type>);
+                    std::same_as<typename subdomain_type_of<Type>::Manifold, R3Type>;
+
+    template <typename Type>
+    concept in_r6 = three_dimensional_domain<Type> and
+                    std::same_as<typename subdomain_type_of<Type>::Manifold, R6Type>;
 
     template <typename Type>
     concept in_so3 = three_dimensional_domain<Type> and
-                     (std::same_as<angular_state_in_domain_of<Type>, Type> or
-                      std::same_as<angular_difference_in_domain_of<Type>, Type>);
+                     std::same_as<typename subdomain_type_of<Type>::Manifold, SO3Type>;
 
     template <typename Type>
     concept in_se3 = three_dimensional_domain<Type> and
-                     (std::same_as<typename domain_type_of<Type>::SpatialState, Type> or
-                      std::same_as<typename domain_type_of<Type>::SpatialDifference, Type>);
+                     std::same_as<typename subdomain_type_of<Type>::Manifold, SE3Type>;
 
     template <typename Type>
-    concept in_flat_space = in_r1<Type> or in_r3<Type>;
+    concept in_flat_space = in_r1<Type> or in_r3<Type> or in_r6<Type>;
 
     template <typename Type>
     concept in_curved_space = in_so3<Type> or in_se3<Type>;  // or in_s1<Type>;

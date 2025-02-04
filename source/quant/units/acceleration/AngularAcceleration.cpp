@@ -27,7 +27,7 @@ namespace quant::units::acceleration
     {
         return {to_axis_angle() * angle::constants::rad2deg,
                 constants::names::angular_acceleration,
-                constants::symbols::radians_per_second_squared};
+                constants::symbols::degrees_per_second_squared};
     }
 
     std::string

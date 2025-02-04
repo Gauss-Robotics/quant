@@ -45,7 +45,7 @@ namespace quant::units::velocity
         for (auto fn : {&LinearVelocity::to_meters_per_second})
         {
             Vector v = (this->*fn)();
-            if (v.x > 1 or v.y > 1 or v.z > 1)
+            if (abs(v.x) > 1 or abs(v.y) > 1 or abs(v.z) > 1)
             {
                 return v.to_string();
             }

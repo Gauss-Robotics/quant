@@ -22,6 +22,14 @@ namespace quant::units::position
                 constants::symbols::millimeters};
     }
 
+    Vector
+    LinearDisplacement::to_meters() const
+    {
+        return {_difference_object.to_meters(),
+                constants::names::linear_displacement,
+                constants::symbols::meters};
+    }
+
     Distance
     LinearDisplacement::to_distance() const
     {

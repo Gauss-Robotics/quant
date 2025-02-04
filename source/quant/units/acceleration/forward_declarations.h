@@ -29,12 +29,10 @@ namespace quant
 namespace quant::traits
 {
 
-    using LinearAccelerationDomain = Define3DDomain<LinearAcceleration,
-                                          AngularAcceleration,
-                                          SpatialAcceleration,
-                                          LinearAccelerationDifference,
-                                          AngularAccelerationDifference,
-                                          SpatialAccelerationDifference>;
+    using LinearAccelerationDomain = Define3DDomain<
+        Define3DSubDomain<LinearAcceleration, LinearAccelerationDifference, R3Type>,
+        Define3DSubDomain<AngularAcceleration, AngularAccelerationDifference, R3Type>,
+        Define3DSubDomain<SpatialAcceleration, SpatialAccelerationDifference, R6Type>>;
 
     template <>
     struct DefineTraits<LinearAcceleration>

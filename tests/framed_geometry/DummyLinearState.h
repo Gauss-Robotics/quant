@@ -27,12 +27,10 @@ namespace quant
 
     namespace traits
     {
-        using DummyDomain = Define3DDomain<DummyLinearState,
-                                           DummyAngularState,
-                                           DummySpatialState,
-                                           DummyLinearDiff,
-                                           DummyAngularDiff,
-                                           DummySpatialDiff>;
+        using DummyDomain =
+            Define3DDomain<Define3DSubDomain<DummyLinearState, DummyLinearDiff, R3Type>,
+                           Define3DSubDomain<DummyAngularState, DummyAngularDiff, R3Type>,
+                           Define3DSubDomain<DummySpatialState, DummySpatialDiff, R6Type>>;
 
         template <>
         struct DefineTraits<DummyLinearState>
@@ -138,12 +136,10 @@ namespace quant
 
     namespace traits
     {
-        using FramedDummyDomain = Define3DDomain<FramedDummyLinearState,
-                                                 FramedDummyAngularState,
-                                                 FramedDummySpatialState,
-                                                 FramedDummyLinearDiff,
-                                                 FramedDummyAngularDiff,
-                                                 FramedDummySpatialDiff>;
+        using FramedDummyDomain = Define3DDomain<
+            Define3DSubDomain<FramedDummyLinearState, FramedDummyLinearDiff, R3Type>,
+            Define3DSubDomain<FramedDummyAngularState, FramedDummyAngularDiff, R3Type>,
+            Define3DSubDomain<FramedDummySpatialState, FramedDummySpatialDiff, R6Type>>;
 
         template <>
         struct DefineFramedTraits<DummyLinearState> : traits_of<DummyLinearState>

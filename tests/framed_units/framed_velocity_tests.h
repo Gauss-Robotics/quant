@@ -1,10 +1,13 @@
 #pragma once
+#include <quant/framed_geometry/Adjoint.h>
 #include <quant/framed_units/velocity.h>
 #include <quant/framed_units/velocity/forward_declarations.h>
 #include <quant/geometry/Circa.h>
 #include <quant/units/velocity.h>
 
 #include <doctest/doctest.h>
+
+#include <math.h>
 
 #include <iostream>
 
@@ -323,8 +326,8 @@ TEST_SUITE("testing framed velocity domain")
             CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(AngularVelocityDifference::degrees_per_second(
-                      {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)},
-                       .angle = 120})));
+                      {.axis = {.x = -1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},
+                       .angle = sqrt(2) * 90})));
         }
 
         SUBCASE("base change - rotation")
@@ -581,16 +584,15 @@ TEST_SUITE("testing framed velocity domain")
             std::string const from_frame = "ARMAR-6::RobotRoot";
             std::string const to_frame = "ARMAR-6::TCP_R";
             std::string const name = "TCP";
-            FramedTwist const t1{
-                Twist(LinearVelocity::millimeters_per_second({.x = 1, .y = 2, .z = 3}),
-                      AngularVelocity::degrees_per_second(
-                          {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
-                {.name = name, .base_frame = from_frame}};
+            FramedTwist const t1{Twist(LinearVelocity::meters_per_second({.x = 1, .y = 0, .z = 0}),
+                                       AngularVelocity::degrees_per_second(
+                                           {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+                                 {.name = name, .base_frame = from_frame}};
 
             BaseChange const bc{.from_frame = from_frame,
                                 .to_frame = to_frame,
                                 .transformation = SpatialDisplacement(
-                                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                                    LinearDisplacement::meters({.x = 3, .y = 2, .z = 1}),
                                     AngularDisplacement::zero())};
 
             auto t2 = bc * t1;
@@ -598,7 +600,7 @@ TEST_SUITE("testing framed velocity domain")
             CHECK(t2.get_name() == name);
             CHECK(t2.get_base_frame() == to_frame);
             CHECK(t2.get_framed_object() ==
-                  Circa(Twist(LinearVelocity::millimeters_per_second({.x = 4, .y = 1, .z = 5}),
+                  Circa(Twist(LinearVelocity::meters_per_second({.x = 1, .y = -M_PI_2, .z = M_PI}),
                               AngularVelocity::degrees_per_second(
                                   {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
         }
@@ -637,26 +639,25 @@ TEST_SUITE("testing framed velocity domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             std::string const name = "TCP";
             FramedTwist const t1{
-                Twist(LinearVelocity::millimeters_per_second({.x = 1, .y = 2, .z = 3}),
-                      AngularVelocity::degrees_per_second(
-                          {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+                Twist(LinearVelocity::millimeters_per_second({.x = 1, .y = 2, .z = 0}),
+                      AngularVelocity::degrees_per_second({.x = 180, .y = 0, .z = 0})),
                 {.name = name, .base_frame = from_frame}};
 
             BaseChange const bc{
                 .from_frame = from_frame,
                 .to_frame = to_frame,
                 .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+                    LinearDisplacement::millimeters({.x = 1, .y = 1, .z = 0}),
+                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}))};
 
             auto t2 = bc * t1;
 
             CHECK(t2.get_name() == name);
             CHECK(t2.get_base_frame() == to_frame);
             CHECK(t2.get_framed_object() ==
-                  Circa(Twist(LinearVelocity::millimeters_per_second({.x = 4, .y = 5, .z = -1}),
+                  Circa(Twist(LinearVelocity::millimeters_per_second({.x = 2, .y = -1, .z = M_PI}),
                               AngularVelocity::degrees_per_second(
-                                  {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
+                                  {.axis = {.x = 0, .y = 1, .z = 0}, .angle = -180}))));
         }
     }
 
@@ -837,7 +838,7 @@ TEST_SUITE("testing framed velocity domain")
     //     }
     // }
     //
-    TEST_SUITE("end to end test (see coordinate system visualization)")
+    TEST_CASE("end to end test (see coordinate system visualization)")
     {
         using PoseAccessor = geometry::detail::StateAccessor<Pose>;
         auto const origin =
@@ -888,7 +889,7 @@ TEST_SUITE("testing framed velocity domain")
             (Eigen::Matrix4d() << 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, -10, 0, 0, 0, 1).finished())));
         auto const base_change = BaseChange("F1", "F2", F1_to_F2);
 
-        TEST_CASE("poses and positions transform correctly")
+        SUBCASE("poses and positions transform correctly")
         {
             auto make_base_change = [](FramedPose const& from, FramedPose const& to)
             { return BaseChange(from.get_name(), to.get_name(), (to - from).get_framed_object()); };
@@ -908,6 +909,88 @@ TEST_SUITE("testing framed velocity domain")
             test(origin_to_F2, T2, T2_in_F2);
             test(base_change, T1_in_F1, T1_in_F2);
             test(base_change, T2_in_F1, T2_in_F2);
+        }
+    }
+
+    TEST_CASE("Modern Robotics Examples and Exercises")
+    {
+        SUBCASE("Example 3.23 from Modern Robotics.")
+        {
+            // Transform from frame S to frame B
+            SpatialDisplacement const T_sb =
+                geometry::detail::DifferenceAccessor<SpatialDisplacement>::make(Eigen::Isometry3d(
+                    (Eigen::Matrix4d() << -1, 0, 0, 4, 0, 1, 0, 0.4, 0, 0, -1, 0, 0, 0, 0, 1)
+                        .finished()));
+            FramedTwist const V_s(Twist(LinearVelocity::meters_per_second({-2, -4, 0}),
+                                        AngularVelocity::radians_per_second(Vector{0, 0, 2})),
+                                  {"Car", "S"});
+            FramedTwist const V_b(Twist(LinearVelocity::meters_per_second({2.8, 4, 0}),
+                                        AngularVelocity::radians_per_second(Vector{0, 0, -2})),
+                                  {"Car", "B"});
+            auto from_B_to_S = BaseChange("B", "S", T_sb.inverse());
+            CHECK(V_s == Circa(from_B_to_S * V_b));
+        }
+        SUBCASE("Exercise 3.16 from Modern Robotics")
+        {
+            FramedTwist const V_s(Twist(LinearVelocity::meters_per_second({-1, -2, -3}),
+                                        AngularVelocity::radians_per_second(Vector{3, 2, 1})),
+                                  {"Object", "S"});
+            Eigen::Isometry3d T(
+                (Eigen::Matrix4d() << 0, 0, 1, 0, -1, 0, 0, 3, 0, -1, 0, 0, 0, 0, 0, 1).finished());
+            SpatialDisplacement const T_sa =
+                geometry::detail::DifferenceAccessor<SpatialDisplacement>::make(T.inverse());
+            FramedTwist const V_a(Twist(LinearVelocity::meters_per_second({-9, 1, -1}),
+                                        AngularVelocity::radians_per_second(Vector{1, -3, -2})),
+                                  {"Object", "A"});
+
+            Eigen::Matrix4d V =
+                (Eigen::Matrix4d() << 0, -1, 2, -1, 1, 0, -3, -2, -2, 3, 0, -3, 0, 0, 0, 0)
+                    .finished();
+            auto const base_change = BaseChange("S", "A", T_sa);
+            CHECK(V_a == Circa(base_change * V_s));
+            CAPTURE((T * V * T.inverse()).matrix());
+            CHECK((framed_geometry::SkewSymmetric6d(V_a).matrix() - (T * V * T.inverse()).matrix())
+                      .isZero());
+        }
+        SUBCASE("Practice Exercise 3.14")
+        {
+            // https://hades.mech.northwestern.edu/images/e/ef/MR_practice_exercises.pdf
+            FramedPose tree(Pose(Position::zero(), Orientation::zero()), {"Tree", "Tree"});
+            const auto quadcopter =
+                tree.enframe(Pose(Position::meters({10, 5, 5}),
+                                  Orientation::degrees({.axis = {1, 0, 0}, .angle = 90})),
+                             "Quadcopter");
+            const auto house =
+                tree.enframe(Pose(Position::meters({0, 10, 10}),
+                                  Orientation::zero()),
+                             "House");
+            const auto tree_to_quadcopter =
+                BaseChange("Tree", "Quadcopter", (quadcopter - tree).get_framed_object());
+            const auto quadcopter_to_tree = BaseChange("Quadcopter", "Tree", (tree - quadcopter).get_framed_object());
+            const auto tree_to_house = BaseChange("Tree", "House", (house - tree).get_framed_object());
+            const auto house_to_tree = BaseChange("House", "Tree", (tree - house).get_framed_object());
+            const auto quadcopter_to_house = BaseChange("Quadcopter", "House", (house - quadcopter).get_framed_object());
+            const auto house_to_quadcopter = BaseChange("House", "Quadcopter", (quadcopter - house).get_framed_object());
+            const auto V_qc_in_qc = FramedTwist(
+                Twist(LinearVelocity::meters_per_second({0, 1, 0}),
+                      AngularVelocity::radians_per_second({.x=0, .y=1, .z=0})),
+                {"Quadcopter", "Quadcopter"});
+            const auto V_qc_in_t = FramedTwist(
+                Twist(LinearVelocity::meters_per_second({5, -10, 1}),
+                      AngularVelocity::radians_per_second({.x=0, .y=0, .z=1})),
+                {"Quadcopter", "Tree"});
+            const auto V_qc_in_h = FramedTwist(
+                Twist(LinearVelocity::meters_per_second({-5, -10, 1}),
+                      AngularVelocity::radians_per_second({.x=0, .y=0, .z=1})),
+                {"Quadcopter", "House"});
+            CHECK(V_qc_in_t == Circa(quadcopter_to_tree * V_qc_in_qc));
+            CHECK(V_qc_in_h == Circa(quadcopter_to_house * V_qc_in_qc));
+            CHECK(V_qc_in_h == Circa(tree_to_house * V_qc_in_t));
+            CHECK(V_qc_in_t == Circa(house_to_tree * V_qc_in_h));
+            CHECK(V_qc_in_qc == Circa(house_to_quadcopter * V_qc_in_h));
+            CHECK(V_qc_in_qc == Circa(tree_to_quadcopter * V_qc_in_t));
+            CHECK(V_qc_in_h == Circa(tree_to_house * (quadcopter_to_tree * V_qc_in_qc)));
+            CHECK(V_qc_in_t == Circa(house_to_tree * (quadcopter_to_house * V_qc_in_qc)));
         }
     }
 }

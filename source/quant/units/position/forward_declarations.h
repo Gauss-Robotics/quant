@@ -19,12 +19,9 @@ namespace quant::units::position
 namespace quant::traits
 {
 
-    using PositionDomain = Define3DDomain<units::position::Position,
-                                          units::position::Orientation,
-                                          units::position::Pose,
-                                          units::position::LinearDisplacement,
-                                          units::position::AngularDisplacement,
-                                          units::position::SpatialDisplacement>;
+    using PositionDomain = Define3DDomain<Define3DSubDomain<units::position::Position, units::position::LinearDisplacement, R3Type>,
+                                          Define3DSubDomain<units::position::Orientation, units::position::AngularDisplacement, SO3Type>,
+                                          Define3DSubDomain<units::position::Pose, units::position::SpatialDisplacement, SE3Type>>;
 
     template <>
     struct DefineTraits<units::position::Position>

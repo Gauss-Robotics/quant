@@ -21,4 +21,10 @@ namespace quant::units::position
     {
         return AngularDisplacement(_difference_object.angular());
     }
+
+    SpatialDisplacement
+    SpatialDisplacement::inverse() const
+    {
+        return SpatialDisplacement(_difference_object.inverse());
+    }
 }  // namespace quant::units::position

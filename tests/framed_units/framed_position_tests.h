@@ -737,6 +737,17 @@ TEST_SUITE("testing framed position domain")
                                               {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
         }
 
+        SUBCASE("inverse")
+        {
+            FramedSpatialDisplacement const f1{
+                SpatialDisplacement(
+                    LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}),
+                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+                "ARMAR-6::RobotRoot"};
+
+            CHECK(f1.get_framed_object().inverse().inverse() == Circa(f1.get_framed_object()));
+        }
+
         SUBCASE("base change - translation")
         {
             std::string const from_frame = "ARMAR-6::RobotRoot";
@@ -907,12 +918,14 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
         (Eigen::Matrix4d() << 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, -10, 0, 0, 0, 1).finished())));
     auto const base_change = BaseChange("F1", "F2", F1_to_F2);
 
-    auto const p1 = FramedPosition(Position::millimeters({4, 4, 0}), {"p1", "global"});
-    auto const p2 = FramedPosition(Position::millimeters({5, 4, 0}), {"p2", "global"});
-    auto const p1_in_F1 = FramedPosition(Position::millimeters({0, 1, -1}), {"p1", "F1"});
-    auto const p2_in_F1 = FramedPosition(Position::millimeters({0, 1, -2}), {"p2", "F1"});
-    auto const p1_in_F2 = FramedPosition(Position::millimeters({1, 9, 0}), {"p1", "F2"});
-    auto const p2_in_F2 = FramedPosition(Position::millimeters({1, 8, 0}), {"p2", "F2"});
+    // the poses are all in m (since the internal representation is in meters), so the positions
+    // have also to be in meters
+    auto const p1 = FramedPosition(Position::meters({4, 4, 0}), {"p1", "global"});
+    auto const p2 = FramedPosition(Position::meters({5, 4, 0}), {"p2", "global"});
+    auto const p1_in_F1 = FramedPosition(Position::meters({0, 1, -1}), {"p1", "F1"});
+    auto const p2_in_F1 = FramedPosition(Position::meters({0, 1, -2}), {"p2", "F1"});
+    auto const p1_in_F2 = FramedPosition(Position::meters({1, 9, 0}), {"p1", "F2"});
+    auto const p2_in_F2 = FramedPosition(Position::meters({1, 8, 0}), {"p2", "F2"});
 
     TEST_CASE("difference of F1 and F2 is F1_to_F2")
     {

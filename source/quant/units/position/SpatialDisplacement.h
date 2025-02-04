@@ -21,6 +21,8 @@ namespace quant::units::position
 
         AngularDisplacement
         angular() const;
+
+        SpatialDisplacement inverse() const;
     };
 
     inline std::ostream&

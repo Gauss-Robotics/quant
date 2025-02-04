@@ -23,6 +23,9 @@ namespace quant::units::position
         Vector
         to_millimeters() const;
 
+        Vector
+        to_meters() const;
+
         Distance
         to_distance() const;
 

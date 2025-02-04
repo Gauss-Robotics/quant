@@ -40,85 +40,6 @@ namespace quant::framed_units::acceleration
     }  // namespace base_change
 }  // namespace quant::framed_units::acceleration
 
-namespace quant::traits
-{
-
-    using FramedAccelerationDomain =
-        Define3DDomain<framed_units::acceleration::LinearAcceleration,
-                       framed_units::acceleration::AngularAcceleration,
-                       framed_units::acceleration::SpatialAcceleration,
-                       framed_units::acceleration::LinearAccelerationDifference,
-                       framed_units::acceleration::AngularAccelerationDifference,
-                       framed_units::acceleration::SpatialAccelerationDifference>;
-
-    template <>
-    struct DefineFramedTraits<units::acceleration::LinearAcceleration> :
-        public traits_of<units::acceleration::LinearAcceleration>
-    {
-        using FramedDomain = FramedAccelerationDomain;
-        using FramedState = framed_units::acceleration::LinearAcceleration;
-        using FramedDifference = framed_units::acceleration::LinearAccelerationDifference;
-        static constexpr auto basis_change_function =
-            &framed_units::acceleration::base_change::linear_acceleration;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::acceleration::LinearAccelerationDifference> :
-        public traits_of<units::acceleration::LinearAccelerationDifference>
-    {
-        using FramedDomain = FramedAccelerationDomain;
-        using FramedDifference = framed_units::acceleration::LinearAccelerationDifference;
-        using FramedState = framed_units::acceleration::LinearAcceleration;
-        static constexpr auto basis_change_function =
-            framed_units::acceleration::base_change::linear_acceleration_difference;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::acceleration::AngularAcceleration> :
-        public traits_of<units::acceleration::AngularAcceleration>
-    {
-        using FramedDomain = FramedAccelerationDomain;
-        using FramedState = framed_units::acceleration::AngularAcceleration;
-        using FramedDifference = framed_units::acceleration::AngularAccelerationDifference;
-        static constexpr auto basis_change_function =
-            framed_units::acceleration::base_change::angular_acceleration;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::acceleration::AngularAccelerationDifference> :
-        public traits_of<units::acceleration::AngularAccelerationDifference>
-    {
-        using FramedDomain = FramedAccelerationDomain;
-        using FramedDifference = framed_units::acceleration::AngularAccelerationDifference;
-        using FramedState = framed_units::acceleration::AngularAcceleration;
-        static constexpr auto basis_change_function =
-            framed_units::acceleration::base_change::angular_acceleration_difference;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::acceleration::SpatialAcceleration> :
-        public traits_of<units::acceleration::SpatialAcceleration>
-    {
-        using FramedDomain = FramedAccelerationDomain;
-        using FramedState = framed_units::acceleration::SpatialAcceleration;
-        using FramedDifference = framed_units::acceleration::SpatialAccelerationDifference;
-        static constexpr auto basis_change_function =
-            framed_units::acceleration::base_change::spatial_acceleration;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::acceleration::SpatialAccelerationDifference> :
-        public traits_of<units::acceleration::SpatialAccelerationDifference>
-    {
-        using FramedDomain = FramedAccelerationDomain;
-        using FramedDifference = framed_units::acceleration::SpatialAccelerationDifference;
-        using FramedState = framed_units::acceleration::SpatialAcceleration;
-        static constexpr auto basis_change_function =
-            framed_units::acceleration::base_change::spatial_acceleration_difference;
-    };
-
-}  // namespace quant::traits
-
 namespace quant
 {
 
@@ -134,3 +55,78 @@ namespace quant
         framed_units::acceleration::SpatialAccelerationDifference;
 
 }  // namespace quant
+
+namespace quant::traits
+{
+    using FramedAccelerationDomain = Define3DDomain<
+        Define3DSubDomain<FramedLinearAcceleration, FramedLinearAccelerationDifference, R3Type>,
+        Define3DSubDomain<FramedAngularAcceleration, FramedAngularAccelerationDifference, R3Type>,
+        Define3DSubDomain<FramedSpatialAcceleration, FramedSpatialAccelerationDifference, R6Type>>;
+
+    template <>
+    struct DefineFramedTraits<LinearAcceleration> :
+        public traits_of<LinearAcceleration>
+    {
+        using FramedDomain = FramedAccelerationDomain;
+        using FramedState = framed_units::acceleration::LinearAcceleration;
+        using FramedDifference = framed_units::acceleration::LinearAccelerationDifference;
+        static constexpr auto basis_change_function =
+            &framed_units::acceleration::base_change::linear_acceleration;
+    };
+
+    template <>
+    struct DefineFramedTraits<LinearAccelerationDifference> :
+        public traits_of<LinearAccelerationDifference>
+    {
+        using FramedDomain = FramedAccelerationDomain;
+        using FramedDifference = framed_units::acceleration::LinearAccelerationDifference;
+        using FramedState = framed_units::acceleration::LinearAcceleration;
+        static constexpr auto basis_change_function =
+            framed_units::acceleration::base_change::linear_acceleration_difference;
+    };
+
+    template <>
+    struct DefineFramedTraits<AngularAcceleration> :
+        public traits_of<AngularAcceleration>
+    {
+        using FramedDomain = FramedAccelerationDomain;
+        using FramedState = framed_units::acceleration::AngularAcceleration;
+        using FramedDifference = framed_units::acceleration::AngularAccelerationDifference;
+        static constexpr auto basis_change_function =
+            framed_units::acceleration::base_change::angular_acceleration;
+    };
+
+    template <>
+    struct DefineFramedTraits<AngularAccelerationDifference> :
+        public traits_of<AngularAccelerationDifference>
+    {
+        using FramedDomain = FramedAccelerationDomain;
+        using FramedDifference = framed_units::acceleration::AngularAccelerationDifference;
+        using FramedState = framed_units::acceleration::AngularAcceleration;
+        static constexpr auto basis_change_function =
+            framed_units::acceleration::base_change::angular_acceleration_difference;
+    };
+
+    template <>
+    struct DefineFramedTraits<SpatialAcceleration> :
+        public traits_of<SpatialAcceleration>
+    {
+        using FramedDomain = FramedAccelerationDomain;
+        using FramedState = framed_units::acceleration::SpatialAcceleration;
+        using FramedDifference = framed_units::acceleration::SpatialAccelerationDifference;
+        static constexpr auto basis_change_function =
+            framed_units::acceleration::base_change::spatial_acceleration;
+    };
+
+    template <>
+    struct DefineFramedTraits<SpatialAccelerationDifference> :
+        public traits_of<SpatialAccelerationDifference>
+    {
+        using FramedDomain = FramedAccelerationDomain;
+        using FramedDifference = framed_units::acceleration::SpatialAccelerationDifference;
+        using FramedState = framed_units::acceleration::SpatialAcceleration;
+        static constexpr auto basis_change_function =
+            framed_units::acceleration::base_change::spatial_acceleration_difference;
+    };
+
+}  // namespace quant::traits

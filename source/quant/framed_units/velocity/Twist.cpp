@@ -1,12 +1,15 @@
 #include "Twist.h"
 
+#include <quant/framed_geometry/Adjoint.h>
 #include <quant/framed_geometry/BaseChange.h>
-#include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/geometry/detail/DifferenceAccessor.h>
+#include <quant/geometry/detail/QuantityAccessor.h>
 #include <quant/units/position/SpatialDisplacement.h>
 #include <quant/units/velocity/AngularVelocity.h>
 #include <quant/units/velocity/LinearVelocity.h>
 #include <quant/units/velocity/Twist.h>
+
+#include <cassert>
 
 #include "forward_declarations.h"
 
@@ -31,17 +34,11 @@ namespace quant::framed_units::velocity
         *         return {linear_velocity(twist.linear(), bc),
                                       angular_velocity(twist.angular(), bc)};
          **/
-        using SD = geometry::detail::DifferenceAccessor<units::position::SpatialDisplacement>;
-        using AV = geometry::detail::StateAccessor<units::velocity::AngularVelocity>;
-        using LV = geometry::detail::StateAccessor<units::velocity::LinearVelocity>;
-        auto const T = SD::representation(bc.transformation).inverse();
-        auto const R = T.rotation();
-        auto const p = T.translation();
-        auto const omega = AV::representation(twist.angular());
-        auto const v = LV::representation(twist.linear());
+        auto const adjoint = framed_geometry::Adjoint(bc.transformation.inverse());
+        auto const V =
+            geometry::detail::StateAccessor<units::velocity::Twist>::representation(twist);
         // Equation 3.76ff Modern Robotics
-        return {LV::make(-R * omega * R.transpose() * p + R * v),
-                AV::make(static_cast<Eigen::AngleAxisd>(R * omega * R.transpose()))};
+        return geometry::detail::StateAccessor<units::velocity::Twist>::make(adjoint * V);
     }
 
 }  // namespace quant::framed_units::velocity

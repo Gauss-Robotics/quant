@@ -15,15 +15,25 @@ namespace quant::units::momentum
 
 }  // namespace quant::units::momentum
 
-namespace quant::traits
+namespace quant
 {
 
-    using MomentumDomain = Define3DDomain<units::momentum::LinearMomentum,
-                                          units::momentum::AngularMomentum,
-                                          units::momentum::SpatialMomentum,
-                                          units::momentum::LinearImpulse,
-                                          units::momentum::AngularImpulse,
-                                          units::momentum::SpatialImpulse>;
+    using units::momentum::AngularMomentum;
+    using units::momentum::LinearMomentum;
+    using units::momentum::SpatialMomentum;
+
+    using units::momentum::AngularImpulse;
+    using units::momentum::LinearImpulse;
+    using units::momentum::SpatialImpulse;
+
+}  // namespace quant
+
+namespace quant::traits
+{
+    // TODO: are the manifolds correct here?
+    using MomentumDomain = Define3DDomain<Define3DSubDomain<LinearMomentum, LinearImpulse, R3Type>,
+                                          Define3DSubDomain<AngularMomentum, AngularImpulse, R3Type>,
+                                          Define3DSubDomain<SpatialMomentum, SpatialImpulse, R6Type>>;
 
     template <>
     struct DefineTraits<units::momentum::LinearMomentum>
@@ -44,16 +54,3 @@ namespace quant::traits
     };
 
 }  // namespace quant::traits
-
-namespace quant
-{
-
-    using units::momentum::AngularMomentum;
-    using units::momentum::LinearMomentum;
-    using units::momentum::SpatialMomentum;
-
-    using units::momentum::AngularImpulse;
-    using units::momentum::LinearImpulse;
-    using units::momentum::SpatialImpulse;
-
-}  // namespace quant

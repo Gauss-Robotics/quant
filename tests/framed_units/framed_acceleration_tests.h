@@ -322,8 +322,8 @@ TEST_SUITE("testing framed acceleration domain")
             CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(AngularAccelerationDifference::degrees_per_second_squared(
-                      {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)},
-                       .angle = 120})));
+                      {.axis = {.x = -1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},
+                       .angle = sqrt(2)*90})));
         }
 
         SUBCASE("base change - rotation")
@@ -604,7 +604,7 @@ TEST_SUITE("testing framed acceleration domain")
             CHECK(a2.get_base_frame() == to_frame);
             CHECK(a2.get_framed_object() ==
                   Circa(SpatialAcceleration(
-                      LinearAcceleration::millimeters_per_second_squared({.x = 4, .y = 1, .z = 5}),
+                      LinearAcceleration::millimeters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                       AngularAcceleration::degrees_per_second_squared(
                           {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
         }
@@ -664,7 +664,7 @@ TEST_SUITE("testing framed acceleration domain")
             CHECK(a2.get_base_frame() == to_frame);
             CHECK(a2.get_framed_object() ==
                   Circa(SpatialAcceleration(
-                      LinearAcceleration::millimeters_per_second_squared({.x = 4, .y = 5, .z = -1}),
+                      LinearAcceleration::millimeters_per_second_squared({.x = 1, .y = 3, .z = -2}),
                       AngularAcceleration::degrees_per_second_squared(
                           {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
         }

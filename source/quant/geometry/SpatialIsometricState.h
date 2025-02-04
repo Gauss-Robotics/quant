@@ -111,6 +111,11 @@ namespace quant::geometry
             return StateType{_representation.inverse()};
         }
 
+        StateType inverse() const
+        {
+            return StateType{_representation.inverse()};
+        }
+
     protected:
         SpatialIsometricState(Eigen::Isometry3d const& tf) : _representation(tf)
         {

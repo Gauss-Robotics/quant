@@ -14,12 +14,14 @@ namespace quant::geometry
         using AngularStateType = traits::angular_state_in_domain_of<StateType>;
         using LinearDifferenceType = traits::linear_difference_in_domain_of<StateType>;
         using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
-        using GeometricRepresentationType = Eigen::Affine3d;
+        using GeometricRepresentationType = Eigen::Vector<double, 6>;
 
-        SpatialState(LinearStateType linear, AngularStateType angular) :
-            _linear{linear}, _angular{angular}
+        SpatialState(LinearStateType linear, AngularStateType angular)
         {
-            ;
+            _representation.head(3) =
+                detail::StateAccessor<AngularStateType>::representation(angular);
+            _representation.tail(3) =
+                detail::StateAccessor<LinearStateType>::representation(linear);
         }
 
         static StateType
@@ -31,55 +33,61 @@ namespace quant::geometry
         LinearStateType
         linear() const
         {
-            return _linear;
+            return detail::StateAccessor<LinearStateType>::make(_representation.tail(3));
         }
 
         AngularStateType
         angular() const
         {
-            return _angular;
+            return detail::StateAccessor<AngularStateType>::make(_representation.head(3));
         }
 
         friend StateType
         operator+(StateType const& lhs, LinearDifferenceType const& op)
         {
-            return StateType(lhs._linear + op, lhs._angular);
+            return StateType(lhs.linear() + op, lhs.angular());
         }
 
         friend StateType
         operator-(StateType const& lhs, LinearStateType const& op)
         {
-            return StateType(lhs._linear - op, lhs._angular);
+            return StateType(lhs.linear() - op, lhs.angular());
         }
 
         friend StateType
         operator+(StateType const& lhs, AngularDifferenceType const& op)
         {
-            return StateType(lhs._linear, lhs._angular + op);
+            return StateType(lhs.linear(), lhs.angular() + op);
         }
 
         friend StateType
         operator-(StateType const& lhs, AngularStateType const& op)
         {
-            return StateType(lhs._linear, lhs._angular - op);
+            return StateType(lhs.linear(), lhs.angular() - op);
         }
 
-        std::string to_string() const
+        std::string
+        to_string() const
         {
-            return "[" + _linear.to_string() + ", " + _angular.to_string() + "]";
+            return "[" + linear().to_string() + ", " + angular().to_string() + "]";
         }
 
-        bool is_approx(StateType const& rhs,
-                       double const tolerance = Eigen::NumTraits<double>::dummy_precision()) const
+        bool
+        is_approx(StateType const& rhs,
+                  double const tolerance = Eigen::NumTraits<double>::dummy_precision()) const
         {
-            return _linear.is_approx(rhs._linear, tolerance) &&
-                   _angular.is_approx(rhs._angular, tolerance);
+            return _representation.isApprox(rhs._representation, tolerance);
         }
 
     protected:
-        // GeometricRepresentationType _representation; TODO: do we need this?
-        LinearStateType _linear;
-        AngularStateType _angular;
+        SpatialState(GeometricRepresentationType const& eigen) : _representation(eigen)
+        {
+            ;
+        }
+
+        GeometricRepresentationType _representation;
+
+        friend class detail::StateAccessor<StateType>;
     };
 
 }  // namespace quant::geometry

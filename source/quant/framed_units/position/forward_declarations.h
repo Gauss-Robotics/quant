@@ -34,78 +34,6 @@ namespace quant::framed_units::position
                     framed_geometry::BaseChange const&);
 }  // namespace quant::framed_units::position
 
-namespace quant::traits
-{
-
-    using FramedPositionDomain = Define3DDomain<framed_units::position::Position,
-                                                framed_units::position::Orientation,
-                                                framed_units::position::Pose,
-                                                framed_units::position::LinearDisplacement,
-                                                framed_units::position::AngularDisplacement,
-                                                framed_units::position::SpatialDisplacement>;
-
-    template <>
-    struct DefineFramedTraits<units::position::Position> :
-        public traits_of<units::position::Position>
-    {
-        using FramedDomain = FramedPositionDomain;
-        using FramedState = framed_units::position::Position;
-        using FramedDifference = framed_units::position::LinearDisplacement;
-        static constexpr auto basis_change_function = &framed_units::position::position_basis_change;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::position::LinearDisplacement> :
-        public traits_of<units::position::LinearDisplacement>
-    {
-        using FramedDomain = FramedPositionDomain;
-        using FramedDifference = framed_units::position::LinearDisplacement;
-        using FramedState = framed_units::position::Position;
-        static constexpr auto basis_change_function = framed_units::position::ld_basis_change;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::position::Orientation> :
-        public traits_of<units::position::Orientation>
-    {
-        using FramedDomain = FramedPositionDomain;
-        using FramedState = framed_units::position::Orientation;
-        using FramedDifference = framed_units::position::AngularDisplacement;
-        static constexpr auto basis_change_function =
-            framed_units::position::orientation_basis_change;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::position::AngularDisplacement> :
-        public traits_of<units::position::AngularDisplacement>
-    {
-        using FramedDomain = FramedPositionDomain;
-        using FramedDifference = framed_units::position::AngularDisplacement;
-        using FramedState = framed_units::position::Orientation;
-        static constexpr auto basis_change_function = framed_units::position::ad_basis_change;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::position::Pose> : public traits_of<units::position::Pose>
-    {
-        using FramedDomain = FramedPositionDomain;
-        using FramedState = framed_units::position::Pose;
-        using FramedDifference = framed_units::position::SpatialDisplacement;
-        static constexpr auto basis_change_function = framed_units::position::pose_basis_change;
-    };
-
-    template <>
-    struct DefineFramedTraits<units::position::SpatialDisplacement> :
-        public traits_of<units::position::SpatialDisplacement>
-    {
-        using FramedDomain = FramedPositionDomain;
-        using FramedDifference = framed_units::position::SpatialDisplacement;
-        using FramedState = framed_units::position::Pose;
-        static constexpr auto basis_change_function = framed_units::position::sd_basis_change;
-    };
-
-}  // namespace quant::traits
-
 namespace quant
 {
 
@@ -118,3 +46,74 @@ namespace quant
     using FramedSpatialDisplacement = framed_units::position::SpatialDisplacement;
 
 }  // namespace quant
+
+namespace quant::traits
+{
+
+    using FramedPositionDomain =
+        Define3DDomain<Define3DSubDomain<FramedPosition, FramedLinearDisplacement, R3Type>,
+                       Define3DSubDomain<FramedOrientation, FramedAngularDisplacement, SO3Type>,
+                       Define3DSubDomain<FramedPose, FramedSpatialDisplacement, SE3Type>>;
+
+    template <>
+    struct DefineFramedTraits<Position> :
+        public traits_of<Position>
+    {
+        using FramedDomain = FramedPositionDomain;
+        using FramedState = framed_units::position::Position;
+        using FramedDifference = framed_units::position::LinearDisplacement;
+        static constexpr auto basis_change_function =
+            &framed_units::position::position_basis_change;
+    };
+
+    template <>
+    struct DefineFramedTraits<LinearDisplacement> :
+        public traits_of<LinearDisplacement>
+    {
+        using FramedDomain = FramedPositionDomain;
+        using FramedDifference = framed_units::position::LinearDisplacement;
+        using FramedState = framed_units::position::Position;
+        static constexpr auto basis_change_function = framed_units::position::ld_basis_change;
+    };
+
+    template <>
+    struct DefineFramedTraits<Orientation> :
+        public traits_of<Orientation>
+    {
+        using FramedDomain = FramedPositionDomain;
+        using FramedState = framed_units::position::Orientation;
+        using FramedDifference = framed_units::position::AngularDisplacement;
+        static constexpr auto basis_change_function =
+            framed_units::position::orientation_basis_change;
+    };
+
+    template <>
+    struct DefineFramedTraits<AngularDisplacement> :
+        public traits_of<AngularDisplacement>
+    {
+        using FramedDomain = FramedPositionDomain;
+        using FramedDifference = framed_units::position::AngularDisplacement;
+        using FramedState = framed_units::position::Orientation;
+        static constexpr auto basis_change_function = framed_units::position::ad_basis_change;
+    };
+
+    template <>
+    struct DefineFramedTraits<Pose> : public traits_of<Pose>
+    {
+        using FramedDomain = FramedPositionDomain;
+        using FramedState = framed_units::position::Pose;
+        using FramedDifference = framed_units::position::SpatialDisplacement;
+        static constexpr auto basis_change_function = framed_units::position::pose_basis_change;
+    };
+
+    template <>
+    struct DefineFramedTraits<SpatialDisplacement> :
+        public traits_of<SpatialDisplacement>
+    {
+        using FramedDomain = FramedPositionDomain;
+        using FramedDifference = framed_units::position::SpatialDisplacement;
+        using FramedState = framed_units::position::Pose;
+        static constexpr auto basis_change_function = framed_units::position::sd_basis_change;
+    };
+
+}  // namespace quant::traits

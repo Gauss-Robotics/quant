@@ -18,12 +18,13 @@ namespace quant::geometry
     {
 
     public:
+        using GeometricRepresentationType = Eigen::Vector3d;
         // Construct.
 
         /**
          * @brief Default constructed quaternion.
          */
-        AngularState() : _representation(Eigen::AngleAxisd::Identity())
+        AngularState() : _representation(GeometricRepresentationType::Zero())
         {
             ;
         }
@@ -66,28 +67,22 @@ namespace quant::geometry
             return _representation.isApprox(rhs._representation, tolerance);
         }
 
-        Eigen::Quaterniond
-        operator/(StateType const& rhs) const
-        {
-            return _representation / rhs._representation;
-        }
 
-        using GeometricRepresentationType = Eigen::AngleAxisd;
 
     protected:
         // Construct.
 
-        AngularState(AxisAngle const& aa) : _representation{aa.to_eigen()}
+        AngularState(AxisAngle const& aa) : _representation{aa.axis.to_eigen() * aa.angle}
         {
             ;
         }
 
-        AngularState(Eigen::Quaterniond const& quaternion) : _representation{quaternion}
+        AngularState(Eigen::AngleAxisd const& aa) : _representation{aa.axis() * aa.angle()}
         {
             ;
         }
 
-        AngularState(Eigen::AngleAxisd const& aa) : _representation{aa}
+        AngularState(GeometricRepresentationType const& eigen) : _representation{eigen}
         {
             ;
         }
@@ -97,10 +92,11 @@ namespace quant::geometry
         AxisAngle
         to_axis_angle() const
         {
-            return AxisAngle::from_eigen(Eigen::AngleAxisd{_representation});
+            return AxisAngle::from_eigen(
+                Eigen::AngleAxisd{_representation.norm(), _representation.normalized()});
         }
 
-        Eigen::AngleAxisd _representation;
+        GeometricRepresentationType _representation;
 
         friend class detail::StateAccessor<StateType>;
     };
