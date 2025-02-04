@@ -2,7 +2,7 @@
 #include <quant/framed_geometry/forward_declarations.h>
 #include <quant/units/position/SpatialDisplacement.h>
 
-#include <array>
+#include <string_view>
 
 namespace quant::framed_geometry
 {
@@ -18,18 +18,5 @@ namespace quant::framed_geometry
         std::string_view from_frame;
         std::string_view to_frame;
         units::position::SpatialDisplacement transformation;
-    };
-
-    struct Shift
-    {
-        // TODO: multiplication from the right
-        //  from_frame has to be the same as to_frame and the frame_name of the framed unit
-
-        /**
-         * In case of Positions/Orientations/Poses, this corresponds to the right plus operator
-         * (from https://arxiv.org/pdf/1812.01537, Eq. (25)). It always adds a difference of the
-         * same unit at the position of the framed unit (i.e., "dX is expressed in the local frame
-         * at X").
-         */
     };
 }  // namespace quant::framed_geometry

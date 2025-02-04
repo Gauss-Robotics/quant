@@ -585,8 +585,9 @@ TEST_SUITE("testing framed force domain")
             CHECK(w2.get_base_frame() == to_frame);
             CHECK(w2.get_framed_object() ==
                   Circa(Wrench(
-                      Force::newtons({.x = 1, .y = 2, .z = 3}),
-                      Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})), 1e-3));
+                            Force::newtons({.x = 1, .y = 2, .z = 3}),
+                            Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+                        1e-3));
         }
 
         SUBCASE("base change - rotation")
@@ -639,8 +640,9 @@ TEST_SUITE("testing framed force domain")
             CHECK(w2.get_base_frame() == to_frame);
             CHECK(w2.get_framed_object() ==
                   Circa(Wrench(
-                      Force::newtons({.x = 1, .y = 3, .z = -2}),
-                      Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})), 1e-3));
+                            Force::newtons({.x = 1, .y = 3, .z = -2}),
+                            Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
+                        1e-3));
         }
     }
 
@@ -825,6 +827,7 @@ TEST_SUITE("testing framed force domain")
     {
         SUBCASE("Example 3.28 Modern Robotics")
         {
+            // https://hades.mech.northwestern.edu/images/0/0c/MR-tablet-v2.pdf
             FramedWrench const F_hand_in_H{
                 Wrench(Force::newtons({.x = 0, .y = -5, .z = 0}), Torque::zero()),
                 {.name = "Hand", .base_frame = "H"}};
@@ -877,6 +880,25 @@ TEST_SUITE("testing framed force domain")
                 // Test numerical stability
                 CHECK(base_change * F_b == Circa(F_t));
             }
+        }
+        SUBCASE("Final Exam 2017 Exercise 5c")
+        {
+            // https://hades.mech.northwestern.edu/images/2/28/SNU-2017-exams.pdf
+            auto const F_b = FramedWrench(Wrench(Force::newtons({2, 1, 1}), Torque::zero()),
+                                          {.name = "Base", .base_frame = "B"});
+            SpatialDisplacement const T_sb{
+                LinearDisplacement::meters({3, 3, 4}),
+                AngularDisplacement::degrees({.axis = {0, 1, 0}, .angle = -90})};
+            auto const from_B_to_S = BaseChange{"B", "S", T_sb.inverse()};
+            auto const F_s = FramedWrench(Wrench(Force::newtons({-1, 1, 2}),
+                                                 Torque::newton_meters({.x = 2, .y = -10, .z = 6})),
+                                          {.name = "Base", .base_frame = "S"});
+            FramedForce const f_b =
+                FramedForce(Force::newtons({2, 1, 1}), {.name = "Base", .base_frame = "B"});
+            CHECK(from_B_to_S * f_b == Circa(FramedForce(Force::newtons({-1, 1, 2}),
+                                                         {.name = "Base", .base_frame = "S"})));
+
+            CHECK(F_s == Circa(from_B_to_S * F_b));
         }
     }
 }
