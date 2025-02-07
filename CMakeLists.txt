@@ -32,11 +32,21 @@ option(QUANT_ENABLE_EXCEPTIONS "Allow throwing of exceptions" ON)
 if (QUANT_ENABLE_EXCEPTIONS)
     add_compile_definitions(QUANT_ENABLE_EXCEPTIONS)
 endif()
+option(QUANT_ENABLE_TESTS "Enable tests" ON)
+
 
 # Source code.
 add_subdirectory(source)
-add_subdirectory(tests)
 add_subdirectory(examples)
+
+if (QUANT_ENABLE_TESTS)
+    if (doctest_FOUND)
+        add_subdirectory(tests)
+    else()
+        message(WARNING "Tests are enabled but doctest is not found. Tests will not be built.")
+    endif()
+endif()
+
 
 export(
     TARGETS
