@@ -900,19 +900,19 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
     auto const O1_in_F1 = FramedPose(
         PoseAccessor::make(Eigen::Isometry3d(
             (Eigen::Matrix4d() << 0, 0, 1, 0, 0, 1, 0, 2, -1, 0, 0, -2, 0, 0, 0, 1).finished())),
-        {"O1_in_F1", "F1"});
+        {"O1", "F1"});
     auto const O2_in_F1 = FramedPose(
         PoseAccessor::make(Eigen::Isometry3d(
             (Eigen::Matrix4d() << 0, 1, 0, 0, -1, 0, 0, 3, 0, 0, 1, -6, 0, 0, 0, 1).finished())),
-        {"O2_in_F1", "F1"});
+        {"O2", "F1"});
     auto const O1_in_F2 = FramedPose(
         PoseAccessor::make(Eigen::Isometry3d(
             (Eigen::Matrix4d() << 0, 1, 0, 2, -1, 0, 0, 8, 0, 0, 1, 0, 0, 0, 0, 1).finished())),
-        {"O1_in_F2", "F2"});
+        {"O1", "F2"});
     auto const O2_in_F2 = FramedPose(
         PoseAccessor::make(Eigen::Isometry3d(
             (Eigen::Matrix4d() << -1, 0, 0, 3, 0, 0, 1, 4, 0, 1, 0, 0, 0, 0, 0, 1).finished())),
-        {"O2_in_F2", "F2"});
+        {"O2", "F2"});
 
     auto const F1_to_F2 = SpatialDisplacement(PoseAccessor::make(Eigen::Isometry3d(
         (Eigen::Matrix4d() << 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, -10, 0, 0, 0, 1).finished())));

@@ -43,6 +43,7 @@ namespace quant::framed_geometry
     {
     public:
         using FramedGeometricObject = QuantityT;
+
         /**
          * @brief Constructs a framed geometric object given a geometric object and a frame header
          * consisting of a base frame and name.
@@ -140,10 +141,7 @@ namespace quant::framed_geometry
         is_approx(State const& rhs,
                   double const tolerance = geometry::constants::floating_point_tolerance) const
         {
-            std::string const lhs_base_frame{get_base_frame()};
-            std::string const rhs_base_frame{rhs.get_base_frame()};
-            // TODO: should the name also be the same?
-            return lhs_base_frame == rhs_base_frame and
+            return get_base_frame() == rhs.get_base_frame() and get_name() == rhs.get_name() and
                    _framed_object.is_approx(rhs._framed_object, tolerance);
         }
 
@@ -153,8 +151,8 @@ namespace quant::framed_geometry
          */
         State() :
             State(QuantityT::zero(),
-                   {.name = "::",
-                    .base_frame = "::"})  // prohibits the creation of Base objects, which is UB
+                  {.name = "::",
+                   .base_frame = "::"})  // prohibits the creation of Base objects, which is UB
         {
             ;
         }
@@ -193,7 +191,6 @@ namespace quant::framed_geometry
                        {.name = quantity.get_name(), .base_frame = transform.to_frame}};
     }
 
-
     /**
      * @brief State difference operator.
      *
@@ -216,16 +213,17 @@ namespace quant::framed_geometry
         }
 #endif
         /**
-         * This is actually not entirely true: The difference of two states (at least in curved space) is always
-         * expressed in the local frame of the state that is subtracted (i.e., rhs). This is due to the convention of
-         * using the right plus and minus operators.
+         * This is actually not entirely true: The difference of two states (at least in curved
+         *space) is always expressed in the local frame of the state that is subtracted (i.e., rhs).
+         *This is due to the convention of using the right plus and minus operators.
          *
-         * However, the base frame of a difference is not the same "type of frame" as mentioned above. It is simply a
-         * check, whether a state and difference can be combined. For orientations and poses, this doesn't matter
-         * because the difference does not change with a frame change, however, for positions it does indeed change.
+         * However, the base frame of a difference is not the same "type of frame" as mentioned
+         *above. It is simply a check, whether a state and difference can be combined. For
+         *orientations and poses, this doesn't matter because the difference does not change with a
+         *frame change, however, for positions it does indeed change.
          *
-         * Therefore, here we go with the conservative approach and only allow differences to be added to states, if
-         * they are in the same frame (in the sense of the base frame name).
+         * Therefore, here we go with the conservative approach and only allow differences to be
+         *added to states, if they are in the same frame (in the sense of the base frame name).
          **/
         return traits::framed_type_of<traits::difference_type_of<StateType>>(
             lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_base_frame());

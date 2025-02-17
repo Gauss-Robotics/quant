@@ -857,7 +857,7 @@ TEST_SUITE("testing framed force domain")
             CHECK(F_f ==
                   Circa(FramedWrench(Wrench(Force::newtons({0, -6, 0}),
                                             Torque::newton_meters({.x = 0, .y = 0, .z = -0.75})),
-                                     {.name = "F", .base_frame = "F"})));
+                                     {.name = "Hand", .base_frame = "F"})));
         }
         SUBCASE("Practice Exercise 3.16")
         {
