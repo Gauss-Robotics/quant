@@ -192,16 +192,6 @@ namespace quant::framed_geometry
 #endif
 
     template <typename FramedDifferenceType>
-        requires traits::framed_scalar_difference<FramedDifferenceType>
-    FramedDifferenceType
-    operator-(FramedDifferenceType const& object)
-    {
-        return FramedDifferenceType{
-            -object.get_framed_object(),
-            FrameIdentifier{.name = object.get_name(), .base_frame = object.get_base_frame()}};
-    }
-
-    template <typename FramedDifferenceType>
         requires traits::framed_difference<FramedDifferenceType>
     std::ostream&
     operator<<(std::ostream& os, FramedDifferenceType const& rhs)
