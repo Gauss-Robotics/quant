@@ -11,8 +11,4 @@ namespace quant::framed_units::position
     public:
         using Difference::Difference;
     };
-
-    std::ostream&
-    operator<<(std::ostream& os, SpatialDisplacement const& rhs);
-
 }  // namespace quant::framed_units::position

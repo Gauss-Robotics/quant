@@ -22,10 +22,4 @@ namespace quant::framed_units::position
         auto const d = LDAccessor::representation(ld);
         return LDAccessor::make(R.inverse() * d);
     }
-
-    std::ostream&
-    operator<<(std::ostream& os, LinearDisplacement const& rhs)
-    {
-        return os << rhs.to_string();
-    }
 }  // namespace quant::framed_units::position

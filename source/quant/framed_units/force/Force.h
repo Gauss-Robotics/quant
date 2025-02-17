@@ -11,8 +11,4 @@ namespace quant::framed_units::force
     public:
         using State::State;
     };
-
-    std::ostream&
-    operator<<(std::ostream& os, Force const& rhs);
-
 }  // namespace quant::framed_units::force

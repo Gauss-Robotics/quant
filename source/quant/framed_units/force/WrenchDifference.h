@@ -13,8 +13,4 @@ namespace quant::framed_units::force
     public:
         using Difference::Difference;
     };
-
-    std::ostream&
-    operator<<(std::ostream& out, WrenchDifference const& rhs);
-
 }  // namespace quant::framed_units::force

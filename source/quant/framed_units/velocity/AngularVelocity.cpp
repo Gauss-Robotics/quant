@@ -8,12 +8,6 @@
 
 namespace quant::framed_units::velocity
 {
-    std::ostream&
-    operator<<(std::ostream& out, AngularVelocity const& rhs)
-    {
-        return out << rhs.to_string();
-    }
-
     units::velocity::AngularVelocity
     base_change::angular_velocity(units::velocity::AngularVelocity const& av,
                                   framed_geometry::BaseChange const& bc)

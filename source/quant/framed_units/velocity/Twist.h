@@ -30,8 +30,4 @@ namespace quant::framed_units::velocity
 
         using State::State;
     };
-
-    std::ostream&
-    operator<<(std::ostream& os, Twist const& rhs);
-
 }  // namespace quant::framed_units::velocity

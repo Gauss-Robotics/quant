@@ -28,10 +28,4 @@ namespace quant::framed_units::position
          */
         return TransformAccessor::make(TransformAccessor::representation(sd));
     }
-
-    std::ostream&
-    operator<<(std::ostream& os, SpatialDisplacement const& rhs)
-    {
-        return os << rhs.to_string();
-    }
 }  // namespace quant::framed_units::position

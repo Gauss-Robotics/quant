@@ -15,8 +15,4 @@ namespace quant::framed_units::acceleration
     public:
         using Difference::Difference;
     };
-
-    std::ostream&
-    operator<<(std::ostream& os, SpatialAccelerationDifference const& rhs);
-
 }  // namespace quant::framed_units::acceleration

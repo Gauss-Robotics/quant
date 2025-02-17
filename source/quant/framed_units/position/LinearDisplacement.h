@@ -12,7 +12,4 @@ namespace quant::framed_units::position
     public:
         using Difference::Difference;
     };
-
-    std::ostream&
-    operator<<(std::ostream& os, LinearDisplacement const& rhs);
 }  // namespace quant::framed_units::position

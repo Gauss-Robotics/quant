@@ -10,12 +10,6 @@
 
 namespace quant::framed_units::acceleration
 {
-    std::ostream&
-    operator<<(std::ostream& os, LinearAcceleration const& rhs)
-    {
-        return os << rhs.to_string();
-    }
-
     units::acceleration::LinearAcceleration
     base_change::linear_acceleration(
         units::acceleration::LinearAcceleration const& linear_acceleration,

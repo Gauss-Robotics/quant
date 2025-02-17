@@ -19,10 +19,4 @@ namespace quant::framed_units::position
         auto const o = OrientationAccessor::representation(orientation);
         return OrientationAccessor::make(R.inverse() * o);
     }
-
-    std::ostream&
-    operator<<(std::ostream& os, Orientation const& rhs)
-    {
-        return os << rhs.to_string();
-    }
 }  // namespace quant::framed_units::position

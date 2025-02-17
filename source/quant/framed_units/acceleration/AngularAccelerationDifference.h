@@ -12,7 +12,4 @@ namespace quant::framed_units::acceleration
     public:
         using Difference::Difference;
     };
-
-    std::ostream&
-    operator<<(std::ostream& out, AngularAccelerationDifference const& rhs);
 }  // namespace quant::framed_units::acceleration

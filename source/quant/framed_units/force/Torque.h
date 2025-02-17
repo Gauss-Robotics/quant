@@ -14,8 +14,4 @@ namespace quant::framed_units::force
     public:
         using State::State;
     };
-
-    std::ostream&
-    operator<<(std::ostream& out, Torque const& rhs);
-
 }  // namespace quant::framed_units::force

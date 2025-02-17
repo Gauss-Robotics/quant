@@ -200,4 +200,12 @@ namespace quant::framed_geometry
             FrameIdentifier{.name = object.get_name(), .base_frame = object.get_base_frame()}};
     }
 
+    template <typename FramedDifferenceType>
+    requires traits::framed_difference<FramedDifferenceType>
+   std::ostream&
+   operator<<(std::ostream& os, FramedDifferenceType const& rhs)
+    {
+        return os << rhs.to_string();
+    }
+
 }  // namespace quant::framed_geometry

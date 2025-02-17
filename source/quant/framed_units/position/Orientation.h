@@ -11,8 +11,4 @@ namespace quant::framed_units::position
     public:
         using State::State;
     };
-
-    std::ostream&
-    operator<<(std::ostream& os, Orientation const& rhs);
-
 }  // namespace quant::framed_units::position

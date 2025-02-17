@@ -24,12 +24,6 @@ namespace quant::framed_units::acceleration
                                   {.name = get_name(), .base_frame = get_base_frame()}};
     }
 
-    std::ostream&
-    operator<<(std::ostream& out, SpatialAcceleration const& rhs)
-    {
-        return out << rhs.to_string();
-    }
-
     units::acceleration::SpatialAcceleration
     base_change::spatial_acceleration(
         units::acceleration::SpatialAcceleration const& spatial_acceleration,

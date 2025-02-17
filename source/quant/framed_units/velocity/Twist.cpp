@@ -15,12 +15,6 @@
 
 namespace quant::framed_units::velocity
 {
-    std::ostream&
-    operator<<(std::ostream& out, Twist const& rhs)
-    {
-        return out << rhs.to_string();
-    }
-
     units::velocity::Twist
     base_change::twist(units::velocity::Twist const& twist, framed_geometry::BaseChange const& bc)
     {

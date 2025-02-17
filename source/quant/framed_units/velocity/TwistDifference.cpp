@@ -5,17 +5,11 @@
 
 namespace quant::framed_units::velocity
 {
-    std::ostream&
-    operator<<(std::ostream& out, TwistDifference const& rhs)
-    {
-        return out << rhs.to_string();
-    }
-
     units::velocity::TwistDifference
-    base_change::twist_difference(units::velocity::TwistDifference const& av,
-                                  framed_geometry::BaseChange const&)
+    base_change::twist_difference(units::velocity::TwistDifference const& /*av*/,
+                                  BaseChange const&)
     {
-        return av;
+        throw std::runtime_error("Not implemented");
     }
 
 }  // namespace quant::framed_units::velocity

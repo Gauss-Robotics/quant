@@ -23,8 +23,4 @@ namespace quant::framed_units::acceleration
 
         using State::State;
     };
-
-    std::ostream&
-    operator<<(std::ostream& out, SpatialAcceleration const& rhs);
-
 }  // namespace quant::framed_units::acceleration

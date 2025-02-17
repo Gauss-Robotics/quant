@@ -22,7 +22,4 @@ namespace quant::framed_units::force
         using State::State;
     };
 
-    std::ostream&
-    operator<<(std::ostream& out, Wrench const& rhs);
-
 }  // namespace quant::framed_units::force

@@ -9,13 +9,6 @@
 
 namespace quant::framed_units::acceleration
 {
-
-    std::ostream&
-    operator<<(std::ostream& out, AngularAcceleration const& rhs)
-    {
-        return out << rhs.to_string();
-    }
-
     units::acceleration::AngularAcceleration
     base_change::angular_acceleration(
         units::acceleration::AngularAcceleration const& angular_acceleration,

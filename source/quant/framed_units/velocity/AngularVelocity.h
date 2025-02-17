@@ -15,8 +15,4 @@ namespace quant::framed_units::velocity
     public:
         using State::State;
     };
-
-    std::ostream&
-    operator<<(std::ostream& os, AngularVelocity const& rhs);
-
 }  // namespace quant::framed_units::velocity

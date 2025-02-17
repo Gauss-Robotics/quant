@@ -14,8 +14,4 @@ namespace quant::framed_units::acceleration
     public:
         using State::State;
     };
-
-    std::ostream&
-    operator<<(std::ostream& out, AngularAcceleration const& rhs);
-
 }  // namespace quant::framed_units::acceleration

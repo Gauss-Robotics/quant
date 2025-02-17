@@ -4,13 +4,6 @@
 
 namespace quant::framed_units::acceleration
 {
-
-    std::ostream&
-    operator<<(std::ostream& os, SpatialAccelerationDifference const& rhs)
-    {
-        return os << rhs.to_string();
-    }
-
     units::acceleration::SpatialAccelerationDifference
     base_change::spatial_acceleration_difference(
         units::acceleration::SpatialAccelerationDifference const& spatial_acceleration_difference,

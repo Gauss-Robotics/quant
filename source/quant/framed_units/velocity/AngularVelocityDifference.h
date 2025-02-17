@@ -15,8 +15,4 @@ namespace quant::framed_units::velocity
     public:
         using Difference::Difference;
     };
-
-    std::ostream&
-    operator<<(std::ostream& os, AngularVelocityDifference const& rhs);
-
 }  // namespace quant::framed_units::velocity
