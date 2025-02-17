@@ -1,6 +1,7 @@
 #pragma once
 
 #include <quant/framed_geometry/State.h>
+#include <quant/framed_units/force/forward_declarations.h>
 #include <quant/units/force/Force.h>
 
 namespace quant::framed_units::force

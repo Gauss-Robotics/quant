@@ -145,17 +145,16 @@ namespace quant::framed_geometry
                    _framed_object.is_approx(rhs._framed_object, tolerance);
         }
 
-    protected:
+        static traits::framed_type_of<QuantityT>
+        zero(FrameIdentifier const& frame_data)
+        {
+            return traits::framed_type_of<QuantityT>{QuantityT::zero(), frame_data};
+        }
+
         /**
          * @brief Default constructs a framed geometric object.
          */
-        State() :
-            State(QuantityT::zero(),
-                  {.name = "::",
-                   .base_frame = "::"})  // prohibits the creation of Base objects, which is UB
-        {
-            ;
-        }
+        State() = delete;
 
     private:
         /**

@@ -43,14 +43,14 @@ namespace simple_robot_example
 
             FramedPose const camera = chest.enframe(Pose(Position::millimeters({100, 100, 100})), frames.camera);
 
-            _frames[std::string(root.get_name())] = root;
-            _frames[std::string(chest.get_name())] = chest;
-            _frames[std::string(arm_right.get_name())] = arm_right;
-            _frames[std::string(tcp_right.get_name())] = tcp_right;
-            _frames[std::string(arm_left.get_name())] = arm_left;
-            _frames[std::string(tcp_left.get_name())] = tcp_left;
-            _frames[std::string(camera.get_name())] = camera;
-            _frames[std::string(origin.get_name())] = origin;
+            _frames.emplace(std::string(root.get_name()),  root);
+            _frames.emplace(std::string(chest.get_name()), chest);
+            _frames.emplace(std::string(arm_right.get_name()), arm_right);
+            _frames.emplace(std::string(tcp_right.get_name()), tcp_right);
+            _frames.emplace(std::string(arm_left.get_name()), arm_left);
+            _frames.emplace(std::string(tcp_left.get_name()), tcp_left);
+            _frames.emplace(std::string(camera.get_name()), camera);
+            _frames.emplace(std::string(origin.get_name()), origin);
         }
 
         void
@@ -96,16 +96,13 @@ namespace simple_robot_example
             if (from_pose.get_base_frame() != to_pose.get_base_frame())
             {
                 try {
-                    quant::FramedPose from_pose_in_root;
-                    quant::FramedPose to_pose_in_root;
+                    quant::FramedPose from_pose_in_root = from_pose;
+                    quant::FramedPose to_pose_in_root = to_pose;
                     if (from_pose.get_base_frame() != frames.root)
                     {
                         from_pose_in_root = transform_to_frame(from_pose, frames.root);
                     }
-                    else
-                    {
-                        from_pose_in_root = from_pose;
-                    }
+
                     if (to_pose.get_name() == frames.root)
                     {
                         return quant::BaseChange{.from_frame = from_frame,
@@ -116,10 +113,7 @@ namespace simple_robot_example
                     {
                         to_pose_in_root = transform_to_frame(to_pose, frames.root);
                     }
-                    else
-                    {
-                        to_pose_in_root = to_pose;
-                    }
+
                     return quant::BaseChange{.from_frame = from_frame,
                                              .to_frame = to_frame,
                                              .transformation = (to_pose_in_root - from_pose_in_root).get_framed_object()};

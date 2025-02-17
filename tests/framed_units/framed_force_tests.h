@@ -17,7 +17,7 @@ TEST_SUITE("testing framed force domain")
         {
             FramedForce const f1{Force::newtons({.x = 1, .y = 2, .z = 3}),
                                  {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedForce const f2{};
+            FramedForce const f2 = FramedForce::zero({"::", "::"});
             FramedForce const f3{f1};
 
             CHECK(f1.get_name() == "TCP");
@@ -279,7 +279,7 @@ TEST_SUITE("testing framed force domain")
             FramedTorque const t1{
                 Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedTorque const t2{};
+            FramedTorque const t2 = FramedTorque::zero({"::", "::"});
             FramedTorque const t3{t1};
 
             CHECK(t1.get_name() == "TCP");
@@ -516,7 +516,7 @@ TEST_SUITE("testing framed force domain")
                 Wrench(Force::newtons({.x = 1, .y = 2, .z = 3}),
                        Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedWrench const w2{};
+            FramedWrench const w2 = FramedWrench::zero({"::", "::"});
             FramedWrench const w3{w1};
 
             CHECK(w1.get_name() == "TCP");

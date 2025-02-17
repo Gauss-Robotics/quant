@@ -1,12 +1,9 @@
 #pragma once
 
 #include <quant/framed_geometry/State.h>
+#include <quant/framed_units/acceleration.h>
+#include <quant/framed_units/acceleration/forward_declarations.h>
 #include <quant/units/acceleration/SpatialAcceleration.h>
-
-#include <ostream>
-
-#include "quant/framed_units/acceleration.h"
-#include "quant/framed_units/velocity/forward_declarations.h"
 
 namespace quant::framed_units::acceleration
 {

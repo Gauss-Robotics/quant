@@ -16,7 +16,7 @@ TEST_SUITE("testing framed position domain")
         {
             FramedPosition const f1{Position::millimeters({.x = 1, .y = 2, .z = 3}),
                                     {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedPosition const f2{};
+            FramedPosition const f2 = FramedPosition::zero({"::", "::"});
             FramedPosition const f3{f1};
 
             CHECK(f1.get_name() == "TCP");
@@ -291,7 +291,7 @@ TEST_SUITE("testing framed position domain")
             FramedOrientation const f1{
                 Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedOrientation const f2{};
+            FramedOrientation const f2 = FramedOrientation::zero({"::", "::"});
             FramedOrientation const f3{f1};
 
             CHECK(f1.get_name() == "TCP");
@@ -560,7 +560,7 @@ TEST_SUITE("testing framed position domain")
                 Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
                      Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedPose const f2{};
+            FramedPose const f2 = FramedPose::zero({"::", "::"});
             FramedPose const f3{f1};
 
             CHECK(f1.get_name() == "TCP");

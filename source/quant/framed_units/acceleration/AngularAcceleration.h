@@ -1,9 +1,8 @@
 #pragma once
 
 #include <quant/framed_geometry/State.h>
+#include <quant/framed_units/acceleration/forward_declarations.h>
 #include <quant/units/acceleration/AngularAcceleration.h>
-
-#include <ostream>
 
 namespace quant::framed_units::acceleration
 {

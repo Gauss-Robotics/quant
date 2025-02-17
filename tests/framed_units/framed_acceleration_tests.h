@@ -17,7 +17,7 @@ TEST_SUITE("testing framed acceleration domain")
             FramedLinearAcceleration const a1{
                 LinearAcceleration::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedLinearAcceleration const a2{};
+            FramedLinearAcceleration const a2 = FramedLinearAcceleration::zero({"::", "::"});
             FramedLinearAcceleration const a3{a1};
 
             CHECK(a1.get_name() == "TCP");
@@ -290,7 +290,7 @@ TEST_SUITE("testing framed acceleration domain")
             FramedAngularAcceleration const f1{AngularAcceleration::degrees_per_second_squared(
                                                    {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                                                {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedAngularAcceleration const f2{};
+            FramedAngularAcceleration const f2 = FramedAngularAcceleration::zero({"::", "::"});
             FramedAngularAcceleration const f3{f1};
 
             CHECK(f1.get_name() == "TCP");
@@ -529,7 +529,7 @@ TEST_SUITE("testing framed acceleration domain")
                     AngularAcceleration::degrees_per_second_squared(
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedSpatialAcceleration const a2{};
+            FramedSpatialAcceleration const a2 = FramedSpatialAcceleration::zero({"::", "::"});
             FramedSpatialAcceleration const a3{a1};
 
             CHECK(a1.get_name() == "TCP");

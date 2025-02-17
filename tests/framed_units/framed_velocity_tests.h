@@ -22,7 +22,7 @@ TEST_SUITE("testing framed velocity domain")
             FramedLinearVelocity const v1{
                 LinearVelocity::meters_per_second({.x = 1, .y = 2, .z = 3}),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedLinearVelocity const v2{};
+            FramedLinearVelocity const v2 = FramedLinearVelocity::zero({"::", "::"});
             FramedLinearVelocity const v3{v1};
 
             CHECK(v1.get_name() == "TCP");
@@ -294,7 +294,7 @@ TEST_SUITE("testing framed velocity domain")
             FramedAngularVelocity const f1{AngularVelocity::degrees_per_second(
                                                {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                                            {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedAngularVelocity const f2{};
+            FramedAngularVelocity const f2 = FramedAngularVelocity::zero({"::", "::"});
             FramedAngularVelocity const f3{f1};
 
             CHECK(f1.get_name() == "TCP");
@@ -532,7 +532,7 @@ TEST_SUITE("testing framed velocity domain")
                       AngularVelocity::degrees_per_second(
                           {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-            FramedTwist const t2{};
+            FramedTwist const t2 = FramedTwist::zero({"::", "::"});
             FramedTwist const t3{t1};
 
             CHECK(t1.get_name() == "TCP");

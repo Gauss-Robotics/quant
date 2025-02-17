@@ -6,8 +6,6 @@
 #include <quant/units/acceleration/LinearAcceleration.h>
 #include <quant/units/position/AngularDisplacement.h>
 
-#include "forward_declarations.h"
-
 namespace quant::framed_units::acceleration
 {
     units::acceleration::LinearAcceleration

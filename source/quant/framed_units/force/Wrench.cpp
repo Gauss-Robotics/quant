@@ -4,10 +4,7 @@
 #include <quant/framed_geometry/BaseChange.h>
 #include <quant/geometry/AxisAngle.h>
 #include <quant/geometry/Vector.h>
-#include <quant/units/force/Force.h>
 #include <quant/units/force/Torque.h>
-
-#include "forward_declarations.h"
 
 namespace quant::framed_units::force
 {
@@ -32,8 +29,8 @@ namespace quant::framed_units::force
         using SA = geometry::detail::StateAccessor<units::force::Wrench>;
         // Formula 3.98 from Modern Robotics
         // se3 = [m, f]
-        const auto adj = framed_geometry::Adjoint(base_change.transformation).matrix().transpose();
-        const Eigen::Vector<double, 6> w_prime = adj * SA::representation(wrench);
+        auto const adj = framed_geometry::Adjoint(base_change.transformation).matrix().transpose();
+        Eigen::Vector<double, 6> const w_prime = adj * SA::representation(wrench);
         return SA::make(w_prime);
     }
 }  // namespace quant::framed_units::force

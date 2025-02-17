@@ -5,13 +5,11 @@
 #include <quant/units/position/AngularDisplacement.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
 
-#include "forward_declarations.h"
-
 namespace quant::framed_units::force
 {
     units::force::Force
     base_change::force(units::force::Force const& force,
-                       framed_geometry::BaseChange const& base_change)
+                       BaseChange const& base_change)
     {
         using Angular = geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>;
         using Linear = geometry::detail::StateAccessor<units::force::Force>;

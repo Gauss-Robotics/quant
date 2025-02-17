@@ -1,11 +1,9 @@
 #include "SpatialAcceleration.h"
 
+#include <quant/framed_geometry/Adjoint.h>
 #include <quant/framed_units/acceleration/LinearAcceleration.h>
 #include <quant/units/acceleration/AngularAcceleration.h>
 #include <quant/units/acceleration/LinearAcceleration.h>
-
-#include "forward_declarations.h"
-#include "quant/framed_geometry/Adjoint.h"
 
 namespace quant::framed_units::acceleration
 {

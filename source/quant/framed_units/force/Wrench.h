@@ -4,6 +4,7 @@
 #include <quant/framed_units/force/Force.h>
 #include <quant/framed_units/force/Torque.h>
 #include <quant/units/force/Wrench.h>
+#include <quant/framed_units/force/forward_declarations.h>
 
 namespace quant::framed_units::force
 {
