@@ -6,3 +6,4 @@
 #include <quant/framed_units/position/Pose.h>
 #include <quant/framed_units/position/Position.h>
 #include <quant/framed_units/position/SpatialDisplacement.h>
+#include <quant/framed_units/position/forward_declarations.h>

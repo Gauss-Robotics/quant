@@ -141,7 +141,7 @@ TEST_SUITE("testing framed position domain")
         {
             FramedLinearDisplacement const f1{
                 LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}), "ARMAR-6::RobotRoot"};
-            FramedLinearDisplacement const f2{};
+            FramedLinearDisplacement const f2 = FramedLinearDisplacement::zero("::");
             FramedLinearDisplacement const f3{f1};
 
             CHECK(f1.get_base_frame() == "ARMAR-6::RobotRoot");
@@ -397,7 +397,7 @@ TEST_SUITE("testing framed position domain")
             FramedAngularDisplacement const f1{
                 AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 "ARMAR-6::RobotRoot"};
-            FramedAngularDisplacement const f2{};
+            FramedAngularDisplacement const f2 = FramedAngularDisplacement::zero("::");
             FramedAngularDisplacement const f3{f1};
 
             CHECK(f1.get_base_frame() == "ARMAR-6::RobotRoot");
@@ -716,7 +716,7 @@ TEST_SUITE("testing framed position domain")
                     LinearDisplacement::millimeters({.x = 1, .y = 2, .z = 3}),
                     AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 "ARMAR-6::RobotRoot"};
-            FramedSpatialDisplacement const f2{};
+            FramedSpatialDisplacement const f2 = FramedSpatialDisplacement::zero("::");
             FramedSpatialDisplacement const f3{f1};
 
             CHECK(f1.get_base_frame() == "ARMAR-6::RobotRoot");

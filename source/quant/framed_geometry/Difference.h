@@ -46,6 +46,7 @@ namespace quant::framed_geometry
         Difference(QuantityT const& object_to_frame, std::string_view const& base_frame_name) :
             _framed_object{object_to_frame}
         {
+
             // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
             std::snprintf(
                 _base_frame_name.data(), _base_frame_name.size(), "%s", base_frame_name.data());
@@ -97,16 +98,16 @@ namespace quant::framed_geometry
             return "(" + in_frame + ") at " + _framed_object.to_string();
         }
 
-    protected:
+        static traits::framed_type_of<QuantityT>
+        zero(std::string_view const& base_frame_name)
+        {
+            return traits::framed_type_of<QuantityT>{QuantityT::zero(), base_frame_name};
+        }
+
         /**
          * @brief Default constructs a framed geometric object.
          */
-        Difference() :
-            Difference(QuantityT::zero(),
-                       "::")  // prohibits the creation of Base objects, which is UB
-        {
-            ;
-        }
+        Difference() = delete;
 
     private:
         /**
@@ -201,9 +202,9 @@ namespace quant::framed_geometry
     }
 
     template <typename FramedDifferenceType>
-    requires traits::framed_difference<FramedDifferenceType>
-   std::ostream&
-   operator<<(std::ostream& os, FramedDifferenceType const& rhs)
+        requires traits::framed_difference<FramedDifferenceType>
+    std::ostream&
+    operator<<(std::ostream& os, FramedDifferenceType const& rhs)
     {
         return os << rhs.to_string();
     }
