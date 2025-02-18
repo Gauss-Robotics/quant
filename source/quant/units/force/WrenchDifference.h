@@ -11,6 +11,7 @@ namespace quant::units::force
     {
 
     public:
+        WrenchDifference(ForceDifference const& force, TorqueDifference const& torque);
         using Difference::Difference;
     };
 

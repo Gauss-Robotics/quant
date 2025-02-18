@@ -1,6 +1,7 @@
 #include "SpatialAccelerationDifference.h"
-#include <quant/units/acceleration/LinearAccelerationDifference.h>
+
 #include <quant/units/acceleration/AngularAccelerationDifference.h>
+#include <quant/units/acceleration/LinearAccelerationDifference.h>
 
 namespace quant::units::acceleration
 {
