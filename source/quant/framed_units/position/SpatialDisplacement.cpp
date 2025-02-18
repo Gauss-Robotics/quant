@@ -3,6 +3,8 @@
 #include <quant/framed_geometry/BaseChange.h>
 #include <quant/geometry/detail/DifferenceAccessor.h>
 #include <quant/units/position/SpatialDisplacement.h>
+#include <quant/framed_units/position/LinearDisplacement.h>
+#include <quant/framed_units/position/AngularDisplacement.h>
 
 #include <ostream>
 
@@ -27,5 +29,17 @@ namespace quant::framed_units::position
          *
          */
         return TransformAccessor::make(TransformAccessor::representation(sd));
+    }
+
+    LinearDisplacement
+    SpatialDisplacement::linear() const
+    {
+        return {get_framed_object().linear(), get_base_frame()};
+    }
+
+    AngularDisplacement
+    SpatialDisplacement::angular() const
+    {
+        return {get_framed_object().angular(), get_base_frame()};
     }
 }  // namespace quant::framed_units::position

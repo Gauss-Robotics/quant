@@ -10,5 +10,11 @@ namespace quant::framed_units::position
     {
     public:
         using Difference::Difference;
+
+        LinearDisplacement
+        linear() const;
+
+        AngularDisplacement
+        angular() const;
     };
 }  // namespace quant::framed_units::position

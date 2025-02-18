@@ -705,6 +705,48 @@ TEST_SUITE("testing framed position domain")
                 Circa(Pose(Position::millimeters({.x = -2, .y = 2, .z = 0}),
                            Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))));
         }
+
+        SUBCASE("positional part of pose transforms like positions")
+        {
+            std::string const from_frame = "ARMAR-6::RobotRoot";
+            std::string const to_frame = "ARMAR-6::TCP_R";
+            std::string const name = "TCP";
+            FramedPose const p1{
+                Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                     Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0})),
+                {.name = name, .base_frame = from_frame}};
+            auto const p1_t = p1.linear();
+
+            BaseChange const bc{
+                .from_frame = from_frame,
+                .to_frame = to_frame,
+                .transformation = SpatialDisplacement(
+                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 1}, .angle = 90}))};
+
+            CHECK(bc * p1_t == Circa((bc * p1).linear()));
+        }
+
+        SUBCASE("orientational part of pose transforms like the orientational parts")
+        {
+            std::string const from_frame = "ARMAR-6::RobotRoot";
+            std::string const to_frame = "ARMAR-6::TCP_R";
+            std::string const name = "TCP";
+            FramedPose const p1{
+                Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                     Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0})),
+                {.name = name, .base_frame = from_frame}};
+            auto const p1_o = p1.angular();
+
+            BaseChange const bc{
+                .from_frame = from_frame,
+                .to_frame = to_frame,
+                .transformation = SpatialDisplacement(
+                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+
+            CHECK(bc * p1_o == Circa((bc * p1).angular()));
+        }
     }
 
     TEST_CASE("testing framed spatial displacement")
@@ -873,13 +915,90 @@ TEST_SUITE("testing framed position domain")
             auto const sd_new = p2_new - p1_new;
             CHECK(bc * sd == Circa(sd_new));
         }
+
+        SUBCASE("positional part of difference does not transform like the difference of the "
+                "positional parts")
+        {
+            std::string const from_frame = "ARMAR-6::RobotRoot";
+            std::string const to_frame = "ARMAR-6::TCP_R";
+            std::string const name = "TCP";
+            FramedPose const p1{
+                Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                     Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0})),
+                {.name = name, .base_frame = from_frame}};
+            FramedPose const p2{
+                Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}),
+                     Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0})),
+                {.name = name, .base_frame = from_frame}};
+            FramedSpatialDisplacement const sd = p2 - p1;
+            auto const p1_t = p1.linear();
+            auto const p2_t = p2.linear();
+            auto const ld = p2_t - p1_t;
+            CHECK(ld == Circa(sd.linear()));
+
+            BaseChange const bc{
+                .from_frame = from_frame,
+                .to_frame = to_frame,
+                .transformation = SpatialDisplacement(
+                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            auto const sd_new = bc * sd;
+            auto const ld_new = bc * ld;
+            /**
+             *This is a bit counter intuitive but, the positional part of the a pose does not
+             *transform as positions. This is because positions are always connected to the rotation
+             *of their base frame. E.g., when we look at a position in frame A, if we would write it
+             *as a pose, it would get an identity orientation in frame A. If the same position is
+             *seen from frame B, it would again get an identity orientation in frame B. This
+             *implicit change in (imaginative) orientations of the two positions causes the difference of the
+             *behaviors. I.e., as the difference is always defined in the tangent space of the subtracted object, and
+             *positions are bound to the coordinate system of their base frame, the difference of two positions
+             *has a **hidden** change in orientations that leads to linear displacements actually changing under a
+             *base change. (see also intuition_about_transformations.ipynb)
+             **/
+            CHECK_MESSAGE(ld_new != Circa(sd_new.linear()),
+                          "Position differences should not transform like the positional part of "
+                          "pose differences");
+        }
+
+        SUBCASE(
+            "orientational part of difference transforms like the difference orientational parts")
+        {
+            std::string const from_frame = "ARMAR-6::RobotRoot";
+            std::string const to_frame = "ARMAR-6::TCP_R";
+            std::string const name = "TCP";
+            FramedPose const p1{
+                Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                     Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0})),
+                {.name = name, .base_frame = from_frame}};
+            FramedPose const p2{
+                Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}),
+                     Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0})),
+                {.name = name, .base_frame = from_frame}};
+            FramedSpatialDisplacement const sd = p2 - p1;
+            auto const p1_o = p1.angular();
+            auto const p2_o = p2.angular();
+            auto const ad = p2_o - p1_o;
+            CHECK(ad == Circa(sd.angular()));
+
+            BaseChange const bc{
+                .from_frame = from_frame,
+                .to_frame = to_frame,
+                .transformation = SpatialDisplacement(
+                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            auto const sd_new = bc * sd;
+            auto const ad_new = bc * ad;
+            CHECK(ad_new == Circa(sd_new.angular()));
+        }
     }
 }
 
 TEST_SUITE("end to end test (see coordinate system visualization)")
 {
     using PoseAccessor = geometry::detail::StateAccessor<Pose>;
-    auto const origin = FramedPose(Pose(Position::zero(), Orientation::zero()), {"global", "global"});
+    auto const origin =
+        FramedPose(Pose(Position::zero(), Orientation::zero()), {"global", "global"});
     auto const F1 = FramedPose(
         PoseAccessor::make(Eigen::Isometry3d(
             (Eigen::Matrix4d() << 0, 0, -1, 3, 0, 1, 0, 3, 1, 0, 0, 0, 0, 0, 0, 1).finished())),
@@ -934,12 +1053,10 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
 
     TEST_CASE("poses and positions transform correctly")
     {
-        auto make_base_change = [](FramedPose const &from, FramedPose const &to) {
-            return BaseChange(from.get_name(), to.get_name(),
-                              (to - from).get_framed_object());
-        };
-        const auto origin_to_F1 = make_base_change(origin, F1);
-        const auto origin_to_F2 = make_base_change(origin, F2);
+        auto make_base_change = [](FramedPose const& from, FramedPose const& to)
+        { return BaseChange(from.get_name(), to.get_name(), (to - from).get_framed_object()); };
+        auto const origin_to_F1 = make_base_change(origin, F1);
+        auto const origin_to_F2 = make_base_change(origin, F2);
         CHECK(base_change * O1_in_F1 == Circa(O1_in_F2));
         CHECK(base_change * O2_in_F1 == Circa(O2_in_F2));
         CHECK(origin_to_F1 * O1 == Circa(O1_in_F1));
@@ -950,7 +1067,6 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
         CHECK(origin_to_F1 * p2 == Circa(p2_in_F1));
         CHECK(origin_to_F2 * p1 == Circa(p1_in_F2));
         CHECK(origin_to_F2 * p2 == Circa(p2_in_F2));
-
     }
 
     TEST_CASE("differences of O1 and O2 do not change under base change")
@@ -975,8 +1091,8 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
 
     TEST_CASE("positions do not behave as poses/orientations")
     {
-        const auto delta_p12_in_F1 = p2_in_F1 - p1_in_F1;
-        const auto delta_p12_in_F2 = p2_in_F2 - p1_in_F2;
+        auto const delta_p12_in_F1 = p2_in_F1 - p1_in_F1;
+        auto const delta_p12_in_F2 = p2_in_F2 - p1_in_F2;
         CHECK(delta_p12_in_F1 != Circa(delta_p12_in_F2));
     }
 }
