@@ -1,8 +1,9 @@
 #pragma once
 
-#include <quant/framed_units/position/FramedAngularDisplacement.h>
-#include <quant/framed_units/position/FramedLinearDisplacement.h>
-#include <quant/framed_units/position/FramedOrientation.h>
-#include <quant/framed_units/position/FramedPose.h>
-#include <quant/framed_units/position/FramedPosition.h>
-#include <quant/framed_units/position/FramedSpatialDisplacement.h>
+#include <quant/framed_units/position/AngularDisplacement.h>
+#include <quant/framed_units/position/LinearDisplacement.h>
+#include <quant/framed_units/position/Orientation.h>
+#include <quant/framed_units/position/Pose.h>
+#include <quant/framed_units/position/Position.h>
+#include <quant/framed_units/position/SpatialDisplacement.h>
+#include <quant/framed_units/position/forward_declarations.h>

@@ -15,7 +15,10 @@ namespace quant::units::force
     {
         // Construct.
     public:
-        using geometry::SpatialState<Wrench>::SpatialState;
+        using SpatialState::SpatialState;
     };
+
+    std::ostream&
+    operator<<(std::ostream& out, Wrench const& rhs);
 
 }  // namespace quant::units::force

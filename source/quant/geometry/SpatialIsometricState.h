@@ -17,7 +17,7 @@ namespace quant::geometry
         using AngularStateType = traits::angular_state_in_domain_of<StateType>;
         using LinearDifferenceType = traits::linear_difference_in_domain_of<StateType>;
         using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
-        using GeometricRepresentationType = Eigen::Isometry3d const&;
+        using GeometricRepresentationType = Eigen::Isometry3d;
 
         SpatialIsometricState() : _representation(Eigen::Isometry3d::Identity())
         {
@@ -73,21 +73,8 @@ namespace quant::geometry
         }
 
         // Compare.
-
         bool
-        operator==(StateType const& rhs) const
-        {
-            return _representation == rhs._representation;
-        }
-
-        bool
-        operator!=(StateType const& rhs) const
-        {
-            return _representation != rhs._representation;
-        }
-
-        bool
-        is_approx(StateType const& rhs, double const tolerance) const
+        is_approx(StateType const& rhs, double const tolerance = Eigen::NumTraits<double>::dummy_precision()) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
         }
@@ -96,6 +83,37 @@ namespace quant::geometry
         to_string() const
         {
             return linear().to_string() + ", " + angular().to_string();
+        }
+
+        bool
+        operator==(StateType const& rhs) const
+        {
+            return _representation.linear() == rhs._representation.linear() and
+                   _representation.translation() == rhs._representation.translation();
+        }
+
+        bool
+        operator!=(StateType const& rhs) const
+        {
+
+            return _representation.linear() != rhs._representation.linear() or
+                   _representation.translation() != rhs._representation.translation();
+        }
+
+        /**
+         * @brief Unary minus operator.
+         *
+         * @return The negated state.
+         */
+        StateType
+        operator-() const
+        {
+            return StateType{_representation.inverse()};
+        }
+
+        StateType inverse() const
+        {
+            return StateType{_representation.inverse()};
         }
 
     protected:

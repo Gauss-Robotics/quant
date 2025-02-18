@@ -15,38 +15,24 @@ namespace quant::units::position
 
     public:
         static LinearDisplacement
-        millimeters(geometry::Vector xyz)
-        {
-            return LinearDisplacement{Position::millimeters(xyz)};
-        }
+        millimeters(geometry::Vector xyz);
 
         static LinearDisplacement
-        meters(geometry::Vector xyz)
-        {
-            return LinearDisplacement{Position::meters(xyz)};
-        }
+        meters(geometry::Vector xyz);
 
         Vector
-        to_millimeters() const
-        {
-            return {_difference_object.to_millimeters(),
-                    constants::names::linear_displacement,
-                    constants::symbols::millimeters};
-        }
+        to_millimeters() const;
+
+        Vector
+        to_meters() const;
 
         Distance
-        to_distance() const
-        {
-            return Distance::millimeters(_difference_object.to_millimeters().norm());
-        }
+        to_distance() const;
 
-        using geometry::Difference<Position>::Difference;
+        using Difference::Difference;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& os, LinearDisplacement const& rhs)
-    {
-        return os << rhs.to_millimeters();
-    }
+    std::ostream&
+    operator<<(std::ostream& os, LinearDisplacement const& rhs);
 
 }  // namespace quant::units::position

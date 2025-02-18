@@ -29,7 +29,7 @@ namespace quant::units::jerk
                     constants::symbols::radians_per_second_cubed};
         }
 
-        using geometry::AngularState<AngularJerk>::AngularState;
+        using AngularState::AngularState;
     };
 
     inline std::ostream&

@@ -1,18 +1,24 @@
 add_library(framed_geometry SHARED
-    ../framed_geometry.h
-    forward_declarations.h
+        ../framed_geometry.h
+        forward_declarations.h
 
-    Framed.h
+        Difference.h
+        State.h
+        BaseChange.h
+        FrameMismatch.h
+        Adjoint.h
+        Adjoint.cpp
 )
 
 set_target_properties(framed_geometry
-    PROPERTIES
+        PROPERTIES
         LINKER_LANGUAGE CXX
 )
 
 target_link_libraries(framed_geometry
-    PUBLIC
+        PUBLIC
         quant::geometry
+        quant::units
 )
 
 add_library(quant::framed_geometry ALIAS framed_geometry)

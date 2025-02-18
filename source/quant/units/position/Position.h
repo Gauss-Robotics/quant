@@ -18,49 +18,21 @@ namespace quant::units::position
 
     public:
         static Position
-        millimeters(geometry::Vector xyz)
-        {
-            return {xyz};
-        }
+        millimeters(geometry::Vector xyz);
 
         static Position
-        meters(geometry::Vector xyz)
-        {
-            return {xyz * constants::m2mm};
-        }
+        meters(geometry::Vector xyz);
 
         Vector
-        to_millimeters() const
-        {
-            return {to_vector(), constants::names::position, constants::symbols::millimeters};
-        }
+        to_millimeters() const;
 
         Vector
-        to_meters() const
-        {
-            return {to_vector() * constants::mm2m,
-                    constants::names::position,
-                    constants::symbols::meters};
-        }
+        to_meters() const;
 
         std::string
-        to_string() const
-        {
-            Vector (Position::*member_function_ptr)();
+        to_string() const;
 
-            for (auto fn : {&Position::to_meters})
-            {
-                Vector v = (this->*fn)();
-                if (v.x > 1 or v.y > 1 or v.z > 1)
-                {
-                    return v.to_string();
-                }
-            }
-
-            return to_millimeters().to_string();
-        }
-
-        using geometry::LinearState<Position>::LinearState;
+        using LinearState::LinearState;
     };
 
     inline std::ostream&

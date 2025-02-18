@@ -1,24 +1,25 @@
 #pragma once
-
 #include <quant/framed_geometry.h>
-#include <quant/units.h>
 
 #include <doctest/doctest.h>
 
 #include <iostream>
 
+#include "DummyLinearState.h"
+#include "quant/framed_geometry/Adjoint.h"
+
 using namespace quant;  // NOLINT
 
 TEST_CASE("testing basic constructions")
 {
-    Position d;  // Dummy.
+    quant::DummyLinearState const d;  // Dummy.
 
-    Framed<Position> const f1{d, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
+    FramedDummyLinearState const f1{d, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
 
     CHECK(f1.get_name() == "TCP");
     CHECK(f1.get_base_frame() == "ARMAR-6::RobotRoot");
 
-    Framed<Position> const f2{d, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
+    FramedDummyLinearState const f2{d, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
 
     CHECK(f2.get_name() == "CoM");
     CHECK(f2.get_base_frame() == "ARMAR-6::RobotRoot");
@@ -26,70 +27,88 @@ TEST_CASE("testing basic constructions")
 
 TEST_CASE("testing enframing")
 {
-    LinearDisplacement const p = LinearDisplacement::zero();
+    DummyLinearState const p{};
 
-    Framed<LinearDisplacement> const origin{p, {.name = "::Origin", .base_frame = ""}};
+    FramedDummyLinearState const origin{p, {.name = "::Origin", .base_frame = ""}};
 
     CHECK(origin.get_name() == "::Origin");
     CHECK(origin.get_base_frame() == "");
 
-    Framed<LinearDisplacement> const robot_root =
-        origin.enframe(LinearDisplacement::meters({.x = 1}), "ARMAR-6::RobotRoot");
+    FramedDummyLinearDiff const robot_root = origin.enframe(DummyLinearDiff());
 
-    CHECK(robot_root.get_name() == "ARMAR-6::RobotRoot");
     CHECK(robot_root.get_base_frame() == "::Origin");
 
-    Framed<LinearDisplacement> const right_hand_tcp = robot_root.enframe(
-        LinearDisplacement::meters({.x = 0.3, .y = 0.5, .z = 1.8}), "ARMAR-6::TCP_R");
+    FramedDummyLinearState const right_hand_tcp =
+        origin.enframe(DummyLinearState(), "ARMAR-6::TCP_R");
 
     CHECK(right_hand_tcp.get_name() == "ARMAR-6::TCP_R");
-    CHECK(right_hand_tcp.get_base_frame() == "ARMAR-6::RobotRoot");
+    CHECK(right_hand_tcp.get_base_frame() == "::Origin");
 
-    Framed<LinearDisplacement> const right_hand_com = robot_root.enframe(
-        LinearDisplacement::meters({.x = 0.32, .y = 0.5, .z = 1.79}), "ARMAR-6::CoM_R");
+    FramedDummySpatialState const right_hand_com =
+        right_hand_tcp.enframe(DummySpatialState(), "ARMAR-6::CoM_R");
 
     CHECK(right_hand_com.get_name() == "ARMAR-6::CoM_R");
-    CHECK(right_hand_com.get_base_frame() == "ARMAR-6::RobotRoot");
+    CHECK(right_hand_com.get_base_frame() == "ARMAR-6::TCP_R");
 }
 
 TEST_CASE("testing basic framed differences")
 {
-    SUBCASE("testing framed difference with Position")
+    SUBCASE("testing framed difference")
     {
-        Position const p = Position::zero();  // Dummy position.
+        DummyLinearState const p{};  // Dummy position.
+        DummyLinearState const d{};  // Dummy position.
 
-        Framed<Position> const tcp{p, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-        Framed<Position> const com{p, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
+        auto x = p - d;
 
-        Framed<LinearDisplacement> const ld = tcp - com;
+        FramedDummyLinearState const tcp{p, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
+        FramedDummyLinearState const com{p, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
 
-        CHECK(ld.get_name() == "TCP");
+        // auto diff = pos2 - pos1;
+        // const traits::difference_type_of<Test> ld{};
+
+        FramedDummyLinearDiff const ld = tcp - com;
+        // const traits::framed_type_of<DummyLinearDiff> diff{};
+        // FramedDummyLinearDiff const diff{};
+        //
         CHECK(ld.get_base_frame() == "ARMAR-6::RobotRoot");
+        framed_geometry::BaseChange const bc{.from_frame = "ARMAR-6::RobotRoot",
+                                             .to_frame = "ARMAR-6::PlatformBase",
+                                             .transformation =
+                                                 units::position::SpatialDisplacement::zero()};
+        auto new_tcp = bc * ld;
+        CHECK(new_tcp.get_base_frame() == bc.to_frame.data());
+        // traits::framed_traits_of<units::position::Position>::basis_change_function(pos1.get_framed_object(),
+        // bc);
     }
+}
 
-    SUBCASE("testing framed difference with Orientation")
+TEST_CASE("testing adjoint matrix")
+{
+    SUBCASE("Example 3.23 from Modern Robotics.")
     {
-        Orientation const p = Orientation::zero();  // Dummy orientation.
-
-        Framed<Orientation> const tcp{p, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-        Framed<Orientation> const com{p, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
-
-        // Framed<AngularDisplacement> const ad = tcp - com;
-
-        // CHECK(ad.get_name() == "TCP");
-        // CHECK(ad.get_base_frame() == "ARMAR-6::RobotRoot");
+        Eigen::Isometry3d T_sb = Eigen::Isometry3d(
+            (Eigen::Matrix4d() << -1, 0, 0, 4, 0, 1, 0, 0.4, 0, 0, -1, 0, 0, 0, 0, 1).finished());
+        Eigen::Vector<double, 6> V_s = {0, 0, 2, -2, -4, 0};
+        Eigen::Vector<double, 6> V_b = {0, 0, -2, 2.8, 4, 0};
+        framed_geometry::Adjoint adjoint(T_sb);
+        CHECK(V_s.isApprox(adjoint * V_b));
     }
-
-    SUBCASE("testing framed difference with Pose")
+    SUBCASE("Exercise 3.16 from Modern Robotics")
     {
-        Pose const p = Pose::zero();  // Dummy pose.
-
-        Framed<Pose> const tcp{p, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
-        Framed<Pose> const com{p, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
-
-        // Framed<SpatialDisplacement> const sd = tcp - com;
-
-        // CHECK(sd.get_name() == "TCP");
-        // CHECK(sd.get_base_frame() == "ARMAR-6::RobotRoot");
+        Eigen::Vector<double, 6> V_s = {3, 2, 1, -1, -2, -3};
+        Eigen::Isometry3d T_as = Eigen::Isometry3d(
+            (Eigen::Matrix4d() << 0, 0, 1, 0, -1, 0, 0, 3, 0, -1, 0, 0, 0, 0, 0, 1).finished());
+        Eigen::Vector<double, 6> V_a = {1, -3, -2, -9, 1, -1};
+        auto const adjoint = framed_geometry::Adjoint(T_as);
+        Eigen::Matrix4d V =
+            (Eigen::Matrix4d() << 0, -1, 2, -1, 1, 0, -3, -2, -2, 3, 0, -3, 0, 0, 0, 0).finished();
+        CAPTURE(V_a);
+        CAPTURE(V_s);
+        CAPTURE(adjoint * V_s);
+        CHECK(V_a.isApprox(adjoint * V_s));
+        Eigen::Matrix4d V_a_matrix = (T_as * V * T_as.inverse()).matrix();
+        CAPTURE(V_a_matrix);
+        CAPTURE(framed_geometry::SkewSymmetric6d(V_a).matrix());
+        CHECK(framed_geometry::SkewSymmetric6d(V_a).matrix().isApprox(V_a_matrix));
     }
 }

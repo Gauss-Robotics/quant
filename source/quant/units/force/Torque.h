@@ -17,24 +17,21 @@ namespace quant::units::force
         // Construct.
     public:
         static Torque
-        newton_meters(geometry::AxisAngle aa)
-        {
-            return {aa};
-        }
+        newton_meters(geometry::AxisAngle aa);
+
+        static Torque
+        newton_meters(geometry::Vector vector);
 
         AxisAngle
-        to_newton_meters() const
-        {
-            return {to_axis_angle(), constants::names::torque, constants::symbols::newton_meters};
-        }
+        to_newton_meters() const;
 
-        using geometry::AngularState<Torque>::AngularState;
+        std::string
+        to_string() const;
+
+        using AngularState::AngularState;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& out, Torque const& rhs)
-    {
-        return out << rhs.to_newton_meters();
-    }
+    std::ostream&
+    operator<<(std::ostream& out, Torque const& rhs);
 
 }  // namespace quant::units::force

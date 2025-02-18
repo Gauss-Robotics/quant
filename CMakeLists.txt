@@ -21,10 +21,32 @@ find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
 find_package(doctest QUIET)
 
+# Compile Options
+option(QUANT_ENABLE_DIFFERENCE_ADDITION "Allow addition and subtraction of difference types" ON)
+if (QUANT_ENABLE_DIFFERENCE_ADDITION)
+    message(WARNING "Difference addition is enabled. This may lead to unexpected results.")
+    add_compile_definitions(QUANT_ENABLE_DIFFERENCE_ADDITION)
+endif()
+
+option(QUANT_ENABLE_EXCEPTIONS "Allow throwing of exceptions" ON)
+if (QUANT_ENABLE_EXCEPTIONS)
+    add_compile_definitions(QUANT_ENABLE_EXCEPTIONS)
+endif()
+option(QUANT_ENABLE_TESTS "Enable tests" ON)
+
+
 # Source code.
 add_subdirectory(source)
-add_subdirectory(tests)
 add_subdirectory(examples)
+
+if (QUANT_ENABLE_TESTS)
+    if (doctest_FOUND)
+        add_subdirectory(tests)
+    else()
+        message(WARNING "Tests are enabled but doctest is not found. Tests will not be built.")
+    endif()
+endif()
+
 
 export(
     TARGETS

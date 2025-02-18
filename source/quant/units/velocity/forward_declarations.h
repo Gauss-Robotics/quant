@@ -15,66 +15,6 @@ namespace quant::units::velocity
 
 }  // namespace quant::units::velocity
 
-namespace quant::traits
-{
-
-    using VelocityDomain = Define3DDomain<units::velocity::LinearVelocity,
-                                          units::velocity::AngularVelocity,
-                                          units::velocity::Twist,
-                                          units::velocity::LinearVelocityDifference,
-                                          units::velocity::AngularVelocityDifference,
-                                          units::velocity::TwistDifference>;
-
-    template <>
-    struct DefineTraits<units::velocity::LinearVelocity>
-    {
-        using Domain = VelocityDomain;
-        using Difference = units::velocity::LinearVelocityDifference;
-        using GeometricType = LinearStateType;
-    };
-
-    template <>
-    struct DefineTraits<units::velocity::LinearVelocityDifference>
-    {
-        using Domain = VelocityDomain;
-        using State = units::velocity::LinearVelocity;
-        using GeometricType = LinearDifferenceType;
-    };
-
-    template <>
-    struct DefineTraits<units::velocity::AngularVelocity>
-    {
-        using Domain = VelocityDomain;
-        using Difference = units::velocity::AngularVelocityDifference;
-        using GeometricType = AngularStateType;
-    };
-
-    template <>
-    struct DefineTraits<units::velocity::AngularVelocityDifference>
-    {
-        using Domain = VelocityDomain;
-        using State = units::velocity::AngularVelocity;
-        using GeometricType = AngularDifferenceType;
-    };
-
-    template <>
-    struct DefineTraits<units::velocity::Twist>
-    {
-        using Domain = VelocityDomain;
-        using Difference = units::velocity::TwistDifference;
-        using GeometricType = SpatialStateType;
-    };
-
-    template <>
-    struct DefineTraits<units::velocity::TwistDifference>
-    {
-        using Domain = VelocityDomain;
-        using State = units::velocity::Twist;
-        using GeometricType = SpatialDifferenceType;
-    };
-
-}  // namespace quant::traits
-
 namespace quant
 {
 
@@ -87,3 +27,72 @@ namespace quant
     using units::velocity::TwistDifference;
 
 }  // namespace quant
+
+namespace quant::traits
+{
+
+    using VelocityDomain = Define3DDomain<
+        Define3DSubDomain<LinearVelocity,
+                          LinearVelocityDifference,
+                          R3Type>,
+        Define3DSubDomain<AngularVelocity,
+                          AngularVelocityDifference,
+                          R3Type>,
+        Define3DSubDomain<Twist, TwistDifference, R6Type>>;
+
+    template <>
+    struct DefineTraits<LinearVelocity>
+    {
+        using Domain = VelocityDomain;
+        using State = LinearVelocity;
+        using Difference = LinearVelocityDifference;
+        using GeometricType = LinearStateType;
+    };
+
+    template <>
+    struct DefineTraits<LinearVelocityDifference>
+    {
+        using Domain = VelocityDomain;
+        using State = LinearVelocity;
+        using Difference = LinearVelocityDifference;
+        using GeometricType = LinearDifferenceType;
+    };
+
+    template <>
+    struct DefineTraits<AngularVelocity>
+    {
+        using Domain = VelocityDomain;
+        using State = AngularVelocity;
+        using Difference = AngularVelocityDifference;
+        using GeometricType = AngularStateType;
+    };
+
+    template <>
+    struct DefineTraits<AngularVelocityDifference>
+    {
+        using Domain = VelocityDomain;
+        using State = AngularVelocity;
+        using Difference = AngularVelocityDifference;
+        using GeometricType = AngularDifferenceType;
+    };
+
+    template <>
+    struct DefineTraits<Twist>
+    {
+        using Domain = VelocityDomain;
+        using State = Twist;
+        using Difference = TwistDifference;
+        using GeometricType = SpatialStateType;
+    };
+
+    template <>
+    struct DefineTraits<TwistDifference>
+    {
+        using Domain = VelocityDomain;
+        using State = Twist;
+        using Difference = TwistDifference;
+        using GeometricType = SpatialDifferenceType;
+    };
+
+}  // namespace quant::traits
+
