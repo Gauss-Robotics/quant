@@ -922,13 +922,13 @@ TEST_SUITE("testing framed position domain")
             std::string const from_frame = "ARMAR-6::RobotRoot";
             std::string const to_frame = "ARMAR-6::TCP_R";
             std::string const name = "TCP";
+            // If we would have a position in frame A, and we would write it as a pose, it would get
+            // an identity orientation in frame A.
             FramedPose const p1{
-                Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
-                     Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0})),
+                Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}), Orientation::zero()),
                 {.name = name, .base_frame = from_frame}};
             FramedPose const p2{
-                Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}),
-                     Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0})),
+                Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}), Orientation::zero()),
                 {.name = name, .base_frame = from_frame}};
             FramedSpatialDisplacement const sd = p2 - p1;
             auto const p1_t = p1.linear();
@@ -945,20 +945,42 @@ TEST_SUITE("testing framed position domain")
             auto const sd_new = bc * sd;
             auto const ld_new = bc * ld;
             /**
-             *This is a bit counter intuitive but, the positional part of the a pose does not
-             *transform as positions. This is because positions are always connected to the rotation
-             *of their base frame. E.g., when we look at a position in frame A, if we would write it
-             *as a pose, it would get an identity orientation in frame A. If the same position is
-             *seen from frame B, it would again get an identity orientation in frame B. This
-             *implicit change in (imaginative) orientations of the two positions causes the difference of the
-             *behaviors. I.e., as the difference is always defined in the tangent space of the subtracted object, and
-             *positions are bound to the coordinate system of their base frame, the difference of two positions
-             *has a **hidden** change in orientations that leads to linear displacements actually changing under a
-             *base change. (see also intuition_about_transformations.ipynb)
+             * This is a bit counter intuitive but, the positional part of the a pose does not
+             * transform as positions. This is because positions are always connected to the
+             * rotation of their base frame. E.g., when we look at a position in frame A, if we
+             * would write it as a pose, it would get an identity orientation in frame A. If the
+             * same position is seen from frame B, it would again get an identity orientation in
+             * frame B. This implicit change in (imaginative) orientations of the two positions
+             * causes the difference of the behaviors. I.e., as the difference is always defined in
+             * the tangent space of the subtracted object, and positions are bound to the coordinate
+             * system of their base frame, the difference of two positions has a **hidden** change
+             * in orientations that leads to linear displacements actually changing under a base
+             * change. (see also intuition_about_transformations.ipynb)
              **/
             CHECK_MESSAGE(ld_new != Circa(sd_new.linear()),
                           "Position differences should not transform like the positional part of "
                           "pose differences");
+
+            auto const p1_t_new = bc * p1_t;
+            auto const p2_t_new = bc * p2_t;
+            /**
+             * These would be poses "connected" to the positions p1_t and p2_t, after a base change.
+             * Notice that they still have identity orientations in their base frames, i.e., the
+             * orientations have not been transformed, as they do for a "correct" pose.
+             **/
+            auto const p1_new = FramedPose(Pose(p1_t_new.get_framed_object(), Orientation::zero()),
+                                           {p1_t_new.get_name(), p1_t_new.get_base_frame()});
+            auto const p2_new = FramedPose(Pose(p2_t_new.get_framed_object(), Orientation::zero()),
+                                           {p2_t_new.get_name(), p2_t_new.get_base_frame()});
+            // "Imaginative" orientations did not transform as under a base change
+            CHECK(p1_new.angular() != Circa((bc * p1).angular()));
+            CHECK(p2_new.angular() != Circa((bc * p2).angular()));
+            // Linear parts did transform as under a base change
+            CHECK(p1_new.linear() == Circa((bc * p1).linear()));
+            CHECK(p2_new.linear() == Circa((bc * p2).linear()));
+            // The difference of the transformed positions is the difference of the "imaginative"
+            // poses in the new frame
+            CHECK(ld_new == Circa((p2_new - p1_new).linear()));
         }
 
         SUBCASE(
