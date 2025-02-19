@@ -46,7 +46,7 @@ TEST_SUITE("testing framed acceleration domain")
 
             auto const diff = a2 - a1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK(diff.get_base_frame() == "TCP");
             CHECK(diff.get_framed_object() ==
                   Circa(LinearAccelerationDifference::meters_per_second_squared(
                       {.x = 3, .y = 3, .z = 3})));
@@ -157,7 +157,7 @@ TEST_SUITE("testing framed acceleration domain")
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
             FramedLinearAccelerationDifference const lad{
                 LinearAccelerationDifference::meters_per_second_squared({.x = 3, .y = 2, .z = 1}),
-                "ARMAR-6::RobotRoot"};
+                "TCP"};
             FramedLinearAccelerationDifference const lad_wrong_frame{
                 LinearAccelerationDifference::meters_per_second_squared({.x = 3, .y = 2, .z = 1}),
                 "ARMAR-6::PlatformBase"};
@@ -169,7 +169,7 @@ TEST_SUITE("testing framed acceleration domain")
                   Circa(LinearAcceleration::meters_per_second_squared({.x = 4, .y = 4, .z = 4})));
 
             std::string const exception_message =
-                "Frame mismatch: ARMAR-6::RobotRoot vs ARMAR-6::PlatformBase";
+                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(acceleration + lad_wrong_frame, exception_message.c_str());
         }
 
@@ -255,28 +255,29 @@ TEST_SUITE("testing framed acceleration domain")
         SUBCASE("base change - difference of changed states is changed difference")
         {
             // TODO: NOT IMPLEMENTED YET
-            std::string const from_frame = "ARMAR-6::RobotRoot";
-            std::string const to_frame = "ARMAR-6::TCP_R";
-            std::string const name = "TCP";
+            std::string const base_frame = "ARMAR-6::RobotRoot";
+            std::string const tcp_r = "ARMAR-6::TCP_R";
+            std::string const tcp_l = "ARMAR-6::TCP_L";
+            std::string const camera = "ARMAR-6::Camera";
             FramedLinearAcceleration const a1{
-                LinearAcceleration::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
-                {.name = name, .base_frame = from_frame}};
+                LinearAcceleration::meters_per_second_squared({.x = 1, .y = 0, .z = 0}),
+                {.name = tcp_r, .base_frame = base_frame}};
             FramedLinearAcceleration const a2{
-                LinearAcceleration::meters_per_second_squared({.x = 10, .y = 9, .z = 8}),
-                {.name = name, .base_frame = from_frame}};
-            FramedLinearAccelerationDifference const lad = a2 - a1;
+                LinearAcceleration::meters_per_second_squared({.x = 0, .y = 1, .z = 0}),
+                {.name = tcp_l, .base_frame = base_frame}};
+            FramedLinearAccelerationDifference const lad_in_a1 = a2 - a1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
+            BaseChange const from_base_to_camera{
+                .from_frame = base_frame,
+                .to_frame = camera,
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
                     AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
-
-            auto const a1_new = bc * a1;
-            auto const a2_new = bc * a2;
-            auto const lad_new = a2_new - a1_new;
-            WARN_NOTHROW(bc * lad == Circa(lad_new));
+            auto const a1_in_camera = from_base_to_camera * a1;
+            auto const a2_in_camera = from_base_to_camera * a2;
+            auto const lad_in_a1_camera = a2_in_camera - a1_in_camera;
+            WARN(lad_in_a1 == Circa(lad_in_a1_camera)); // TODO: why is this not the case??
+            WARN(a1_in_camera + lad_in_a1 == Circa(a2_in_camera));
         }
     }
 
@@ -316,7 +317,7 @@ TEST_SUITE("testing framed acceleration domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK(diff.get_base_frame() == "TCP");
             CHECK(diff.get_framed_object() ==
                   Circa(AngularAccelerationDifference::degrees_per_second_squared(
                       {.axis = {.x = -1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},
@@ -382,7 +383,7 @@ TEST_SUITE("testing framed acceleration domain")
             FramedAngularAccelerationDifference const aad{
                 AngularAccelerationDifference::degrees_per_second_squared(
                     {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
-                "ARMAR-6::RobotRoot"};
+                "TCP"};
             FramedAngularAccelerationDifference const aad_wrong_frame{
                 AngularAccelerationDifference::degrees_per_second_squared(
                     {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
@@ -397,7 +398,7 @@ TEST_SUITE("testing framed acceleration domain")
                        .angle = sqrt(2) * 90})));
 
             std::string const exception_message =
-                "Frame mismatch: ARMAR-6::RobotRoot vs ARMAR-6::PlatformBase";
+                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(acceleration + aad_wrong_frame, exception_message.c_str());
         }
 
@@ -482,29 +483,29 @@ TEST_SUITE("testing framed acceleration domain")
 
         SUBCASE("base change - difference of changed states is changed difference")
         {
-            // TODO: NOT IMPLEMENTED YET
-            std::string const from_frame = "ARMAR-6::RobotRoot";
-            std::string const to_frame = "ARMAR-6::TCP_R";
-            std::string const name = "TCP";
+            std::string const base_frame = "ARMAR-6::RobotRoot";
+            std::string const tcp_r = "ARMAR-6::TCP_R";
+            std::string const tcp_l = "ARMAR-6::TCP_L";
+            std::string const camera = "ARMAR-6::Camera";
             FramedAngularAcceleration const a1{AngularAcceleration::degrees_per_second_squared(
                                                    {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}),
-                                               {.name = name, .base_frame = from_frame}};
+                                               {.name = tcp_r, .base_frame = base_frame}};
             FramedAngularAcceleration const a2{AngularAcceleration::degrees_per_second_squared(
                                                    {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0}),
-                                               {.name = name, .base_frame = from_frame}};
-            FramedAngularAccelerationDifference const aad = a2 - a1;
+                                               {.name = tcp_l, .base_frame = base_frame}};
+            FramedAngularAccelerationDifference const aad_in_a1 = a2 - a1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
+            BaseChange const from_base_to_camera{
+                .from_frame = base_frame,
+                .to_frame = camera,
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}))};
-            auto const a1_new = bc * a1;
-            auto const a2_new = bc * a2;
-            auto const aad_new = a2_new - a1_new;
-            WARN_NOTHROW(bc * aad == Circa(aad_new));
-            WARN_NOTHROW(a1_new + (bc * aad) == Circa(a2_new));
+                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            auto const a1_in_camera = from_base_to_camera * a1;
+            auto const a2_in_camera = from_base_to_camera * a2;
+            auto const aad_in_camera = a2_in_camera - a1_in_camera;
+            WARN(aad_in_a1 == Circa(aad_in_camera));
+            WARN(a1_in_camera + aad_in_a1 == Circa(a2_in_camera));
         }
     }
 
@@ -643,17 +644,20 @@ TEST_SUITE("testing framed acceleration domain")
         {
             FramedSpatialAccelerationDifference const f1{
                 SpatialAccelerationDifference(
-                    LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
+                    LinearAccelerationDifference::meters_per_second_squared(
+                        {.x = 1, .y = 2, .z = 3}),
                     AngularAccelerationDifference::degrees_per_second_squared(
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 "ARMAR-6::RobotRoot"};
-            FramedSpatialAccelerationDifference const f2 = FramedSpatialAccelerationDifference::zero("::");
+            FramedSpatialAccelerationDifference const f2 =
+                FramedSpatialAccelerationDifference::zero("::");
             FramedSpatialAccelerationDifference const f3{f1};
 
             CHECK(f1.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(f1.get_framed_object() ==
                   Circa(SpatialAccelerationDifference(
-                      LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
+                      LinearAccelerationDifference::meters_per_second_squared(
+                          {.x = 1, .y = 2, .z = 3}),
                       AngularAccelerationDifference::degrees_per_second_squared(
                           {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
 
@@ -663,7 +667,8 @@ TEST_SUITE("testing framed acceleration domain")
             CHECK(f3.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(f3.get_framed_object() ==
                   Circa(SpatialAccelerationDifference(
-                      LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
+                      LinearAccelerationDifference::meters_per_second_squared(
+                          {.x = 1, .y = 2, .z = 3}),
                       AngularAccelerationDifference::degrees_per_second_squared(
                           {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))));
         }
@@ -675,7 +680,8 @@ TEST_SUITE("testing framed acceleration domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             FramedSpatialAccelerationDifference const f1{
                 SpatialAccelerationDifference(
-                    LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
+                    LinearAccelerationDifference::meters_per_second_squared(
+                        {.x = 1, .y = 2, .z = 3}),
                     AngularAccelerationDifference::degrees_per_second_squared(
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
@@ -696,7 +702,8 @@ TEST_SUITE("testing framed acceleration domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             FramedSpatialAccelerationDifference const f1{
                 SpatialAccelerationDifference(
-                    LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
+                    LinearAccelerationDifference::meters_per_second_squared(
+                        {.x = 1, .y = 2, .z = 3}),
                     AngularAccelerationDifference::degrees_per_second_squared(
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
@@ -717,7 +724,8 @@ TEST_SUITE("testing framed acceleration domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             FramedSpatialAccelerationDifference const f1{
                 SpatialAccelerationDifference(
-                    LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
+                    LinearAccelerationDifference::meters_per_second_squared(
+                        {.x = 1, .y = 2, .z = 3}),
                     AngularAccelerationDifference::degrees_per_second_squared(
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
@@ -738,7 +746,8 @@ TEST_SUITE("testing framed acceleration domain")
             std::string const to_frame = "ARMAR-6::TCP_R";
             FramedSpatialAccelerationDifference const f1{
                 SpatialAccelerationDifference(
-                    LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
+                    LinearAccelerationDifference::meters_per_second_squared(
+                        {.x = 1, .y = 2, .z = 3}),
                     AngularAccelerationDifference::degrees_per_second_squared(
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
@@ -758,33 +767,35 @@ TEST_SUITE("testing framed acceleration domain")
         SUBCASE("base change - difference of changed states is changed difference")
         {
             // TODO: NOT IMPLEMENTED YET
-            std::string const from_frame = "ARMAR-6::RobotRoot";
-            std::string const to_frame = "ARMAR-6::TCP_R";
-            std::string const name = "TCP";
+            std::string const base_frame = "ARMAR-6::RobotRoot";
+            std::string const tcp_r = "ARMAR-6::TCP_R";
+            std::string const tcp_l = "ARMAR-6::TCP_L";
+            std::string const camera = "ARMAR-6::Camera";
             FramedSpatialAcceleration const a1{
                 SpatialAcceleration(
-                    LinearAcceleration::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
+                    LinearAcceleration::millimeters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                     AngularAcceleration::degrees_per_second_squared(
-                        {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
-                {.name = name, .base_frame = from_frame}};
+                        {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0})),
+                {.name = tcp_r, .base_frame = base_frame}};
             FramedSpatialAcceleration const a2{
                 SpatialAcceleration(
-                    LinearAcceleration::meters_per_second_squared({.x = 10, .y = 9, .z = 8}),
+                    LinearAcceleration::millimeters_per_second_squared({.x = 10, .y = 9, .z = 8}),
                     AngularAcceleration::degrees_per_second_squared(
-                        {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90})),
-                {.name = name, .base_frame = from_frame}};
-            FramedSpatialAccelerationDifference const sad = a2 - a1;
+                        {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0})),
+                {.name = tcp_l, .base_frame = base_frame}};
+            FramedSpatialAccelerationDifference const sad_in_a1 = a2 - a1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
+            BaseChange const from_base_to_camera{
+                .from_frame = base_frame,
+                .to_frame = camera,
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
                     AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
-            auto const a1_new = bc * a1;
-            auto const a2_new = bc * a2;
-            auto const sad_new = a2_new - a1_new;
-            WARN_NOTHROW(bc * sad == Circa(sad_new));
+            auto const a1_in_camera = from_base_to_camera * a1;
+            auto const a2_in_camera = from_base_to_camera * a2;
+            auto const sad_in_camera = a2_in_camera - a1_in_camera;
+            WARN(sad_in_a1 == Circa(sad_in_camera));
+            WARN(a1_in_camera + sad_in_a1 == Circa(a2_in_camera));
         }
     }
 }

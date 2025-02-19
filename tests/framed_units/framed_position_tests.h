@@ -39,9 +39,9 @@ TEST_SUITE("testing framed position domain")
             FramedPosition const f2{Position::millimeters({.x = 4, .y = 5, .z = 6}),
                                     {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
 
-            auto const diff = f2 - f1;
+            FramedLinearDisplacement const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK(diff.get_base_frame() == "TCP");
             CHECK(diff.get_framed_object() ==
                   Circa(LinearDisplacement::millimeters({.x = 3, .y = 3, .z = 3})));
         }
@@ -161,7 +161,7 @@ TEST_SUITE("testing framed position domain")
             FramedPosition const position{Position::millimeters({.x = 1, .y = 2, .z = 3}),
                                           {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
             FramedLinearDisplacement const ld{
-                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}), "ARMAR-6::RobotRoot"};
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}), "TCP"};
             FramedLinearDisplacement const ld_wrong_frame{
                 LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}), "ARMAR-6::PlatformBase"};
 
@@ -172,7 +172,7 @@ TEST_SUITE("testing framed position domain")
                   Circa(Position::millimeters({.x = 4, .y = 4, .z = 4})));
 
             std::string const exception_message =
-                "Frame mismatch: ARMAR-6::RobotRoot vs ARMAR-6::PlatformBase";
+                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(position + ld_wrong_frame, exception_message.c_str());
         }
 
@@ -261,26 +261,40 @@ TEST_SUITE("testing framed position domain")
 
         SUBCASE("base change - difference of changed states is changed difference")
         {
-            std::string const from_frame = "ARMAR-6::RobotRoot";
-            std::string const to_frame = "ARMAR-6::TCP_R";
-            std::string const name = "TCP";
+            std::string const base_frame = "ARMAR-6::RobotRoot";
+            std::string const tcp_r = "ARMAR-6::TCP_R";
+            std::string const tcp_l = "ARMAR-6::TCP_L";
+            std::string const camera = "ARMAR-6::Camera";
             FramedPosition const p1{Position::millimeters({.x = 1, .y = 2, .z = 3}),
-                                    {.name = name, .base_frame = from_frame}};
+                                    {.name = tcp_r, .base_frame = base_frame}};
             FramedPosition const p2{Position::millimeters({.x = 10, .y = 9, .z = 8}),
-                                    {.name = name, .base_frame = from_frame}};
-            FramedLinearDisplacement const ld = p2 - p1;
+                                    {.name = tcp_l, .base_frame = base_frame}};
+            FramedLinearDisplacement const ld_in_p1 = p2 - p1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
+            BaseChange const from_base_to_camera{
+                .from_frame = base_frame,
+                .to_frame = camera,
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
                     AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
-
-            auto const p1_new = bc * p1;
-            auto const p2_new = bc * p2;
-            auto const ld_new = p2_new - p1_new;
-            CHECK(bc * ld == Circa(ld_new));
+            BaseChange const from_p1_to_base{
+                .from_frame = tcp_r,
+                .to_frame = base_frame,
+                .transformation = SpatialDisplacement(
+                    Pose(p1.get_framed_object(), Orientation::zero()).inverse())};
+            auto const p1_in_camera = from_base_to_camera * p1;
+            auto const p2_in_camera = from_base_to_camera * p2;
+            BaseChange const from_p1_to_camera{
+                .from_frame = tcp_r,
+                .to_frame = camera,
+                .transformation = SpatialDisplacement(
+                    Pose(p1_in_camera.get_framed_object(), Orientation::zero()).inverse())};
+            auto const ld_in_camera = p2_in_camera - p1_in_camera;
+            WARN(ld_in_p1 == Circa(ld_in_camera));
+            CHECK(from_base_to_camera * (from_p1_to_base * ld_in_p1) ==
+                  Circa(from_p1_to_camera * ld_in_camera));
+            WARN(p1_in_camera + ld_in_p1 == Circa(p2_in_camera));
+            WARN(p1 + ld_in_camera == Circa(p2));
         }
     }
 
@@ -320,7 +334,7 @@ TEST_SUITE("testing framed position domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK(diff.get_base_frame() == "TCP");
             CHECK(diff.get_framed_object() ==
                   Circa(AngularDisplacement::degrees(
                       {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)},
@@ -419,7 +433,7 @@ TEST_SUITE("testing framed position domain")
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
             FramedAngularDisplacement const ad{
                 AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
-                "ARMAR-6::RobotRoot"};
+                "TCP"};
             FramedAngularDisplacement const ad_wrong_frame{
                 AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
                 "ARMAR-6::PlatformBase"};
@@ -433,7 +447,7 @@ TEST_SUITE("testing framed position domain")
                        .angle = 120})));
 
             std::string const exception_message =
-                "Frame mismatch: ARMAR-6::RobotRoot vs ARMAR-6::PlatformBase";
+                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(orientation + ad_wrong_frame, exception_message.c_str());
         }
 
@@ -525,30 +539,42 @@ TEST_SUITE("testing framed position domain")
 
         SUBCASE("base change - difference of changed states is changed difference")
         {
-            std::string const from_frame = "ARMAR-6::RobotRoot";
-            std::string const to_frame = "ARMAR-6::TCP_R";
-            std::string const name = "TCP";
+            std::string const base_frame = "ARMAR-6::RobotRoot";
+            std::string const tcp_r = "ARMAR-6::TCP_R";
+            std::string const tcp_l = "ARMAR-6::TCP_L";
+            std::string const camera = "ARMAR-6::Camera";
             FramedOrientation const o1{
                 Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}),
-                {.name = name, .base_frame = from_frame}};
+                {.name = tcp_r, .base_frame = base_frame}};
             FramedOrientation const o2{
                 Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0}),
-                {.name = name, .base_frame = from_frame}};
-            FramedAngularDisplacement const ad = o2 - o1;
+                {.name = tcp_l, .base_frame = base_frame}};
+            FramedAngularDisplacement const ad_in_o1 = o2 - o1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
+            BaseChange const from_base_to_camera{
+                .from_frame = base_frame,
+                .to_frame = camera,
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}))};
-            auto const o1_new = bc * o1;
-            auto const o2_new = bc * o2;
-            auto const ad_new = o2_new - o1_new;
-            INFO("o1: ", o1, " o2: ", o2, " ad: ", ad);
-            INFO("o1': ", o1_new, " o2': ", o2_new, " ad': ", ad_new);
-            CHECK((bc * ad) == Circa(ad_new));
-            CHECK(o1_new + (bc * ad) == Circa(o2_new));
+                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const from_o1_to_base{
+                .from_frame = tcp_r,
+                .to_frame = base_frame,
+                .transformation =
+                    SpatialDisplacement(Pose(Position::zero(), o1.get_framed_object()).inverse())};
+            auto const o1_in_camera = from_base_to_camera * o1;
+            auto const o2_in_camera = from_base_to_camera * o2;
+            BaseChange const from_o1_to_camera{
+                .from_frame = tcp_r,
+                .to_frame = camera,
+                .transformation = SpatialDisplacement(
+                    Pose(Position::zero(), o1_in_camera.get_framed_object()).inverse())};
+            auto const ad_in_camera = o2_in_camera - o1_in_camera;
+            CHECK(ad_in_o1 == Circa(ad_in_camera));
+            CHECK(from_base_to_camera * (from_o1_to_base * ad_in_o1) ==
+                  Circa(from_o1_to_camera * ad_in_camera));
+            CHECK((o1_in_camera + ad_in_o1).get_framed_object() == Circa(o2_in_camera.get_framed_object()));
+            CHECK((o1 + ad_in_camera).get_framed_object() == Circa(o2.get_framed_object()));
         }
     }
 
@@ -595,7 +621,7 @@ TEST_SUITE("testing framed position domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK(diff.get_base_frame() == "TCP");
             CHECK(diff.get_framed_object() ==
                   Circa(SpatialDisplacement(
                       LinearDisplacement::millimeters({.x = 3, .y = 3, .z = -3}),
@@ -891,59 +917,79 @@ TEST_SUITE("testing framed position domain")
 
         SUBCASE("base change - difference of changed states is changed difference")
         {
-            std::string const from_frame = "ARMAR-6::RobotRoot";
-            std::string const to_frame = "ARMAR-6::TCP_R";
-            std::string const name = "TCP";
+            std::string const base_frame = "ARMAR-6::RobotRoot";
+            std::string const tcp_r = "ARMAR-6::TCP_R";
+            std::string const tcp_l = "ARMAR-6::TCP_L";
+            std::string const camera = "ARMAR-6::Camera";
             FramedPose const p1{
                 Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
                      Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0})),
-                {.name = name, .base_frame = from_frame}};
+                {.name = tcp_r, .base_frame = base_frame}};
             FramedPose const p2{
                 Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}),
                      Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0})),
-                {.name = name, .base_frame = from_frame}};
-            FramedSpatialDisplacement const sd = p2 - p1;
+                {.name = tcp_l, .base_frame = base_frame}};
+            FramedSpatialDisplacement const sd_in_p1 = p2 - p1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
+            BaseChange const from_base_to_camera{
+                .from_frame = base_frame,
+                .to_frame = camera,
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
                     AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
-            auto const p1_new = bc * p1;
-            auto const p2_new = bc * p2;
-            auto const sd_new = p2_new - p1_new;
-            CHECK(bc * sd == Circa(sd_new));
+            BaseChange const from_p1_to_base{
+                .from_frame = tcp_r,
+                .to_frame = base_frame,
+                .transformation = SpatialDisplacement(p1.get_framed_object().inverse())};
+            auto const p1_in_camera = from_base_to_camera * p1;
+            auto const p2_in_camera = from_base_to_camera * p2;
+            BaseChange const from_p1_to_camera{
+                .from_frame = tcp_r,
+                .to_frame = camera,
+                .transformation = SpatialDisplacement(p1_in_camera.get_framed_object().inverse())};
+            auto const sd_in_camera = p2_in_camera - p1_in_camera;
+            CHECK(sd_in_p1 == Circa(sd_in_camera));
+            CHECK(from_base_to_camera * (from_p1_to_base * sd_in_p1) ==
+                  Circa(from_p1_to_camera * sd_in_camera));
+            CHECK((p1_in_camera + sd_in_p1).get_framed_object() == Circa(p2_in_camera.get_framed_object()));
+            CHECK((p1 + sd_in_camera).get_framed_object() == Circa(p2.get_framed_object()));
         }
 
         SUBCASE("positional part of difference does not transform like the difference of the "
                 "positional parts")
         {
-            std::string const from_frame = "ARMAR-6::RobotRoot";
-            std::string const to_frame = "ARMAR-6::TCP_R";
-            std::string const name = "TCP";
+            // TODO: This test case is a prime example why states in linear space should be connected to the global
+            //  frame and not the local one
+            std::string const base_frame = "ARMAR-6::RobotRoot";
+            std::string const tcpr = "ARMAR-6::TCP_R";
+            std::string const tcpl = "ARMAR-6::TCP_L";
+            std::string const camera = "ARMAR-6::Camera";
             // If we would have a position in frame A, and we would write it as a pose, it would get
             // an identity orientation in frame A.
             FramedPose const p1{
                 Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}), Orientation::zero()),
-                {.name = name, .base_frame = from_frame}};
+                {.name = tcpl, .base_frame = base_frame}};
             FramedPose const p2{
                 Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}), Orientation::zero()),
-                {.name = name, .base_frame = from_frame}};
+                {.name = tcpr, .base_frame = base_frame}};
             FramedSpatialDisplacement const sd = p2 - p1;
             auto const p1_t = p1.linear();
             auto const p2_t = p2.linear();
             auto const ld = p2_t - p1_t;
             CHECK(ld == Circa(sd.linear()));
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
+            BaseChange const from_tcpl_to_camera{
+                .from_frame = tcpl,
+                .to_frame = camera,
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
                     AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
-            auto const sd_new = bc * sd;
-            auto const ld_new = bc * ld;
+            BaseChange const from_base_to_tcpl{
+                .from_frame = base_frame,
+                .to_frame = tcpl,
+                .transformation = SpatialDisplacement(p1.get_framed_object())};
+            auto const sd_in_camera = from_tcpl_to_camera * sd;
+            auto const ld_in_camera = from_tcpl_to_camera * ld;
             /**
              * This is a bit counter intuitive but, the positional part of the a pose does not
              * transform as positions. This is because positions are always connected to the
@@ -957,60 +1003,61 @@ TEST_SUITE("testing framed position domain")
              * in orientations that leads to linear displacements actually changing under a base
              * change. (see also intuition_about_transformations.ipynb)
              **/
-            CHECK_MESSAGE(ld_new != Circa(sd_new.linear()),
+            CHECK_MESSAGE(ld_in_camera != Circa(sd_in_camera.linear()),
                           "Position differences should not transform like the positional part of "
                           "pose differences");
 
-            auto const p1_t_new = bc * p1_t;
-            auto const p2_t_new = bc * p2_t;
+            auto const p1_t_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * p1_t);
+            auto const p2_t_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * p2_t);
             /**
              * These would be poses "connected" to the positions p1_t and p2_t, after a base change.
              * Notice that they still have identity orientations in their base frames, i.e., the
              * orientations have not been transformed, as they do for a "correct" pose.
              **/
-            auto const p1_new = FramedPose(Pose(p1_t_new.get_framed_object(), Orientation::zero()),
-                                           {p1_t_new.get_name(), p1_t_new.get_base_frame()});
-            auto const p2_new = FramedPose(Pose(p2_t_new.get_framed_object(), Orientation::zero()),
-                                           {p2_t_new.get_name(), p2_t_new.get_base_frame()});
+            auto const p1_new = FramedPose(Pose(p1_t_in_camera.get_framed_object(), Orientation::zero()),
+                                           {p1_t_in_camera.get_name(), p1_t_in_camera.get_base_frame()});
+            auto const p2_new = FramedPose(Pose(p2_t_in_camera.get_framed_object(), Orientation::zero()),
+                                           {p2_t_in_camera.get_name(), p2_t_in_camera.get_base_frame()});
             // "Imaginative" orientations did not transform as under a base change
-            CHECK(p1_new.angular() != Circa((bc * p1).angular()));
-            CHECK(p2_new.angular() != Circa((bc * p2).angular()));
+            CHECK(p1_new.angular() != Circa((from_tcpl_to_camera * (from_base_to_tcpl * p1)).angular()));
+            CHECK(p2_new.angular() != Circa((from_tcpl_to_camera * (from_base_to_tcpl * p2)).angular()));
             // Linear parts did transform as under a base change
-            CHECK(p1_new.linear() == Circa((bc * p1).linear()));
-            CHECK(p2_new.linear() == Circa((bc * p2).linear()));
+            CHECK(p1_new.linear() == Circa((from_tcpl_to_camera * (from_base_to_tcpl * p1)).linear()));
+            CHECK(p2_new.linear() == Circa((from_tcpl_to_camera * (from_base_to_tcpl * p2)).linear()));
             // The difference of the transformed positions is the difference of the "imaginative"
             // poses in the new frame
-            CHECK(ld_new == Circa((p2_new - p1_new).linear()));
+            CHECK(ld_in_camera.get_framed_object() == Circa((p2_new - p1_new).get_framed_object().linear()));
         }
 
         SUBCASE(
             "orientational part of difference transforms like the difference orientational parts")
         {
-            std::string const from_frame = "ARMAR-6::RobotRoot";
-            std::string const to_frame = "ARMAR-6::TCP_R";
-            std::string const name = "TCP";
+            std::string const base_frame = "ARMAR-6::RobotRoot";
+            std::string const tcpr = "ARMAR-6::TCP_R";
+            std::string const tcpl = "ARMAR-6::TCP_L";
+            std::string const camera = "ARMAR-6::Camera";
             FramedPose const p1{
                 Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
                      Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0})),
-                {.name = name, .base_frame = from_frame}};
+                {.name = tcpr, .base_frame = base_frame}};
             FramedPose const p2{
                 Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}),
                      Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0})),
-                {.name = name, .base_frame = from_frame}};
+                {.name = tcpl, .base_frame = base_frame}};
             FramedSpatialDisplacement const sd = p2 - p1;
             auto const p1_o = p1.angular();
             auto const p2_o = p2.angular();
             auto const ad = p2_o - p1_o;
             CHECK(ad == Circa(sd.angular()));
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
+            BaseChange const from_tcpr_to_camera{
+                .from_frame = tcpr,
+                .to_frame = camera,
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
                     AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
-            auto const sd_new = bc * sd;
-            auto const ad_new = bc * ad;
+            auto const sd_new = from_tcpr_to_camera * sd;
+            auto const ad_new = from_tcpr_to_camera * ad;
             CHECK(ad_new == Circa(sd_new.angular()));
         }
     }
@@ -1068,6 +1115,8 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
     auto const p1_in_F2 = FramedPosition(Position::meters({1, 9, 0}), {"p1", "F2"});
     auto const p2_in_F2 = FramedPosition(Position::meters({1, 8, 0}), {"p2", "F2"});
 
+    auto make_base_change = [](FramedPose const& from, FramedPose const& to)
+    { return BaseChange(from.get_name(), to.get_name(), (to - from).get_framed_object()); };
     TEST_CASE("difference of F1 and F2 is F1_to_F2")
     {
         CHECK(F1_to_F2 == Circa((F2 - F1).get_framed_object()));
@@ -1075,8 +1124,6 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
 
     TEST_CASE("poses and positions transform correctly")
     {
-        auto make_base_change = [](FramedPose const& from, FramedPose const& to)
-        { return BaseChange(from.get_name(), to.get_name(), (to - from).get_framed_object()); };
         auto const origin_to_F1 = make_base_change(origin, F1);
         auto const origin_to_F2 = make_base_change(origin, F2);
         CHECK(base_change * O1_in_F1 == Circa(O1_in_F2));
@@ -1104,11 +1151,14 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
         auto const delta_o12_in_F2 =
             FramedSpatialDisplacement(SpatialDisplacement(temp_pose), "F2");
         CHECK((O2_in_F1 - O1_in_F1).get_framed_object() ==
-              Circa((base_change * (O2_in_F1 - O1_in_F1)).get_framed_object()));
+              Circa((base_change * (make_base_change(O1, F1) * (O2_in_F1 - O1_in_F1)))
+                        .get_framed_object()));
         CHECK((O2_in_F1 - O1_in_F1).get_framed_object() ==
               Circa((O2_in_F2 - O1_in_F2).get_framed_object()));
-        CHECK(delta_o12_in_F1 == Circa((O2_in_F1 - O1_in_F1)));
-        CHECK(delta_o12_in_F2 == Circa(O2_in_F2 - O1_in_F2));
+        // differences are the local frame of the subtracted object; therefore we need to change the
+        // frame again
+        CHECK(delta_o12_in_F1 == Circa(make_base_change(O1, F1) * (O2_in_F1 - O1_in_F1)));
+        CHECK(delta_o12_in_F2 == Circa(make_base_change(O1, F2) * (O2_in_F2 - O1_in_F2)));
     }
 
     TEST_CASE("positions do not behave as poses/orientations")

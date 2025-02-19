@@ -995,14 +995,14 @@ TEST_SUITE("subtraction of difference and difference")
             CAPTURE(state21);
             CAPTURE(diff1_minus_diff2);
             CAPTURE(diff2_minus_diff1);
+            INFO("Subtraction of Difference is commutattive: ",
+                 (state - diff1_minus_diff2) == Circa(state - diff2_minus_diff1));
             WARN((state12) == Circa(state - diff1_minus_diff2));
             WARN((state21) == Circa(state - diff2_minus_diff1));
             WARN(((state - diff1_minus_diff2) - diff2) == Circa(state_minus_diff1));
             WARN(((state - diff2_minus_diff1) - diff1) == Circa(state_minus_diff2));
             WARN((state - diff1_minus_diff2) == Circa(state - diff1 + diff2));
             WARN((state - diff2_minus_diff1) == Circa(state - diff2 + diff1));
-            INFO("Subtraction of Difference is commutattive: ",
-                 (state - diff1_minus_diff2) == Circa(state - diff2_minus_diff1));
         };
         test(TimePoint::seconds(1), Duration::seconds(1), Duration::seconds(2));
         test(Position::meters({.x = 1, .y = 2, .z = 3}),

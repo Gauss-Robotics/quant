@@ -70,8 +70,8 @@ TEST_CASE("testing basic framed differences")
         // const traits::framed_type_of<DummyLinearDiff> diff{};
         // FramedDummyLinearDiff const diff{};
         //
-        CHECK(ld.get_base_frame() == "ARMAR-6::RobotRoot");
-        framed_geometry::BaseChange const bc{.from_frame = "ARMAR-6::RobotRoot",
+        CHECK(ld.get_base_frame() == "CoM");
+        framed_geometry::BaseChange const bc{.from_frame = "CoM",
                                              .to_frame = "ARMAR-6::PlatformBase",
                                              .transformation =
                                                  units::position::SpatialDisplacement::zero()};

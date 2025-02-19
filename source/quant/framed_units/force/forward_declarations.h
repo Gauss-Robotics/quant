@@ -4,8 +4,6 @@
 #include <quant/geometry/forward_declarations.h>
 #include <quant/units/force/forward_declarations.h>
 
-#include <functional>
-
 namespace quant::framed_units::force
 {
 

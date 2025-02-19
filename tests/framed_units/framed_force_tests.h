@@ -42,7 +42,7 @@ TEST_SUITE("testing framed force domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK(diff.get_base_frame() == "TCP");
             CHECK(diff.get_framed_object() ==
                   Circa(ForceDifference::newtons({.x = 3, .y = 3, .z = 3})));
         }
@@ -140,7 +140,7 @@ TEST_SUITE("testing framed force domain")
             FramedForce const force{Force::newtons({.x = 1, .y = 0, .z = 0}),
                                     {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
             FramedForceDifference const fd{ForceDifference::newtons({.x = 0, .y = 1, .z = 0}),
-                                           "ARMAR-6::RobotRoot"};
+                                           "TCP"};
             FramedForceDifference const fd_wrong_frame{
                 ForceDifference::newtons({.x = 0, .y = 1, .z = 0}), "ARMAR-6::PlatformBase"};
 
@@ -150,7 +150,7 @@ TEST_SUITE("testing framed force domain")
             CHECK(new_force.get_framed_object() == Circa(Force::newtons({.x = 1, .y = 1, .z = 0})));
 
             std::string const exception_message =
-                "Frame mismatch: ARMAR-6::RobotRoot vs ARMAR-6::PlatformBase";
+                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(force + fd_wrong_frame, exception_message.c_str());
         }
 
@@ -267,7 +267,7 @@ TEST_SUITE("testing framed force domain")
 
             auto const diff = t2 - t1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK(diff.get_base_frame() == "TCP");
             CHECK(diff.get_framed_object() ==
                   Circa(TorqueDifference::newton_meters(
                       {.axis = {.x = -1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},
@@ -327,7 +327,7 @@ TEST_SUITE("testing framed force domain")
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
             FramedTorqueDifference const td{
                 TorqueDifference::newton_meters({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
-                "ARMAR-6::RobotRoot"};
+                "TCP"};
             FramedTorqueDifference const td_wrong_frame{
                 TorqueDifference::newton_meters({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
                 "ARMAR-6::PlatformBase"};
@@ -340,7 +340,7 @@ TEST_SUITE("testing framed force domain")
                       {.axis = {.x = 1, .y = 1, .z = 0}, .angle = sqrt(2) * 90})));
 
             std::string const exception_message =
-                "Frame mismatch: ARMAR-6::RobotRoot vs ARMAR-6::PlatformBase";
+                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(torque + td_wrong_frame, exception_message.c_str());
         }
 
@@ -594,6 +594,7 @@ TEST_SUITE("testing framed force domain")
 
         SUBCASE("base change - translation")
         {
+            // TODO: NOT IMPLEMENTED YET
             std::string const from_frame = "ARMAR-6::RobotRoot";
             std::string const to_frame = "ARMAR-6::TCP_R";
             FramedWrenchDifference const w1{
@@ -613,6 +614,7 @@ TEST_SUITE("testing framed force domain")
 
         SUBCASE("base change - angular")
         {
+            // TODO: NOT IMPLEMENTED YET
             std::string const from_frame = "ARMAR-6::RobotRoot";
             std::string const to_frame = "ARMAR-6::TCP_R";
             FramedWrenchDifference const w1{
@@ -631,7 +633,7 @@ TEST_SUITE("testing framed force domain")
         }
 
         SUBCASE("base change - transform")
-        {
+        { // TODO: NOT IMPLEMENTED YET
             std::string const from_frame = "ARMAR-6::RobotRoot";
             std::string const to_frame = "ARMAR-6::TCP_R";
             FramedWrenchDifference const w1{
@@ -651,13 +653,14 @@ TEST_SUITE("testing framed force domain")
 
         SUBCASE("base change - difference of changed states is changed difference")
         {
+            // TODO: NOT IMPLEMENTED YET
             std::string const from_frame = "ARMAR-6::RobotRoot";
             std::string const to_frame = "ARMAR-6::TCP_R";
             std::string const name = "TCP";
             FramedWrench const w1{
                 Wrench(Force::newtons({.x = 1, .y = 2, .z = 3}),
                        Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
-                {.name = name, .base_frame = from_frame}};
+                {.name = from_frame, .base_frame = from_frame}};
             FramedWrench const w2{
                 Wrench(Force::newtons({.x = 10, .y = 9, .z = 8}),
                        Torque::newton_meters({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90})),
@@ -699,8 +702,7 @@ TEST_SUITE("testing framed force domain")
             auto const from_A_to_F = BaseChange{"A", "F", T_af};
             auto const F_apple_in_F = from_A_to_F * F_apple_in_A;
             auto const F_hand_in_F = from_H_to_F * F_hand_in_H;
-            auto const diff = FramedWrenchDifference(F_apple_in_F);
-            auto const F_f = F_hand_in_F + diff;
+            auto const F_f = F_hand_in_F + F_apple_in_F;
             CHECK(F_apple_in_F ==
                   Circa(FramedWrench(Wrench(Force::newtons({0, -1, 0}),
                                             Torque::newton_meters({.x = 0, .y = 0, .z = -0.25})),

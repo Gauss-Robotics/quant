@@ -200,6 +200,37 @@ namespace quant::framed_geometry
      * @return
      */
 
+    template <typename FramedStateType>
+        requires traits::framed_state<FramedStateType> and traits::in_flat_space<typename FramedStateType::FramedGeometricObject>
+    FramedStateType
+    operator+(FramedStateType const& lhs, FramedStateType const& rhs)
+    {
+#ifdef QUANT_ENABLE_EXCEPTIONS
+        if (lhs.get_base_frame() != rhs.get_base_frame())
+        {
+            throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
+        }
+#endif
+        /**
+         * This is for flat space, where two states can be added, e.g. to forces, wrenches,
+         *velocities, etc.
+         * TODO: overthink if this is correct and necessary, because there should not be such a
+         *  difference between flat and curved states
+         **/
+        auto const diff = traits::framed_difference_of<FramedStateType>(
+            static_cast<traits::difference_type_of<traits::unframed_type_of<FramedStateType>>>(rhs.get_framed_object()),
+            lhs.get_name());
+        return lhs + diff;
+    }
+
+    /**
+     * @brief State difference operator.
+     *
+     * @param lhs
+     * @param rhs
+     * @return
+     */
+
     template <typename StateType>
         requires traits::state<StateType>
     traits::framed_type_of<traits::difference_type_of<StateType>>
@@ -213,19 +244,22 @@ namespace quant::framed_geometry
 #endif
         /**
          * This is actually not entirely true: The difference of two states (at least in curved
-         *space) is always expressed in the local frame of the state that is subtracted (i.e., rhs).
-         *This is due to the convention of using the right plus and minus operators.
+         * space) is always expressed in the local frame of the state that is subtracted (i.e.,
+         * rhs). This is due to the convention of using the right plus and minus operators.
          *
          * However, the base frame of a difference is not the same "type of frame" as mentioned
-         *above. It is simply a check, whether a state and difference can be combined. For
-         *orientations and poses, this doesn't matter because the difference does not change with a
-         *frame change, however, for positions it does indeed change.
+         * above. It is simply a check, whether a state and difference can be combined. For
+         * orientations and poses, this doesn't matter because the difference does not change with a
+         * frame change, however, for positions it does indeed change.
          *
          * Therefore, here we go with the conservative approach and only allow differences to be
-         *added to states, if they are in the same frame (in the sense of the base frame name).
+         * added to states, if they are in the same frame (in the sense of the base frame name).
          **/
+        // TODO: This is weird for linear states (e.g., positions) because the difference is connected to the
+        //  base frame, and not the local frame. I have the feeling this needs to make a difference between linear
+        //  and curved spaces.
         return traits::framed_type_of<traits::difference_type_of<StateType>>(
-            lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_base_frame());
+            lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_name());
     }
 
     /**
@@ -245,9 +279,11 @@ namespace quant::framed_geometry
         using StateType = typename FramedStateType::FramedGeometricObject;
 
 #ifdef QUANT_ENABLE_EXCEPTIONS
-        if (state.get_base_frame() != difference.get_base_frame())
+        // TODO: if the differences is in the base frame of the state,
+        //  we can use the left operations instead of the right
+        if (state.get_name() != difference.get_base_frame())
         {
-            throw FrameMismatchException(state.get_base_frame(), difference.get_base_frame());
+            throw FrameMismatchException(state.get_name(), difference.get_base_frame());
         }
 #endif
         return traits::framed_type_of<StateType>(

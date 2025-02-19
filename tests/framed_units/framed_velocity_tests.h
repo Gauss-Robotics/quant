@@ -49,7 +49,7 @@ TEST_SUITE("testing framed velocity domain")
 
             auto const diff = v2 - v1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK(diff.get_base_frame() == "TCP");
             CHECK(diff.get_framed_object() ==
                   Circa(LinearVelocityDifference::meters_per_second({.x = 3, .y = 3, .z = 3})));
         }
@@ -156,7 +156,7 @@ TEST_SUITE("testing framed velocity domain")
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
             FramedLinearVelocityDifference const ld{
                 LinearVelocityDifference::meters_per_second({.x = 3, .y = 2, .z = 1}),
-                "ARMAR-6::RobotRoot"};
+                "TCP"};
             FramedLinearVelocityDifference const ld_wrong_frame{
                 LinearVelocityDifference::meters_per_second({.x = 3, .y = 2, .z = 1}),
                 "ARMAR-6::PlatformBase"};
@@ -168,7 +168,7 @@ TEST_SUITE("testing framed velocity domain")
                   Circa(LinearVelocity::meters_per_second({.x = 4, .y = 4, .z = 4})));
 
             std::string const exception_message =
-                "Frame mismatch: ARMAR-6::RobotRoot vs ARMAR-6::PlatformBase";
+                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(velocity + ld_wrong_frame, exception_message.c_str());
         }
 
@@ -285,7 +285,7 @@ TEST_SUITE("testing framed velocity domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+            CHECK_MESSAGE(diff.get_base_frame() == "TCP", "Difference should be in local frame of state");
             CHECK(diff.get_framed_object() ==
                   Circa(AngularVelocityDifference::degrees_per_second(
                       {.axis = {.x = -1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},
@@ -348,7 +348,7 @@ TEST_SUITE("testing framed velocity domain")
             FramedAngularVelocityDifference const ad{
                 AngularVelocityDifference::degrees_per_second(
                     {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
-                "ARMAR-6::RobotRoot"};
+                "TCP"};
             FramedAngularVelocityDifference const ad_wrong_frame{
                 AngularVelocityDifference::degrees_per_second(
                     {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
@@ -363,7 +363,7 @@ TEST_SUITE("testing framed velocity domain")
                        .angle = sqrt(2) * 90})));
 
             std::string const exception_message =
-                "Frame mismatch: ARMAR-6::RobotRoot vs ARMAR-6::PlatformBase";
+                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(velocity + ad_wrong_frame, exception_message.c_str());
         }
 
