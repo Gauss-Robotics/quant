@@ -14,17 +14,16 @@ namespace quant::geometry
 {
 
     template <typename StateType>
-    class AngularState
+    class SO3State
     {
 
     public:
-        using GeometricRepresentationType = Eigen::Vector3d;
         // Construct.
 
         /**
          * @brief Default constructed quaternion.
          */
-        AngularState() : _representation(GeometricRepresentationType::Zero())
+        SO3State() : _representation(1, 0, 0, 0)
         {
             ;
         }
@@ -40,13 +39,15 @@ namespace quant::geometry
         bool
         operator==(StateType const& rhs) const
         {
-            return _representation == rhs._representation;
+            return _representation.coeffs() == rhs._representation.coeffs() or
+                   _representation.coeffs() == -rhs._representation.coeffs();
         }
 
         bool
         operator!=(StateType const& rhs) const
         {
-            return _representation != rhs._representation;
+            return _representation.coeffs() != rhs._representation.coeffs() and
+                   _representation.coeffs() != -rhs._representation.coeffs();
         }
 
         /**
@@ -57,32 +58,34 @@ namespace quant::geometry
         StateType
         operator-() const
         {
-            return StateType{_representation.inverse()};
+            return StateType{_representation.conjugate()};
         }
 
         bool
         is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
         {
-            return _representation.isApprox(rhs._representation, tolerance);
+            return _representation.coeffs().isApprox(rhs._representation.coeffs(), tolerance) or
+                   _representation.coeffs().isApprox(-rhs._representation.coeffs(), tolerance);
         }
 
+        Eigen::Quaterniond
+        operator/(StateType const& rhs) const
+        {
+            return _representation / rhs._representation;
+        }
 
+        using GeometricRepresentationType = Eigen::Quaterniond;
 
     protected:
         // Construct.
 
-        AngularState(AxisAngle const& aa) : _representation{aa.axis.to_eigen().normalized() * aa.angle}
+        SO3State(AxisAngle const& aa) : _representation{aa.to_eigen()}
         {
             ;
         }
 
-        AngularState(Eigen::AngleAxisd const& aa) : _representation{aa.axis() * aa.angle()}
-        {
-            ;
-        }
-
-        AngularState(GeometricRepresentationType const& eigen) : _representation{eigen}
+        SO3State(Eigen::Quaterniond const& quaternion) : _representation{quaternion}
         {
             ;
         }
@@ -92,12 +95,12 @@ namespace quant::geometry
         AxisAngle
         to_axis_angle() const
         {
-            return AxisAngle::from_eigen(
-                Eigen::AngleAxisd{_representation.norm(), _representation.normalized()});
+            return AxisAngle::from_eigen(Eigen::AngleAxisd{_representation});
         }
 
-        GeometricRepresentationType _representation;
+        Eigen::Quaterniond _representation;
 
         friend class detail::StateAccessor<StateType>;
     };
+
 }  // namespace quant::geometry

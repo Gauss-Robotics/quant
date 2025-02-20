@@ -1,6 +1,15 @@
 #include "LinearVelocity.h"
 
+#include <quant/geometry/Vector.h>
 #include <quant/units/position/LinearDisplacement.h>
+#include <quant/units/position/forward_declarations.h>
+#include <quant/units/time/Duration.h>
+#include <quant/units/time/forward_declarations.h>
+
+#include <cstdlib>
+
+#include "constants.h"
+#include "forward_declarations.h"
 
 namespace quant::units::velocity
 {

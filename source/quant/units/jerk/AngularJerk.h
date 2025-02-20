@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/AngularState.h>
+#include <quant/geometry/SO3TangentState.h>
 #include <quant/units/AxisAngle.h>
 #include <quant/units/jerk/constants.h>
 #include <quant/units/jerk/forward_declarations.h>
@@ -12,7 +12,7 @@
 namespace quant::units::jerk
 {
 
-    class AngularJerk : public geometry::AngularState<AngularJerk>
+    class AngularJerk : public geometry::SO3TangentState<AngularJerk>
     {
     public:
         static AngularJerk
@@ -29,7 +29,7 @@ namespace quant::units::jerk
                     constants::symbols::radians_per_second_cubed};
         }
 
-        using AngularState::AngularState;
+        using SO3TangentState::SO3TangentState;
     };
 
     inline std::ostream&

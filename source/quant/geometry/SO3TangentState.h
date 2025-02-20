@@ -14,16 +14,17 @@ namespace quant::geometry
 {
 
     template <typename StateType>
-    class AngularIsometricState
+    class SO3TangentState
     {
 
     public:
+        using GeometricRepresentationType = Eigen::Vector3d;
         // Construct.
 
         /**
          * @brief Default constructed quaternion.
          */
-        AngularIsometricState() : _representation(1, 0, 0, 0)
+        SO3TangentState() : _representation(GeometricRepresentationType::Zero())
         {
             ;
         }
@@ -39,15 +40,13 @@ namespace quant::geometry
         bool
         operator==(StateType const& rhs) const
         {
-            return _representation.coeffs() == rhs._representation.coeffs() or
-                   _representation.coeffs() == -rhs._representation.coeffs();
+            return _representation == rhs._representation;
         }
 
         bool
         operator!=(StateType const& rhs) const
         {
-            return _representation.coeffs() != rhs._representation.coeffs() and
-                   _representation.coeffs() != -rhs._representation.coeffs();
+            return _representation != rhs._representation;
         }
 
         /**
@@ -58,34 +57,32 @@ namespace quant::geometry
         StateType
         operator-() const
         {
-            return StateType{_representation.conjugate()};
+            return StateType{_representation.inverse()};
         }
 
         bool
         is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
         {
-            return _representation.coeffs().isApprox(rhs._representation.coeffs(), tolerance) or
-                   _representation.coeffs().isApprox(-rhs._representation.coeffs(), tolerance);
+            return _representation.isApprox(rhs._representation, tolerance);
         }
 
-        Eigen::Quaterniond
-        operator/(StateType const& rhs) const
-        {
-            return _representation / rhs._representation;
-        }
 
-        using GeometricRepresentationType = Eigen::Quaterniond;
 
     protected:
         // Construct.
 
-        AngularIsometricState(AxisAngle const& aa) : _representation{aa.to_eigen()}
+        SO3TangentState(AxisAngle const& aa) : _representation{aa.axis.to_eigen().normalized() * aa.angle}
         {
             ;
         }
 
-        AngularIsometricState(Eigen::Quaterniond const& quaternion) : _representation{quaternion}
+        SO3TangentState(Eigen::AngleAxisd const& aa) : _representation{aa.axis() * aa.angle()}
+        {
+            ;
+        }
+
+        SO3TangentState(GeometricRepresentationType const& eigen) : _representation{eigen}
         {
             ;
         }
@@ -95,12 +92,12 @@ namespace quant::geometry
         AxisAngle
         to_axis_angle() const
         {
-            return AxisAngle::from_eigen(Eigen::AngleAxisd{_representation});
+            return AxisAngle::from_eigen(
+                Eigen::AngleAxisd{_representation.norm(), _representation.normalized()});
         }
 
-        Eigen::Quaterniond _representation;
+        GeometricRepresentationType _representation;
 
         friend class detail::StateAccessor<StateType>;
     };
-
 }  // namespace quant::geometry

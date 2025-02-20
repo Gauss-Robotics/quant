@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/AngularState.h>
+#include <quant/geometry/SO3TangentState.h>
 #include <quant/units/AxisAngle.h>
 #include <quant/units/acceleration/constants.h>
 #include <quant/units/acceleration/forward_declarations.h>
@@ -14,7 +14,7 @@
 namespace quant::units::acceleration
 {
 
-    class AngularAcceleration : public geometry::AngularState<AngularAcceleration>
+    class AngularAcceleration : public geometry::SO3TangentState<AngularAcceleration>
     {
     public:
         static AngularAcceleration
@@ -32,7 +32,7 @@ namespace quant::units::acceleration
         std::string
         to_string() const;
 
-        using AngularState::AngularState;
+        using SO3TangentState::SO3TangentState;
     };
 
     std::ostream&

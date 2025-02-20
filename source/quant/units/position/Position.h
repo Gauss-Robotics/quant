@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/T3State.h>
 #include <quant/units/Vector.h>
 #include <quant/units/position/constants.h>
 #include <quant/units/position/forward_declarations.h>
@@ -13,7 +13,7 @@ namespace quant::units::position
     /**
      * @brief Models a position in Euclidean space.
      */
-    class Position : public geometry::LinearState<Position>
+    class Position : public geometry::T3State<Position>
     {
 
     public:
@@ -32,7 +32,7 @@ namespace quant::units::position
         std::string
         to_string() const;
 
-        using LinearState::LinearState;
+        using T3State::T3State;
     };
 
     inline std::ostream&

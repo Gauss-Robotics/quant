@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/T3TangentState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/acceleration/constants.h>
 #include <quant/units/acceleration/forward_declarations.h>
@@ -12,7 +12,7 @@
 namespace quant::units::acceleration
 {
 
-    class LinearAcceleration : public geometry::LinearState<LinearAcceleration>
+    class LinearAcceleration : public geometry::T3TangentState<LinearAcceleration>
     {
     public:
         static LinearAcceleration
@@ -30,7 +30,7 @@ namespace quant::units::acceleration
         std::string
         to_string() const;
 
-        using geometry::LinearState<LinearAcceleration>::LinearState;
+        using T3TangentState<LinearAcceleration>::T3TangentState;
     };
 
     std::ostream&

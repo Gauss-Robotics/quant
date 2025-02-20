@@ -30,7 +30,7 @@ namespace quant::framed_geometry
     public:
         template <typename StateT>
             requires traits::state<StateT>
-        SkewSymmetric6d(geometry::SpatialState<StateT> const& state) :
+        SkewSymmetric6d(geometry::SE3TangentState<StateT> const& state) :
             SkewSymmetric6d(geometry::detail::StateAccessor<StateT>::representation(state))
         {
             ;

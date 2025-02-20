@@ -10,7 +10,7 @@ namespace quant::geometry
 {
 
     template <typename StateType>
-    class SpatialIsometricState
+    class SE3State
     {
     public:
         using LinearStateType = traits::linear_state_in_domain_of<StateType>;
@@ -19,35 +19,35 @@ namespace quant::geometry
         using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
         using GeometricRepresentationType = Eigen::Isometry3d;
 
-        SpatialIsometricState() : _representation(Eigen::Isometry3d::Identity())
+        SE3State() : _representation(Eigen::Isometry3d::Identity())
         {
             ;
         }
 
-        SpatialIsometricState(LinearStateType const& linear) :
-            SpatialIsometricState(linear, AngularStateType::zero())
+        SE3State(LinearStateType const& linear) :
+            SE3State(linear, AngularStateType::zero())
         {
             ;
         }
 
-        SpatialIsometricState(AngularStateType const& angular) :
-            SpatialIsometricState(LinearStateType::zero(), angular)
+        SE3State(AngularStateType const& angular) :
+            SE3State(LinearStateType::zero(), angular)
         {
             ;
         }
 
-        SpatialIsometricState(LinearStateType const& linear, AngularStateType const& angular) :
-            _representation{[&linear, &angular]()
-                            {
-                                using LinearState = detail::StateAccessor<LinearStateType>;
-                                using AngularState = detail::StateAccessor<AngularStateType>;
+        SE3State(LinearStateType const& linear, AngularStateType const& angular) :
+            _representation{
+                [&linear, &angular]()
+                {
+                    using LinearState = detail::StateAccessor<LinearStateType>;
+                    using AngularState = detail::StateAccessor<AngularStateType>;
 
-                                Eigen::Isometry3d tf = Eigen::Isometry3d::Identity();
-                                tf.translation() = LinearState::representation(linear);
-                                tf.linear() =
-                                    Eigen::Matrix3d(AngularState::representation(angular));
-                                return tf;
-                            }()}
+                    Eigen::Isometry3d tf = Eigen::Isometry3d::Identity();
+                    tf.translation() = LinearState::representation(linear).translation();
+                    tf.linear() = Eigen::Matrix3d(AngularState::representation(angular));
+                    return tf;
+                }()}
         {
             ;
         }
@@ -62,7 +62,8 @@ namespace quant::geometry
         linear() const
         {
             using State = detail::StateAccessor<LinearStateType>;
-            return State::make(_representation.translation());
+            return State::make(
+                Eigen::Isometry3d(Eigen::Translation3d(_representation.translation())));
         }
 
         AngularStateType
@@ -74,7 +75,8 @@ namespace quant::geometry
 
         // Compare.
         bool
-        is_approx(StateType const& rhs, double const tolerance = Eigen::NumTraits<double>::dummy_precision()) const
+        is_approx(StateType const& rhs,
+                  double const tolerance = Eigen::NumTraits<double>::dummy_precision()) const
         {
             return _representation.isApprox(rhs._representation, tolerance);
         }
@@ -111,24 +113,25 @@ namespace quant::geometry
             return StateType{_representation.inverse()};
         }
 
-        StateType inverse() const
+        StateType
+        inverse() const
         {
             return StateType{_representation.inverse()};
         }
 
     protected:
-        SpatialIsometricState(Eigen::Isometry3d const& tf) : _representation(tf)
+        SE3State(Eigen::Isometry3d const& tf) : _representation(tf)
         {
             ;
         }
 
-        SpatialIsometricState(Eigen::Ref<const Eigen::Matrix4f> const& tf) :
+        SE3State(Eigen::Ref<Eigen::Matrix4f const> const& tf) :
             _representation(tf.cast<double>())
         {
             ;
         }
 
-        SpatialIsometricState(Eigen::Ref<const Eigen::Matrix4d> const& tf) : _representation(tf)
+        SE3State(Eigen::Ref<Eigen::Matrix4d const> const& tf) : _representation(tf)
         {
             ;
         }

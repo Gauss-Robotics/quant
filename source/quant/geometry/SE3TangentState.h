@@ -7,7 +7,7 @@ namespace quant::geometry
 {
 
     template <typename StateType>
-    class SpatialState
+    class SE3TangentState
     {
     public:
         using LinearStateType = traits::linear_state_in_domain_of<StateType>;
@@ -16,7 +16,7 @@ namespace quant::geometry
         using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
         using GeometricRepresentationType = Eigen::Vector<double, 6>;
 
-        SpatialState(LinearStateType linear, AngularStateType angular)
+        SE3TangentState(LinearStateType linear, AngularStateType angular)
         {
             _representation.head(3) =
                 detail::StateAccessor<AngularStateType>::representation(angular);
@@ -80,7 +80,7 @@ namespace quant::geometry
         }
 
     protected:
-        SpatialState(GeometricRepresentationType const& eigen) : _representation(eigen)
+        SE3TangentState(GeometricRepresentationType const& eigen) : _representation(eigen)
         {
             ;
         }

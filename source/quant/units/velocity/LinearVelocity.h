@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/T3TangentState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/position/forward_declarations.h>
 #include <quant/units/speed/Speed.h>
@@ -21,7 +21,7 @@ namespace quant::units::velocity
      * - The difference of a LinearVelocity is LinearVelocityDifference.
      * - The magnitude of a Linear Veloctiy is Speed.
      */
-    class LinearVelocity : public geometry::LinearState<LinearVelocity>
+    class LinearVelocity : public geometry::T3TangentState<LinearVelocity>
     {
     public:
         static LinearVelocity
@@ -42,7 +42,7 @@ namespace quant::units::velocity
         std::string
         to_string() const;
 
-        using LinearState::LinearState;
+        using T3TangentState::T3TangentState;
     };
 
     std::ostream&

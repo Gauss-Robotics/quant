@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/SpatialState.h>
+#include <quant/geometry/SE3TangentState.h>
 #include <quant/units/acceleration/AngularAcceleration.h>
 #include <quant/units/acceleration/LinearAcceleration.h>
 
@@ -11,11 +11,11 @@
 namespace quant::units::acceleration
 {
 
-    class SpatialAcceleration : public geometry::SpatialState<SpatialAcceleration>
+    class SpatialAcceleration : public geometry::SE3TangentState<SpatialAcceleration>
     {
     public:
 
-        using geometry::SpatialState<SpatialAcceleration>::SpatialState;
+        using geometry::SE3TangentState<SpatialAcceleration>::SE3TangentState;
     };
 
     std::ostream&

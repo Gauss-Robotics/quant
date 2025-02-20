@@ -15,19 +15,19 @@ namespace quant::geometry
     class ScalarState;
 
     template <typename BaseQuantityT>
-    class LinearState;
+    class T3State;
+    template <typename BaseQuantityT>
+    class T3TangentState;
 
     template <typename BaseQuantityT>
-    class AngularIsometricState;
+    class SO3State;
+    template <typename BaseQuantityT>
+    class SO3TangentState;
 
     template <typename BaseQuantityT>
-    class AngularState;
-
-    template <typename BaseQuantityT>
-    class SpatialIsometricState;
-
+    class SE3State;
     template <typename Domain>
-    class SpatialState;
+    class SE3TangentState;
 
     template <typename BaseQuantityT>
     class Difference;
@@ -123,6 +123,10 @@ namespace quant::traits
     };
 
     struct SE3Type : ManifoldType
+    {
+    };
+
+    struct T3Type : ManifoldType
     {
     };
 
@@ -294,10 +298,14 @@ namespace quant::traits
                      std::same_as<typename subdomain_type_of<Type>::Manifold, SE3Type>;
 
     template <typename Type>
+    concept in_t3 = three_dimensional_domain<Type> and
+                    std::same_as<typename subdomain_type_of<Type>::Manifold, T3Type>;
+
+    template <typename Type>
     concept in_flat_space = in_r1<Type> or in_r3<Type> or in_r6<Type>;
 
     template <typename Type>
-    concept in_curved_space = in_so3<Type> or in_se3<Type>;  // or in_s1<Type>;
+    concept in_curved_space = in_so3<Type> or in_se3<Type> or in_t3<Type>;
 
 }  // namespace quant::traits
 

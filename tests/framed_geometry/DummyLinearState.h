@@ -2,10 +2,10 @@
 #include <quant/framed_geometry/Difference.h>
 #include <quant/framed_geometry/State.h>
 #include <quant/framed_geometry/forward_declarations.h>
-#include <quant/geometry/AngularState.h>
+#include <quant/geometry/SO3TangentState.h>
 #include <quant/geometry/Difference.h>
-#include <quant/geometry/LinearState.h>
-#include <quant/geometry/SpatialState.h>
+#include <quant/geometry/SE3TangentState.h>
+#include <quant/geometry/T3TangentState.h>
 #include <quant/geometry/forward_declarations.h>
 #include <quant/units/position/SpatialDisplacement.h>
 
@@ -87,10 +87,10 @@ namespace quant
         };
     }  // namespace traits
 
-    class DummyLinearState : public geometry::LinearState<DummyLinearState>
+    class DummyLinearState : public geometry::T3TangentState<DummyLinearState>
     {
     public:
-        using LinearState<DummyLinearState>::LinearState;
+        using T3TangentState::T3TangentState;
     };
 
     class DummyLinearDiff : public geometry::Difference<DummyLinearState>
@@ -105,10 +105,10 @@ namespace quant
         using geometry::Difference<DummyLinearState>::Difference;
     };
 
-    class DummyAngularState : public geometry::AngularState<DummyAngularState>
+    class DummyAngularState : public geometry::SO3TangentState<DummyAngularState>
     {
     public:
-        using geometry::AngularState<DummyAngularState>::AngularState;
+        using geometry::SO3TangentState<DummyAngularState>::SO3TangentState;
     };
 
     class DummyAngularDiff : public geometry::Difference<DummyAngularState>
@@ -117,15 +117,15 @@ namespace quant
         using geometry::Difference<DummyAngularState>::Difference;
     };
 
-    class DummySpatialState : public geometry::SpatialState<DummySpatialState>
+    class DummySpatialState : public geometry::SE3TangentState<DummySpatialState>
     {
     public:
-        DummySpatialState() : SpatialState<DummySpatialState>{zero()}
+        DummySpatialState() : SE3TangentState<DummySpatialState>{zero()}
         {
             ;
         }
 
-        using SpatialState<DummySpatialState>::SpatialState;
+        using SE3TangentState<DummySpatialState>::SE3TangentState;
     };
 
     class DummySpatialDiff : public geometry::Difference<DummySpatialState>

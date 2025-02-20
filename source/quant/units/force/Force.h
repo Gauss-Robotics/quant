@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/T3TangentState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/acceleration/LinearAcceleration.h>
 #include <quant/units/force/constants.h>
@@ -16,7 +16,7 @@
 namespace quant::units::force
 {
 
-    class Force : public geometry::LinearState<Force>
+    class Force : public geometry::T3TangentState<Force>
     {
     public:
         static Force
@@ -28,7 +28,7 @@ namespace quant::units::force
         std::string
         to_string() const;
 
-        using LinearState::LinearState;
+        using T3TangentState::T3TangentState;
     };
 
     std::ostream&

@@ -6,9 +6,6 @@
 
 #include <Eigen/Geometry>
 
-#include <compare>
-#include <string>
-
 namespace quant::geometry
 {
 
@@ -18,19 +15,10 @@ namespace quant::geometry
      * @tparam StateType The type of the state.
      */
     template <typename StateType>
-    class LinearState
+    class T3State
     {
     public:
         // Construct.
-
-        /**
-         * @brief Default constructor initializing the linear state to (0, 0, 0).
-         */
-        LinearState() : _representation(0, 0, 0)
-        {
-            ;
-        }
-
         /**
          * @brief Returns a zero-initialized state.
          *
@@ -53,7 +41,7 @@ namespace quant::geometry
         bool
         operator==(StateType const& rhs) const
         {
-            return _representation == rhs._representation;
+            return _representation.translation() == rhs._representation.translation();
         }
 
         /**
@@ -65,7 +53,7 @@ namespace quant::geometry
         bool
         operator!=(StateType const& rhs) const
         {
-            return _representation != rhs._representation;
+            return _representation.translation() != rhs._representation.translation();
         }
 
         /**
@@ -77,11 +65,12 @@ namespace quant::geometry
         auto
         operator<=>(StateType const& rhs) const
         {
-            return _representation <=> rhs._representation;
+            return _representation.translation() <=> rhs._representation.translation();
         }
 
         /**
-         * @brief Checks if the state is approximately equal to another state within a given tolerance.
+         * @brief Checks if the state is approximately equal to another state within a given
+         * tolerance.
          *
          * @param rhs The right-hand side state to compare with.
          * @param tolerance The tolerance for the comparison.
@@ -91,7 +80,8 @@ namespace quant::geometry
         is_approx(StateType const& rhs,
                   double tolerance = constants::floating_point_tolerance) const
         {
-            return _representation.isApprox(rhs._representation, tolerance);
+            return _representation.translation().isApprox(rhs._representation.translation(),
+                                                          tolerance);
         }
 
         /**
@@ -102,7 +92,7 @@ namespace quant::geometry
         StateType
         operator-() const
         {
-            return StateType{-_representation};
+            return StateType{_representation.inverse()};
         }
 
         /**
@@ -114,10 +104,10 @@ namespace quant::geometry
         StateType
         operator/(StateType const& rhs) const
         {
-            return StateType{_representation.cwiseQuotient(rhs._representation)};
+            return StateType{_representation.translation().cwiseQuotient(rhs._representation)};
         }
 
-        using GeometricRepresentationType = Eigen::Vector3d;
+        using GeometricRepresentationType = Eigen::Isometry3d;
 
     protected:
         // Construct.
@@ -127,7 +117,16 @@ namespace quant::geometry
          *
          * @param xyz The vector to initialize the state with.
          */
-        LinearState(Vector const& xyz) : _representation(xyz.x, xyz.y, xyz.z)
+        T3State(Vector const& xyz) :
+            _representation(Eigen::Isometry3d::TranslationType{xyz.x, xyz.y, xyz.z})
+        {
+            ;
+        }
+
+        /**
+         * @brief Default constructor initializing the linear state to (0, 0, 0).
+         */
+        T3State() : _representation(Eigen::Isometry3d::TranslationType(0, 0, 0))
         {
             ;
         }
@@ -135,9 +134,9 @@ namespace quant::geometry
         /**
          * @brief Constructor initializing the linear state with a given Eigen vector.
          *
-         * @param vector The Eigen vector to initialize the state with.
+         * @param representation
          */
-        LinearState(Eigen::Ref<Eigen::Vector3d const> vector) : _representation(vector)
+        T3State(GeometricRepresentationType const& representation) : _representation(representation)
         {
             ;
         }
@@ -152,10 +151,12 @@ namespace quant::geometry
         Vector
         to_vector() const
         {
-            return Vector::from_eigen(_representation);
+            return Vector::from_eigen(_representation.translation());
         }
 
-        Eigen::Vector3d _representation; ///< The Eigen vector representing the state.
+        GeometricRepresentationType
+            _representation;  ///< The element of the translation manifold T (see
+                              ///< Appendix E from https://arxiv.org/pdf/1812.01537)
 
         friend class detail::StateAccessor<StateType>;
     };

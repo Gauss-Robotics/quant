@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/AngularIsometricState.h>
+#include <quant/geometry/SO3State.h>
 #include <quant/units/AxisAngle.h>
 #include <quant/units/angle/constants.h>
 #include <quant/units/position/constants.h>
@@ -11,7 +11,7 @@
 namespace quant::units::position
 {
 
-    class Orientation : public geometry::AngularIsometricState<Orientation>
+    class Orientation : public geometry::SO3State<Orientation>
     {
     public:
         static Orientation
@@ -35,7 +35,7 @@ namespace quant::units::position
         std::string
         to_string() const;
 
-        using AngularIsometricState::AngularIsometricState;
+        using SO3State::SO3State;
     };
 
     std::ostream&

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/AngularState.h>
+#include <quant/geometry/SO3TangentState.h>
 #include <quant/units/AxisAngle.h>
 #include <quant/units/force/constants.h>
 #include <quant/units/force/forward_declarations.h>
@@ -12,7 +12,7 @@
 namespace quant::units::force
 {
 
-    class Torque : public geometry::AngularState<Torque>
+    class Torque : public geometry::SO3TangentState<Torque>
     {
         // Construct.
     public:
@@ -28,7 +28,7 @@ namespace quant::units::force
         std::string
         to_string() const;
 
-        using AngularState::AngularState;
+        using SO3TangentState::SO3TangentState;
     };
 
     std::ostream&
