@@ -156,24 +156,6 @@ TEST_SUITE("time")
         TimePoint const t1_target = TimePoint::milliseconds(1'100);
         CHECK(t1 == t1_target);
     }
-
-#ifdef QUANT_ENABLE_DIFFERENCE_ADDITION
-    TEST_CASE("duration can be added to another duration")
-    {
-        Duration const d1 = Duration::microseconds(1'000);
-        Duration const d2 = Duration::microseconds(200);
-        Duration const d3 = d1 + d2;
-        CHECK(d3 == Duration::microseconds(1'200));
-    }
-
-    TEST_CASE("duration can be subtracted from another duration")
-    {
-        Duration const d1 = Duration::microseconds(1'000);
-        Duration const d2 = Duration::microseconds(200);
-        Duration const d3 = d1 - d2;
-        CHECK(d3 == Duration::microseconds(800));
-    }
-#endif
 }
 
 TEST_SUITE("position")

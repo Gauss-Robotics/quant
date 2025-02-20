@@ -140,52 +140,6 @@ namespace quant::framed_geometry
                        transform.to_frame};
     }
 
-#ifdef QUANT_ENABLE_DIFFERENCE_ADDITION
-    /**
-     * @brief State difference operator.
-     *
-     * @param lhs
-     * @param rhs
-     * @return
-     */
-    template <typename FramedDifferenceType>
-        requires traits::framed_difference<FramedDifferenceType>
-    FramedDifferenceType
-    operator-(FramedDifferenceType const& lhs, FramedDifferenceType const& rhs)
-    {
-        if (lhs.get_base_frame() != rhs.get_base_frame())
-        {
-            throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
-        }
-        return FramedDifferenceType(lhs.get_framed_object() - rhs.get_framed_object(),
-                                    rhs.get_base_frame());
-    }
-
-    /**
-     * @brief Translation application operator.
-     *
-     * @param state
-     * @param difference
-     * @return
-     */
-    template <typename FramedDifferenceType>
-        requires traits::framed_difference<FramedDifferenceType>
-    FramedDifferenceType
-    operator+(FramedDifferenceType const& lhs, FramedDifferenceType const& rhs)
-    {
-        using StateType = typename FramedDifferenceType::FramedGeometricObject;
-
-#ifdef QUANT_ENABLE_EXCEPTIONS
-        if (lhs.get_base_frame() != rhs.get_base_frame())
-        {
-            throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
-        }
-#endif
-        return traits::framed_type_of<StateType>(lhs.get_framed_object() + rhs.get_framed_object(),
-                                                 lhs.get_base_frame());
-    }
-#endif
-
     template <typename FramedDifferenceType>
         requires traits::framed_difference<FramedDifferenceType>
     std::ostream&
