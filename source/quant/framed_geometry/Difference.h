@@ -131,12 +131,10 @@ namespace quant::framed_geometry
     operator*(BaseChange const& transform, FramedT const& quantity)
     {
         using Traits = traits::framed_traits_of<traits::unframed_type_of<FramedT>>;
-#ifdef QUANT_ENABLE_EXCEPTIONS
         if (transform.from_frame != quantity.get_base_frame())
         {
             throw FrameMismatchException(transform.from_frame, quantity.get_base_frame());
         }
-#endif
 
         return FramedT{Traits::basis_change_function(quantity.get_framed_object(), transform),
                        transform.to_frame};
@@ -155,13 +153,10 @@ namespace quant::framed_geometry
     FramedDifferenceType
     operator-(FramedDifferenceType const& lhs, FramedDifferenceType const& rhs)
     {
-#ifdef QUANT_ENABLE_EXCEPTIONS
         if (lhs.get_base_frame() != rhs.get_base_frame())
         {
             throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
         }
-#endif
-
         return FramedDifferenceType(lhs.get_framed_object() - rhs.get_framed_object(),
                                     rhs.get_base_frame());
     }

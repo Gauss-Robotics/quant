@@ -13,10 +13,11 @@ namespace quant::framed_units::position
 
     units::position::SpatialDisplacement
     sd_basis_change(units::position::SpatialDisplacement const& sd,
-                    framed_geometry::BaseChange const& /*transform*/)
+                    framed_geometry::BaseChange const& transform)
     {
         using TransformAccessor =
             geometry::detail::DifferenceAccessor<units::position::SpatialDisplacement>;
+#ifdef QUANT_FRAMED_USE_RIGHT_OPERATIONS
         /** T * r = T * (R2 - R1) == T * R2 - T * R1
          * this is only True for T == I
          *
@@ -29,6 +30,11 @@ namespace quant::framed_units::position
          *
          */
         return TransformAccessor::make(TransformAccessor::representation(sd));
+#else
+        const auto T = TransformAccessor::representation(transform.transformation);
+        const auto S = TransformAccessor::representation(sd);
+        return TransformAccessor::make(T.inverse() * S * T);
+#endif
     }
 
     LinearDisplacement

@@ -179,12 +179,10 @@ namespace quant::framed_geometry
     operator*(BaseChange const& transform, FramedT const& quantity)
     {
         using Traits = traits::framed_traits_of<traits::unframed_type_of<FramedT>>;
-#ifdef QUANT_ENABLE_EXCEPTIONS
         if (transform.from_frame != quantity.get_base_frame())
         {
             throw FrameMismatchException(transform.from_frame, quantity.get_base_frame());
         }
-#endif
 
         return FramedT{Traits::basis_change_function(quantity.get_framed_object(), transform),
                        {.name = quantity.get_name(), .base_frame = transform.to_frame}};
@@ -201,16 +199,15 @@ namespace quant::framed_geometry
      */
 
     template <typename FramedStateType>
-        requires traits::framed_state<FramedStateType> and traits::in_flat_space<typename FramedStateType::FramedGeometricObject>
+        requires traits::framed_state<FramedStateType> and
+                 traits::in_flat_space<typename FramedStateType::FramedGeometricObject>
     FramedStateType
     operator+(FramedStateType const& lhs, FramedStateType const& rhs)
     {
-#ifdef QUANT_ENABLE_EXCEPTIONS
         if (lhs.get_base_frame() != rhs.get_base_frame())
         {
             throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
         }
-#endif
         /**
          * This is for flat space, where two states can be added, e.g. to forces, wrenches,
          *velocities, etc.
@@ -218,7 +215,8 @@ namespace quant::framed_geometry
          *  difference between flat and curved states
          **/
         auto const diff = traits::framed_difference_of<FramedStateType>(
-            static_cast<traits::difference_type_of<traits::unframed_type_of<FramedStateType>>>(rhs.get_framed_object()),
+            static_cast<traits::difference_type_of<traits::unframed_type_of<FramedStateType>>>(
+                rhs.get_framed_object()),
             lhs.get_name());
         return lhs + diff;
     }
@@ -236,12 +234,10 @@ namespace quant::framed_geometry
     traits::framed_type_of<traits::difference_type_of<StateType>>
     operator-(State<StateType> const& lhs, State<StateType> const& rhs)
     {
-#ifdef QUANT_ENABLE_EXCEPTIONS
         if (lhs.get_base_frame() != rhs.get_base_frame())
         {
             throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
         }
-#endif
         /**
          * The difference of two states is expressed in the local frame of the subtracted (i.e.,
          * starting) state. This is due to the convention of using the right plus and minus
@@ -261,15 +257,15 @@ namespace quant::framed_geometry
          * TODO: I don't like the inconsistency this introduces. However, I'm also not sure that
          *  using the left operators would solve anything
          **/
-        if constexpr (traits::in_flat_space<StateType>)
+        if constexpr (not traits::use_right_operations_for_framed_units or traits::in_flat_space<StateType>)
         {
             return traits::framed_type_of<traits::difference_type_of<StateType>>(
-                lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_base_frame());
+                geometry::lminus(lhs.get_framed_object(), rhs.get_framed_object()), rhs.get_base_frame());
         }
         else
         {
             return traits::framed_type_of<traits::difference_type_of<StateType>>(
-                lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_name());
+                rminus(lhs.get_framed_object(), rhs.get_framed_object()), rhs.get_name());
         }
     }
 
@@ -289,17 +285,20 @@ namespace quant::framed_geometry
     {
         using StateType = typename FramedStateType::FramedGeometricObject;
 
-#ifdef QUANT_ENABLE_EXCEPTIONS
-        // TODO: if the differences is in the base frame of the state,
-        //  we can use the left operations instead of the right
-        if (state.get_name() != difference.get_base_frame())
+        if (state.get_name() == difference.get_base_frame())
         {
-            throw FrameMismatchException(state.get_name(), difference.get_base_frame());
-        }
-#endif
-        return traits::framed_type_of<StateType>(
-            state.get_framed_object() + difference.get_framed_object(),
+            return traits::framed_type_of<StateType>(
+            rplus(state.get_framed_object(), difference.get_framed_object()),
             {.name = state.get_name(), .base_frame = state.get_base_frame()});
+        }
+        if (state.get_base_frame() == difference.get_base_frame())
+        {
+            return traits::framed_type_of<StateType>(
+            lplus(state.get_framed_object(), difference.get_framed_object()),
+            {.name = state.get_name(), .base_frame = state.get_base_frame()});
+        }
+        throw FrameMismatchException(state.get_name(), difference.get_base_frame());
+
     }
 
     template <typename FramedT>

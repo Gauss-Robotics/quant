@@ -19,8 +19,8 @@ add_library(geometry SHARED
     ScalarState.cpp
     LinearState.h
     LinearState.cpp
-        AngularIsometricState.h
-        AngularIsometricState.cpp
+    AngularIsometricState.h
+    AngularIsometricState.cpp
     SpatialState.h
     SpatialState.cpp
     SpatialIsometricState.h
@@ -36,6 +36,10 @@ add_library(geometry SHARED
     detail/QuantityAccessor.cpp
     detail/DifferenceAccessor.h
     detail/DifferenceAccessor.cpp
+
+    # Operators.
+    detail/ArithmeticOperators.h
+    detail/ManifoldOperators.h
 )
 
 set_target_properties(geometry

@@ -8,9 +8,10 @@ namespace quant::framed_units::position
 {
 
     quant::AngularDisplacement
-    ad_basis_change(quant::AngularDisplacement const& ld, BaseChange const&)
+    ad_basis_change(quant::AngularDisplacement const& ld, BaseChange const& transform)
     {
         using LDAccessor = geometry::detail::DifferenceAccessor<quant::AngularDisplacement>;
+#ifdef QUANT_FRAMED_USE_RIGHT_OPERATIONS
         /** T * r = T * (R2 - R1) == T * R2 - T * R1
          * this is only True for T == I
          *
@@ -24,5 +25,12 @@ namespace quant::framed_units::position
          */
 
         return LDAccessor::make(LDAccessor::representation(ld));
+#else
+        using TransformAccessor =
+            geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>;
+        auto const R = TransformAccessor::representation(transform.transformation.angular());
+        auto const o = LDAccessor::representation(ld);
+        return LDAccessor::make(R.inverse() * o * R);
+#endif
     }
 }  // namespace quant::framed_units::position

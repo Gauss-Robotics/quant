@@ -171,8 +171,7 @@ TEST_SUITE("testing framed position domain")
             CHECK(new_position.get_framed_object() ==
                   Circa(Position::millimeters({.x = 4, .y = 4, .z = 4})));
 
-            std::string const exception_message =
-                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
+            std::string const exception_message = "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(position + ld_wrong_frame, exception_message.c_str());
         }
 
@@ -291,8 +290,7 @@ TEST_SUITE("testing framed position domain")
                     Pose(p1_in_camera.get_framed_object(), Orientation::zero()).inverse())};
             auto const ld_in_camera = p2_in_camera - p1_in_camera;
             CHECK(ld_in_base != Circa(ld_in_camera));
-            CHECK(from_base_to_camera * ld_in_base ==
-                  Circa(ld_in_camera));
+            CHECK(from_base_to_camera * ld_in_base == Circa(ld_in_camera));
         }
     }
 
@@ -332,11 +330,21 @@ TEST_SUITE("testing framed position domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "TCP");
-            CHECK(diff.get_framed_object() ==
-                  Circa(AngularDisplacement::degrees(
-                      {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)},
-                       .angle = 120})));
+            if (traits::use_right_operations_for_framed_units)
+            {
+                CHECK(diff.get_base_frame() == "TCP");
+                CHECK(diff.get_framed_object() ==
+                      Circa(AngularDisplacement::degrees(
+                          {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)},
+                           .angle = 120})));
+            }
+            else
+            {
+                CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
+                CHECK(diff.get_framed_object() ==
+                      Circa(AngularDisplacement::degrees(
+                          {.axis = {.x = 1 / sqrt(2), .y = -1 / sqrt(2), .z = 0}, .angle = 120})));
+            }
         }
 
         SUBCASE("base change - wrong frames")
@@ -444,8 +452,7 @@ TEST_SUITE("testing framed position domain")
                       {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)},
                        .angle = 120})));
 
-            std::string const exception_message =
-                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
+            std::string const exception_message = "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(orientation + ad_wrong_frame, exception_message.c_str());
         }
 
@@ -542,12 +549,11 @@ TEST_SUITE("testing framed position domain")
             std::string const tcp_l = "ARMAR-6::TCP_L";
             std::string const camera = "ARMAR-6::Camera";
             FramedOrientation const o1{
-                Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}),
+                Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 {.name = tcp_r, .base_frame = base_frame}};
             FramedOrientation const o2{
-                Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0}),
+                Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}),
                 {.name = tcp_l, .base_frame = base_frame}};
-            FramedAngularDisplacement const ad_in_o1 = o2 - o1;
 
             BaseChange const from_base_to_camera{
                 .from_frame = base_frame,
@@ -568,11 +574,29 @@ TEST_SUITE("testing framed position domain")
                 .transformation = SpatialDisplacement(
                     Pose(Position::zero(), o1_in_camera.get_framed_object()).inverse())};
             auto const ad_in_camera = o2_in_camera - o1_in_camera;
-            CHECK(ad_in_o1 == Circa(ad_in_camera));
-            CHECK(from_base_to_camera * (from_o1_to_base * ad_in_o1) ==
-                  Circa(from_o1_to_camera * ad_in_camera));
-            CHECK((o1_in_camera + ad_in_o1).get_framed_object() == Circa(o2_in_camera.get_framed_object()));
-            CHECK((o1 + ad_in_camera).get_framed_object() == Circa(o2.get_framed_object()));
+            if constexpr (traits::use_right_operations_for_framed_units)
+            {
+                FramedAngularDisplacement const ad_in_o1 = o2 - o1;
+                CHECK(ad_in_o1 == Circa(ad_in_camera));
+                CHECK(from_base_to_camera * (from_o1_to_base * ad_in_o1) ==
+                      Circa(from_o1_to_camera * ad_in_camera));
+                CHECK((o1_in_camera + ad_in_o1).get_framed_object() ==
+                      Circa(o2_in_camera.get_framed_object()));
+                CHECK((o1 + ad_in_camera).get_framed_object() == Circa(o2.get_framed_object()));
+            }
+            else
+            {
+                FramedAngularDisplacement const ad_in_base = o2 - o1;
+                CHECK(ad_in_base != Circa(ad_in_camera));
+                CHECK(from_base_to_camera * ad_in_base == Circa(ad_in_camera));
+                CHECK_THROWS((o1_in_camera + ad_in_base).get_framed_object() ==
+                             Circa(o2_in_camera.get_framed_object()));
+                CHECK_THROWS((o1 + ad_in_camera).get_framed_object() ==
+                             Circa(o2.get_framed_object()));
+                CHECK((o1_in_camera + ad_in_camera).get_framed_object() ==
+                      Circa(o2_in_camera.get_framed_object()));
+                CHECK((o1 + ad_in_base).get_framed_object() == Circa(o2.get_framed_object()));
+            }
         }
     }
 
@@ -619,7 +643,8 @@ TEST_SUITE("testing framed position domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "TCP");
+            CHECK(diff.get_base_frame() ==
+                  (traits::use_right_operations_for_framed_units ? "TCP" : "ARMAR-6::RobotRoot"));
             CHECK(diff.get_framed_object() ==
                   Circa(SpatialDisplacement(
                       LinearDisplacement::millimeters({.x = 3, .y = 3, .z = -3}),
@@ -945,18 +970,38 @@ TEST_SUITE("testing framed position domain")
                 .from_frame = tcp_r,
                 .to_frame = camera,
                 .transformation = SpatialDisplacement(p1_in_camera.get_framed_object().inverse())};
-            auto const sd_in_camera = p2_in_camera - p1_in_camera;
-            CHECK(sd_in_p1 == Circa(sd_in_camera));
-            CHECK(from_base_to_camera * (from_p1_to_base * sd_in_p1) ==
-                  Circa(from_p1_to_camera * sd_in_camera));
-            CHECK((p1_in_camera + sd_in_p1).get_framed_object() == Circa(p2_in_camera.get_framed_object()));
-            CHECK((p1 + sd_in_camera).get_framed_object() == Circa(p2.get_framed_object()));
+            if constexpr (traits::use_right_operations_for_framed_units)
+            {
+                FramedSpatialDisplacement const sd_in_p1 = p2 - p1;
+                FramedSpatialDisplacement const sd_in_p1_after = p2_in_camera - p1_in_camera;
+                CHECK(sd_in_p1 == Circa(sd_in_p1_after));
+                CHECK(from_base_to_camera * (from_p1_to_base * sd_in_p1) ==
+                      Circa(from_p1_to_camera * sd_in_p1_after));
+                CHECK((p1_in_camera + sd_in_p1).get_framed_object() ==
+                      Circa(p2_in_camera.get_framed_object()));
+                CHECK((p1 + sd_in_p1_after).get_framed_object() == Circa(p2.get_framed_object()));
+            }
+            else
+            {
+                FramedSpatialDisplacement const sd_in_base = p2 - p1;
+                FramedSpatialDisplacement const sd_in_camera = p2_in_camera - p1_in_camera;
+                CHECK(sd_in_base != Circa(sd_in_camera));
+                CHECK(from_base_to_camera * sd_in_base == Circa(sd_in_camera));
+                CHECK_THROWS((p1_in_camera + sd_in_base).get_framed_object() ==
+                             Circa(p2_in_camera.get_framed_object()));
+                CHECK_THROWS((p1 + sd_in_camera).get_framed_object() ==
+                             Circa(p2.get_framed_object()));
+                CHECK((p1_in_camera + sd_in_camera).get_framed_object() ==
+                      Circa(p2_in_camera.get_framed_object()));
+                CHECK((p1 + sd_in_base).get_framed_object() == Circa(p2.get_framed_object()));
+            }
         }
 
         SUBCASE("positional part of difference does not transform like the difference of the "
                 "positional parts")
         {
-            // TODO: This test case is a prime example why states in linear space should be connected to the global
+            // TODO: This test case is a prime example why states in linear space should be
+            // connected to the global
             //  frame and not the local one
             std::string const base_frame = "ARMAR-6::RobotRoot";
             std::string const tcpr = "ARMAR-6::TCP_R";
@@ -970,11 +1015,10 @@ TEST_SUITE("testing framed position domain")
             FramedPose const p2{
                 Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}), Orientation::zero()),
                 {.name = tcpr, .base_frame = base_frame}};
-            FramedSpatialDisplacement const sd_in_p1 = p2 - p1;
+
             auto const p1_t = p1.linear();
             auto const p2_t = p2.linear();
             auto const ld_in_base = p2_t - p1_t;
-            CHECK(ld_in_base.get_framed_object() == Circa(sd_in_p1.linear().get_framed_object()));
 
             BaseChange const from_tcpl_to_camera{
                 .from_frame = tcpl,
@@ -982,11 +1026,10 @@ TEST_SUITE("testing framed position domain")
                 .transformation = SpatialDisplacement(
                     LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
                     AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
-            BaseChange const from_base_to_tcpl{
-                .from_frame = base_frame,
-                .to_frame = tcpl,
-                .transformation = SpatialDisplacement(p1.get_framed_object())};
-            auto const sd_in_camera = from_tcpl_to_camera * sd_in_p1;
+            BaseChange const from_base_to_tcpl{.from_frame = base_frame,
+                                               .to_frame = tcpl,
+                                               .transformation =
+                                                   SpatialDisplacement(p1.get_framed_object())};
             auto const ld_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * ld_in_base);
             /**
              * This is a bit counter intuitive but, the positional part of the a pose does not
@@ -1001,9 +1044,27 @@ TEST_SUITE("testing framed position domain")
              * in orientations that leads to linear displacements actually changing under a base
              * change. (see also intuition_about_transformations.ipynb)
              **/
-            CHECK_MESSAGE(ld_in_camera != Circa(sd_in_camera.linear()),
-                          "Position differences should not transform like the positional part of "
-                          "pose differences");
+            if constexpr (traits::use_right_operations_for_framed_units)
+            {
+                FramedSpatialDisplacement const sd_in_p1 = p2 - p1;
+                CHECK(ld_in_base.get_framed_object() ==
+                      Circa(sd_in_p1.linear().get_framed_object()));
+                auto const sd_in_camera = from_tcpl_to_camera * sd_in_p1;
+                CHECK_MESSAGE(
+                    ld_in_camera != Circa(sd_in_camera.linear()),
+                    "Position differences should not transform like the positional part of "
+                    "pose differences");
+            }
+            else
+            {
+                FramedSpatialDisplacement const sd_in_base = p2 - p1;
+                CHECK(ld_in_base == Circa(sd_in_base.linear()));
+                auto const sd_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * sd_in_base);
+                CHECK_MESSAGE(
+                    ld_in_camera != Circa(sd_in_camera.linear()),
+                    "Position differences should not transform like the positional part of "
+                    "pose differences");
+            }
 
             auto const p1_t_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * p1_t);
             auto const p2_t_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * p2_t);
@@ -1012,19 +1073,26 @@ TEST_SUITE("testing framed position domain")
              * Notice that they still have identity orientations in their base frames, i.e., the
              * orientations have not been transformed, as they do for a "correct" pose.
              **/
-            auto const p1_new = FramedPose(Pose(p1_t_in_camera.get_framed_object(), Orientation::zero()),
-                                           {p1_t_in_camera.get_name(), p1_t_in_camera.get_base_frame()});
-            auto const p2_new = FramedPose(Pose(p2_t_in_camera.get_framed_object(), Orientation::zero()),
-                                           {p2_t_in_camera.get_name(), p2_t_in_camera.get_base_frame()});
+            auto const p1_new =
+                FramedPose(Pose(p1_t_in_camera.get_framed_object(), Orientation::zero()),
+                           {p1_t_in_camera.get_name(), p1_t_in_camera.get_base_frame()});
+            auto const p2_new =
+                FramedPose(Pose(p2_t_in_camera.get_framed_object(), Orientation::zero()),
+                           {p2_t_in_camera.get_name(), p2_t_in_camera.get_base_frame()});
             // "Imaginative" orientations did not transform as under a base change
-            CHECK(p1_new.angular() != Circa((from_tcpl_to_camera * (from_base_to_tcpl * p1)).angular()));
-            CHECK(p2_new.angular() != Circa((from_tcpl_to_camera * (from_base_to_tcpl * p2)).angular()));
+            CHECK(p1_new.angular() !=
+                  Circa((from_tcpl_to_camera * (from_base_to_tcpl * p1)).angular()));
+            CHECK(p2_new.angular() !=
+                  Circa((from_tcpl_to_camera * (from_base_to_tcpl * p2)).angular()));
             // Linear parts did transform as under a base change
-            CHECK(p1_new.linear() == Circa((from_tcpl_to_camera * (from_base_to_tcpl * p1)).linear()));
-            CHECK(p2_new.linear() == Circa((from_tcpl_to_camera * (from_base_to_tcpl * p2)).linear()));
+            CHECK(p1_new.linear() ==
+                  Circa((from_tcpl_to_camera * (from_base_to_tcpl * p1)).linear()));
+            CHECK(p2_new.linear() ==
+                  Circa((from_tcpl_to_camera * (from_base_to_tcpl * p2)).linear()));
             // The difference of the transformed positions is the difference of the "imaginative"
             // poses in the new frame
-            CHECK(ld_in_camera.get_framed_object() == Circa((p2_new - p1_new).get_framed_object().linear()));
+            CHECK(ld_in_camera.get_framed_object() ==
+                  Circa((p2_new - p1_new).get_framed_object().linear()));
         }
 
         SUBCASE(
