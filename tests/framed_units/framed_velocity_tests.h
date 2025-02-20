@@ -49,7 +49,7 @@ TEST_SUITE("testing framed velocity domain")
 
             auto const diff = v2 - v1;
 
-            CHECK(diff.get_base_frame() == "TCP");
+            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(LinearVelocityDifference::meters_per_second({.x = 3, .y = 3, .z = 3})));
         }
@@ -285,7 +285,7 @@ TEST_SUITE("testing framed velocity domain")
 
             auto const diff = f2 - f1;
 
-            CHECK_MESSAGE(diff.get_base_frame() == "TCP", "Difference should be in local frame of state");
+            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(AngularVelocityDifference::degrees_per_second(
                       {.axis = {.x = -1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},

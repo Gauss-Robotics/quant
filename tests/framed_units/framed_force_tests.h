@@ -42,7 +42,7 @@ TEST_SUITE("testing framed force domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "TCP");
+            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(ForceDifference::newtons({.x = 3, .y = 3, .z = 3})));
         }
@@ -267,7 +267,7 @@ TEST_SUITE("testing framed force domain")
 
             auto const diff = t2 - t1;
 
-            CHECK(diff.get_base_frame() == "TCP");
+            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(TorqueDifference::newton_meters(
                       {.axis = {.x = -1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},

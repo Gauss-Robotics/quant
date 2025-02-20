@@ -243,23 +243,34 @@ namespace quant::framed_geometry
         }
 #endif
         /**
-         * This is actually not entirely true: The difference of two states (at least in curved
-         * space) is always expressed in the local frame of the state that is subtracted (i.e.,
-         * rhs). This is due to the convention of using the right plus and minus operators.
+         * The difference of two states is expressed in the local frame of the subtracted (i.e.,
+         * starting) state. This is due to the convention of using the right plus and minus
+         * operators.
          *
-         * However, the base frame of a difference is not the same "type of frame" as mentioned
-         * above. It is simply a check, whether a state and difference can be combined. For
-         * orientations and poses, this doesn't matter because the difference does not change with a
-         * frame change, however, for positions it does indeed change.
+         * This holds true for states in curved space. However, for flat space states, the behavior
+         * is a bit different. From Appendix E, of https://arxiv.org/pdf/1812.01537, it becomes
+         * apparent that for Rn right and left operators are the same. This means that there is no
+         * distinction between local and global frames for flat space. However, if we would follow
+         * the convention for curved space and have the difference in the local frame, this would
+         * lead to inconsistent behavior in frame changes, as e.g., the difference of two positions
+         * does indeed change from one frame to the other.
          *
-         * Therefore, here we go with the conservative approach and only allow differences to be
-         * added to states, if they are in the same frame (in the sense of the base frame name).
+         * Therefore, we treat flat and curved space differently here. This is not ideal, but leads
+         * to more consistent behavior.
+         *
+         * TODO: I don't like the inconsistency this introduces. However, I'm also not sure that
+         *  using the left operators would solve anything
          **/
-        // TODO: This is weird for linear states (e.g., positions) because the difference is connected to the
-        //  base frame, and not the local frame. I have the feeling this needs to make a difference between linear
-        //  and curved spaces.
-        return traits::framed_type_of<traits::difference_type_of<StateType>>(
-            lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_name());
+        if constexpr (traits::in_flat_space<StateType>)
+        {
+            return traits::framed_type_of<traits::difference_type_of<StateType>>(
+                lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_base_frame());
+        }
+        else
+        {
+            return traits::framed_type_of<traits::difference_type_of<StateType>>(
+                lhs.get_framed_object() - rhs.get_framed_object(), rhs.get_name());
+        }
     }
 
     /**

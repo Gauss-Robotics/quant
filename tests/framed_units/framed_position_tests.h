@@ -41,7 +41,7 @@ TEST_SUITE("testing framed position domain")
 
             FramedLinearDisplacement const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "TCP");
+            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(LinearDisplacement::millimeters({.x = 3, .y = 3, .z = 3})));
         }
@@ -269,7 +269,7 @@ TEST_SUITE("testing framed position domain")
                                     {.name = tcp_r, .base_frame = base_frame}};
             FramedPosition const p2{Position::millimeters({.x = 10, .y = 9, .z = 8}),
                                     {.name = tcp_l, .base_frame = base_frame}};
-            FramedLinearDisplacement const ld_in_p1 = p2 - p1;
+            FramedLinearDisplacement const ld_in_base = p2 - p1;
 
             BaseChange const from_base_to_camera{
                 .from_frame = base_frame,
@@ -290,11 +290,9 @@ TEST_SUITE("testing framed position domain")
                 .transformation = SpatialDisplacement(
                     Pose(p1_in_camera.get_framed_object(), Orientation::zero()).inverse())};
             auto const ld_in_camera = p2_in_camera - p1_in_camera;
-            WARN(ld_in_p1 == Circa(ld_in_camera));
-            CHECK(from_base_to_camera * (from_p1_to_base * ld_in_p1) ==
-                  Circa(from_p1_to_camera * ld_in_camera));
-            WARN(p1_in_camera + ld_in_p1 == Circa(p2_in_camera));
-            WARN(p1 + ld_in_camera == Circa(p2));
+            CHECK(ld_in_base != Circa(ld_in_camera));
+            CHECK(from_base_to_camera * ld_in_base ==
+                  Circa(ld_in_camera));
         }
     }
 
@@ -972,11 +970,11 @@ TEST_SUITE("testing framed position domain")
             FramedPose const p2{
                 Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}), Orientation::zero()),
                 {.name = tcpr, .base_frame = base_frame}};
-            FramedSpatialDisplacement const sd = p2 - p1;
+            FramedSpatialDisplacement const sd_in_p1 = p2 - p1;
             auto const p1_t = p1.linear();
             auto const p2_t = p2.linear();
-            auto const ld = p2_t - p1_t;
-            CHECK(ld == Circa(sd.linear()));
+            auto const ld_in_base = p2_t - p1_t;
+            CHECK(ld_in_base.get_framed_object() == Circa(sd_in_p1.linear().get_framed_object()));
 
             BaseChange const from_tcpl_to_camera{
                 .from_frame = tcpl,
@@ -988,8 +986,8 @@ TEST_SUITE("testing framed position domain")
                 .from_frame = base_frame,
                 .to_frame = tcpl,
                 .transformation = SpatialDisplacement(p1.get_framed_object())};
-            auto const sd_in_camera = from_tcpl_to_camera * sd;
-            auto const ld_in_camera = from_tcpl_to_camera * ld;
+            auto const sd_in_camera = from_tcpl_to_camera * sd_in_p1;
+            auto const ld_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * ld_in_base);
             /**
              * This is a bit counter intuitive but, the positional part of the a pose does not
              * transform as positions. This is because positions are always connected to the

@@ -46,7 +46,7 @@ TEST_SUITE("testing framed acceleration domain")
 
             auto const diff = a2 - a1;
 
-            CHECK(diff.get_base_frame() == "TCP");
+            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(LinearAccelerationDifference::meters_per_second_squared(
                       {.x = 3, .y = 3, .z = 3})));
@@ -317,7 +317,7 @@ TEST_SUITE("testing framed acceleration domain")
 
             auto const diff = f2 - f1;
 
-            CHECK(diff.get_base_frame() == "TCP");
+            CHECK(diff.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(diff.get_framed_object() ==
                   Circa(AngularAccelerationDifference::degrees_per_second_squared(
                       {.axis = {.x = -1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},
@@ -493,7 +493,7 @@ TEST_SUITE("testing framed acceleration domain")
             FramedAngularAcceleration const a2{AngularAcceleration::degrees_per_second_squared(
                                                    {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0}),
                                                {.name = tcp_l, .base_frame = base_frame}};
-            FramedAngularAccelerationDifference const aad_in_a1 = a2 - a1;
+            FramedAngularAccelerationDifference const aad_in_base = a2 - a1;
 
             BaseChange const from_base_to_camera{
                 .from_frame = base_frame,
@@ -504,8 +504,7 @@ TEST_SUITE("testing framed acceleration domain")
             auto const a1_in_camera = from_base_to_camera * a1;
             auto const a2_in_camera = from_base_to_camera * a2;
             auto const aad_in_camera = a2_in_camera - a1_in_camera;
-            WARN(aad_in_a1 == Circa(aad_in_camera));
-            WARN(a1_in_camera + aad_in_a1 == Circa(a2_in_camera));
+            WARN_NOTHROW(from_base_to_camera * aad_in_base != Circa(aad_in_camera));
         }
     }
 
