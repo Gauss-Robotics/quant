@@ -47,8 +47,7 @@ namespace quant::units::speed
                     constants::symbols::meters_per_second};
         }
 
-    protected:
-        using geometry::ScalarState<Speed>::ScalarState;
+        using ScalarState::ScalarState;
     };
 
     inline std::ostream&

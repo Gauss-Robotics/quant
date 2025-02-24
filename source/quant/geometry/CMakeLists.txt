@@ -17,14 +17,18 @@ add_library(geometry SHARED
     # Basic state types.
     ScalarState.h
     ScalarState.cpp
-    LinearState.h
-    LinearState.cpp
-    AngularState.h
-    AngularState.cpp
-    SpatialState.h
-    SpatialState.cpp
-    SpatialIsometricState.h
-    SpatialIsometricState.cpp
+    T3State.h
+    T3State.cpp
+    T3TangentState.h
+    T3TangentState.cpp
+    SO3TangentState.h
+    SO3TangentState.cpp
+    SO3State.h
+    SO3State.cpp
+    SE3TangentState.h
+    SE3TangentState.cpp
+    SE3State.h
+    SE3State.cpp
 
     Difference.h
     Difference.cpp
@@ -36,6 +40,10 @@ add_library(geometry SHARED
     detail/QuantityAccessor.cpp
     detail/DifferenceAccessor.h
     detail/DifferenceAccessor.cpp
+
+    # Operators.
+    detail/ArithmeticOperators.h
+    detail/ManifoldOperators.h
 )
 
 set_target_properties(geometry

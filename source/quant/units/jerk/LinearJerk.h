@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/T3TangentState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/jerk/constants.h>
 #include <quant/units/jerk/forward_declarations.h>
@@ -12,7 +12,7 @@
 namespace quant::units::jerk
 {
 
-    class LinearJerk : public geometry::LinearState<LinearJerk>
+    class LinearJerk : public geometry::T3TangentState<LinearJerk>
     {
     public:
         static LinearJerk
@@ -29,7 +29,7 @@ namespace quant::units::jerk
                     constants::symbols::millimeters_per_second_cubed};
         }
 
-        using geometry::LinearState<LinearJerk>::LinearState;
+        using T3TangentState::T3TangentState;
     };
 
     inline std::ostream&

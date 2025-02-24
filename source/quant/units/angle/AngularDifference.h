@@ -17,12 +17,26 @@ namespace quant::units::angle
             return AngularDifference{Angle::radians(radians)};
         }
 
+        static AngularDifference
+        degrees(geometry::Scalar degrees)
+        {
+            return AngularDifference{Angle::degrees(degrees)};
+        }
+
         Scalar
         to_radians() const
         {
             return {_difference_object.to_radians(),
                     constants::names::radians,
                     constants::symbols::radians};
+        }
+
+        Scalar
+        to_degrees() const
+        {
+            return {_difference_object.to_degrees(),
+                    constants::names::degrees,
+                    constants::symbols::degrees};
         }
 
     protected:

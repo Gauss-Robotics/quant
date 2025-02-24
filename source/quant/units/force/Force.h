@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/T3TangentState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/acceleration/LinearAcceleration.h>
 #include <quant/units/force/constants.h>
@@ -16,35 +16,23 @@
 namespace quant::units::force
 {
 
-    class Force : public geometry::LinearState<Force>
+    class Force : public geometry::T3TangentState<Force>
     {
     public:
         static Force
-        newton(geometry::Vector xyz)
-        {
-            return {xyz};
-        }
+        newtons(geometry::Vector xyz);
 
         Vector
-        to_newton() const
-        {
-            return {to_vector(), constants::names::force, constants::symbols::newton};
-        }
+        to_newtons() const;
 
         std::string
-        to_string() const
-        {
-            return to_newton().to_string();
-        }
+        to_string() const;
 
-        using geometry::LinearState<Force>::LinearState;
+        using T3TangentState::T3TangentState;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& os, Force const& rhs)
-    {
-        return os << rhs.to_string();
-    }
+    std::ostream&
+    operator<<(std::ostream& os, Force const& rhs);
 
 }  // namespace quant::units::force
 
@@ -54,13 +42,13 @@ namespace quant
     inline Force
     operator*(Mass const& lhs, LinearAcceleration const& rhs)
     {
-        return Force::newton(rhs.to_meters_per_second_squared() * lhs.to_kilograms());
+        return Force::newtons(rhs.to_meters_per_second_squared() * lhs.to_kilograms());
     }
 
     inline Force
     operator/(LinearImpulse const& lhs, Duration const& rhs)
     {
-        return Force::newton(lhs.to_newton_seconds() / rhs.to_seconds());
+        return Force::newtons(lhs.to_newton_seconds() / rhs.to_seconds());
     }
 
 }  // namespace quant

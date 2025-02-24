@@ -39,8 +39,8 @@ namespace quant::geometry
     class Circa
     {
     public:
-        Circa(T const& geometric_object) :
-            _geometric_object{geometric_object}, _tolerance{constants::floating_point_tolerance}
+        Circa(T const& geometric_object, double tolerance = constants::floating_point_tolerance) :
+            _geometric_object{geometric_object}, _tolerance{tolerance}
         {
             ;
         }

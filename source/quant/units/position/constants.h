@@ -27,6 +27,7 @@ namespace quant::units::position::constants
         constexpr std::string_view millimeters = "mm";
         constexpr std::string_view meters = "m";
         constexpr std::string_view radians = "rad";
+        constexpr std::string_view degrees = "°";
 
     }  // namespace symbols
 

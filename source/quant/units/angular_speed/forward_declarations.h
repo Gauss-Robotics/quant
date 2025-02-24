@@ -14,12 +14,13 @@ namespace quant::traits
 {
 
     using AngularSpeedDomain = Define1DDomain<units::angular_speed::AngularSpeed,
-                                              units::angular_speed::AngularSpeedDifference>;
+                                              units::angular_speed::AngularSpeedDifference, R1Type>;
 
     template <>
     struct DefineTraits<units::angular_speed::AngularSpeed>
     {
         using Domain = AngularSpeedDomain;
+        using State = units::angular_speed::AngularSpeed;
         using Difference = units::angular_speed::AngularSpeedDifference;
         using GeometricType = ScalarStateType;
     };
@@ -29,6 +30,7 @@ namespace quant::traits
     {
         using Domain = AngularSpeedDomain;
         using State = units::angular_speed::AngularSpeed;
+        using Difference = units::angular_speed::AngularSpeedDifference;
         using GeometricType = ScalarDifferenceType;
     };
 

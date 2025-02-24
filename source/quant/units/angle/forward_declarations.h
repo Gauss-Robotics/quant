@@ -13,7 +13,10 @@ namespace quant::units::angle
 namespace quant::traits
 {
 
-    using AngleDomain = Define1DDomain<units::angle::Angle, units::angle::AngularDifference>;
+    // TODO: this is kind of a special case, as angles are not really linear space, but the defined
+    //  math operations are not working the same as for 3d curved space (e.g. multiplication
+    //  instead of addition)
+    using AngleDomain = Define1DDomain<units::angle::Angle, units::angle::AngularDifference, R1Type>;
 
     template <>
     struct DefineTraits<units::angle::Angle>

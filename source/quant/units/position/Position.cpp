@@ -5,19 +5,45 @@
 namespace quant::units::position
 {
 
-    /*Translation
-    Position::operator-(const Position& rhs) const
+    Position
+    Position::millimeters(geometry::Vector xyz)
     {
-        return {representation_ - rhs.representation_};
+        return {xyz * constants::mm2m};
     }
 
-
-    LinearVelocity
-    Position::operator/(const Duration& rhs) const
+    Position
+    Position::meters(geometry::Vector xyz)
     {
-        return LinearVelocity(representation_ / rhs.toSecondsDouble());
-    }*/
+        return {xyz};
+    }
 
+    Vector
+    Position::to_millimeters() const
+    {
+        return {to_vector() * constants::m2mm, constants::names::position, constants::symbols::millimeters};
+    }
+
+    Vector
+    Position::to_meters() const
+    {
+        return {
+            to_vector(), constants::names::position, constants::symbols::meters};
+    }
+
+    std::string
+    Position::to_string() const
+    {
+        for (auto fn : {&Position::to_meters})
+        {
+            Vector v = (this->*fn)();
+            if (v.x > 1 or v.y > 1 or v.z > 1)
+            {
+                return v.to_string();
+            }
+        }
+
+        return to_millimeters().to_string();
+    }
 }  // namespace quant::units::position
 
 namespace quant::units

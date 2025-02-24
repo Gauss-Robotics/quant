@@ -10,7 +10,7 @@ main(int argc, char* argv[])  // NOLINT
     using namespace quant;
 
     // Initialize robot.
-    FramedSpatialDisplacement origin(SpatialDisplacement(), {.name = "Origin"});
+    FramedPose origin(Pose(), {.name = "Origin"});
 
     std::cout << "Info: " << origin << std::endl;
 
@@ -30,8 +30,13 @@ main(int argc, char* argv[])  // NOLINT
 
     std::cout << "Robot detected object at: " << object << std::endl;
 
+    const auto object_in_root = robot.transform_to_frame(object, robot.frames.root);
+    std::cout << "In root frame at: " << object_in_root << std::endl;
+
+    const auto object_in_tcp_right = robot.transform_to_frame(object, robot.frames.tcp_right);
+
     // Grasp an object.
-    robot.grasp(object);
+    robot.grasp(object_in_tcp_right);
 
     return 0;
 }

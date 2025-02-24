@@ -1,5 +1,6 @@
 add_executable(test_framed_geometry
     main.cpp
+    DummyLinearState.h
     framed_geometry_tests.h
 )
 

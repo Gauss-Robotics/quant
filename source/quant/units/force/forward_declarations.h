@@ -15,66 +15,6 @@ namespace quant::units::force
 
 }  // namespace quant::units::force
 
-namespace quant::traits
-{
-
-    using ForceDomain = Define3DDomain<units::force::Force,
-                                       units::force::Torque,
-                                       units::force::Wrench,
-                                       units::force::ForceDifference,
-                                       units::force::TorqueDifference,
-                                       units::force::WrenchDifference>;
-
-    template <>
-    struct DefineTraits<units::force::Force>
-    {
-        using Domain = ForceDomain;
-        using Difference = units::force::ForceDifference;
-        using GeometricType = LinearStateType;
-    };
-
-    template <>
-    struct DefineTraits<units::force::ForceDifference>
-    {
-        using Domain = ForceDomain;
-        using State = units::force::Force;
-        using GeometricType = LinearDifferenceType;
-    };
-
-    template <>
-    struct DefineTraits<units::force::Torque>
-    {
-        using Domain = ForceDomain;
-        using Difference = units::force::TorqueDifference;
-        using GeometricType = AngularStateType;
-    };
-
-    template <>
-    struct DefineTraits<units::force::TorqueDifference>
-    {
-        using Domain = ForceDomain;
-        using State = units::force::Torque;
-        using GeometricType = AngularDifferenceType;
-    };
-
-    template <>
-    struct DefineTraits<units::force::Wrench>
-    {
-        using Domain = ForceDomain;
-        using Difference = units::force::WrenchDifference;
-        using GeometricType = SpatialStateType;
-    };
-
-    template <>
-    struct DefineTraits<units::force::WrenchDifference>
-    {
-        using Domain = ForceDomain;
-        using State = units::force::Wrench;
-        using GeometricType = SpatialDifferenceType;
-    };
-
-}  // namespace quant::traits
-
 namespace quant
 {
 
@@ -87,3 +27,66 @@ namespace quant
     using units::force::WrenchDifference;
 
 }  // namespace quant
+
+namespace quant::traits
+{
+
+    using ForceDomain = Define3DDomain<Define3DSubDomain<Force, ForceDifference, R3Type>,
+                                       Define3DSubDomain<Torque, TorqueDifference, R3Type>,
+                                       Define3DSubDomain<Wrench, WrenchDifference, R6Type>>;
+
+    template <>
+    struct DefineTraits<Force>
+    {
+        using Domain = ForceDomain;
+        using State = Force;
+        using Difference = ForceDifference;
+        using GeometricType = LinearStateType;
+    };
+
+    template <>
+    struct DefineTraits<ForceDifference>
+    {
+        using Domain = ForceDomain;
+        using State = Force;
+        using Difference = ForceDifference;
+        using GeometricType = LinearDifferenceType;
+    };
+
+    template <>
+    struct DefineTraits<Torque>
+    {
+        using Domain = ForceDomain;
+        using State = Torque;
+        using Difference = TorqueDifference;
+        using GeometricType = AngularStateType;
+    };
+
+    template <>
+    struct DefineTraits<TorqueDifference>
+    {
+        using Domain = ForceDomain;
+        using State = Torque;
+        using Difference = TorqueDifference;
+        using GeometricType = AngularDifferenceType;
+    };
+
+    template <>
+    struct DefineTraits<Wrench>
+    {
+        using Domain = ForceDomain;
+        using State = Wrench;
+        using Difference = WrenchDifference;
+        using GeometricType = SpatialStateType;
+    };
+
+    template <>
+    struct DefineTraits<WrenchDifference>
+    {
+        using Domain = ForceDomain;
+        using State = Wrench;
+        using Difference = WrenchDifference;
+        using GeometricType = SpatialDifferenceType;
+    };
+
+}  // namespace quant::traits

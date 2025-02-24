@@ -2,6 +2,8 @@
 
 #include <quant/geometry/Difference.h>
 #include <quant/units/position/Pose.h>
+#include <quant/units/position/LinearDisplacement.h>
+#include <quant/units/position/AngularDisplacement.h>
 #include <quant/units/position/forward_declarations.h>
 
 namespace quant::units::position
@@ -11,7 +13,16 @@ namespace quant::units::position
     {
 
     public:
-        using geometry::Difference<Pose>::Difference;
+        using Difference::Difference;
+        SpatialDisplacement(LinearDisplacement const& linear, AngularDisplacement const& angular);
+
+        LinearDisplacement
+        linear() const;
+
+        AngularDisplacement
+        angular() const;
+
+        SpatialDisplacement inverse() const;
     };
 
     inline std::ostream&
