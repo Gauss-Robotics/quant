@@ -61,12 +61,11 @@ TEST_SUITE("testing framed acceleration domain")
                 LinearAcceleration::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}));
 
             auto a2 = bc * a1;
 
@@ -85,12 +84,11 @@ TEST_SUITE("testing framed acceleration domain")
                 LinearAcceleration::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto a2 = bc * a1;
 
@@ -109,12 +107,11 @@ TEST_SUITE("testing framed acceleration domain")
                 LinearAcceleration::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto a2 = bc * a1;
 
@@ -168,8 +165,7 @@ TEST_SUITE("testing framed acceleration domain")
             CHECK(new_acceleration.get_framed_object() ==
                   Circa(LinearAcceleration::meters_per_second_squared({.x = 4, .y = 4, .z = 4})));
 
-            std::string const exception_message =
-                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
+            std::string const exception_message = "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(acceleration + lad_wrong_frame, exception_message.c_str());
         }
 
@@ -183,12 +179,8 @@ TEST_SUITE("testing framed acceleration domain")
                 LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -202,12 +194,10 @@ TEST_SUITE("testing framed acceleration domain")
                 LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -221,12 +211,11 @@ TEST_SUITE("testing framed acceleration domain")
                 LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -240,12 +229,10 @@ TEST_SUITE("testing framed acceleration domain")
                 LinearAccelerationDifference::meters_per_second_squared({.x = 1, .y = 2, .z = 3}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = "something else",
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                "something else",
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
 
             std::string const exception_message =
                 "Frame mismatch: something else vs " + std::string(from_frame);
@@ -267,16 +254,15 @@ TEST_SUITE("testing framed acceleration domain")
                 {.name = tcp_l, .base_frame = base_frame}};
             FramedLinearAccelerationDifference const lad_in_a1 = a2 - a1;
 
-            BaseChange const from_base_to_camera{
-                .from_frame = base_frame,
-                .to_frame = camera,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const from_base_to_camera = framed_geometry::make_base_change(
+                base_frame,
+                camera,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             auto const a1_in_camera = from_base_to_camera * a1;
             auto const a2_in_camera = from_base_to_camera * a2;
             auto const lad_in_a1_camera = a2_in_camera - a1_in_camera;
-            WARN(lad_in_a1 == Circa(lad_in_a1_camera)); // TODO: why is this not the case??
+            WARN(lad_in_a1 == Circa(lad_in_a1_camera));  // TODO: why is this not the case??
             WARN(a1_in_camera + lad_in_a1 == Circa(a2_in_camera));
         }
     }
@@ -333,12 +319,10 @@ TEST_SUITE("testing framed acceleration domain")
                                                    {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                                                {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{.from_frame = from_frame,
-                                .to_frame = to_frame,
-                                .transformation = SpatialDisplacement(
-                                    LinearDisplacement::zero(),
-                                    AngularDisplacement::degrees(
-                                        {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 270}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 270}));
             auto f2 = bc * f1;
 
             CHECK(f2.get_name() == name);
@@ -397,8 +381,7 @@ TEST_SUITE("testing framed acceleration domain")
                       {.axis = {.x = 1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},
                        .angle = sqrt(2) * 90})));
 
-            std::string const exception_message =
-                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
+            std::string const exception_message = "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(acceleration + aad_wrong_frame, exception_message.c_str());
         }
 
@@ -412,12 +395,8 @@ TEST_SUITE("testing framed acceleration domain")
                     {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -431,12 +410,10 @@ TEST_SUITE("testing framed acceleration domain")
                     {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -450,12 +427,11 @@ TEST_SUITE("testing framed acceleration domain")
                     {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -469,12 +445,10 @@ TEST_SUITE("testing framed acceleration domain")
                     {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = "something else",
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                "something else",
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
 
             std::string const exception_message =
                 "Frame mismatch: something else vs " + std::string(from_frame);
@@ -495,12 +469,11 @@ TEST_SUITE("testing framed acceleration domain")
                                                {.name = tcp_l, .base_frame = base_frame}};
             FramedAngularAccelerationDifference const aad_in_base = a2 - a1;
 
-            BaseChange const from_base_to_camera{
-                .from_frame = base_frame,
-                .to_frame = camera,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const from_base_to_camera = framed_geometry::make_base_change(
+                base_frame,
+                camera,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             auto const a1_in_camera = from_base_to_camera * a1;
             auto const a2_in_camera = from_base_to_camera * a2;
             auto const aad_in_camera = a2_in_camera - a1_in_camera;
@@ -559,11 +532,8 @@ TEST_SUITE("testing framed acceleration domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{.from_frame = from_frame,
-                                .to_frame = to_frame,
-                                .transformation = SpatialDisplacement(
-                                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                                    AngularDisplacement::zero())};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
 
             auto a2 = bc * a1;
 
@@ -588,12 +558,10 @@ TEST_SUITE("testing framed acceleration domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto a2 = bc * a1;
 
@@ -618,12 +586,11 @@ TEST_SUITE("testing framed acceleration domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto a2 = bc * a1;
 
@@ -685,12 +652,8 @@ TEST_SUITE("testing framed acceleration domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -707,12 +670,10 @@ TEST_SUITE("testing framed acceleration domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -729,12 +690,11 @@ TEST_SUITE("testing framed acceleration domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -751,12 +711,10 @@ TEST_SUITE("testing framed acceleration domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = "something else",
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                "something else",
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
 
             std::string const exception_message =
                 "Frame mismatch: something else vs " + std::string(from_frame);
@@ -784,12 +742,11 @@ TEST_SUITE("testing framed acceleration domain")
                 {.name = tcp_l, .base_frame = base_frame}};
             FramedSpatialAccelerationDifference const sad_in_a1 = a2 - a1;
 
-            BaseChange const from_base_to_camera{
-                .from_frame = base_frame,
-                .to_frame = camera,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const from_base_to_camera = framed_geometry::make_base_change(
+                base_frame,
+                camera,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             auto const a1_in_camera = from_base_to_camera * a1;
             auto const a2_in_camera = from_base_to_camera * a2;
             auto const sad_in_camera = a2_in_camera - a1_in_camera;

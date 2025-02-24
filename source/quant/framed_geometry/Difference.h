@@ -53,6 +53,16 @@ namespace quant::framed_geometry
             // NOLINTEND(cppcoreguidelines-pro-type-vararg)
         }
 
+        template <typename... Args>
+        Difference(std::string_view const& base_frame_name, Args&&... args) :
+            _framed_object{std::forward<Args>(args)...}
+        {
+            // NOLINTBEGIN(cppcoreguidelines-pro-type-vararg)
+            std::snprintf(
+                _base_frame_name.data(), _base_frame_name.size(), "%s", base_frame_name.data());
+            // NOLINTEND(cppcoreguidelines-pro-type-vararg)
+        }
+
         Difference(typename traits::framed_traits_of<QuantityT>::FramedState const& state) :
             Difference(static_cast<QuantityT>(state.get_framed_object()), state.get_base_frame())
         {

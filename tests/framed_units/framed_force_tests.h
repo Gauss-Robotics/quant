@@ -55,12 +55,8 @@ TEST_SUITE("testing framed force domain")
             FramedForce const f1{Force::newtons({.x = 1, .y = 2, .z = 3}),
                                  {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
 
             auto f2 = bc * f1;
 
@@ -77,12 +73,10 @@ TEST_SUITE("testing framed force domain")
             FramedForce const f1{Force::newtons({.x = 1, .y = 2, .z = 3}),
                                  {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto f2 = bc * f1;
 
@@ -99,12 +93,11 @@ TEST_SUITE("testing framed force domain")
             FramedForce const f1{Force::newtons({.x = 1, .y = 2, .z = 3}),
                                  {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto f2 = bc * f1;
 
@@ -149,8 +142,7 @@ TEST_SUITE("testing framed force domain")
             CHECK(new_force.get_base_frame() == "ARMAR-6::RobotRoot");
             CHECK(new_force.get_framed_object() == Circa(Force::newtons({.x = 1, .y = 1, .z = 0})));
 
-            std::string const exception_message =
-                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
+            std::string const exception_message = "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(force + fd_wrong_frame, exception_message.c_str());
         }
 
@@ -162,12 +154,8 @@ TEST_SUITE("testing framed force domain")
             FramedForceDifference const f1{ForceDifference::newtons({.x = 1, .y = 0, .z = 0}),
                                            from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -179,12 +167,10 @@ TEST_SUITE("testing framed force domain")
             FramedForceDifference const f1{ForceDifference::newtons({.x = 1, .y = 0, .z = 0}),
                                            from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -196,12 +182,11 @@ TEST_SUITE("testing framed force domain")
             FramedForceDifference const f1{ForceDifference::newtons({.x = 1, .y = 0, .z = 0}),
                                            from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -217,12 +202,11 @@ TEST_SUITE("testing framed force domain")
                                  {.name = name, .base_frame = from_frame}};
             FramedForceDifference const fd = f2 - f1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}));
             auto const f1_new = bc * f1;
             auto const f2_new = bc * f2;
             auto const fd_new = f2_new - f1_new;
@@ -283,12 +267,10 @@ TEST_SUITE("testing framed force domain")
                 Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{.from_frame = from_frame,
-                                .to_frame = to_frame,
-                                .transformation = SpatialDisplacement(
-                                    LinearDisplacement::zero(),
-                                    AngularDisplacement::degrees(
-                                        {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 270}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 270}));
             auto t2 = bc * t1;
 
             CHECK(t2.get_name() == name);
@@ -339,8 +321,7 @@ TEST_SUITE("testing framed force domain")
                   Circa(Torque::newton_meters(
                       {.axis = {.x = 1, .y = 1, .z = 0}, .angle = sqrt(2) * 90})));
 
-            std::string const exception_message =
-                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
+            std::string const exception_message = "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(torque + td_wrong_frame, exception_message.c_str());
         }
 
@@ -353,12 +334,8 @@ TEST_SUITE("testing framed force domain")
                 TorqueDifference::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
             WARN_NOTHROW(bc * t1);
         }
 
@@ -371,12 +348,10 @@ TEST_SUITE("testing framed force domain")
                 TorqueDifference::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * t1);
         }
 
@@ -389,12 +364,11 @@ TEST_SUITE("testing framed force domain")
                 TorqueDifference::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * t1);
         }
 
@@ -412,12 +386,11 @@ TEST_SUITE("testing framed force domain")
                 {.name = name, .base_frame = from_frame}};
             FramedTorqueDifference const td = t2 - t1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}));
             auto const t1_new = bc * t1;
             auto const t2_new = bc * t2;
             auto const td_new = t2_new - t1_new;
@@ -491,11 +464,8 @@ TEST_SUITE("testing framed force domain")
                        Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{.from_frame = from_frame,
-                                .to_frame = to_frame,
-                                .transformation = SpatialDisplacement(
-                                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                                    AngularDisplacement::zero())};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
 
             auto w2 = bc * w1;
 
@@ -518,12 +488,10 @@ TEST_SUITE("testing framed force domain")
                        Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto w2 = bc * w1;
 
@@ -545,12 +513,11 @@ TEST_SUITE("testing framed force domain")
                        Torque::newton_meters({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto w2 = bc * w1;
 
@@ -603,12 +570,8 @@ TEST_SUITE("testing framed force domain")
                                      {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
             WARN_NOTHROW(bc * w1);
         }
 
@@ -623,17 +586,15 @@ TEST_SUITE("testing framed force domain")
                                      {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * w1);
         }
 
         SUBCASE("base change - transform")
-        { // TODO: NOT IMPLEMENTED YET
+        {  // TODO: NOT IMPLEMENTED YET
             std::string const from_frame = "ARMAR-6::RobotRoot";
             std::string const to_frame = "ARMAR-6::TCP_R";
             FramedWrenchDifference const w1{
@@ -642,12 +603,11 @@ TEST_SUITE("testing framed force domain")
                                      {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * w1);
         }
 
@@ -667,12 +627,11 @@ TEST_SUITE("testing framed force domain")
                 {.name = name, .base_frame = from_frame}};
             FramedWrenchDifference const wd = w2 - w1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             auto const w1_new = bc * w1;
             auto const w2_new = bc * w2;
             auto const wd_new = w2_new - w1_new;
@@ -698,8 +657,8 @@ TEST_SUITE("testing framed force domain")
                 LinearDisplacement::meters({-0.25, 0, 0}),
                 AngularDisplacement::degrees({.axis = {1, 0, 0}, .angle = -90})};
 
-            auto const from_H_to_F = BaseChange{"H", "F", T_hf};
-            auto const from_A_to_F = BaseChange{"A", "F", T_af};
+            auto const from_H_to_F = framed_geometry::make_base_change("H", "F", T_hf);
+            auto const from_A_to_F = framed_geometry::make_base_change("A", "F", T_af);
             auto const F_apple_in_F = from_A_to_F * F_apple_in_A;
             auto const F_hand_in_F = from_H_to_F * F_hand_in_H;
             auto const F_f = F_hand_in_F + F_apple_in_F;
@@ -726,12 +685,12 @@ TEST_SUITE("testing framed force domain")
                 FramedWrench(Wrench(Force::newtons({0, 100, -500}),
                                     Torque::newton_meters({.x = -800, .y = 1000, .z = 200})),
                              {.name = "Branch", .base_frame = "T"});
-            auto const base_change = BaseChange{
+            auto const base_change = framed_geometry::make_base_change(
                 "B",
                 "T",
                 SpatialDisplacement(LinearDisplacement::meters({2, 1, 3}),
                                     AngularDisplacement::degrees({.axis = {0, 0, 1}, .angle = -90}))
-                    .inverse()};
+                    .inverse());
             for (int i = 0; i < 100; ++i)
             {
                 // Test numerical stability
@@ -746,7 +705,7 @@ TEST_SUITE("testing framed force domain")
             SpatialDisplacement const T_sb{
                 LinearDisplacement::meters({3, 3, 4}),
                 AngularDisplacement::degrees({.axis = {0, 1, 0}, .angle = -90})};
-            auto const from_B_to_S = BaseChange{"B", "S", T_sb.inverse()};
+            auto const from_B_to_S = framed_geometry::make_base_change("B", "S", T_sb.inverse());
             auto const F_s = FramedWrench(Wrench(Force::newtons({-1, 1, 2}),
                                                  Torque::newton_meters({.x = 2, .y = -10, .z = 6})),
                                           {.name = "Base", .base_frame = "S"});

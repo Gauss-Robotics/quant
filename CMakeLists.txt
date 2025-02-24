@@ -22,13 +22,6 @@ find_package(Boost REQUIRED)
 find_package(doctest QUIET)
 
 # Compile Options
-option(QUANT_FRAMED_DIFFERENCES_IN_LOCAL_FRAME
-        "Calculates the differences in the local frame of the state if true;
-        otherwise use the global frame" ON)
-if (QUANT_FRAMED_DIFFERENCES_IN_LOCAL_FRAME)
-    add_compile_definitions(QUANT_FRAMED_USE_RIGHT_OPERATIONS)
-endif ()
-
 option(QUANT_ENABLE_TESTS "Enable tests" ON)
 
 

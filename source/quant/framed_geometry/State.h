@@ -4,6 +4,7 @@
 #include <quant/framed_geometry/FrameMismatch.h>
 #include <quant/framed_geometry/forward_declarations.h>
 #include <quant/geometry/Difference.h>
+#include <quant/geometry/detail/ManifoldOperators.h>
 #include <quant/geometry/forward_declarations.h>
 
 #include <Eigen/Core>
@@ -43,6 +44,9 @@ namespace quant::framed_geometry
     {
     public:
         using FramedGeometricObject = QuantityT;
+        using DifferenceT = traits::difference_type_of<QuantityT>;
+        using FramedDifferenceT = traits::framed_type_of<DifferenceT>;
+        using FramedT = traits::framed_type_of<QuantityT>;
 
         /**
          * @brief Constructs a framed geometric object given a geometric object and a frame header
@@ -145,10 +149,62 @@ namespace quant::framed_geometry
                    _framed_object.is_approx(rhs._framed_object, tolerance);
         }
 
-        static traits::framed_type_of<QuantityT>
+        static FramedT
         zero(FrameIdentifier const& frame_data)
         {
-            return traits::framed_type_of<QuantityT>{QuantityT::zero(), frame_data};
+            return FramedT{QuantityT::zero(), frame_data};
+        }
+
+        FramedDifferenceT
+        lminus(State const& rhs) const
+        {
+            if (get_base_frame() != rhs.get_base_frame())
+            {
+                throw FrameMismatchException(get_base_frame(), rhs.get_base_frame());
+            }
+            return FramedDifferenceT{geometry::lminus(get_framed_object(), rhs.get_framed_object()),
+                                     rhs.get_base_frame()};
+        }
+
+        FramedDifferenceT
+        rminus(State const& rhs) const
+        {
+            if (get_base_frame() != rhs.get_base_frame())
+            {
+                throw FrameMismatchException(get_base_frame(), rhs.get_base_frame());
+            }
+            if constexpr (traits::on_manifold<QuantityT> and not traits::in_t3<QuantityT>)
+            {
+                // TODO: I don't like the inconsistency between T3 and SO3/SE3 here, but I don't
+                //  know how else to solve it
+                return FramedDifferenceT{
+                    geometry::rminus(get_framed_object(), rhs.get_framed_object()), rhs.get_name()};
+            }
+            // flat space differences are always in the base frame
+            return FramedDifferenceT{geometry::rminus(get_framed_object(), rhs.get_framed_object()),
+                                     rhs.get_base_frame()};
+        }
+
+        FramedT
+        lplus(FramedDifferenceT const& rhs) const
+        {
+            if (get_base_frame() != rhs.get_base_frame())
+            {
+                throw FrameMismatchException(get_name(), rhs.get_base_frame());
+            }
+            return FramedT{geometry::lplus(get_framed_object(), rhs.get_framed_object()),
+                           {.name = get_name(), .base_frame = get_base_frame()}};
+        }
+
+        FramedT
+        rplus(FramedDifferenceT const& rhs) const
+        {
+            if (get_name() != rhs.get_base_frame())
+            {
+                throw FrameMismatchException(get_name(), rhs.get_base_frame());
+            }
+            return FramedT{geometry::rplus(get_framed_object(), rhs.get_framed_object()),
+                           {.name = get_name(), .base_frame = get_base_frame()}};
         }
 
         /**
@@ -200,7 +256,7 @@ namespace quant::framed_geometry
 
     template <typename FramedStateType>
         requires traits::framed_state<FramedStateType> and
-                 traits::in_flat_space<typename FramedStateType::FramedGeometricObject>
+                 traits::on_tangent_space<typename FramedStateType::FramedGeometricObject>
     FramedStateType
     operator+(FramedStateType const& lhs, FramedStateType const& rhs)
     {
@@ -222,7 +278,25 @@ namespace quant::framed_geometry
     }
 
     /**
-     * @brief State difference operator.
+     * @brief Difference of two framed states, expressed in the base frame of the subtracted state.
+     *
+     *  The difference of two states is expressed in the global/base frame of the subtracted
+     * (i.e., starting) state. This is due to the convention of using the left plus and minus
+     * operators for framed units.
+     *
+     * This convention was chosen because it leads to consistent behavior for flat and curved
+     * spaces. Using local frames leads to inconsistent and/or dangerous behavior for flat
+     * spaces, as these are always expressed in the global frame. From Appendix E, of
+     * https://arxiv.org/pdf/1812.01537, it becomes apparent that for Rn right and left
+     * operators are the same. This means that there is no distinction between local and global
+     * frames for flat space. However, if we would follow the convention for curved space and
+     * have the difference in the local frame, this would lead to inconsistent behavior in frame
+     * changes, as e.g., the difference of two positions does indeed change from one frame to
+     * the other.
+     *
+     * Therefore, we opt for the consistent treatment of flat and curved spaces and express
+     * differences always in the global space. If this is not wanted, the explicit rminus
+     * operator can be chosen
      *
      * @param lhs
      * @param rhs
@@ -238,35 +312,7 @@ namespace quant::framed_geometry
         {
             throw FrameMismatchException(lhs.get_base_frame(), rhs.get_base_frame());
         }
-        /**
-         * The difference of two states is expressed in the local frame of the subtracted (i.e.,
-         * starting) state. This is due to the convention of using the right plus and minus
-         * operators.
-         *
-         * This holds true for states in curved space. However, for flat space states, the behavior
-         * is a bit different. From Appendix E, of https://arxiv.org/pdf/1812.01537, it becomes
-         * apparent that for Rn right and left operators are the same. This means that there is no
-         * distinction between local and global frames for flat space. However, if we would follow
-         * the convention for curved space and have the difference in the local frame, this would
-         * lead to inconsistent behavior in frame changes, as e.g., the difference of two positions
-         * does indeed change from one frame to the other.
-         *
-         * Therefore, we treat flat and curved space differently here. This is not ideal, but leads
-         * to more consistent behavior.
-         *
-         * TODO: I don't like the inconsistency this introduces. However, I'm also not sure that
-         *  using the left operators would solve anything
-         **/
-        if constexpr (not traits::use_right_operations_for_framed_units or traits::in_flat_space<StateType>)
-        {
-            return traits::framed_type_of<traits::difference_type_of<StateType>>(
-                geometry::lminus(lhs.get_framed_object(), rhs.get_framed_object()), rhs.get_base_frame());
-        }
-        else
-        {
-            return traits::framed_type_of<traits::difference_type_of<StateType>>(
-                rminus(lhs.get_framed_object(), rhs.get_framed_object()), rhs.get_name());
-        }
+        return lhs.lminus(rhs);
     }
 
     /**
@@ -283,22 +329,15 @@ namespace quant::framed_geometry
     FramedStateType
     operator+(FramedStateType const& state, FramedDifferenceType const& difference)
     {
-        using StateType = typename FramedStateType::FramedGeometricObject;
-
         if (state.get_name() == difference.get_base_frame())
         {
-            return traits::framed_type_of<StateType>(
-            rplus(state.get_framed_object(), difference.get_framed_object()),
-            {.name = state.get_name(), .base_frame = state.get_base_frame()});
+            return state.rplus(difference);
         }
         if (state.get_base_frame() == difference.get_base_frame())
         {
-            return traits::framed_type_of<StateType>(
-            lplus(state.get_framed_object(), difference.get_framed_object()),
-            {.name = state.get_name(), .base_frame = state.get_base_frame()});
+            return state.lplus(difference);
         }
         throw FrameMismatchException(state.get_name(), difference.get_base_frame());
-
     }
 
     template <typename FramedT>

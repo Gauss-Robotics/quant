@@ -2,10 +2,8 @@
 
 #include <quant/framed_geometry/BaseChange.h>
 #include <quant/geometry/detail/DifferenceAccessor.h>
-#include <quant/units/position/AngularDisplacement.h>
 #include <quant/units/position/LinearDisplacement.h>
-
-#include <ostream>
+#include <quant/units/position/SpatialDisplacement.h>
 
 namespace quant::framed_units::position
 {
@@ -14,12 +12,12 @@ namespace quant::framed_units::position
     ld_basis_change(units::position::LinearDisplacement const& ld,
                     framed_geometry::BaseChange const& transform)
     {
-        using LDAccessor =
-            geometry::detail::DifferenceAccessor<units::position::LinearDisplacement>;
-        using AngularAccessor =
-            geometry::detail::DifferenceAccessor<units::position::AngularDisplacement>;
-        auto const R = AngularAccessor::representation(transform.transformation.angular());
-        auto const d = LDAccessor::representation(ld);
-        return LDAccessor::make(R.inverse() * d);
+        // differences of positions are always in the global frame
+        using LDAccessor = geometry::detail::DifferenceAccessor<quant::LinearDisplacement>;
+        using TransformAccessor =
+            geometry::detail::DifferenceAccessor<units::position::SpatialDisplacement>;
+        auto const R = TransformAccessor::representation(transform.transformation);
+        return LDAccessor::make(
+            Eigen::Translation3d((R.inverse() * LDAccessor::representation(ld) * R).translation()));
     }
 }  // namespace quant::framed_units::position

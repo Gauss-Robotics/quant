@@ -13,7 +13,7 @@ namespace quant::geometry
      * @return The negated scalar difference.
      */
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_flat_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::on_tangent_space<DifferenceType>
     DifferenceType
     inverse(DifferenceType const& object)
     {
@@ -23,7 +23,7 @@ namespace quant::geometry
     }
 
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_curved_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::on_manifold<DifferenceType>
     DifferenceType
     inverse(DifferenceType const& object)
     {
@@ -41,7 +41,7 @@ namespace quant::geometry
      * @return
      */
     template <typename StateType>
-        requires traits::state<StateType> and traits::in_flat_space<StateType>
+        requires traits::state<StateType> and traits::on_tangent_space<StateType>
     traits::difference_type_of<StateType>
     rminus(StateType const& lhs, StateType const& rhs)
     {
@@ -52,7 +52,7 @@ namespace quant::geometry
     }
 
     template <typename StateType>
-        requires traits::state<StateType> and traits::in_curved_space<StateType>
+        requires traits::state<StateType> and traits::on_manifold<StateType>
     traits::difference_type_of<StateType>
     rminus(StateType const& lhs, StateType const& rhs)
     {
@@ -72,7 +72,7 @@ namespace quant::geometry
      * @return
      */
     template <typename StateType>
-        requires traits::state<StateType> and traits::in_flat_space<StateType>
+        requires traits::state<StateType> and traits::on_tangent_space<StateType>
     traits::difference_type_of<StateType>
     lminus(StateType const& lhs, StateType const& rhs)
     {
@@ -80,7 +80,7 @@ namespace quant::geometry
     }
 
     template <typename StateType>
-        requires traits::state<StateType> and traits::in_curved_space<StateType>
+        requires traits::state<StateType> and traits::on_manifold<StateType>
     traits::difference_type_of<StateType>
     lminus(StateType const& lhs, StateType const& rhs)
     {
@@ -103,7 +103,7 @@ namespace quant::geometry
     template <typename StateType, typename DifferenceType>
         requires traits::difference<DifferenceType> and traits::state<StateType> and
                  traits::same_domain<DifferenceType, StateType> and
-                 traits::same_group<StateType, DifferenceType> and traits::in_flat_space<StateType>
+                 traits::same_group<StateType, DifferenceType> and traits::on_tangent_space<StateType>
     StateType
     rplus(StateType const& lhs, DifferenceType const& rhs)
     {
@@ -117,7 +117,7 @@ namespace quant::geometry
         requires traits::difference<DifferenceType> and traits::state<StateType> and
                  traits::same_domain<DifferenceType, StateType> and
                  traits::same_group<StateType, DifferenceType> and
-                 traits::in_curved_space<StateType>
+                 traits::on_manifold<StateType>
     StateType
     rplus(StateType const& lhs, DifferenceType const& rhs)
     {
@@ -141,7 +141,7 @@ namespace quant::geometry
     template <typename StateType, typename DifferenceType>
         requires traits::difference<DifferenceType> and traits::state<StateType> and
                  traits::same_domain<DifferenceType, StateType> and
-                 traits::same_group<StateType, DifferenceType> and traits::in_flat_space<StateType>
+                 traits::same_group<StateType, DifferenceType> and traits::on_tangent_space<StateType>
     StateType
     lplus(StateType const& lhs, DifferenceType const& rhs)
     {
@@ -152,7 +152,7 @@ namespace quant::geometry
         requires traits::difference<DifferenceType> and traits::state<StateType> and
                  traits::same_domain<DifferenceType, StateType> and
                  traits::same_group<StateType, DifferenceType> and
-                 traits::in_curved_space<StateType>
+                 traits::on_manifold<StateType>
     StateType
     lplus(StateType const& lhs, DifferenceType const& rhs)
     {

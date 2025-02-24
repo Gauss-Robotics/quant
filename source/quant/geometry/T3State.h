@@ -95,6 +95,11 @@ namespace quant::geometry
             return StateType{_representation.inverse()};
         }
 
+        StateType inverse() const
+        {
+            return StateType{_representation.inverse()};
+        }
+
         /**
          * @brief Division operator.
          *
@@ -107,7 +112,7 @@ namespace quant::geometry
             return StateType{_representation.translation().cwiseQuotient(rhs._representation)};
         }
 
-        using GeometricRepresentationType = Eigen::Isometry3d;
+        using GeometricRepresentationType = Eigen::Translation3d;
 
     protected:
         // Construct.
@@ -118,7 +123,7 @@ namespace quant::geometry
          * @param xyz The vector to initialize the state with.
          */
         T3State(Vector const& xyz) :
-            _representation(Eigen::Isometry3d::TranslationType{xyz.x, xyz.y, xyz.z})
+            _representation(xyz.x, xyz.y, xyz.z)
         {
             ;
         }
@@ -126,7 +131,7 @@ namespace quant::geometry
         /**
          * @brief Default constructor initializing the linear state to (0, 0, 0).
          */
-        T3State() : _representation(Eigen::Isometry3d::TranslationType(0, 0, 0))
+        T3State() : _representation(GeometricRepresentationType(0, 0, 0))
         {
             ;
         }

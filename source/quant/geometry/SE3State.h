@@ -19,18 +19,18 @@ namespace quant::geometry
         using AngularDifferenceType = traits::angular_difference_in_domain_of<StateType>;
         using GeometricRepresentationType = Eigen::Isometry3d;
 
-        SE3State() : _representation(Eigen::Isometry3d::Identity())
+        explicit SE3State() : _representation(Eigen::Isometry3d::Identity())
         {
             ;
         }
 
-        SE3State(LinearStateType const& linear) :
+        explicit SE3State(LinearStateType const& linear) :
             SE3State(linear, AngularStateType::zero())
         {
             ;
         }
 
-        SE3State(AngularStateType const& angular) :
+        explicit SE3State(AngularStateType const& angular) :
             SE3State(LinearStateType::zero(), angular)
         {
             ;
@@ -63,7 +63,7 @@ namespace quant::geometry
         {
             using State = detail::StateAccessor<LinearStateType>;
             return State::make(
-                Eigen::Isometry3d(Eigen::Translation3d(_representation.translation())));
+                Eigen::Translation3d(_representation.translation()));
         }
 
         AngularStateType

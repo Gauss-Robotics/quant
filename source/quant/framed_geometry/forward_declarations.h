@@ -93,12 +93,6 @@ namespace quant::traits
     template <typename Type>
     concept is_frameable = three_dimensional_domain<Type>;
 
-#ifdef QUANT_FRAMED_USE_RIGHT_OPERATIONS
-    constexpr bool use_right_operations_for_framed_units = true;
-#else
-    constexpr bool use_right_operations_for_framed_units = false;
-#endif
-
 }  // namespace quant::traits
 
 namespace quant::framed_geometry

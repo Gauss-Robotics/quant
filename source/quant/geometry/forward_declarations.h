@@ -302,10 +302,10 @@ namespace quant::traits
                     std::same_as<typename subdomain_type_of<Type>::Manifold, T3Type>;
 
     template <typename Type>
-    concept in_flat_space = in_r1<Type> or in_r3<Type> or in_r6<Type>;
+    concept on_tangent_space = in_r1<Type> or in_r3<Type> or in_r6<Type>;
 
     template <typename Type>
-    concept in_curved_space = in_so3<Type> or in_se3<Type> or in_t3<Type>;
+    concept on_manifold = in_so3<Type> or in_se3<Type> or in_t3<Type>;
 
 }  // namespace quant::traits
 

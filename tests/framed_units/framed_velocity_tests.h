@@ -63,12 +63,11 @@ TEST_SUITE("testing framed velocity domain")
                 LinearVelocity::meters_per_second({.x = 1, .y = 2, .z = 3}),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}));
 
             auto v2 = bc * v1;
 
@@ -87,12 +86,11 @@ TEST_SUITE("testing framed velocity domain")
                 LinearVelocity::meters_per_second({.x = 1, .y = 2, .z = 3}),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto v2 = bc * v1;
 
@@ -111,12 +109,11 @@ TEST_SUITE("testing framed velocity domain")
                 LinearVelocity::meters_per_second({.x = 1, .y = 2, .z = 3}),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto v2 = bc * v1;
 
@@ -155,8 +152,7 @@ TEST_SUITE("testing framed velocity domain")
                 LinearVelocity::meters_per_second({.x = 1, .y = 2, .z = 3}),
                 {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
             FramedLinearVelocityDifference const ld{
-                LinearVelocityDifference::meters_per_second({.x = 3, .y = 2, .z = 1}),
-                "TCP"};
+                LinearVelocityDifference::meters_per_second({.x = 3, .y = 2, .z = 1}), "TCP"};
             FramedLinearVelocityDifference const ld_wrong_frame{
                 LinearVelocityDifference::meters_per_second({.x = 3, .y = 2, .z = 1}),
                 "ARMAR-6::PlatformBase"};
@@ -167,8 +163,7 @@ TEST_SUITE("testing framed velocity domain")
             CHECK(new_velocity.get_framed_object() ==
                   Circa(LinearVelocity::meters_per_second({.x = 4, .y = 4, .z = 4})));
 
-            std::string const exception_message =
-                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
+            std::string const exception_message = "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(velocity + ld_wrong_frame, exception_message.c_str());
         }
 
@@ -180,12 +175,11 @@ TEST_SUITE("testing framed velocity domain")
             FramedLinearVelocityDifference const v1{
                 LinearVelocityDifference::meters_per_second({.x = 1, .y = 2, .z = 3}), from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}));
             WARN_NOTHROW(bc * v1);
         }
 
@@ -197,12 +191,10 @@ TEST_SUITE("testing framed velocity domain")
             FramedLinearVelocityDifference const v1{
                 LinearVelocityDifference::meters_per_second({.x = 1, .y = 2, .z = 3}), from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * v1);
         }
 
@@ -214,12 +206,11 @@ TEST_SUITE("testing framed velocity domain")
             FramedLinearVelocityDifference const v1{
                 LinearVelocityDifference::meters_per_second({.x = 1, .y = 2, .z = 3}), from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * v1);
         }
         SUBCASE("base change - difference of changed states is changed difference")
@@ -236,12 +227,11 @@ TEST_SUITE("testing framed velocity domain")
                 {.name = name, .base_frame = from_frame}};
             FramedLinearVelocityDifference const ld = v2 - v1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             auto const v1_new = bc * v1;
             auto const v2_new = bc * v2;
             auto const ld_new = v2_new - v1_new;
@@ -301,12 +291,10 @@ TEST_SUITE("testing framed velocity domain")
                                                {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                                            {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{.from_frame = from_frame,
-                                .to_frame = to_frame,
-                                .transformation = SpatialDisplacement(
-                                    LinearDisplacement::zero(),
-                                    AngularDisplacement::degrees(
-                                        {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 270}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 270}));
             auto f2 = bc * f1;
 
             CHECK(f2.get_name() == name);
@@ -362,8 +350,7 @@ TEST_SUITE("testing framed velocity domain")
                       {.axis = {.x = 1 / sqrt(2), .y = 1 / sqrt(2), .z = 0},
                        .angle = sqrt(2) * 90})));
 
-            std::string const exception_message =
-                "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
+            std::string const exception_message = "Frame mismatch: TCP vs ARMAR-6::PlatformBase";
             CHECK_THROWS_WITH(velocity + ad_wrong_frame, exception_message.c_str());
         }
 
@@ -377,12 +364,11 @@ TEST_SUITE("testing framed velocity domain")
                     {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -396,12 +382,10 @@ TEST_SUITE("testing framed velocity domain")
                     {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -415,12 +399,11 @@ TEST_SUITE("testing framed velocity domain")
                     {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -438,12 +421,11 @@ TEST_SUITE("testing framed velocity domain")
                 {.name = name, .base_frame = from_frame}};
             FramedAngularVelocityDifference const ad = o2 - o1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}));
             auto const o1_new = bc * o1;
             auto const o2_new = bc * o2;
             auto const ad_new = o2_new - o1_new;
@@ -518,11 +500,8 @@ TEST_SUITE("testing framed velocity domain")
                                            {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                                  {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{.from_frame = from_frame,
-                                .to_frame = to_frame,
-                                .transformation = SpatialDisplacement(
-                                    LinearDisplacement::meters({.x = 3, .y = 2, .z = 1}),
-                                    AngularDisplacement::zero())};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::meters({.x = 3, .y = 2, .z = 1}));
 
             auto t2 = bc * t1;
 
@@ -545,12 +524,10 @@ TEST_SUITE("testing framed velocity domain")
                           {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 0, .y = 0, .z = 0}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
 
             auto t2 = bc * t1;
 
@@ -572,12 +549,11 @@ TEST_SUITE("testing framed velocity domain")
                       AngularVelocity::degrees_per_second({.x = 180, .y = 0, .z = 0})),
                 {.name = name, .base_frame = from_frame}};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 1, .y = 1, .z = 0}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 1, .y = 1, .z = 0}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90}));
 
             auto t2 = bc * t1;
 
@@ -633,11 +609,8 @@ TEST_SUITE("testing framed velocity domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{.from_frame = from_frame,
-                                .to_frame = to_frame,
-                                .transformation = SpatialDisplacement(
-                                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                                    AngularDisplacement::zero())};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame, to_frame, LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -653,12 +626,10 @@ TEST_SUITE("testing framed velocity domain")
                         {.axis = {.x = 0, .y = 0, .z = 1}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::zero(),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -674,12 +645,11 @@ TEST_SUITE("testing framed velocity domain")
                         {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90})),
                 from_frame};
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
             WARN_NOTHROW(bc * f1);
         }
 
@@ -701,12 +671,11 @@ TEST_SUITE("testing framed velocity domain")
                 {.name = name, .base_frame = from_frame}};
             FramedTwistDifference const td = t2 - t1;
 
-            BaseChange const bc{
-                .from_frame = from_frame,
-                .to_frame = to_frame,
-                .transformation = SpatialDisplacement(
-                    LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
-                    AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}))};
+            BaseChange const bc = framed_geometry::make_base_change(
+                from_frame,
+                to_frame,
+                LinearDisplacement::millimeters({.x = 3, .y = 2, .z = 1}),
+                AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             auto const t1_new = bc * t1;
             auto const t2_new = bc * t2;
             auto const td_new = t2_new - t1_new;
@@ -763,12 +732,10 @@ TEST_SUITE("testing framed velocity domain")
 
         auto const F1_to_F2 = SpatialDisplacement(PoseAccessor::make(Eigen::Isometry3d(
             (Eigen::Matrix4d() << 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, -10, 0, 0, 0, 1).finished())));
-        auto const base_change = BaseChange("F1", "F2", F1_to_F2);
+        auto const base_change = framed_geometry::make_base_change("F1", "F2", F1_to_F2);
 
         SUBCASE("poses and positions transform correctly")
         {
-            auto make_base_change = [](FramedPose const& from, FramedPose const& to)
-            { return BaseChange(from.get_name(), to.get_name(), (to - from).get_framed_object()); };
             auto const origin_to_F1 = make_base_change(origin, F1);
             auto const origin_to_F2 = make_base_change(origin, F2);
             auto test = [](BaseChange const& bc, FramedTwist const& from, FramedTwist const& to)
@@ -803,7 +770,7 @@ TEST_SUITE("testing framed velocity domain")
             FramedTwist const V_b(Twist(LinearVelocity::meters_per_second({2.8, 4, 0}),
                                         AngularVelocity::radians_per_second(Vector{0, 0, -2})),
                                   {"Car", "B"});
-            auto from_B_to_S = BaseChange("B", "S", T_sb.inverse());
+            auto from_B_to_S = framed_geometry::make_base_change("B", "S", T_sb.inverse());
             CHECK(V_s == Circa(from_B_to_S * V_b));
         }
         SUBCASE("Exercise 3.16 from Modern Robotics")
@@ -822,7 +789,7 @@ TEST_SUITE("testing framed velocity domain")
             Eigen::Matrix4d V =
                 (Eigen::Matrix4d() << 0, -1, 2, -1, 1, 0, -3, -2, -2, 3, 0, -3, 0, 0, 0, 0)
                     .finished();
-            auto const base_change = BaseChange("S", "A", T_sa);
+            auto const base_change = framed_geometry::make_base_change("S", "A", T_sa);
             CHECK(V_a == Circa(base_change * V_s));
             CAPTURE((T * V * T.inverse()).matrix());
             CHECK((framed_geometry::SkewSymmetric6d(V_a).matrix() - (T * V * T.inverse()).matrix())
@@ -838,18 +805,12 @@ TEST_SUITE("testing framed velocity domain")
                              "Quadcopter");
             auto const house =
                 tree.enframe(Pose(Position::meters({0, 10, 10}), Orientation::zero()), "House");
-            auto const tree_to_quadcopter =
-                BaseChange("Tree", "Quadcopter", (quadcopter - tree).get_framed_object());
-            auto const quadcopter_to_tree =
-                BaseChange("Quadcopter", "Tree", (tree - quadcopter).get_framed_object());
-            auto const tree_to_house =
-                BaseChange("Tree", "House", (house - tree).get_framed_object());
-            auto const house_to_tree =
-                BaseChange("House", "Tree", (tree - house).get_framed_object());
-            auto const quadcopter_to_house =
-                BaseChange("Quadcopter", "House", (house - quadcopter).get_framed_object());
-            auto const house_to_quadcopter =
-                BaseChange("House", "Quadcopter", (quadcopter - house).get_framed_object());
+            auto const tree_to_quadcopter = framed_geometry::make_base_change(tree, quadcopter);
+            auto const quadcopter_to_tree = framed_geometry::make_base_change(quadcopter, tree);
+            auto const tree_to_house = framed_geometry::make_base_change(tree, house);
+            auto const house_to_tree = framed_geometry::make_base_change(house, tree);
+            auto const quadcopter_to_house = framed_geometry::make_base_change(quadcopter, house);
+            auto const house_to_quadcopter = framed_geometry::make_base_change(house, quadcopter);
             auto const V_qc_in_qc =
                 FramedTwist(Twist(LinearVelocity::meters_per_second({0, 1, 0}),
                                   AngularVelocity::radians_per_second({.x = 0, .y = 1, .z = 0})),

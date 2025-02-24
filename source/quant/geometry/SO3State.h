@@ -58,6 +58,11 @@ namespace quant::geometry
         StateType
         operator-() const
         {
+            return inverse();
+        }
+        StateType
+        inverse() const
+        {
             return StateType{_representation.conjugate()};
         }
 

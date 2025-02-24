@@ -1,8 +1,9 @@
 #pragma once
 
-#include <quant/geometry/detail/ManifoldOperators.h>
-#include <Eigen/Core>
 #include <quant/geometry/AxisAngle.h>
+#include <quant/geometry/detail/ManifoldOperators.h>
+
+#include <Eigen/Core>
 
 namespace quant::geometry
 {
@@ -78,29 +79,11 @@ namespace quant::geometry
     template <typename DifferenceType, typename StateType>
         requires traits::difference<DifferenceType> and traits::state<StateType> and
                  traits::same_domain<DifferenceType, StateType> and
-                 traits::same_group<StateType, DifferenceType> and traits::in_flat_space<StateType>
+                 traits::same_group<StateType, DifferenceType>
     StateType&
     operator+=(StateType& lhs, DifferenceType const& rhs)
     {
-        using State = detail::StateAccessor<StateType>;
-        using Difference = detail::DifferenceAccessor<DifferenceType>;
-        State::representation(lhs) += Difference::representation(rhs);
-
-        return lhs;
-    }
-
-    template <typename DifferenceType, typename StateType>
-        requires traits::difference<DifferenceType> and traits::state<StateType> and
-                 traits::same_domain<DifferenceType, StateType> and
-                 traits::same_group<StateType, DifferenceType> and
-                 traits::in_curved_space<StateType>
-    StateType&
-    operator+=(StateType& lhs, DifferenceType const& rhs)
-    {
-        using State = detail::StateAccessor<StateType>;
-        using Difference = detail::DifferenceAccessor<DifferenceType>;
-        State::representation(lhs) = State::representation(lhs) * Difference::representation(rhs);
-
+        lhs = rplus(lhs, rhs);
         return lhs;
     }
 
@@ -115,37 +98,17 @@ namespace quant::geometry
      * @param rhs The difference to subtract from the state.
      * @return A reference to the modified state.
      */
-    template <typename DifferenceType, typename StateType>
-        requires traits::difference<DifferenceType> and traits::state<StateType> and
-                 traits::same_domain<DifferenceType, StateType> and
-                 traits::same_group<StateType, DifferenceType> and traits::in_flat_space<StateType>
-    StateType&
-    operator-=(StateType& lhs, DifferenceType const& rhs)
-    {
-        using State = detail::StateAccessor<StateType>;
-        using Difference = detail::DifferenceAccessor<DifferenceType>;
-        State::representation(lhs) -= Difference::representation(rhs);
-
-        return lhs;
-    }
 
     template <typename DifferenceType, typename StateType>
         requires traits::difference<DifferenceType> and traits::state<StateType> and
                  traits::same_domain<DifferenceType, StateType> and
-                 traits::same_group<StateType, DifferenceType> and
-                 traits::in_curved_space<StateType>
+                 traits::same_group<StateType, DifferenceType>
     StateType&
     operator-=(StateType& lhs, DifferenceType const& rhs)
     {
-        using State = detail::StateAccessor<StateType>;
-        using Difference = detail::DifferenceAccessor<DifferenceType>;
-        State::representation(lhs) =
-            State::representation(lhs) * Difference::representation(rhs).inverse();
-
+        lhs = rplus(lhs, inverse(rhs));
         return lhs;
     }
-
-
 
     template <typename DifferenceType>
         requires traits::difference<DifferenceType>
@@ -163,7 +126,7 @@ namespace quant::geometry
      * @return Scaled difference.
      */
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_flat_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::on_tangent_space<DifferenceType>
     DifferenceType
     operator*(DifferenceType const& lhs, long const rhs)
     {
@@ -210,7 +173,7 @@ namespace quant::geometry
      * @return Scaled difference.
      */
     template <typename DifferenceType>
-        requires traits::difference<DifferenceType> and traits::in_flat_space<DifferenceType>
+        requires traits::difference<DifferenceType> and traits::on_tangent_space<DifferenceType>
     DifferenceType
     operator/(DifferenceType const& lhs, long const rhs)
     {
@@ -231,4 +194,4 @@ namespace quant::geometry
 
         return AngularDifference::make(Eigen::Quaterniond(aa.to_eigen()));
     }
-}
+}  // namespace quant::geometry

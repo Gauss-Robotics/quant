@@ -1,8 +1,6 @@
 #include <quant/framed_units/position/Position.h>
 #include <quant/geometry/detail/DifferenceAccessor.h>
 #include <quant/geometry/detail/QuantityAccessor.h>
-#include <quant/units/position/AngularDisplacement.h>
-#include <quant/units/position/LinearDisplacement.h>
 
 namespace quant::framed_units::position
 {
@@ -17,6 +15,6 @@ namespace quant::framed_units::position
         auto const R = TransformAccessor::representation(transform.transformation);
 
         auto const p = PositionAccessor::representation(pos);
-        return PositionAccessor::make(R.inverse() * p);
+        return PositionAccessor::make(Eigen::Translation3d((R.inverse() * p).translation()));
     }
 }  // namespace quant::framed_units::position

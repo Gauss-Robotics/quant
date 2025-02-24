@@ -1,5 +1,6 @@
 #pragma once
 #include <quant/framed_geometry.h>
+#include <quant/framed_units/position.h>
 
 #include <doctest/doctest.h>
 
@@ -63,22 +64,12 @@ TEST_CASE("testing basic framed differences")
         FramedDummyLinearState const tcp{p, {.name = "TCP", .base_frame = "ARMAR-6::RobotRoot"}};
         FramedDummyLinearState const com{p, {.name = "CoM", .base_frame = "ARMAR-6::RobotRoot"}};
 
-        // auto diff = pos2 - pos1;
-        // const traits::difference_type_of<Test> ld{};
-
         FramedDummyLinearDiff const ld = tcp - com;
-        // const traits::framed_type_of<DummyLinearDiff> diff{};
-        // FramedDummyLinearDiff const diff{};
-        //
         CHECK(ld.get_base_frame() == "ARMAR-6::RobotRoot");
-        framed_geometry::BaseChange const bc{.from_frame = "ARMAR-6::RobotRoot",
-                                             .to_frame = "ARMAR-6::PlatformBase",
-                                             .transformation =
-                                                 units::position::SpatialDisplacement::zero()};
+        BaseChange const bc = make_base_change(
+            FramedSpatialDisplacement::zero("ARMAR-6::RobotRoot"), "ARMAR-6::TCP_R");
         auto new_tcp = bc * ld;
         CHECK(new_tcp.get_base_frame() == bc.to_frame.data());
-        // traits::framed_traits_of<units::position::Position>::basis_change_function(pos1.get_framed_object(),
-        // bc);
     }
 }
 
