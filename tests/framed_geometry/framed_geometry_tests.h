@@ -1,13 +1,12 @@
 #pragma once
 #include <quant/framed_geometry.h>
+#include <quant/framed_geometry/Adjoint.h>
+#include <quant/framed_geometry/Hat.h>
 #include <quant/framed_units/position.h>
 
 #include <doctest/doctest.h>
 
-#include <iostream>
-
 #include "DummyLinearState.h"
-#include "quant/framed_geometry/Adjoint.h"
 
 using namespace quant;  // NOLINT
 
@@ -99,7 +98,7 @@ TEST_CASE("testing adjoint matrix")
         CHECK(V_a.isApprox(adjoint * V_s));
         Eigen::Matrix4d V_a_matrix = (T_as * V * T_as.inverse()).matrix();
         CAPTURE(V_a_matrix);
-        CAPTURE(framed_geometry::SkewSymmetric6d(V_a).matrix());
-        CHECK(framed_geometry::SkewSymmetric6d(V_a).matrix().isApprox(V_a_matrix));
+        CAPTURE(framed_geometry::HatSE3(V_a).matrix());
+        CHECK(framed_geometry::HatSE3(V_a).matrix().isApprox(V_a_matrix));
     }
 }

@@ -41,9 +41,10 @@ namespace simple_robot_example
                                       arm_right.get_framed_object().angular()),
                                  frames.tcp_left);
 
-            FramedPose const camera = chest.enframe(Pose(Position::millimeters({100, 100, 100})), frames.camera);
+            FramedPose const camera =
+                chest.enframe(Pose(Position::millimeters({100, 100, 100})), frames.camera);
 
-            _frames.emplace(std::string(root.get_name()),  root);
+            _frames.emplace(std::string(root.get_name()), root);
             _frames.emplace(std::string(chest.get_name()), chest);
             _frames.emplace(std::string(arm_right.get_name()), arm_right);
             _frames.emplace(std::string(tcp_right.get_name()), tcp_right);
@@ -88,14 +89,15 @@ namespace simple_robot_example
             std::string camera = "Robot::Camera";
         } const frames;
 
-        quant::BaseChange get_frame_transformation(std::string const& from_frame,
-                                                   std::string const& to_frame) const
+        quant::BaseChange
+        get_frame_transformation(std::string const& from_frame, std::string const& to_frame) const
         {
-            const auto from_pose = _frames.at(from_frame);
-            const auto to_pose = _frames.at(to_frame);
+            auto const from_pose = _frames.at(from_frame);
+            auto const to_pose = _frames.at(to_frame);
             if (from_pose.get_base_frame() != to_pose.get_base_frame())
             {
-                try {
+                try
+                {
                     quant::FramedPose from_pose_in_root = from_pose;
                     quant::FramedPose to_pose_in_root = to_pose;
                     if (from_pose.get_base_frame() != frames.root)
@@ -105,30 +107,31 @@ namespace simple_robot_example
 
                     if (to_pose.get_name() == frames.root)
                     {
-                        return quant::BaseChange{.from_frame = from_frame,
-                                                 .to_frame = to_frame,
-                                                 .transformation = quant::SpatialDisplacement(from_pose_in_root.get_framed_object())};
+                        return quant::framed_geometry::make_base_change(
+                            from_frame,
+                            to_frame,
+                            quant::SpatialDisplacement(from_pose_in_root.get_framed_object()));
                     }
                     if (to_pose.get_base_frame() != frames.root)
                     {
                         to_pose_in_root = transform_to_frame(to_pose, frames.root);
                     }
 
-                    return quant::BaseChange{.from_frame = from_frame,
-                                             .to_frame = to_frame,
-                                             .transformation = (to_pose_in_root - from_pose_in_root).get_framed_object()};
-                } catch (std::out_of_range const&) {
+                    return quant::framed_geometry::make_base_change(from_pose_in_root, to_pose_in_root);
+                }
+                catch (std::out_of_range const&)
+                {
                     throw std::runtime_error("Frames are not connected.");
                 }
             }
-            return quant::BaseChange{.from_frame = from_frame,
-                                     .to_frame = to_frame,
-                                     .transformation = (to_pose - from_pose).get_framed_object()};
+            return quant::framed_geometry::make_base_change(from_pose, to_pose);
         }
 
-        quant::FramedPose transform_to_frame(const quant::FramedPose& pose, std::string const& to_frame) const
+        quant::FramedPose
+        transform_to_frame(quant::FramedPose const& pose, std::string const& to_frame) const
         {
-            const auto base_change = get_frame_transformation(std::string(pose.get_base_frame()), to_frame);
+            auto const base_change =
+                get_frame_transformation(std::string(pose.get_base_frame()), to_frame);
             return base_change * pose;
         }
 

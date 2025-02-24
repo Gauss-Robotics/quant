@@ -2,12 +2,14 @@ add_library(framed_geometry SHARED
         ../framed_geometry.h
         forward_declarations.h
 
-        Difference.h
-        State.h
-        BaseChange.h
-        FrameMismatch.h
-        Adjoint.h
         Adjoint.cpp
+        Adjoint.h
+        BaseChange.h
+        Difference.h
+        FrameMismatch.h
+        Hat.h
+        Hat.cpp
+        State.h
 )
 
 set_target_properties(framed_geometry

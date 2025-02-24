@@ -1,5 +1,5 @@
 #pragma once
-#include <quant/framed_geometry/Adjoint.h>
+#include <quant/framed_geometry/Hat.h>
 #include <quant/framed_units/velocity.h>
 #include <quant/framed_units/velocity/forward_declarations.h>
 #include <quant/geometry/Circa.h>
@@ -792,7 +792,7 @@ TEST_SUITE("testing framed velocity domain")
             auto const base_change = framed_geometry::make_base_change("S", "A", T_sa);
             CHECK(V_a == Circa(base_change * V_s));
             CAPTURE((T * V * T.inverse()).matrix());
-            CHECK((framed_geometry::SkewSymmetric6d(V_a).matrix() - (T * V * T.inverse()).matrix())
+            CHECK((framed_geometry::HatSE3(V_a).matrix() - (T * V * T.inverse()).matrix())
                       .isZero());
         }
         SUBCASE("Practice Exercise 3.14")
