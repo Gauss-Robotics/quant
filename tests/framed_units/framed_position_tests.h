@@ -943,11 +943,8 @@ TEST_SUITE("testing framed position domain")
         }
 
         SUBCASE("positional part of difference does not transform like the difference of the "
-                "positional parts")
+                "positional parts using right operators")
         {
-            // TODO: This test case is a prime example why states in linear space should be
-            // connected to the global
-            //  frame and not the local one
             std::string const base_frame = "ARMAR-6::RobotRoot";
             std::string const tcpr = "ARMAR-6::TCP_R";
             std::string const tcpl = "ARMAR-6::TCP_L";
@@ -955,7 +952,8 @@ TEST_SUITE("testing framed position domain")
             // If we would have a position in frame A, and we would write it as a pose, it would
             // get an identity orientation in frame A.
             FramedPose const p1{
-                Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}), Orientation::zero()),
+                Pose(Position::millimeters({.x = 1, .y = 2, .z = 3}),
+                     Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 120})),
                 {.name = tcpl, .base_frame = base_frame}};
             FramedPose const p2{
                 Pose(Position::millimeters({.x = 10, .y = 9, .z = 8}), Orientation::zero()),
@@ -985,22 +983,68 @@ TEST_SUITE("testing framed position domain")
              * **hidden** change in orientations that leads to linear displacements actually
              * changing under a base change. (see also intuition_about_transformations.ipynb)
              **/
-            FramedLinearDisplacement const ld_in_base = p2_t - p1_t;
+            FramedLinearDisplacement const ld_in_base =
+                p2_t.rminus(p1_t);  // rminus **should** result in difference in local frame
+            CHECK(ld_in_base.get_base_frame() ==
+                  base_frame);  // but due to the weird behavior, quant 'knows' that they are in the
+                                // global frame
             FramedLinearDisplacement const ld_in_camera =
-                from_tcpl_to_camera * (from_base_to_tcpl * ld_in_base);
-            FramedSpatialDisplacement const sd_in_base = p2 - p1;
-            CHECK(ld_in_base == Circa(sd_in_base.linear()));
-            auto const sd_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * sd_in_base);
-            CHECK_MESSAGE(ld_in_camera == Circa(sd_in_camera.linear()),
-                          "Position differences should transform like the positional part of "
-                          "pose differences");
+                from_tcpl_to_camera *
+                (from_base_to_tcpl * ld_in_base);  // notice the extra transformation required here
+            FramedSpatialDisplacement const sd_in_tcpl = p2.rminus(p1);
+            CHECK(ld_in_base != Circa(sd_in_tcpl.linear()));  // they are in different frames
+            CHECK(from_base_to_tcpl * ld_in_base ==
+                  Circa(sd_in_tcpl.linear()));  // if we change the frames, they are equal
+            auto const p1_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * p1);
+            auto const p2_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * p2);
+            auto const p1_t_in_camera = p1_in_camera.linear();
+            auto const p2_t_in_camera = p2_in_camera.linear();
+            CHECK(p1_t_in_camera == Circa(from_tcpl_to_camera * (from_base_to_tcpl * p1_t)));
+            CHECK(p2_t_in_camera == Circa(from_tcpl_to_camera * (from_base_to_tcpl * p2_t)));
+            auto const sd_in_camera = from_tcpl_to_camera * sd_in_tcpl;
+            // CHECK that Lminus & Rminus is the same for positions
+            CHECK(p2_t.rminus(p1_t) == Circa(p2_t.lminus(p1_t)));
+            // CHECK that Lminus & Rminus is not the same for poses
+            CHECK(p2.rminus(p1) != Circa(p2.lminus(p1)));
 
-            auto const p1_t_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * p1_t);
-            auto const p2_t_in_camera = from_tcpl_to_camera * (from_base_to_tcpl * p2_t);
+            // CHECK that addition of the differences leads to the correct state
+            CHECK((p1_in_camera + sd_in_camera).get_framed_object() ==
+                  Circa(p2_in_camera.get_framed_object()));
+            CHECK(p1.rplus(sd_in_tcpl).get_framed_object() == Circa(p2.get_framed_object()));
+            CHECK((p1_t_in_camera + ld_in_camera).get_framed_object() ==
+                  Circa(p2_t_in_camera.get_framed_object()));
+            CHECK((p1_t + ld_in_base).get_framed_object() == Circa(p2_t.get_framed_object()));
+
+            // CHECK that the transformed differences are equal to the differences of the
+            // transformed states
+            CHECK(sd_in_camera == Circa(p2_in_camera.lminus(p1_in_camera)));
+            CHECK(ld_in_camera == Circa(p2_t_in_camera.lminus(p1_t_in_camera)));
+
+            /** This is now the unexpected behavior: the linear part of the spatial difference is
+             * not the same as the difference in positions.
+             *
+             * This can be explained, as the global spatial difference (sd_in_camera) represents the
+             * pose, that the subtracted pose (p1_in_camera) has to act on to result in the other
+             * pose (p2_in_camera).
+             **/
+
+            CHECK(sd_in_camera.linear() != Circa(p2_t_in_camera.lminus(p1_t_in_camera)));
+            CHECK(ld_in_base != Circa(p2.lminus(p1).linear()));
+            CHECK(ld_in_camera != Circa(sd_in_camera.linear()));
+            CHECK(p2.rminus(p1) == Circa(p2_in_camera.rminus(p1_in_camera)));
+            CHECK(ld_in_camera !=
+                  Circa(p2_in_camera.rminus(p1_in_camera).linear()));  // rminus is in local frame
+            // If the position difference was in the local frame, it should not change under a base
+            // change, but this is not the case:
+            CHECK(p2_t.rminus(p1_t).get_framed_object() !=
+                  Circa(p2_t_in_camera.rminus(p1_t_in_camera)
+                            .get_framed_object()));  // the frame names are also different, but so
+                                                     // is the numerical part
+
             /**
              * These would be poses "connected" to the positions p1_t and p2_t, after a base
-             *change. Notice that they still have identity orientations in their base frames,
-             *i.e., the orientations have not been transformed, as they do for a "correct" pose.
+             * change. Notice that they still have identity orientations in their base frames,
+             * i.e., the orientations have not been transformed, as they do for a "correct" pose.
              **/
             auto const p1_new =
                 FramedPose(Pose(p1_t_in_camera.get_framed_object(), Orientation::zero()),
@@ -1204,12 +1248,20 @@ TEST_SUITE("end to end test (see coordinate system visualization)")
         // {
         //     if constexpr (not traits::use_right_operations_for_framed_units)
         //     {
+
         FramedLinearDisplacement const delta_p12_in_base = p2 - p1;
         FramedLinearDisplacement const delta_p12_in_F1 = p2_in_F1 - p1_in_F1;
         FramedLinearDisplacement const delta_p12_in_F2 = p2_in_F2 - p1_in_F2;
         CHECK(delta_p12_in_F1 != Circa(delta_p12_in_F2));
         CHECK(delta_p12_in_base != Circa(delta_p12_in_F2));
         CHECK(delta_p12_in_base != Circa(delta_p12_in_F1));
+
+        CHECK(delta_p12_in_base ==
+              Circa(FramedLinearDisplacement(LinearDisplacement::meters({1, 0, 0}), "global")));
+        CHECK(delta_p12_in_F1 ==
+              Circa(FramedLinearDisplacement(LinearDisplacement::meters({0, 0, -1}), "F1")));
+        CHECK(delta_p12_in_F2 ==
+              Circa(FramedLinearDisplacement(LinearDisplacement::meters({0, -1, 0}), "F2")));
 
         CHECK((p1 + delta_p12_in_base).get_framed_object() == Circa(p2.get_framed_object()));
         CHECK((p1 + make_base_change(F1, origin) * delta_p12_in_F1).get_framed_object() ==
