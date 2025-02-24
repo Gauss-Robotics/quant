@@ -252,7 +252,7 @@ TEST_SUITE("testing framed acceleration domain")
             FramedLinearAcceleration const a2{
                 LinearAcceleration::meters_per_second_squared({.x = 0, .y = 1, .z = 0}),
                 {.name = tcp_l, .base_frame = base_frame}};
-            FramedLinearAccelerationDifference const lad_in_a1 = a2 - a1;
+            FramedLinearAccelerationDifference const lad_in_base = a2 - a1;
 
             BaseChange const from_base_to_camera = framed_geometry::make_base_change(
                 base_frame,
@@ -261,9 +261,8 @@ TEST_SUITE("testing framed acceleration domain")
                 AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
             auto const a1_in_camera = from_base_to_camera * a1;
             auto const a2_in_camera = from_base_to_camera * a2;
-            auto const lad_in_a1_camera = a2_in_camera - a1_in_camera;
-            WARN(lad_in_a1 == Circa(lad_in_a1_camera));  // TODO: why is this not the case??
-            WARN(a1_in_camera + lad_in_a1 == Circa(a2_in_camera));
+            auto const lad_in_camera = a2_in_camera - a1_in_camera;
+            WARN_NOTHROW(from_base_to_camera * lad_in_base == Circa(lad_in_camera));
         }
     }
 
@@ -740,7 +739,7 @@ TEST_SUITE("testing framed acceleration domain")
                     AngularAcceleration::degrees_per_second_squared(
                         {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 0})),
                 {.name = tcp_l, .base_frame = base_frame}};
-            FramedSpatialAccelerationDifference const sad_in_a1 = a2 - a1;
+            FramedSpatialAccelerationDifference const sad_in_base = a2 - a1;
 
             BaseChange const from_base_to_camera = framed_geometry::make_base_change(
                 base_frame,
@@ -750,8 +749,7 @@ TEST_SUITE("testing framed acceleration domain")
             auto const a1_in_camera = from_base_to_camera * a1;
             auto const a2_in_camera = from_base_to_camera * a2;
             auto const sad_in_camera = a2_in_camera - a1_in_camera;
-            WARN(sad_in_a1 == Circa(sad_in_camera));
-            WARN(a1_in_camera + sad_in_a1 == Circa(a2_in_camera));
+            WARN_NOTHROW(from_base_to_camera * sad_in_base == Circa(sad_in_camera));
         }
     }
 }
