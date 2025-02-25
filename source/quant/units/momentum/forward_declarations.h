@@ -15,34 +15,6 @@ namespace quant::units::momentum
 
 }  // namespace quant::units::momentum
 
-namespace quant::traits
-{
-
-    using MomentumDomain = Define3DDomain<units::momentum::LinearMomentum,
-                                          units::momentum::AngularMomentum,
-                                          units::momentum::SpatialMomentum,
-                                          units::momentum::LinearImpulse,
-                                          units::momentum::AngularImpulse,
-                                          units::momentum::SpatialImpulse>;
-
-    template <>
-    struct DefineTraits<units::momentum::LinearMomentum>
-    {
-        using Domain = MomentumDomain;
-        using Difference = units::momentum::LinearImpulse;
-        using GeometricType = LinearStateType;
-    };
-
-    template <>
-    struct DefineTraits<units::momentum::LinearImpulse>
-    {
-        using Domain = MomentumDomain;
-        using State = units::momentum::LinearMomentum;
-        using GeometricType = LinearDifferenceType;
-    };
-
-}  // namespace quant::traits
-
 namespace quant
 {
 
@@ -55,3 +27,30 @@ namespace quant
     using units::momentum::SpatialImpulse;
 
 }  // namespace quant
+
+namespace quant::traits
+{
+    // TODO: are the manifolds correct here?
+    using MomentumDomain = Define3DDomain<Define3DSubDomain<LinearMomentum, LinearImpulse, R3Type>,
+                                          Define3DSubDomain<AngularMomentum, AngularImpulse, R3Type>,
+                                          Define3DSubDomain<SpatialMomentum, SpatialImpulse, R6Type>>;
+
+    template <>
+    struct DefineTraits<units::momentum::LinearMomentum>
+    {
+        using Domain = MomentumDomain;
+        using State = units::momentum::LinearMomentum;
+        using Difference = units::momentum::LinearImpulse;
+        using GeometricType = LinearStateType;
+    };
+
+    template <>
+    struct DefineTraits<units::momentum::LinearImpulse>
+    {
+        using Domain = MomentumDomain;
+        using State = units::momentum::LinearMomentum;
+        using Difference = units::momentum::LinearImpulse;
+        using GeometricType = LinearDifferenceType;
+    };
+
+}  // namespace quant::traits

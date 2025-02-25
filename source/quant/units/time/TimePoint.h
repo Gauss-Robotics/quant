@@ -216,7 +216,6 @@ namespace quant::units::time
         std::string
         to_string(std::string const& format) const;
 
-    protected:
         using geometry::ScalarState<TimePoint, std::int64_t>::ScalarState;
     };
 

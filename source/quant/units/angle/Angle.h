@@ -29,7 +29,7 @@ namespace quant::units::angle
         std::string
         to_string() const
         {
-            return to_radians().to_string();
+            return to_degrees().to_string();
         }
 
         Scalar

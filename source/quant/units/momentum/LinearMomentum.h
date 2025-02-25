@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/T3TangentState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/mass/Mass.h>
 #include <quant/units/momentum/constants.h>
@@ -14,7 +14,7 @@
 namespace quant::units::momentum
 {
 
-    class LinearMomentum : public geometry::LinearState<LinearMomentum>
+    class LinearMomentum : public geometry::T3TangentState<LinearMomentum>
     {
     public:
         static LinearMomentum
@@ -37,7 +37,7 @@ namespace quant::units::momentum
             return to_kilogram_meters_per_second().to_string();
         }
 
-        using geometry::LinearState<LinearMomentum>::LinearState;
+        using T3TangentState::T3TangentState;
     };
 
     inline std::ostream&

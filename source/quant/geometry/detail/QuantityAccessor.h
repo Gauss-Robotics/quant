@@ -9,8 +9,14 @@ namespace quant::geometry::detail
     class StateAccessor
     {
     public:
-        static typename BaseQuantityT::GeometricRepresentationType
+        static const typename BaseQuantityT::GeometricRepresentationType&
         representation(BaseQuantityT const& vq)
+        {
+            return vq._representation;
+        }
+
+        static typename BaseQuantityT::GeometricRepresentationType&
+        representation(BaseQuantityT& vq)
         {
             return vq._representation;
         }

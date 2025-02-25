@@ -1,6 +1,6 @@
 #pragma once
 
-#include <quant/geometry/LinearState.h>
+#include <quant/geometry/T3TangentState.h>
 #include <quant/units/Vector.h>
 #include <quant/units/acceleration/constants.h>
 #include <quant/units/acceleration/forward_declarations.h>
@@ -12,44 +12,28 @@
 namespace quant::units::acceleration
 {
 
-    class LinearAcceleration : public geometry::LinearState<LinearAcceleration>
+    class LinearAcceleration : public geometry::T3TangentState<LinearAcceleration>
     {
     public:
         static LinearAcceleration
-        millimeters_per_second_squared(geometry::Vector xyz)
-        {
-            return {xyz};
-        }
+        millimeters_per_second_squared(geometry::Vector const& xyz);
 
         static LinearAcceleration
-        meters_per_second_squared(geometry::Vector xyz)
-        {
-            return {xyz * constants::mpss2mmpss};
-        }
+        meters_per_second_squared(geometry::Vector const& xyz);
 
         Vector
-        to_millimeters_per_second_squared() const
-        {
-            return {to_vector(),
-                    constants::names::linear_acceleration,
-                    constants::symbols::meters_per_second_squared};
-        }
+        to_millimeters_per_second_squared() const;
 
         Vector
-        to_meters_per_second_squared() const
-        {
-            return {to_vector() * constants::mmpss2mpss,
-                    constants::names::linear_acceleration,
-                    constants::symbols::meters_per_second_squared};
-        }
+        to_meters_per_second_squared() const;
 
-        using geometry::LinearState<LinearAcceleration>::LinearState;
+        std::string
+        to_string() const;
+
+        using T3TangentState<LinearAcceleration>::T3TangentState;
     };
 
-    inline std::ostream&
-    operator<<(std::ostream& os, LinearAcceleration const& rhs)
-    {
-        return os << rhs.to_millimeters_per_second_squared();
-    }
+    std::ostream&
+    operator<<(std::ostream& os, LinearAcceleration const& rhs);
 
 }  // namespace quant::units::acceleration

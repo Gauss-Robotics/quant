@@ -1,48 +1,66 @@
 add_library(framed_units SHARED
     ../framed_units.h
 
-    time.h
-    time/forward_declarations.h
+        #time.h
     #time/forward_declarations.h
-    time/TimePoint.h
-    time/TimePoint.cpp
-    time/Duration.h
-    time/Duration.cpp
-    time/DateTime.h
-    time/DateTime.cpp
+        #time/forward_declarations.h
+        #time/TimePoint.h
+        #time/TimePoint.cpp
+        #time/Duration.h
+        #time/Duration.cpp
+        #time/DateTime.h
+        #time/DateTime.cpp
     #time/TimeInterval.h
-    time/Frequency.h
-    time/Frequency.cpp
+        #time/Frequency.h
+        #time/Frequency.cpp
     #time/detail/UnitConversions.h
-    time/measurement/ClockInterface.h
-    time/measurement/ClockInterface.cpp
-    time/measurement/Clock.h
-    time/measurement/Clock.cpp
+        #time/measurement/ClockInterface.h
+        #time/measurement/ClockInterface.cpp
+        #time/measurement/Clock.h
+        #time/measurement/Clock.cpp
 
     position.h
-    position/forward_declarations.h
-    position/FramedPosition.h
-    position/FramedOrientation.h
-    position/FramedPose.h
-    position/FramedLinearDisplacement.h
-    position/FramedAngularDisplacement.h
-    position/FramedSpatialDisplacement.h
+        position/forward_declarations.h
+        position/AngularDisplacement.cpp
+        position/AngularDisplacement.h
+        position/LinearDisplacement.cpp
+        position/LinearDisplacement.h
+        position/Orientation.cpp
+        position/Orientation.h
+        position/Pose.cpp
+        position/Pose.h
+        position/Position.cpp
+        position/Position.h
+        position/SpatialDisplacement.cpp
 
-    #velocity.h
-    #velocity_fwd.h
-    #velocity/LinearVelocity.h
-    #velocity/LinearVelocity.cpp
-    #velocity/AngularVelocity.h
-    #velocity/AngularVelocity.cpp
-    #velocity/Twist.h
-    #velocity/Twist.cpp
+    velocity.h
+        velocity/forward_declarations.h
+        velocity/LinearVelocity.h
+        velocity/LinearVelocity.cpp
+        velocity/AngularVelocity.h
+        velocity/AngularVelocity.cpp
+        velocity/Twist.h
+        velocity/Twist.cpp
+        velocity/LinearVelocityDifference.h
+        velocity/LinearVelocityDifference.cpp
+        velocity/AngularVelocityDifference.h
+        velocity/AngularVelocityDifference.cpp
+        velocity/TwistDifference.h
+        velocity/TwistDifference.cpp
 
-    #acceleration.h
-    #acceleration_fwd.h
-    #acceleration/LinearAcceleration.h
-    #acceleration/LinearAcceleration.cpp
-    #acceleration/AngularAcceleration.h
-    #acceleration/AngularAcceleration.cpp
+    acceleration.h
+        acceleration/LinearAcceleration.h
+        acceleration/LinearAcceleration.cpp
+        acceleration/AngularAcceleration.h
+        acceleration/AngularAcceleration.cpp
+        acceleration/SpatialAcceleration.h
+        acceleration/SpatialAcceleration.cpp
+        acceleration/LinearAccelerationDifference.h
+        acceleration/LinearAccelerationDifference.cpp
+        acceleration/AngularAccelerationDifference.h
+        acceleration/AngularAccelerationDifference.cpp
+        acceleration/SpatialAccelerationDifference.h
+        acceleration/SpatialAccelerationDifference.cpp
 
     #jerk.h
     #jerk_fwd.h
@@ -63,14 +81,19 @@ add_library(framed_units SHARED
     #mass_fwd.h
     #mass/Mass.h
 
-    #force.h
-    #force_fwd.h
-    #force/Force.h
-    #force/Force.cpp
-    #force/Torque.h
-    #force/Torque.cpp
-    #force/Wrench.h
-    #force/Wrench.cpp
+    force.h
+        force/Force.h
+        force/Force.cpp
+        force/Torque.h
+        force/Torque.cpp
+        force/Wrench.h
+        force/Wrench.cpp
+        force/ForceDifference.h
+        force/ForceDifference.cpp
+        force/TorqueDifference.h
+        force/TorqueDifference.cpp
+        force/WrenchDifference.h
+        force/WrenchDifference.cpp
 
     #temperature.h
     #temperature_fwd.h

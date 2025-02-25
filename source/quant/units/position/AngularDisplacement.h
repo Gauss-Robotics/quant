@@ -11,15 +11,29 @@ namespace quant::units::position
 
     class AngularDisplacement : public geometry::Difference<Orientation>
     {
-
     public:
         static AngularDisplacement
-        radians(geometry::AxisAngle const& aa)
-        {
-            return AngularDisplacement{Orientation::radians(aa)};
-        }
+        radians(geometry::AxisAngle const& aa);
 
-        using geometry::Difference<Orientation>::Difference;
+        static AngularDisplacement
+        degrees(geometry::AxisAngle const& aa);
+
+        static AngularDisplacement
+        radians(Eigen::Quaterniond const& q);
+
+        static AngularDisplacement
+        degrees(Eigen::Quaterniond const& q);
+
+        AxisAngle
+        to_radians() const;
+
+        AxisAngle
+        to_degrees() const;
+
+        using Difference::Difference;
     };
+
+    std::ostream&
+    operator<<(std::ostream& os, AngularDisplacement const& rhs);
 
 }  // namespace quant::units::position

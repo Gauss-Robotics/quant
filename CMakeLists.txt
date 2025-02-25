@@ -12,55 +12,67 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/source")
 
 # Export compile commands for Clang.
-if(CMAKE_EXPORT_COMPILE_COMMANDS)
+if (CMAKE_EXPORT_COMPILE_COMMANDS)
     list(PREPEND CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES "${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES}")
-endif()
+endif ()
 
 # Dependencies.
 find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED)
 find_package(doctest QUIET)
 
+# Compile Options
+option(QUANT_ENABLE_TESTS "Enable tests" ON)
+
+
 # Source code.
 add_subdirectory(source)
-add_subdirectory(tests)
 add_subdirectory(examples)
 
+if (QUANT_ENABLE_TESTS)
+    if (doctest_FOUND)
+        add_subdirectory(tests)
+    else ()
+        message(WARNING "Tests are enabled but doctest is not found. Tests will not be built.")
+    endif ()
+endif ()
+
+
 export(
-    TARGETS
+        TARGETS
         geometry
         units
         framed_geometry
         framed_units
-    NAMESPACE
+        NAMESPACE
         quant::
-    FILE
+        FILE
         "${PROJECT_BINARY_DIR}/quantTargets.cmake"
 )
 
 install(
-    TARGETS
+        TARGETS
         geometry
         units
         framed_geometry
         framed_units
-    EXPORT
+        EXPORT
         quant_export_set
-    DESTINATION
+        DESTINATION
         lib
 )
 
 export(
-    EXPORT
+        EXPORT
         quant_export_set
-    NAMESPACE
+        NAMESPACE
         quant::
-    FILE
+        FILE
         "${PROJECT_BINARY_DIR}/quantConfig-autogen.cmake"
 )
 
 configure_file(
-    "${CMAKE_SOURCE_DIR}/cmake/quantConfig.template.cmake"
-    "${PROJECT_BINARY_DIR}/quantConfig.cmake"
-    @ONLY
+        "${CMAKE_SOURCE_DIR}/cmake/quantConfig.template.cmake"
+        "${PROJECT_BINARY_DIR}/quantConfig.cmake"
+        @ONLY
 )

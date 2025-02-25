@@ -10,9 +10,17 @@ namespace quant::geometry::detail
     class DifferenceAccessor
     {
     public:
-        static typename DifferenceType::GeometricRepresentationType
+        static const typename DifferenceType::GeometricRepresentationType&
         representation(
             geometry::Difference<typename DifferenceType::DifferenceObjectType> const& difference)
+        {
+            using State = StateAccessor<typename DifferenceType::DifferenceObjectType>;
+            return State::representation(difference._difference_object);
+        }
+
+        static typename DifferenceType::GeometricRepresentationType&
+        representation(
+            geometry::Difference<typename DifferenceType::DifferenceObjectType>& difference)
         {
             using State = StateAccessor<typename DifferenceType::DifferenceObjectType>;
             return State::representation(difference._difference_object);

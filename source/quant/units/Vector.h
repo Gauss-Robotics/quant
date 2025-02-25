@@ -26,6 +26,16 @@ namespace quant::units
             ;
         }
 
+        Vector(Eigen::Vector3d const vector,
+               std::string_view quantity_name,
+               std::string_view unit_symbol) :
+            geometry::Vector(geometry::Vector::from_eigen(vector)),
+            quantity_name{quantity_name},
+            unit_symbol{unit_symbol}
+        {
+            ;
+        }
+
         std::string
         to_string() const
         {
@@ -34,8 +44,38 @@ namespace quant::units
             return ss.str();
         }
 
-        const std::string_view quantity_name;
-        const std::string_view unit_symbol;
+        static Vector
+        unit_x(std::string_view const& quantity_name, std::string_view const& unit_symbol)
+        {
+            return {geometry::Vector::unit_x(), quantity_name, unit_symbol};
+        }
+
+        static Vector
+        unit_y(std::string_view const& quantity_name, std::string_view const& unit_symbol)
+        {
+            return {geometry::Vector::unit_y(), quantity_name, unit_symbol};
+        }
+
+        static Vector
+        unit_z(std::string_view const& quantity_name, std::string_view const& unit_symbol)
+        {
+            return {geometry::Vector::unit_z(), quantity_name, unit_symbol};
+        }
+
+        Vector
+        operator*(double const rhs) const
+        {
+            return {geometry::Vector::operator*(rhs), quantity_name, unit_symbol};
+        }
+
+        Vector
+        operator/(double const rhs) const
+        {
+            return {geometry::Vector::operator/(rhs), quantity_name, unit_symbol};
+        }
+
+        std::string_view const quantity_name;
+        std::string_view const unit_symbol;
     };
 
     inline std::ostream&

@@ -14,13 +14,15 @@ namespace quant::units::time
 namespace quant::traits
 {
 
-    using TimeDomain = Define1DDomain<units::time::TimePoint, units::time::Duration>;
+    using TimeDomain =
+        Define1DDomain<units::time::TimePoint, units::time::Duration, R1Type>;
 
     template <>
     struct DefineTraits<units::time::TimePoint>
     {
         using Domain = TimeDomain;
         using Difference = units::time::Duration;
+        using State = units::time::TimePoint;
         using GeometricType = ScalarStateType;
     };
 
@@ -28,6 +30,7 @@ namespace quant::traits
     struct DefineTraits<units::time::Duration>
     {
         using Domain = TimeDomain;
+        using Difference = units::time::Duration;
         using State = units::time::TimePoint;
         using GeometricType = ScalarDifferenceType;
     };
