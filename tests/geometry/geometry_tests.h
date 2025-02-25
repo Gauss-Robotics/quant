@@ -265,7 +265,6 @@ namespace quant::traits::arithmetics
         state -= diff;
         state + diff;
         state - diff;
-
     }
 
     template <typename Quantity1, typename Quantity2>
@@ -428,21 +427,15 @@ TEST_SUITE("subtraction state from state")
             Orientation o2 = Orientation::degrees(b);
             AngularDisplacement const dori = o2 - o1;
             AngularDisplacement const target_dori = AngularDisplacement::degrees(difference);
-            CHECK_MESSAGE(dori == Circa(target_dori),
-                          o1.to_string(),
-                          o2.to_string(),
-                          dori.to_string(),
-                          target_dori.to_string());
-            CHECK_MESSAGE((o1 + dori) == Circa(o2),
-                          o1.to_string(),
-                          o2.to_string(),
-                          (o1 + dori).to_string(),
-                          dori.to_string());
-            CHECK_MESSAGE((o2 - dori) == Circa(o1),
-                          o1.to_string(),
-                          o2.to_string(),
-                          (o2 - dori).to_string(),
-                          dori.to_string());
+            CAPTURE(o1);
+            CAPTURE(o2);
+            CAPTURE(dori);
+            CAPTURE(target_dori);
+            CAPTURE(o1 + dori);
+            CAPTURE(o2 - dori);
+            CHECK(dori == Circa(target_dori));
+            CHECK((o1 + dori) == Circa(o2));
+            CHECK((o2 - dori) == Circa(o1));
         };
         auto test_angular_quat = [](Eigen::Quaterniond const& a,
                                     Eigen::Quaterniond const& b,
@@ -451,21 +444,16 @@ TEST_SUITE("subtraction state from state")
             Orientation o1 = Orientation::degrees(a);
             Orientation o2 = Orientation::degrees(b);
             AngularDisplacement const dori = o2 - o1;
-            CHECK_MESSAGE(dori == Circa(AngularDisplacement::degrees(difference)),
-                          o1.to_string(),
-                          o2.to_string(),
-                          dori.to_string(),
-                          AngularDisplacement::degrees(difference).to_string());
-            CHECK_MESSAGE((o1 + dori) == Circa(o2),
-                          o1.to_string(),
-                          o2.to_string(),
-                          (o1 + dori).to_string(),
-                          dori.to_string());
-            CHECK_MESSAGE((o2 - dori) == Circa(o1),
-                          o1.to_string(),
-                          o2.to_string(),
-                          (o2 - dori).to_string(),
-                          dori.to_string());
+            auto const targetDiff = AngularDisplacement::degrees(difference);
+            CAPTURE(o1);
+            CAPTURE(o2);
+            CAPTURE(dori);
+            CAPTURE(targetDiff);
+            CAPTURE(o1 + dori);
+            CAPTURE(o2 - dori);
+            CHECK(dori == Circa(targetDiff));
+            CHECK((o1 + dori) == Circa(o2));
+            CHECK((o2 - dori) == Circa(o1));
         };
 
         test_angular_aa({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 0},
@@ -480,7 +468,7 @@ TEST_SUITE("subtraction state from state")
         test_angular_aa(
             {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90},
             {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90},
-            {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)}, .angle = 120});
+            {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120});
 
         test_angular_aa({.axis = {.x = 0, .y = 0, .z = 1}, .angle = 360},
                         {.axis = {.x = 0, .y = 0, .z = 1}, .angle = 10},
@@ -490,7 +478,7 @@ TEST_SUITE("subtraction state from state")
                           Eigen::Quaterniond(1, 0, 0, 0));
         test_angular_quat(Eigen::Quaterniond(sqrt(2) / 2, sqrt(2) / 2, 0, 0),
                           Eigen::Quaterniond(sqrt(2) / 2, 0, sqrt(2) / 2, 0),
-                          Eigen::Quaterniond(0.5, -0.5, 0.5, -0.5));
+                          Eigen::Quaterniond(0.5, -0.5, 0.5, 0.5));
         test_angular_quat(Eigen::Quaterniond(sqrt(2) / 2, 0, 0, sqrt(2) / 2),
                           Eigen::Quaterniond(sqrt(2) / 2, 0, 0, -sqrt(2) / 2),
                           Eigen::Quaterniond(0, 0, 0, -1));
@@ -509,8 +497,11 @@ TEST_SUITE("subtraction state from state")
             SpatialDisplacement const target_dpose =
                 SpatialDisplacement(LinearDisplacement::meters({.x = 0, .y = 0, .z = 0}),
                                     AngularDisplacement::degrees(difference));
-            CHECK_MESSAGE(
-                dpose == Circa(target_dpose), dpose.to_string(), target_dpose.to_string());
+            CAPTURE(pose1);
+            CAPTURE(pose2);
+            CAPTURE(dpose);
+            CAPTURE(target_dpose);
+            CHECK(dpose == Circa(target_dpose));
             CHECK((pose1 + dpose) == Circa(pose2));
             CHECK((pose2 - dpose) == Circa(pose1));
         };
@@ -526,7 +517,7 @@ TEST_SUITE("subtraction state from state")
         test_spatial_aa(
             {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90},
             {.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90},
-            {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)}, .angle = 120});
+            {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120});
 
         auto test_spatial_v3 = [](Vector const& a, Vector const& b, Vector const& difference)
         {
@@ -538,8 +529,11 @@ TEST_SUITE("subtraction state from state")
             SpatialDisplacement const target_dpose =
                 SpatialDisplacement(LinearDisplacement::meters(difference),
                                     AngularDisplacement::degrees(Eigen::Quaterniond::Identity()));
-            CHECK_MESSAGE(
-                dpose == Circa(target_dpose), dpose.to_string(), target_dpose.to_string());
+            CAPTURE(pose1);
+            CAPTURE(pose2);
+            CAPTURE(dpose);
+            CAPTURE(target_dpose);
+            CHECK(dpose == Circa(target_dpose));
             CHECK((pose1 + dpose) == Circa(pose2));
             CHECK((pose2 - dpose) == Circa(pose1));
         };
@@ -558,13 +552,18 @@ TEST_SUITE("subtraction state from state")
                  Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}));
         SpatialDisplacement const dpose = pose2 - pose1;
         auto const target_dpose = SpatialDisplacement(
-            LinearDisplacement::meters({.x = 3, .y = 3, .z = -3}),
+            LinearDisplacement::meters({.x = 6, .y = 2, .z = 7}),
             AngularDisplacement::degrees(
-                {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)}, .angle = 120}));
-        CHECK_MESSAGE(dpose == Circa(target_dpose), dpose.to_string(), target_dpose.to_string());
+                {.axis = {.x = -1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120}));
+        CAPTURE(pose1);
+        CAPTURE(pose2);
+        CAPTURE(dpose);
+        CAPTURE(target_dpose);
+        CHECK(dpose == Circa(target_dpose));
         CHECK((pose1 + dpose) == Circa(pose2));
         CHECK((pose2 - dpose) == Circa(pose1));
     }
+
     TEST_CASE("state from itself is identity")
     {
         auto test = [](auto const& state)
@@ -613,7 +612,7 @@ TEST_SUITE("addition of difference to state")
         o1 += dori;
         CHECK(o1 ==
               Circa(Orientation::degrees(
-                  {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = 1 / sqrt(3)}, .angle = 120})));
+                  {.axis = {.x = 1 / sqrt(3), .y = 1 / sqrt(3), .z = -1 / sqrt(3)}, .angle = 120})));
         CHECK(o1 == Circa(o2));
     }
 
@@ -627,7 +626,7 @@ TEST_SUITE("addition of difference to state")
         Pose const pose2 = pose1 + dpose;
         pose1 += dpose;
         CHECK(pose1 ==
-              Circa(Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
+              Circa(Pose(Position::meters({.x = 6, .y = 5, .z = 2}),
                          Orientation::degrees({.axis = {.x = 0, .y = 1, .z = 0}, .angle = 90}))));
         CHECK(pose1 == Circa(pose2));
     }
@@ -663,7 +662,7 @@ TEST_SUITE("subtraction of difference from state")
         Orientation const o2 = o1 - dori;
         o1 -= dori;
         CHECK(o1 == Circa(Orientation::degrees(
-                        {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = -1 / sqrt(3)},
+                        {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = 1 / sqrt(3)},
                          .angle = 120})));
         CHECK(o1 == Circa(o2));
     }
@@ -678,9 +677,9 @@ TEST_SUITE("subtraction of difference from state")
         Pose const pose2 = pose1 - dpose;
         pose1 -= dpose;
         CHECK(pose1 ==
-              Circa(Pose(Position::meters({.x = 7, .y = 8, .z = 3}),
+              Circa(Pose(Position::meters({.x = -3, .y = 2, .z = 1}),
                          Orientation::degrees(
-                             {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = -1 / sqrt(3)},
+                             {.axis = {.x = 1 / sqrt(3), .y = -1 / sqrt(3), .z = 1 / sqrt(3)},
                               .angle = 120}))));
         CHECK(pose1 == Circa(pose2));
     }
@@ -728,31 +727,33 @@ TEST_SUITE("inplace subtraction of state and difference")
     TEST_CASE("spatial state and difference")
     {
         Pose pose1 = Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
-                          Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}));
+                          Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 30}));
 
         Pose pose2 = Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
-                          Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}));
+                          Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 30}));
 
         SpatialDisplacement const dpose = pose2 - pose1;
         SpatialDisplacement const dpose2 = SpatialDisplacement(
             LinearDisplacement::meters({.x = 0, .y = 0, .z = 0}),
-            AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 50}));
+            AngularDisplacement::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 90}));
         pose1 -= dpose;
         pose2 -= dpose2;
-        CHECK_MESSAGE(pose1 == Circa(Pose(Position::meters({.x = -2, .y = -1, .z = 0}),
-                                          Orientation::degrees(
-                                              {.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))),
-                      pose1.to_string());
-        CHECK_MESSAGE(pose2 == Circa(Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
-                                          Orientation::degrees(
-                                              {.axis = {.x = 1, .y = 0, .z = 0}, .angle = -40}))),
-                      pose2.to_string());
+        CAPTURE(pose1);
+        CAPTURE(pose2);
+        CAPTURE(dpose);
+        CAPTURE(dpose2);
+        CHECK(pose1 ==
+              Circa(Pose(Position::meters({.x = -2, .y = -1, .z = 0}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 30}))));
+        CHECK(pose2 ==
+              Circa(Pose(Position::meters({.x = 4, .y = 6, .z = -5}),
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = -60}))));
         CHECK((pose1 + dpose) ==
               Circa(Pose(Position::meters({.x = 1, .y = 2, .z = 3}),
-                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 30}))));
         CHECK((pose2 + dpose2) ==
               Circa(Pose(Position::meters({.x = 4, .y = 5, .z = 6}),
-                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 10}))));
+                         Orientation::degrees({.axis = {.x = 1, .y = 0, .z = 0}, .angle = 30}))));
     }
 }
 

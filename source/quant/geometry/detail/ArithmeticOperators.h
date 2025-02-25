@@ -24,7 +24,7 @@ namespace quant::geometry
     traits::difference_type_of<StateType>
     operator-(StateType const& lhs, StateType const& rhs)
     {
-        return rminus(lhs, rhs);
+        return lminus(lhs, rhs);
     }
 
     /**
@@ -41,7 +41,7 @@ namespace quant::geometry
     StateType
     operator-(StateType const& lhs, DifferenceType const& rhs)
     {
-        return rplus(lhs, inverse(rhs));
+        return lplus(lhs, inverse(rhs));
     }
 
     /**.inverse()
@@ -62,7 +62,7 @@ namespace quant::geometry
     StateType
     operator+(StateType const& lhs, DifferenceType const& rhs)
     {
-        return rplus(lhs, rhs);
+        return lplus(lhs, rhs);
     }
 
     /**
@@ -83,7 +83,7 @@ namespace quant::geometry
     StateType&
     operator+=(StateType& lhs, DifferenceType const& rhs)
     {
-        lhs = rplus(lhs, rhs);
+        lhs = lplus(lhs, rhs);
         return lhs;
     }
 
@@ -106,7 +106,7 @@ namespace quant::geometry
     StateType&
     operator-=(StateType& lhs, DifferenceType const& rhs)
     {
-        lhs = rplus(lhs, inverse(rhs));
+        lhs = lplus(lhs, inverse(rhs));
         return lhs;
     }
 
